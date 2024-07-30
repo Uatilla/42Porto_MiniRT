@@ -31,24 +31,27 @@ RM			= rm -rf
 SRCS_DIR	=	srcs
 OBJS_DIR	=	objs
 LIBFT_DIR	=	./libraries/libft
+MLX_DIR		=	./libraries/minilibx-linux
 INC			=	includes
 SUB_DIR		=	input
 ALL_OBJS_DIR	= $(foreach dir, $(SUB_DIR), $(addprefix $(OBJS_DIR)/, $(dir)))
 
 # Flags
 CFLAGS		=	-Wall -Wextra -Werror -g -fsanitize=address
+MLXFLAGS	=	-lmlx -lXext -lX11 -lm
 
 # Files
 SRCS		=	main.c
 OBJS		=	$(SRCS:%.c=$(OBJS_DIR)/%.o)
 LIBFT		=	$(LIBFT_DIR)/libft.a
+LIBMLX		=	$(MLX_DIR)/libmlx.a
 MINIRT		=	$(INC)/minirt.h
 
 # Rules
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT) $(MINIRT)
-	@ $(CC)	$(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+$(NAME): $(OBJS) $(LIBMLX) $(LIBFT) $(MINIRT)
+	@ $(CC)	$(CFLAGS) $(OBJS) -L$(MLX_DIR) $(MLXFLAGS) $(LIBFT) -o $(NAME)
 
 $(OBJS_DIR):
 	@ mkdir -p $(OBJS_DIR) $(ALL_OBJS_DIR)
@@ -58,6 +61,10 @@ $(OBJS): $(OBJS_DIR)/%.o : $(SRCS_DIR)/%.c | $(OBJS_DIR)
 	@ $(CC) -I $(INCLUDES) $(CFLAGS) -c $< -o $@
 	@ printf "Making binary files	$(YELLOW)[OK]$(RESET)\n"
 
+$(LIBMLX):
+	@ printf "Making Minilibx		$(YELLOW)[OK]$(RESET)\n"
+	@ $(MAKE)  -sC $(MLX_DIR)
+
 $(LIBFT):
 	@ printf "Making Libft		$(YELLOW)[OK]$(RESET)\n"
 	@ $(MAKE)  -sC $(LIBFT_DIR)
@@ -65,10 +72,12 @@ $(LIBFT):
 clean:
 	@ $(RM) $(OBJS_DIR)
 	@ printf "cleaning MiniRT files	$(CYAN)[OK]$(RESET)\n"
+	@ $(MAKE) $(MK_FLAG) clean -sC $(MLX_DIR)
 	@ $(MAKE) $(MK_FLAG) clean -sC $(LIBFT_DIR)
 
 fclean: clean
 	@ $(RM) $(NAME)
+	@ $(MAKE) $(MK_FLAG) fclean -sC $(MLX_DIR)
 	@ $(MAKE) $(MK_FLAG) fclean -sC $(LIBFT_DIR)
 	@ printf "fclean			$(CYAN)[OK]$(RESET)\n"
 

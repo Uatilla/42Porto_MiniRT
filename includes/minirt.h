@@ -14,5 +14,7 @@
 # define MINIRT_H
 
 # include <stdio.h>
+# include "../libraries/minilibx-linux/mlx.h"
+# include "../libraries/libft/libft.h"
 
 #endif
