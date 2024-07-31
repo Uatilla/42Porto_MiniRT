@@ -19,7 +19,8 @@
 # include "../libraries/minilibx-linux/mlx.h"
 # include "../libraries/libft/libft.h"
 
-//ERROR MESSAGES
+//MACRO
+#define    EPSILON 0.00001
 
 //STRUCTURES
 

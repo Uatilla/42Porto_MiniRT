@@ -12,6 +12,14 @@
 
 #include "../includes/minirt.h"
 
+bool    is_tuple_equal(t_tuple a, t_tuple b)
+{
+    printf("a.x: %f - b.x: %f\n", a.x, b.x);
+    return((a.x - b.x) < EPSILON\
+        && (a.y - b.y) < EPSILON\
+        && (a.z - b.z) < EPSILON);
+}
+
 int main()
 {
     point   p;
@@ -19,12 +27,17 @@ int main()
     color   c;
 
     p = creating_point(1, 2, 3);
-    printf("Result: %d\n", is_point(p));
+    printf("Point: %d\n", is_point(p));
     printf("----------------\n");
     v = creating_vector(2, 3, 4);
-    printf("Result: %d\n", is_vector(v));
+    printf("Vector: %d\n", is_vector(v));
     printf("----------------\n");
     c = creating_color(200, 113, 134);
-    printf("Result: %d\n", is_color(c));
+    printf("Color: %d\n", is_color(c));
+
+    printf("Tuple: %d\n", is_tuple_equal(p, v));
+    
+
+    printf("%f\n", EPSILON);
     return (0);
 }
