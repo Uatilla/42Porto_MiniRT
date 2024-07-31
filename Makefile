@@ -26,6 +26,7 @@ NAME		= minirt
 # Commands
 CC			= cc
 RM			= rm -rf
+GIT			= git
 
 # Directories
 SRCS_DIR	=	srcs
@@ -33,7 +34,7 @@ OBJS_DIR	=	objs
 LIBFT_DIR	=	./libraries/libft
 MLX_DIR		=	./libraries/minilibx-linux
 INC			=	includes
-SUB_DIR		=	input
+SUB_DIR		=	tuples
 ALL_OBJS_DIR	= $(foreach dir, $(SUB_DIR), $(addprefix $(OBJS_DIR)/, $(dir)))
 
 # Flags
@@ -41,7 +42,8 @@ CFLAGS		=	-Wall -Wextra -Werror -g -fsanitize=address
 MLXFLAGS	=	-lmlx -lXext -lX11 -lm
 
 # Files
-SRCS		=	main.c
+SRCS		=	main.c \
+				tuples/chk_tuples_typ.c tuples/creating_tuples.c
 OBJS		=	$(SRCS:%.c=$(OBJS_DIR)/%.o)
 LIBFT		=	$(LIBFT_DIR)/libft.a
 LIBMLX		=	$(MLX_DIR)/libmlx.a
@@ -61,7 +63,7 @@ $(OBJS): $(OBJS_DIR)/%.o : $(SRCS_DIR)/%.c | $(OBJS_DIR)
 	@ $(CC) -I $(INCLUDES) $(CFLAGS) -c $< -o $@
 	@ printf "Making binary files	$(YELLOW)[OK]$(RESET)\n"
 
-$(LIBMLX):
+$(LIBMLX): 
 	@ printf "Making Minilibx		$(YELLOW)[OK]$(RESET)\n"
 	@ $(MAKE)  -sC $(MLX_DIR)
 
@@ -77,7 +79,6 @@ clean:
 
 fclean: clean
 	@ $(RM) $(NAME)
-	@ $(MAKE) $(MK_FLAG) fclean -sC $(MLX_DIR)
 	@ $(MAKE) $(MK_FLAG) fclean -sC $(LIBFT_DIR)
 	@ printf "fclean			$(CYAN)[OK]$(RESET)\n"
 
