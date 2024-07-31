@@ -50,7 +50,7 @@ MINIRT		=	$(INC)/minirt.h
 # Rules
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBMLX) $(LIBFT) $(MINIRT)
+$(NAME): $(MLX_DIR) $(OBJS) $(LIBMLX) $(LIBFT) $(MINIRT)
 	@ $(CC)	$(CFLAGS) $(OBJS) -L$(MLX_DIR) $(MLXFLAGS) $(LIBFT) -o $(NAME)
 
 $(OBJS_DIR):
@@ -69,6 +69,11 @@ $(LIBFT):
 	@ printf "Making Libft		$(YELLOW)[OK]$(RESET)\n"
 	@ $(MAKE)  -sC $(LIBFT_DIR)
 
+$(MLX_DIR):
+	@git clone --depth=1 https://github.com/42Paris/minilibx-linux.git
+	@make -C minilibx-linux
+	@mv minilibx-linux libraries/
+
 clean:
 	@ $(RM) $(OBJS_DIR)
 	@ printf "cleaning MiniRT files	$(CYAN)[OK]$(RESET)\n"
@@ -82,5 +87,7 @@ fclean: clean
 	@ printf "fclean			$(CYAN)[OK]$(RESET)\n"
 
 re: fclean all
+
+.SILENT:
 
 .PHONY: all clean fclean re
