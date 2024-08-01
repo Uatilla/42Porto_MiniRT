@@ -34,7 +34,7 @@ OBJS_DIR	=	objs
 LIBFT_DIR	=	./libraries/libft
 MLX_DIR		=	./libraries/minilibx-linux
 INC			=	includes
-SUB_DIR		=	tuples
+SUB_DIR		=	tuples input exit
 ALL_OBJS_DIR	= $(foreach dir, $(SUB_DIR), $(addprefix $(OBJS_DIR)/, $(dir)))
 
 # Flags
@@ -43,7 +43,9 @@ MLXFLAGS	=	-lmlx -lXext -lX11 -lm
 
 # Files
 SRCS		=	main.c \
-				tuples/chk_tuples_typ.c tuples/creating_tuples.c
+				tuples/chk_tuples_typ.c tuples/creating_tuples.c \
+				input/input_checker.c \
+				exit/exit_cleaner.c
 OBJS		=	$(SRCS:%.c=$(OBJS_DIR)/%.o)
 LIBFT		=	$(LIBFT_DIR)/libft.a
 LIBMLX		=	$(MLX_DIR)/libmlx.a

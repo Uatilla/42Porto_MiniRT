@@ -12,32 +12,36 @@
 
 #include "../includes/minirt.h"
 
-bool    is_tuple_equal(t_tuple a, t_tuple b)
+t_tuple sum_tuples(t_tuple a, t_tuple b)
 {
-    printf("a.x: %f - b.x: %f\n", a.x, b.x);
-    return((a.x - b.x) < EPSILON\
-        && (a.y - b.y) < EPSILON\
-        && (a.z - b.z) < EPSILON);
+    t_tuple res_tuple = 
 }
 
-int main()
+int main(int argc, char **argv)
 {
+    //t_minirt    mrt;
+    int         fd;
     point   p;
     vector  v;
     color   c;
+    point   res;
 
-    p = creating_point(1, 2, 3);
-    printf("Point: %d\n", is_point(p));
+    fd = chk_input(argc, argv[1]);
+    
+    p = creating_point(3, -2, 5);
+    printf("P: X(%f) Y(%f) Z(%f) W(%f)\n", p.x, p.y, p.z, p.w);
     printf("----------------\n");
-    v = creating_vector(2, 3, 4);
-    printf("Vector: %d\n", is_vector(v));
+    v = creating_vector(-2, 3, 1);
+    printf("V: X(%f) Y(%f) Z(%f) W(%f)\n", v.x, v.y, v.z, v.w);
     printf("----------------\n");
     c = creating_color(200, 113, 134);
-    printf("Color: %d\n", is_color(c));
-
-    printf("Tuple: %d\n", is_tuple_equal(p, v));
+    printf("C: X(%f) Y(%f) Z(%f) W(%f)\n", c.x, c.y, c.z, c.w);
+    printf("----------------\n");
+    printf("Operating a Sum:\n");
+    res = sum_tuples(p, v);
+    
     
 
-    printf("%f\n", EPSILON);
+
     return (0);
 }
