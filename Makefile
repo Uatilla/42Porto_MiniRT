@@ -74,8 +74,8 @@ $(LIBFT):
 	@ $(MAKE)  -sC $(LIBFT_DIR)
 
 $(MLX_DIR):
-	@git clone --depth=1 https://github.com/42Paris/minilibx-linux.git
-	@make -C minilibx-linux
+	@git clone --depth=1 https://github.com/42Paris/minilibx-linux.git 
+	@make -sC minilibx-linux
 	@mv minilibx-linux libraries/
 
 clean:

@@ -12,10 +12,10 @@
 
 #include "../includes/minirt.h"
 
-t_tuple sum_tuples(t_tuple a, t_tuple b)
-{
-    t_tuple res_tuple = 
-}
+// t_tuple sum_tuples(t_tuple a, t_tuple b)
+// {
+//     t_tuple res_tuple = 
+// }
 
 int main(int argc, char **argv)
 {
@@ -38,7 +38,7 @@ int main(int argc, char **argv)
     printf("C: X(%f) Y(%f) Z(%f) W(%f)\n", c.x, c.y, c.z, c.w);
     printf("----------------\n");
     printf("Operating a Sum:\n");
-    res = sum_tuples(p, v);
+    // res = sum_tuples(p, v);
     
     
 
