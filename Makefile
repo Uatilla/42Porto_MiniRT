@@ -6,7 +6,7 @@
 #    By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/30 20:21:44 by uviana-a          #+#    #+#              #
-#    Updated: 2024/08/02 17:41:28 by Jburlama         ###   ########.fr        #
+#    Updated: 2024/08/02 21:50:33 by Jburlama         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ MLXFLAGS	=	-lmlx -lXext -lX11 -lm
 # Files
 SRCS		=	main.c \
 				tuples/chk_tuples_typ.c tuples/creating_tuples.c \
+				tuples/tuple_operations.c \
 				input/input_checker.c \
 				exit/exit_cleaner.c \
 				mlx/mlx.c
@@ -82,7 +83,6 @@ $(MLX_DIR):
 clean:
 	@ $(RM) $(OBJS_DIR)
 	@ printf "cleaning MiniRT files	$(CYAN)[OK]$(RESET)\n"
-	@ $(MAKE) $(MK_FLAG) clean -sC $(MLX_DIR)
 	@ $(MAKE) $(MK_FLAG) clean -sC $(LIBFT_DIR)
 
 fclean: clean

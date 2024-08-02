@@ -1,29 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   tuple_operations.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 20:02:44 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/02 21:48:30 by Jburlama         ###   ########.fr       */
+/*   Created: 2024/08/02 21:05:22 by Jburlama          #+#    #+#             */
+/*   Updated: 2024/08/02 21:49:09 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt.h"
+#include "../../includes/minirt.h"
 
-
-int main(void)
+t_tuple	tuple_add(t_tuple *a, t_tuple *b)
 {
-	t_tuple	a = {1,2,3, 0};
-	t_tuple	b = {2,3,4, 0};
-	t_tuple c;
+	t_tuple	ret;
 
-	c = tuple_add(&a, &b);
-
-	printf("%f\n", c.x);
-	printf("%f\n", c.y);
-	printf("%f\n", c.z);
-	printf("%f\n", c.w);
-    return (0);
+	ret.x = a->x + b->x;
+	ret.y = a->y + b->y;
+	ret.z = a->z + b->z;
+	ret.w = a->w + b->w;
+	return (ret);
 }

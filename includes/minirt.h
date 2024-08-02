@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/02 18:44:56 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/02 21:47:28 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,16 @@
 #define    EPSILON 0.00001
 
 //STRUCTURES
+
+typedef struct	s_canvas {
+	void	*mlx;
+	void	*win;
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_canvas;
 
 typedef struct s_tuple
 {
@@ -49,15 +59,11 @@ typedef	t_tuple t_point;
 typedef	t_tuple t_vector;
 typedef	t_tuple t_color;
 
-typedef struct	s_canvas {
-	void	*mlx;
-	void	*win;
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}				t_canvas;
+typedef	struct	s_ray
+{
+	t_point		origim;
+	t_vector	direction;
+}	t_rat;
 
 typedef struct s_minirt
 {
@@ -83,6 +89,9 @@ bool    is_point(t_tuple tuple);
 bool    is_vector(t_tuple tuple);
 bool    is_color(t_tuple tuple);
 bool    is_tuple_equal(t_tuple a, t_tuple b);
+
+// tuple_operations.c
+t_tuple	tuple_add(t_tuple *a, t_tuple *b);
 
 //Input
 //input_checker.c
