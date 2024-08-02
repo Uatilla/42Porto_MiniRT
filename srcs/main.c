@@ -6,42 +6,31 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:02:44 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/07/30 20:02:46 by uviana-a         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:46:42 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 
-// t_tuple sum_tuples(t_tuple a, t_tuple b)
-// {
-//     t_tuple res_tuple = 
-// }
 
-int main(int argc, char **argv)
+int main(void)
 {
-    //t_minirt    mrt;
-    int         fd;
-    point   p;
-    vector  v;
-    color   c;
-    point   res;
+	t_minirt	data;
+	t_color		color;
 
-    fd = chk_input(argc, argv[1]);
-    
-    p = creating_point(3, -2, 5);
-    printf("P: X(%f) Y(%f) Z(%f) W(%f)\n", p.x, p.y, p.z, p.w);
-    printf("----------------\n");
-    v = creating_vector(-2, 3, 1);
-    printf("V: X(%f) Y(%f) Z(%f) W(%f)\n", v.x, v.y, v.z, v.w);
-    printf("----------------\n");
-    c = creating_color(200, 113, 134);
-    printf("C: X(%f) Y(%f) Z(%f) W(%f)\n", c.x, c.y, c.z, c.w);
-    printf("----------------\n");
-    printf("Operating a Sum:\n");
-    // res = sum_tuples(p, v);
-    
-    
+	start_mlx(&data.canvas);
+
+	color.r = 1.5;
+	color.g = 0;
+	color.b = 1;
 
 
+	for (int y = 0; y < HEIGTH; y++)
+	{
+		for (int x = 0; x < WIDTH; x++)
+			write_pixel(&data.canvas, x, y, color);
+	}
+	mlx_put_image_to_window(data.canvas.mlx, data.canvas.win, data.canvas.img, 0, 0);
+	mlx_loop(data.canvas.mlx);
     return (0);
 }
