@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/02 21:47:28 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:25:15 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,15 @@ typedef	t_tuple t_color;
 
 typedef	struct	s_ray
 {
-	t_point		origim;
+	t_point		origin;
 	t_vector	direction;
-}	t_rat;
+}	t_ray;
 
 typedef struct s_minirt
 {
 	t_tuple     *tuple;
 	t_canvas	canvas;
+	t_ray		ray;
 	int			fd;
 }		t_minirt;
 
@@ -96,6 +97,10 @@ t_tuple subtrac_tuples(t_tuple *a, t_tuple *b);
 t_tuple negating_tuple(t_tuple *a);
 t_tuple mult_tuple_scalar(t_tuple *a, float sc);
 float	dot_product(t_tuple *a, t_tuple *b);
+
+//ray
+//ray.c
+t_tuple	position(t_ray *ray, float t);
 
 //Input
 //input_checker.c
