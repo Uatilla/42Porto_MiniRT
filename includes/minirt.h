@@ -108,6 +108,10 @@ float	dot_product(t_tuple *a, t_tuple *b);
 //ray.c
 t_tuple	position(t_ray *ray, float t);
 
+//sphere
+//sphere.c
+int		intersections(t_ray *ray, t_sphere *sphere, float *t);
+
 //map
 //map.c
 float	map_x(float x, float min, float max);

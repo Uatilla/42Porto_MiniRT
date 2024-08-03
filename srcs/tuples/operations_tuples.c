@@ -31,6 +31,20 @@ t_tuple sum_tuples(t_tuple *a, t_tuple *b)
 }
 
 
+t_tuple subtrac_tuples(t_tuple *a, t_tuple *b)
+{
+    t_tuple res;
+
+    res.x = a->x - b->x;
+    res.y = a->y - b->y;
+    res.z = a->z - b->z;
+    if (a->w != 999999 && b->w != 999999)
+        res.w = a->w - b->w;
+    else
+        res.w = 999999;
+	return (res);
+}
+
 /// @brief Find the intersection (scalar value) in a vector.
 /// @param a Tuple to be multiplied.
 /// @param sc Scalar value.
