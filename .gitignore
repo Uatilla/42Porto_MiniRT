@@ -1,3 +1,7 @@
 objs/
 objs/*
+objs/*/*
+libraries/
+libraries/*
+libraries/*/*
 minirt
