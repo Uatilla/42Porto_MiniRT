@@ -12,8 +12,8 @@
 
 #include "../includes/minirt.h"
 
-int main(int argc, char **argv)
+
+int main(void)
 {
-	t_minirt	data;
     return (0);
 }
