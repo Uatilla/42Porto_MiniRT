@@ -125,3 +125,26 @@ float magnitude(t_tuple *a)
         res.w = 999999;
     return(sqrtf(res.x + res.y + res.z + res.w));
 }
+
+/// @brief Convert a vector into an unit vector.
+/// @param a Vector to be normalized.
+/// @return Vector normalized.
+t_tuple normalize(t_tuple *a)
+{
+    t_tuple res;
+
+    res = creating_tuple(a->x / magnitude(a), a->y / magnitude(a),\
+        a->z / magnitude(a), a->w / magnitude(a));
+    return(res);
+}
+
+/// @brief Find a new vector when an intersection happens.
+/// @param a First vector.
+/// @param b Second vector.
+/// @return Vector found.
+t_tuple cross_product(t_tuple *a, t_tuple *b)
+{
+   return(creating_tuple((a->y * b->z) - (a->z * b->y),\
+                        (a->z * b->x) - (a->x * b->z),\
+                        (a->x * b->y) - (a->y * b->x), 0));
+}

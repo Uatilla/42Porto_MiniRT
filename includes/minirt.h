@@ -98,6 +98,8 @@ t_tuple mult_tuple_scalar(t_tuple *a, float sc);
 t_tuple div_tuple_scalar(t_tuple *a, float sc);
 float dot_product(t_tuple *a, t_tuple *b);
 float magnitude(t_tuple *a);
+t_tuple normalize(t_tuple *a);
+t_tuple cross_product(t_tuple *a, t_tuple *b);
 
 //Input
 //input_checker.c
