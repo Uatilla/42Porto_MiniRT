@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/03 17:25:15 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/03 19:13:17 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,12 @@ typedef	struct	s_ray
 	t_vector	direction;
 }	t_ray;
 
+typedef struct s_sphere
+{
+	t_point	center;
+	float	radius;
+}	t_sphere;
+
 typedef struct s_minirt
 {
 	t_tuple     *tuple;
@@ -101,6 +107,11 @@ float	dot_product(t_tuple *a, t_tuple *b);
 //ray
 //ray.c
 t_tuple	position(t_ray *ray, float t);
+
+//map
+//map.c
+float	map_x(float x, float min, float max);
+float	map_y(float y, float min, float max);
 
 //Input
 //input_checker.c

@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray.c                                              :+:      :+:    :+:   */
+/*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/03 17:10:00 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/03 17:42:13 by Jburlama         ###   ########.fr       */
+/*   Created: 2024/08/03 18:16:39 by Jburlama          #+#    #+#             */
+/*   Updated: 2024/08/03 19:12:16 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
 /*
- * Finds the t position along the ray.
+ * map the x from the window to our world
 */
-t_tuple	position(t_ray *ray, float t)
+float	map_x(float x, float min, float max)
 {
-	t_tuple	ret;
-
-	ret = mult_tuple_scalar(&ray->direction, t);
-	ret = sum_tuples(&ret, &ray->origin);
-	return(ret);
+	return (x * (max - min) / WIDTH - max);
 }
+
+/*
+ * map the y from the window to our world
+*/
+float	map_y(float y, float min, float max)
+{
+	return (y * (max - min) / HEIGTH - max);
+}
+

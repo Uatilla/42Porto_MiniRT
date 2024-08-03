@@ -6,7 +6,7 @@
 #    By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/30 20:21:44 by uviana-a          #+#    #+#              #
-#    Updated: 2024/08/03 17:24:05 by Jburlama         ###   ########.fr        #
+#    Updated: 2024/08/03 18:19:54 by Jburlama         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ OBJS_DIR	=	objs
 LIBFT_DIR	=	./libraries/libft
 MLX_DIR		=	./libraries/minilibx-linux
 INC			=	includes
-SUB_DIR		=	tuples input exit mlx ray
+SUB_DIR		=	tuples input exit mlx ray canvas
 ALL_OBJS_DIR	= $(foreach dir, $(SUB_DIR), $(addprefix $(OBJS_DIR)/, $(dir)))
 
 # Flags
@@ -46,6 +46,7 @@ SRCS		=	main.c \
 				tuples/chk_tuples_typ.c tuples/creating_tuples.c tuples/operations_tuples.c\
 				input/input_checker.c \
 				ray/ray.c \
+				canvas/map.c \
 				exit/exit_cleaner.c \
 				mlx/mlx.c
 OBJS		=	$(SRCS:%.c=$(OBJS_DIR)/%.o)
