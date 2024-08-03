@@ -20,9 +20,6 @@
 # include "../libraries/minilibx-linux/mlx.h"
 # include "../libraries/libft/libft.h"
 
-//MACRO
-#define    EPSILON 0.00001
-
 //STRUCTURES
 
 typedef struct s_tuple
@@ -53,7 +50,10 @@ typedef struct s_minirt
 	t_tuple     *tuple;
 	int			fd;
 }		t_minirt;
-//MACROS
+
+//MACRO
+#define		EPSILON 0.00001
+#define		ZERO_TUPLE (t_tuple){{0, 0, 0, 0}}
 
 //FUNCTIONS
 //Tuples
@@ -68,6 +68,11 @@ bool    is_point(t_tuple tuple);
 bool    is_vector(t_tuple tuple);
 bool    is_color(t_tuple tuple);
 bool    is_tuple_equal(t_tuple a, t_tuple b);
+
+//operations_tuples.c
+t_tuple sum_tuples(t_tuple a, t_tuple b);
+t_tuple subtrac_tuples(t_tuple a, t_tuple b);
+t_tuple negating_tuple(t_tuple a);
 
 //Input
 //input_checker.c

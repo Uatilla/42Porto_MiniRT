@@ -43,7 +43,7 @@ MLXFLAGS	=	-lmlx -lXext -lX11 -lm
 
 # Files
 SRCS		=	main.c \
-				tuples/chk_tuples_typ.c tuples/creating_tuples.c \
+				tuples/chk_tuples_typ.c tuples/creating_tuples.c tuples/operations_tuples.c\
 				input/input_checker.c \
 				exit/exit_cleaner.c
 OBJS		=	$(SRCS:%.c=$(OBJS_DIR)/%.o)
