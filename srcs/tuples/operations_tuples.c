@@ -43,24 +43,10 @@ t_tuple subtrac_tuples(t_tuple *a, t_tuple *b)
     res.z = a->z - b->z;
     if (a->w != 999999 && b->w != 999999)
         res.w = a->w - b->w;
-    else/// @brief Change vector size.
-/// @param a Tuple a to be multiplied.
-/// @param b Tuple b to be multiplied.
-/// @return The size of the new vector.
-float dot_product(t_tuple *a, t_tuple *b)
-{
-    t_tuple res;
-
-    res.x = a->x * b->x;
-    res.y = a->y * b->y;
-    res.z = a->z * b->z;
-    if (a->w != 999999)
-        res.w = a->w  * b->w;
     else
         res.w = 999999;
-    return(res.x + res.y + res.z + res.w);
+    return (res);
 }
-
 /// @brief Operates a subtraction between zero_tuple and tuple a.
 /// @param a Tuple to be negated, it performs as the values were *(-1).
 /// @return Tuple negated.
@@ -105,10 +91,10 @@ t_tuple div_tuple_scalar(t_tuple *a, float sc)
     return(res);
 }
 
-/// @brief Change vector size.
+/// @brief Change vector lenght.
 /// @param a Tuple a to be multiplied.
 /// @param b Tuple b to be multiplied.
-/// @return The size of the new vector.
+/// @return Lenght of the new vector.
 float dot_product(t_tuple *a, t_tuple *b)
 {
     t_tuple res;
@@ -121,4 +107,21 @@ float dot_product(t_tuple *a, t_tuple *b)
     else
         res.w = 999999;
     return(res.x + res.y + res.z + res.w);
+}
+
+/// @brief Find the lenght of the vector.
+/// @param a Tuple a to the lenght to be found.
+/// @return Lenght of the vector.
+float magnitude(t_tuple *a)
+{
+    t_tuple res;
+
+    res.x = a->x * a->x;
+    res.y = a->y * a->y;
+    res.z = a->z * a->z;
+    if (a->w != 999999)
+        res.w = a->w * a->w;
+    else
+        res.w = 999999;
+    return(sqrtf(res.x + res.y + res.z + res.w));
 }

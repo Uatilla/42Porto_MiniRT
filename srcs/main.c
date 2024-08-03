@@ -12,8 +12,6 @@
 
 #include "../includes/minirt.h"
 
-
-
 int main(int argc, char **argv)
 {
     //t_minirt    mrt;
@@ -33,7 +31,7 @@ int main(int argc, char **argv)
     p2 = creating_point(2, 3, 4);
     printf("P2: X(%f) Y(%f) Z(%f) W(%f)\n", p2.x, p2.y, p2.z, p2.w);
     printf("----------------\n");
-    v = creating_vector(1, 2, 3);
+    v = creating_vector(-1, -2, -3);
     printf("V: X(%f) Y(%f) Z(%f) W(%f)\n", v.x, v.y, v.z, v.w);
     v2 = creating_vector(2, 3, 4);
     printf("V2: X(%f) Y(%f) Z(%f) W(%f)\n", v2.x, v2.y, v2.z, v2.w);
@@ -41,7 +39,7 @@ int main(int argc, char **argv)
     c = creating_color(200, 113, 134);
     printf("C: X(%f) Y(%f) Z(%f) W(%f)\n", c.x, c.y, c.z, c.w);
     printf("----------------\n");
-    value = dot_product(&v, &v2);
+    value = magnitude(&v);
     //printf("RES: X(%f) Y(%f) Z(%f) W(%f)\n", res.x, res.y, res.z, res.w);
     printf("%f\n", value);
     return (0);
