@@ -94,6 +94,7 @@ bool    is_tuple_equal(t_tuple *a, t_tuple *b);
 t_tuple sum_tuples(t_tuple *a, t_tuple *b);
 t_tuple subtrac_tuples(t_tuple *a, t_tuple *b);
 t_tuple negating_tuple(t_tuple *a);
+t_tuple mult_tuple_scalar(t_tuple *a, float sc);
 
 //Input
 //input_checker.c

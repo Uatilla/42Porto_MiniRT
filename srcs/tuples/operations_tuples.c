@@ -43,9 +43,22 @@ t_tuple subtrac_tuples(t_tuple *a, t_tuple *b)
     res.z = a->z - b->z;
     if (a->w != 999999 && b->w != 999999)
         res.w = a->w - b->w;
+    else/// @brief Change vector size.
+/// @param a Tuple a to be multiplied.
+/// @param b Tuple b to be multiplied.
+/// @return The size of the new vector.
+float dot_product(t_tuple *a, t_tuple *b)
+{
+    t_tuple res;
+
+    res.x = a->x * b->x;
+    res.y = a->y * b->y;
+    res.z = a->z * b->z;
+    if (a->w != 999999)
+        res.w = a->w  * b->w;
     else
         res.w = 999999;
-    return(res);
+    return(res.x + res.y + res.z + res.w);
 }
 
 /// @brief Operates a subtraction between zero_tuple and tuple a.
@@ -54,4 +67,58 @@ t_tuple subtrac_tuples(t_tuple *a, t_tuple *b)
 t_tuple negating_tuple(t_tuple *a)
 {
     return(subtrac_tuples(&ZERO_TUPLE, a));
+}
+
+/// @brief Find the intersection (scalar value) in a vector.
+/// @param a Tuple to be multiplied.
+/// @param sc Scalar value.
+/// @return The tuple(point) in the scalar intersection.
+t_tuple mult_tuple_scalar(t_tuple *a, float sc)
+{
+    t_tuple res;
+
+    res.x = a->x * sc;
+    res.y = a->y * sc;
+    res.z = a->z * sc;
+    if (a->w != 999999)
+        res.w = a->w  * sc;
+    else
+        res.w = 999999;
+    return(res);
+}
+
+/// @brief Find the intersection (scalar value) in a vector.
+/// @param a Tuple to be divided.
+/// @param sc Scalar value.
+/// @return The tuple(point) in the scalar intersection.
+t_tuple div_tuple_scalar(t_tuple *a, float sc)
+{
+    t_tuple res;
+
+    res.x = a->x / sc;
+    res.y = a->y / sc;
+    res.z = a->z / sc;
+    if (a->w != 999999)
+        res.w = a->w  / sc;
+    else
+        res.w = 999999;
+    return(res);
+}
+
+/// @brief Change vector size.
+/// @param a Tuple a to be multiplied.
+/// @param b Tuple b to be multiplied.
+/// @return The size of the new vector.
+float dot_product(t_tuple *a, t_tuple *b)
+{
+    t_tuple res;
+
+    res.x = a->x * b->x;
+    res.y = a->y * b->y;
+    res.z = a->z * b->z;
+    if (a->w != 999999)
+        res.w = a->w  * b->w;
+    else
+        res.w = 999999;
+    return(res.x + res.y + res.z + res.w);
 }
