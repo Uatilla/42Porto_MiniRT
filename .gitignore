@@ -1,2 +1,7 @@
-obj/
-obj/*
+objs/
+objs/*
+objs/*/*
+libraries/
+libraries/*
+libraries/*/*
+minirt

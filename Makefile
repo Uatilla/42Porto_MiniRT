@@ -6,7 +6,7 @@
 #    By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/30 20:21:44 by uviana-a          #+#    #+#              #
-#    Updated: 2024/07/30 20:21:45 by uviana-a         ###   ########.fr        #
+#    Updated: 2024/08/02 21:50:33 by Jburlama         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,18 +34,19 @@ OBJS_DIR	=	objs
 LIBFT_DIR	=	./libraries/libft
 MLX_DIR		=	./libraries/minilibx-linux
 INC			=	includes
-SUB_DIR		=	tuples input exit
+SUB_DIR		=	tuples input exit mlx
 ALL_OBJS_DIR	= $(foreach dir, $(SUB_DIR), $(addprefix $(OBJS_DIR)/, $(dir)))
 
 # Flags
-CFLAGS		=	-Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror # -g -fsanitize=address
 MLXFLAGS	=	-lmlx -lXext -lX11 -lm
 
 # Files
 SRCS		=	main.c \
 				tuples/chk_tuples_typ.c tuples/creating_tuples.c tuples/operations_tuples.c\
 				input/input_checker.c \
-				exit/exit_cleaner.c
+				exit/exit_cleaner.c \
+				mlx/mlx.c
 OBJS		=	$(SRCS:%.c=$(OBJS_DIR)/%.o)
 LIBFT		=	$(LIBFT_DIR)/libft.a
 LIBMLX		=	$(MLX_DIR)/libmlx.a
@@ -74,14 +75,13 @@ $(LIBFT):
 	@ $(MAKE)  -sC $(LIBFT_DIR)
 
 $(MLX_DIR):
-	@git clone --depth=1 https://github.com/42Paris/minilibx-linux.git
-	@make -C minilibx-linux
+	@git clone --depth=1 https://github.com/42Paris/minilibx-linux.git 
+	@make -sC minilibx-linux
 	@mv minilibx-linux libraries/
 
 clean:
 	@ $(RM) $(OBJS_DIR)
 	@ printf "cleaning MiniRT files	$(CYAN)[OK]$(RESET)\n"
-	@ $(MAKE) $(MK_FLAG) clean -sC $(MLX_DIR)
 	@ $(MAKE) $(MK_FLAG) clean -sC $(LIBFT_DIR)
 
 fclean: clean

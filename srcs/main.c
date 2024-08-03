@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:02:44 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/07/30 20:02:46 by uviana-a         ###   ########.fr       */
+/*   Updated: 2024/08/02 21:48:30 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /// @param a Tuple to be multiplied.
 /// @param sc Scalar value.
 /// @return The tuple(point) in the scalar intersection.
-t_tuple mult_tuple_scalar(t_tuple a, float sc)
+/*t_tuple mult_tuple_scalar(t_tuple a, float sc)
 {
     t_tuple res;
 
@@ -28,18 +28,18 @@ t_tuple mult_tuple_scalar(t_tuple a, float sc)
     else
         res.w = 999999;
     return(res);
-}
+}*/
 
 int main(int argc, char **argv)
 {
     //t_minirt    mrt;
     int         fd;
-    point   p;
-    point   p2;
-    vector  v;
-    vector  v2;
-    color   c;
-    point   res;
+    t_point   p;
+    t_point   p2;
+    t_vector  v;
+    t_vector  v2;
+    t_color   c;
+    //t_point   res;
 
     fd = chk_input(argc, argv[1]);
     
@@ -56,13 +56,7 @@ int main(int argc, char **argv)
     c = creating_color(200, 113, 134);
     printf("C: X(%f) Y(%f) Z(%f) W(%f)\n", c.x, c.y, c.z, c.w);
     printf("----------------\n");
-    res = mult_tuple_scalar(p, 3.5);
-    printf("RES: X(%f) Y(%f) Z(%f) W(%f)\n", res.x, res.y, res.z, res.w);
-
-
-    
-    
-
-
+    //res = mult_tuple_scalar(p, 3.5);
+    //printf("RES: X(%f) Y(%f) Z(%f) W(%f)\n", res.x, res.y, res.z, res.w);
     return (0);
 }

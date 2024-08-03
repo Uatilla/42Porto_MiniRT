@@ -16,15 +16,15 @@
 /// @param a First tuple, also called as p1 (1st position).
 /// @param b Second tuple, also called as p2 (2nd position).
 /// @return The tuple result of the operation.
-t_tuple sum_tuples(t_tuple a, t_tuple b)
+t_tuple sum_tuples(t_tuple *a, t_tuple *b)
 {
     t_tuple res;
 
-    res.x = a.x + b.x;
-    res.y = a.y + b.y;
-    res.z = a.z + b.z;
-    if (a.w != 999999 && b.w != 999999)
-        res.w = a.w + b.w;
+    res.x = a->x + b->x;
+    res.y = a->y + b->y;
+    res.z = a->z + b->z;
+    if (a->w != 999999 && b->w != 999999)
+        res.w = a->w + b->w;
     else
         res.w = 999999;
     return(res);
@@ -34,15 +34,15 @@ t_tuple sum_tuples(t_tuple a, t_tuple b)
 /// @param a First tuple, also called as p1 (1st position).
 /// @param b Second tuple, also called as p2 (2nd position).
 /// @return The tuple result of the operation.
-t_tuple subtrac_tuples(t_tuple a, t_tuple b)
+t_tuple subtrac_tuples(t_tuple *a, t_tuple *b)
 {
     t_tuple res;
 
-    res.x = a.x - b.x;
-    res.y = a.y - b.y;
-    res.z = a.z - b.z;
-    if (a.w != 999999 && b.w != 999999)
-        res.w = a.w - b.w;
+    res.x = a->x - b->x;
+    res.y = a->y - b->y;
+    res.z = a->z - b->z;
+    if (a->w != 999999 && b->w != 999999)
+        res.w = a->w - b->w;
     else
         res.w = 999999;
     return(res);
@@ -51,7 +51,7 @@ t_tuple subtrac_tuples(t_tuple a, t_tuple b)
 /// @brief Operates a subtraction between zero_tuple and tuple a.
 /// @param a Tuple to be negated, it performs as the values were *(-1).
 /// @return Tuple negated.
-t_tuple negating_tuple(t_tuple a)
+t_tuple negating_tuple(t_tuple *a)
 {
-    return(subtrac_tuples(ZERO_TUPLE, a));
+    return(subtrac_tuples(&ZERO_TUPLE, a));
 }
