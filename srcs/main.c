@@ -16,7 +16,7 @@
 int main(void)
 {
 	t_minirt	data;
-	t_tuple		color = {1,0,1,99};
+	t_tuple		color = {1,0,1,999999};
 
 	start_mlx(&data.canvas);
 
