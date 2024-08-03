@@ -15,15 +15,19 @@
 
 int main(void)
 {
-	t_tuple	a = {1,2,3, 0};
-	t_tuple	b = {2,3,4, 0};
-	t_tuple c;
+	t_minirt	data;
+	t_tuple		color = {1,0,1,99};
 
-	c = tuple_add(&a, &b);
+	start_mlx(&data.canvas);
 
-	printf("%f\n", c.x);
-	printf("%f\n", c.y);
-	printf("%f\n", c.z);
-	printf("%f\n", c.w);
+	for (int y = 0; y < HEIGTH; y++)
+	{
+		for (int x = 0; x < WIDTH; x++)
+		{
+			write_pixel(&data.canvas, x, y, &color);
+		}
+	}
+	mlx_put_image_to_window(data.canvas.mlx, data.canvas.win, data.canvas.img, 0, 0);
+	mlx_loop(data.canvas.mlx);
     return (0);
 }

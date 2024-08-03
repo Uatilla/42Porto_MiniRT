@@ -105,7 +105,7 @@ void    ft_error(char *msg);
 //mlx
 //mlx.c
 void	start_mlx(t_canvas	*canvas);
-void	write_pixel(t_canvas *canvas, int x, int y, t_color color);
+void	write_pixel(t_canvas *canvas, int x, int y, t_color *color);
 int		map_color(float	c);
 
 #endif

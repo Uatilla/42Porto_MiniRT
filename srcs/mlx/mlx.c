@@ -34,15 +34,14 @@ void	start_mlx(t_canvas	*canvas)
  * 		point x, and y, in the window,
  * 		a tupple color
 */
-void	write_pixel(t_canvas *canvas, int x, int y, t_color color)
+void	write_pixel(t_canvas *canvas, int x, int y, t_color *color)
 {
 	char	*pixel;
-	int		c;
 
-	c = map_color(color.r) << 16 | map_color(color.g) << 8 | map_color(color.b);
 	pixel = canvas->addr
 		+ (y * canvas->line_length + x * (canvas->bits_per_pixel / 8));
-	*(int *)pixel = c;
+	*(int *)pixel = map_color(color->r) << 16
+		| map_color(color->g) << 8 | map_color(color->b);
 }
 
 /*
