@@ -44,6 +44,9 @@ int8_t	intersect(t_ray *ray, t_sphere *sphere, float *t)
 	return (2);
 }
 
+/*
+ * takes a linked list of intersections and adds a new one at the end of it
+*/
 void	intersections(t_intersections **head, t_inter *new_inter)
 {
 	static t_intersections	*tail;
