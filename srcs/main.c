@@ -17,58 +17,38 @@ int main(void)
 {
 	t_minirt	data;
 	t_sphere	sphere = {{0,0,0,1}, 1};
-	t_sphere	sphere2 = {{0,0,-5,1}, 1};
-	t_inter	inter1;
-	t_inter	inter2;
+	t_color		color = (t_tuple){1,0,0,9};
+	t_inter		inter;
 
 	ft_memset(&data, 0, sizeof(data));
-
 	   data.ray.origin = (t_tuple){{0, 0, -5, 1}};
-	data.ray.direction = (t_tuple){{0, 0, 1, 0}};
 
-	inter1.object = &sphere;
-	inter1.count = intersect(&data.ray, &sphere, inter1.t);
+	inter.object = &sphere;
 
-	intersections(&data.inter_list, &inter1);
 
-	inter2.object = &sphere;
-	inter2.count = intersect(&data.ray, &sphere2, inter2.t);
 
-	intersections(&data.inter_list, &inter2);
+	start_mlx(&data.canvas);
 
-	for (t_intersections *ptr = data.inter_list; ptr; ptr = ptr->next)
+	for (int y = 0; y < HEIGTH; y++)
 	{
-		printf("%hhd\n", ptr->node->count);	
-		printf("%f\n", ptr->node->t[0]);	
-		printf("%f\n", ptr->node->t[1]);	
-		printf("-------------------------\n");
+		for (int x = 0; x < WIDTH; x++)
+		{
+			float	xw = map_x(x, -5, 5);
+			float	yw = map_y(y, -5, 5);
+			t_point	point	= (t_tuple){xw, yw, 10, 1};
+			t_vector	ray_to_point = subtrac_tuples(&point, &data.ray.origin);
+			
+			data.ray.direction = normalize(&ray_to_point);
+
+			inter.count = intersect(&data.ray, &sphere, inter.t);
+			if (inter.count == 1 || inter.count == 2)
+				write_pixel(&data.canvas, x, y, &color);
+			
+			// intersections(&data.inter_list, &inter);
+		}
 	}
 
-
-
-
-
-
-
-
-
-
-
-	// start_mlx(&data.canvas);
-	//
-	// for (int y = 0; y < HEIGTH; y++)
-	// {
-	// 	for (int x = 0; x < WIDTH; x++)
-	// 	{
-	// 		float	xw = map_x(x, -5, 5);
-	// 		float	yw = map_y(y, -5, 5);
-	//
-	// 		if (xw*xw + yw*yw <= sphere.radius)
-	// 			write_pixel(&data.canvas, x, y, &color);
-	// 	}
-	// }
-	//
-	// mlx_put_image_to_window(data.canvas.mlx, data.canvas.win, data.canvas.img, 0,0);
-	// mlx_loop(data.canvas.mlx);
+	mlx_put_image_to_window(data.canvas.mlx, data.canvas.win, data.canvas.img, 0,0);
+	mlx_loop(data.canvas.mlx);
     return (0);
 }

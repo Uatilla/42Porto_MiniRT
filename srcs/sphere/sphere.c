@@ -37,8 +37,8 @@ int8_t	intersect(t_ray *ray, t_sphere *sphere, float *t)
 	discriminant = (b * b) - 4 * a * c;
 	if (discriminant < 0)
 		return (0);
-	t[0] = (-b - sqrt(discriminant)) / (2 * a);
-	t[1] = (-b + sqrt(discriminant)) / (2 * a);
+	t[0] = (-b - sqrtf(discriminant)) / (2 * a);
+	t[1] = (-b + sqrtf(discriminant)) / (2 * a);
 	if (t[0] == t[1])
 		return (1);
 	return (2);
