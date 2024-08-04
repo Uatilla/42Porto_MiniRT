@@ -63,4 +63,5 @@ void	intersections(t_intersections **head, t_inter *new_inter)
 	if (tail->next->node == NULL)
 		exit(errno);
 	tail = tail->next;
+	ft_memmove(tail->node, new_inter, sizeof(*new_inter));
 }

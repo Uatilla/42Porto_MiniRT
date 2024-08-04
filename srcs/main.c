@@ -28,14 +28,14 @@ int main(void)
 	inter1.object = &sphere;
 	inter1.count = intersect(&data.ray, &sphere, inter1.t);
 
-	intersections(&data.head, &inter1);
+	intersections(&data.inter_list, &inter1);
 
 	inter2.object = &sphere;
-	inter2.count = intersect(&data.ray, &sphere, inter1.t);
+	inter2.count = intersect(&data.ray, &sphere2, inter2.t);
 
-	intersections(&data.head, &inter2);
+	intersections(&data.inter_list, &inter2);
 
-	for (t_intersections *ptr = data.head; ptr; ptr = ptr->next)
+	for (t_intersections *ptr = data.inter_list; ptr; ptr = ptr->next)
 	{
 		printf("%hhd\n", ptr->node->count);	
 		printf("%f\n", ptr->node->t[0]);	

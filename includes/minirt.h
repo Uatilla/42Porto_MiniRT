@@ -99,7 +99,7 @@ typedef	struct s_intersections
 typedef struct s_minirt
 {
 	t_tuple     	*tuple;
-	t_intersections *head;
+	t_intersections *inter_list;
 	t_canvas		canvas;
 	t_ray			ray;
 	int				fd;
