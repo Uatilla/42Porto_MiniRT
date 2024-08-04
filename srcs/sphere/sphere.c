@@ -43,3 +43,24 @@ int8_t	intersect(t_ray *ray, t_sphere *sphere, float *t)
 		return (1);
 	return (2);
 }
+
+void	intersections(t_intersections **head, t_inter *new_inter)
+{
+	static	t_intersections	*tail;
+
+	if (!(*head))
+	{
+		(*head) = ft_calloc(sizeof(**head), 1);
+		(*head)->node = ft_calloc(sizeof(*new_inter), 1);
+		if ((*head)->node == NULL)
+			exit(errno);
+		ft_memmove((*head)->node, new_inter, sizeof(*new_inter));
+		tail = *head;
+		return ;
+	}
+	tail->next = ft_calloc(sizeof(**head), 1);
+	tail->next->node = ft_calloc(sizeof(*new_inter), 1);
+	if (tail->next->node == NULL)
+		exit(errno);
+	tail = tail->next;
+}

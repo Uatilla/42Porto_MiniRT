@@ -15,21 +15,33 @@
 int main(void)
 {
 	t_minirt	data;
-	// t_color		color = {{1,0,0,0}};
 	t_sphere	sphere = {{0,0,0,1}, 1};
-	float		t[2];
-	t_intersection	inter;
+	t_sphere	sphere2 = {{0,0,-5,1}, 1};
+	t_inter	inter1;
+	t_inter	inter2;
 
-	   data.ray.origin = (t_tuple){{0, 2, -5, 1}};
+	ft_memset(&data, 0, sizeof(data));
+
+	   data.ray.origin = (t_tuple){{0, 0, -5, 1}};
 	data.ray.direction = (t_tuple){{0, 0, 1, 0}};
 
+	inter1.object = &sphere;
+	inter1.count = intersect(&data.ray, &sphere, inter1.t);
 
-	inter.object = &sphere;
-	inter.count = intersect(&data.ray, &sphere, inter.t);
+	intersections(&data.head, &inter1);
 
-	printf("%i\n", inter.count);
-	printf("%f %f\n", inter.t[0], inter.t[1]);
+	inter2.object = &sphere;
+	inter2.count = intersect(&data.ray, &sphere, inter1.t);
 
+	intersections(&data.head, &inter2);
+
+	for (t_intersections *ptr = data.head; ptr; ptr = ptr->next)
+	{
+		printf("%hhd\n", ptr->node->count);	
+		printf("%f\n", ptr->node->t[0]);	
+		printf("%f\n", ptr->node->t[1]);	
+		printf("-------------------------\n");
+	}
 
 
 

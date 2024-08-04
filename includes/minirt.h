@@ -14,15 +14,27 @@
 # define MINIRT_H
 
 //LIBRARIES
-# include <stdio.h>
+# include <errno.h>
 # include <stdbool.h>
 # include <stdint.h>
+# include <stdio.h>
 # include <math.h>
 # include "../libraries/minilibx-linux/mlx.h"
 # include "../libraries/libft/libft.h"
 
-//STRUCTURES
+// enums
+enum e_identifyer
+{
+	A = 0,
+	C = 1,
+	L = 2,
+	SP = 3,
+	PL = 4,
+	CY = 5,
+};
 
+
+//STRUCTURES
 typedef struct	s_canvas {
 	void	*mlx;
 	void	*win;
@@ -69,19 +81,28 @@ typedef struct s_sphere
 	float	radius;
 }	t_sphere;
 
-typedef	struct	s_intersection
+typedef	struct s_inter
 {
+	int8_t	identifier;
 	void	*object;
 	int8_t	count;
 	float	t[2];
-}	t_intersection;
+}	t_inter;
+
+typedef	struct s_intersections
+{
+	t_inter					*node;
+	struct s_intersections	*next;
+}	t_intersections;
+
 
 typedef struct s_minirt
 {
-	t_tuple     *tuple;
-	t_canvas	canvas;
-	t_ray		ray;
-	int			fd;
+	t_tuple     	*tuple;
+	t_intersections *head;
+	t_canvas		canvas;
+	t_ray			ray;
+	int				fd;
 }		t_minirt;
 
 
@@ -119,6 +140,7 @@ t_tuple	position(t_ray *ray, float t);
 //sphere
 //sphere.c
 int8_t	intersect(t_ray *ray, t_sphere *sphere, float *t);
+void	intersections(t_intersections **list, t_inter *new_inter);
 
 //map
 //map.c
