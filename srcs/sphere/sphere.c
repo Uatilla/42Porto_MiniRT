@@ -16,9 +16,9 @@
  * finds the intersections points from the ray to the sphere
  * store them at t[0] and t[1] and return the number of intersection
  * if the determinant is < 0 there is no intersection and returns 0
- * if t[0] == t[1] the is only one point and return 1
+ * if t[0] == t[1] there is only one point and return 1
  * if the determinat is > 0 there is two points and returns 2
-*/ 
+*/
 int	intersections(t_ray *ray, t_sphere *sphere, float *t)
 {
 	float	a;

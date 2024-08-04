@@ -21,5 +21,5 @@ t_tuple	position(t_ray *ray, float t)
 
 	ret = mult_tuple_scalar(&ray->direction, t);
 	ret = sum_tuples(&ret, &ray->origin);
-	return(ret);
+	return (ret);
 }

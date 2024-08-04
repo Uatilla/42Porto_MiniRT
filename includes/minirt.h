@@ -78,10 +78,10 @@ typedef struct s_minirt
 
 
 //MACRO
-# define		EPSILON 0.00001
-# define		ZERO_TUPLE (t_tuple){{0, 0, 0, 0}}
-# define WIDTH 800
-# define HEIGTH 600
+# define EPSILON 0.00001
+# define ZERO_TUPLE (t_tuple){{0, 0, 0, 0}}
+# define WIDTH 1000
+# define HEIGTH 850
 
 //FUNCTIONS
 //Tuples

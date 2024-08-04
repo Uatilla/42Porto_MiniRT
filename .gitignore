@@ -1,7 +1,6 @@
 objs/
 objs/*
 objs/*/*
-libraries/
-libraries/*
-libraries/*/*
+libraries/minilibx-linux
+libraries/minilibx-linux/*
 minirt

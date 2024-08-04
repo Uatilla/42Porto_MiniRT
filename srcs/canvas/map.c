@@ -27,4 +27,3 @@ float	map_y(float y, float min, float max)
 {
 	return (y * (max - min) / HEIGTH - max);
 }
-
