@@ -19,7 +19,7 @@
  * if t[0] == t[1] there is only one point and return 1
  * if the determinat is > 0 there is two points and returns 2
 */
-int	intersections(t_ray *ray, t_sphere *sphere, float *t)
+int8_t	intersect(t_ray *ray, t_sphere *sphere, float *t)
 {
 	float	a;
 	float	b;

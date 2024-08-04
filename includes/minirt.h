@@ -16,6 +16,7 @@
 //LIBRARIES
 # include <stdio.h>
 # include <stdbool.h>
+# include <stdint.h>
 # include <math.h>
 # include "../libraries/minilibx-linux/mlx.h"
 # include "../libraries/libft/libft.h"
@@ -68,6 +69,13 @@ typedef struct s_sphere
 	float	radius;
 }	t_sphere;
 
+typedef	struct	s_intersection
+{
+	void	*object;
+	int8_t	count;
+	float	t[2];
+}	t_intersection;
+
 typedef struct s_minirt
 {
 	t_tuple     *tuple;
@@ -110,7 +118,7 @@ t_tuple	position(t_ray *ray, float t);
 
 //sphere
 //sphere.c
-int		intersections(t_ray *ray, t_sphere *sphere, float *t);
+int8_t	intersect(t_ray *ray, t_sphere *sphere, float *t);
 
 //map
 //map.c
