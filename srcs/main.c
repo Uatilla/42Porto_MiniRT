@@ -43,6 +43,7 @@ int main(void)
 		printf("-------------------------\n");
 	}
 
+	clear_exit(&data, 0);
 
 
 

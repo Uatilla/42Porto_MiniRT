@@ -71,7 +71,7 @@ $(OBJS): $(OBJS_DIR)/%.o : $(SRCS_DIR)/%.c | $(OBJS_DIR)
 
 $(LIBMLX): 
 	@ printf "Making Minilibx		$(YELLOW)[OK]$(RESET)\n"
-	@ $(MAKE)  -sC $(MLX_DIR)
+	@ $(MAKE)  -sC $(MLX_DIR) 2> /dev/null
 
 $(LIBFT):
 	@ printf "Making Libft		$(YELLOW)[OK]$(RESET)\n"
@@ -79,7 +79,7 @@ $(LIBFT):
 
 $(MLX_DIR):
 	@git clone --depth=1 https://github.com/42Paris/minilibx-linux.git 
-	@make -sC minilibx-linux
+	@make -sC minilibx-linux 2> /dev/null
 	@mv minilibx-linux libraries/
 
 clean:

@@ -155,6 +155,7 @@ int chk_input(int argc, char *file);
 //exit_cleaner.c
 void    clear_exit(t_minirt *mrt, int status);
 void    ft_error(char *msg);
+void	clear_list(t_intersections	*head);
 
 //mlx
 //mlx.c
