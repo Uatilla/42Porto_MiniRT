@@ -17,31 +17,29 @@ void	clear_objs(void	*objs);
 int main(void)
 {
 	t_minirt	data;
-
+	t_point		point;
+	int			x;
+	int			y;
 
 	ft_memset(&data, 0, sizeof(data));
-	int		i = 1;
 	parse_objects(SP, &data);
-	parse_objects(SP, &data);
-	parse_objects(SP, &data);
-	parse_objects(SP, &data);
-	parse_objects(SP, &data);
-	parse_objects(SP, &data);
-	void	*temp = data.objs;
-	while (temp != NULL)
+	start_mlx(&data.canvas);
+	data.ray.origin = (t_point){0,0,-5,1};
+	y = -1;
+	while (++y < HEIGTH)
 	{
-		if (((t_sphere *)data.objs)->type == SP)
-	  	{
-			t_sphere	*ptr = (t_sphere *)temp;
-			printf("----------------objs %i---------------\n", i);
-			printf("type %i\n", ptr->type);
-			printf("center %f %f %f %f\n", ptr->center.x, ptr->center.y, ptr->center.z, ptr->center.w);
-			printf("diameter %f\n", ptr->diameter);
-			printf("next %p\n", ptr->next);
-			temp = ((t_sphere *)temp)->next;
+		x = -1;
+		while (++x < WIDTH)
+		{
+			data.ray.hit = NULL;
+			point = (t_point){map_x(x, -5, 5), map_y(y, -5, 5), 10, 1};
+			check_intersections(&data, &point);
+			ray_intersections(&data.ray, data.objs, &point);
+			if (data.ray.hit)
+				write_pixel(&data.canvas, x, y, &(t_color){1,0,0,0});
 		}
-		i++;
 	}
-	clear_objs(data.objs);
-    return (0);
+	mlx_put_image_to_window(data.canvas.mlx, data.canvas.win, data.canvas.img, 0,0);
+	mlx_loop(data.canvas.mlx);
+	clear_exit(&data, 0);
 }

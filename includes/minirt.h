@@ -33,7 +33,6 @@ enum e_identifyer
 	CY = 5,
 };
 
-
 //STRUCTURES
 typedef struct	s_canvas {
 	void	*mlx;
@@ -72,7 +71,7 @@ typedef	t_tuple t_color;
 typedef	struct	s_intersections
 {
 	float					t[2];
-	enum	e_identifyer	obj;
+	void					*obj;
 	struct s_intersections	*next;
 	int8_t					count;
 }	t_intersections;
@@ -146,6 +145,9 @@ t_tuple	position(t_ray *ray, float t);
 //sphere
 //sphere.c
 int8_t	ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t);
+//intersections.c
+void	ray_intersections(t_ray *ray, void *obj, t_point *point);
+void	check_intersections(t_minirt *data, t_point *point);
 
 //map
 //map.c
@@ -160,6 +162,7 @@ int chk_input(int argc, char *file);
 //exit_cleaner.c
 void    clear_exit(t_minirt *mrt, int status);
 void    ft_error(char *msg);
+void	clear_objs(void	*objs);
 
 //mlx
 //mlx.c

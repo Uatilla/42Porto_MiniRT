@@ -46,7 +46,7 @@ SRCS		=	main.c \
 				tuples/chk_tuples_typ.c tuples/creating_tuples.c tuples/operations_tuples.c\
 				input/input_checker.c \
 				objects/parse_objs.c \
-				ray/ray.c \
+				ray/ray.c ray/intersections.c\
 				canvas/map.c \
 				sphere/sphere.c \
 				exit/exit_cleaner.c \

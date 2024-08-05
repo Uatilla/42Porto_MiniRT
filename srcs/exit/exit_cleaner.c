@@ -17,6 +17,7 @@ void    clear_exit(t_minirt *mrt, int status)
     if (!mrt)
         exit(EXIT_FAILURE);
     printf("OUT_STATUS\n");
+	clear_objs(mrt->objs);
     exit(status);
 }
 

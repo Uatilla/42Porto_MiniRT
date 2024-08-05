@@ -18,6 +18,10 @@ void	parse_objects(enum e_identifyer type, t_minirt *data)
 		parse_sphere(data);
 }
 
+/*
+*	adds a object node to the top of the objcts stack
+*	creats a stack if is empty
+*/
 void	parse_sphere(t_minirt *data)
 {
 	t_sphere	*sphere;
