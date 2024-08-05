@@ -69,6 +69,11 @@ typedef	t_tuple t_point;
 typedef	t_tuple t_vector;
 typedef	t_tuple t_color;
 
+typedef struct	s_matrix
+{
+	float	mtx[4][4];
+}	t_matrix;
+
 typedef	struct	s_ray
 {
 	t_point		origin;

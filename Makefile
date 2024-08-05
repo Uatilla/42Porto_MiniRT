@@ -34,7 +34,7 @@ OBJS_DIR	=	objs
 LIBFT_DIR	=	./libraries/libft
 MLX_DIR		=	./libraries/minilibx-linux
 INC			=	includes
-SUB_DIR		=	tuples input exit mlx ray canvas sphere
+SUB_DIR		=	tuples input exit mlx ray canvas sphere window
 ALL_OBJS_DIR	= $(foreach dir, $(SUB_DIR), $(addprefix $(OBJS_DIR)/, $(dir)))
 
 # Flags
@@ -49,7 +49,8 @@ SRCS		=	main.c \
 				canvas/map.c \
 				sphere/sphere.c \
 				exit/exit_cleaner.c \
-				mlx/mlx.c
+				mlx/mlx.c \
+				#window/window_management.c
 OBJS		=	$(SRCS:%.c=$(OBJS_DIR)/%.o)
 LIBFT		=	$(LIBFT_DIR)/libft.a
 LIBMLX		=	$(MLX_DIR)/libmlx.a

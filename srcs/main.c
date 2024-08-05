@@ -12,43 +12,46 @@
 
 #include "../includes/minirt.h"
 
+bool	chk_mtx_size(float matrix[4][4], int size)
+{
+	int	i;
+	int	j;
+	int chk_row;
+	int	chk_col;
+
+	chk_row = 0;
+	chk_col = 0;
+	i = -1;
+	while (matrix[++i])
+	{
+		j = -1;
+		chk_row++;
+		chk_col = 0;
+		while (matrix[i][++j])
+		{
+			chk_col++;
+			printf("");
+		}
+		if (chk_col < size)
+		{
+			printf("Col: %d\n", chk_col);
+			return (false);
+		}
+	}
+	if (chk_row < size)
+		return (false);
+	return (true);
+}
 
 int main(void)
 {
-	t_minirt	data;
-	t_sphere	sphere = {{0,0,0,1}, 1};
-	t_color		color = (t_tuple){1,0,0,9};
-	t_inter		inter;
-
-	ft_memset(&data, 0, sizeof(data));
-	   data.ray.origin = (t_tuple){{0, 0, -5, 1}};
-
-	inter.object = &sphere;
-
-
-
-	start_mlx(&data.canvas);
-
-	for (int y = 0; y < HEIGTH; y++)
-	{
-		for (int x = 0; x < WIDTH; x++)
-		{
-			float	xw = map_x(x, -5, 5);
-			float	yw = map_y(y, -5, 5);
-			t_point	point	= (t_tuple){xw, yw, 10, 1};
-			t_vector	ray_to_point = subtrac_tuples(&point, &data.ray.origin);
-			
-			data.ray.direction = normalize(&ray_to_point);
-
-			inter.count = intersect(&data.ray, &sphere, inter.t);
-			if (inter.count == 1 || inter.count == 2)
-				write_pixel(&data.canvas, x, y, &color);
-			
-			// intersections(&data.inter_list, &inter);
-		}
-	}
-
-	mlx_put_image_to_window(data.canvas.mlx, data.canvas.win, data.canvas.img, 0,0);
-	mlx_loop(data.canvas.mlx);
+	float mtx[4][4] = {
+        {1.0, 2.0, 3.0, 4.0},
+        {5.0, 6.0, 7.0, 8.0},
+        {9.0, 10.0, 11.0, 12.0},
+        {13.0, 14.0, 15.0, 16.0}
+    };
+	if (!chk_mtx_size(mtx, 4))
+		printf("False\n");
     return (0);
 }
