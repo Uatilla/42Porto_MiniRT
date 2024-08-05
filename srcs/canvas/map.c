@@ -15,15 +15,15 @@
 /*
  * map the x from the window to our world
 */
-float	map_x(float x, float min, float max)
+float	map_x(float x, float world_min, float world_max)
 {
-	return (x * (max - min) / WIDTH - max);
+	return (x * (world_max - world_min) / WIDTH - world_max);
 }
 
 /*
  * map the y from the window to our world
 */
-float	map_y(float y, float min, float max)
+float	map_y(float y, float world_min, float world_max)
 {
-	return (y * (max - min) / HEIGTH - max);
+	return (y * (world_max - world_min) / HEIGTH - world_max);
 }

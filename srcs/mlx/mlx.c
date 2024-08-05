@@ -22,7 +22,7 @@
 void	start_mlx(t_canvas	*canvas)
 {
 	canvas->mlx = mlx_init();
-	canvas->win = mlx_new_window(canvas->mlx, WIDTH, HEIGTH, "urmom");
+	canvas->win = mlx_new_window(canvas->mlx, WIDTH, HEIGTH, "tua mae");
 	canvas->img = mlx_new_image(canvas->mlx, WIDTH, HEIGTH);
 	canvas->addr = mlx_get_data_addr(canvas->img,
 			&canvas->bits_per_pixel, &canvas->line_length, &canvas->endian);

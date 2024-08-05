@@ -69,37 +69,31 @@ typedef	t_tuple t_point;
 typedef	t_tuple t_vector;
 typedef	t_tuple t_color;
 
+typedef	struct	s_intersections
+{
+	float					t[2];
+	int8_t					count;
+	enum	e_identifyer	obj;
+	struct s_intersections	*next;
+}	t_intersections;
+
 typedef	struct	s_ray
 {
-	t_point		origin;
-	t_vector	direction;
+	t_point			origin;
+	t_vector		direction;
+	t_intersections	*inter;
+	float			*hit;
 }	t_ray;
 
 typedef struct s_sphere
 {
 	t_point	center;
-	float	radius;
 }	t_sphere;
-
-typedef	struct s_inter
-{
-	int8_t	identifier;
-	void	*object;
-	int8_t	count;
-	float	t[2];
-}	t_inter;
-
-typedef	struct s_intersections
-{
-	t_inter					*node;
-	struct s_intersections	*next;
-}	t_intersections;
 
 
 typedef struct s_minirt
 {
 	t_tuple     	*tuple;
-	t_intersections *inter_list;
 	t_canvas		canvas;
 	t_ray			ray;
 	int				fd;
@@ -143,13 +137,12 @@ t_tuple	position(t_ray *ray, float t);
 
 //sphere
 //sphere.c
-int8_t	intersect(t_ray *ray, t_sphere *sphere, float *t);
-void	intersections(t_intersections **list, t_inter *new_inter);
+int8_t	ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t);
 
 //map
 //map.c
-float	map_x(float x, float min, float max);
-float	map_y(float y, float min, float max);
+float	map_x(float x, float world_min, float world_max);
+float	map_y(float y, float world_min, float world_max);
 
 //Input
 //input_checker.c
@@ -159,7 +152,6 @@ int chk_input(int argc, char *file);
 //exit_cleaner.c
 void    clear_exit(t_minirt *mrt, int status);
 void    ft_error(char *msg);
-void	clear_list(t_intersections	*head);
 
 //mlx
 //mlx.c
