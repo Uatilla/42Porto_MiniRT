@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/03 19:13:17 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/05 22:05:32 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ typedef	t_tuple t_color;
 typedef	struct	s_intersections
 {
 	float					t[2];
-	int8_t					count;
 	enum	e_identifyer	obj;
 	struct s_intersections	*next;
+	int8_t					count;
 }	t_intersections;
 
 typedef	struct	s_ray
@@ -87,15 +87,18 @@ typedef	struct	s_ray
 
 typedef struct s_sphere
 {
-	t_point	center;
+	t_point				center;
+	enum e_identifyer	type;
+	float				diameter;
+	void				*next;
 }	t_sphere;
-
 
 typedef struct s_minirt
 {
 	t_tuple     	*tuple;
 	t_canvas		canvas;
 	t_ray			ray;
+	void			*objs;
 	int				fd;
 }		t_minirt;
 
@@ -130,6 +133,11 @@ float	magnitude(t_tuple *a);
 t_tuple normalize(t_tuple *a);
 t_tuple cross_product(t_tuple *a, t_tuple *b);
 t_tuple div_tuple_scalar(t_tuple *a, float sc);
+
+//objects
+//parse_objs.c
+void	parse_objects(enum e_identifyer type, t_minirt *data);
+void	parse_sphere(t_minirt *data);
 
 //ray
 //ray.c
