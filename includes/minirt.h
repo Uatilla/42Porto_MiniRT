@@ -70,6 +70,11 @@ typedef	t_tuple t_point;
 typedef	t_tuple t_vector;
 typedef	t_tuple t_color;
 
+typedef struct	s_matrix
+{
+	float	mtx[4][4];
+}	t_matrix;
+
 // [4 * 2] + (8 * 3) + 1 = 33 bytes
 typedef	struct	s_intersections
 {
