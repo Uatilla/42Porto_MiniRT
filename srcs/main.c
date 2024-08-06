@@ -18,23 +18,33 @@ bool	chk_mtx_size(float **matrix, int rows, int col)
 	int	j;
 
 	i = 0;
-	while (i < rows)
+	while (matrix[i])
 	{
-		printf("ROW: %d\n", i);
+		printf("\nROW: %d\n\n", i);
 		j = 0;
-		while (j < col)
+		if (matrix[i][j] == 0)
+			printf("ZERO\n");
+		/*while (matrix[i][j])
 		{
+			printf("COL: %d ->", j);
 			printf("%f\t", matrix[i][j]);
-			printf("COL: %d\t", j);
 			j++;
-		}
-		if (j == col && matrix[i][j] != 0)
+		}*/
+		printf("WHILE\n");
+		if (j != col)
 			return (false);
-		printf("\n");
+		//EU CHEGUEI NO FIM?
+			//NAO -> FALSE
+			//SIM -> CONTINUE
+
+		//EU TENTEI PASSAR O LIMITE DO MATRIX?
+			//SIM -> FALSE
+			//NAO -> CONTINUE
+		
 		i++;
 	}
-	if (i == rows && matrix[i][j] == 0)
-			return (false);
+	if (i != rows)
+		return(false);
 	return (true);
 }
 
@@ -68,7 +78,7 @@ int main(void)
     for (int i = 0; i < rows; ++i) {
         mtx[i] = (float *)malloc(cols * sizeof(float));
     }
-	if (!chk_mtx_size(mtx, 4, cols))
+	if (!chk_mtx_size(mtx, rows, cols))
 		printf("FALSE\n");
 	else
 		printf("TRUE\n");
