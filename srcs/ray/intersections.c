@@ -30,7 +30,7 @@ void	check_intersections(t_minirt *data, t_point *point)
 		ray_intersections(data, obj);
 		obj = ((t_sphere *)obj)->next;
 	}
-	set_hit(&data->ray);
+	first_hit(&data->ray);
 }
 
 /*
@@ -59,7 +59,7 @@ void	ray_intersections(t_minirt *data, void *obj)
 *	will update the ray->fisrt_hit pointer to the t_intersection struct if there
 *	is a intersection
 */
-void	set_hit(t_ray *ray)
+void	first_hit(t_ray *ray)
 {
 	if (!ray->first_hit)
 		ray->first_hit = ray->inter;
@@ -85,7 +85,7 @@ void	first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj)
 		&& data->ray.inter->t[0] < data->ray.inter->t[1])
 		data->ray.inter->hit = &data->ray.inter->t[0];
 	else if (data->ray.inter->t[1] > 0)
-		data->ray.inter->hit = &data->ray.inter->t[0];
+		data->ray.inter->hit = &data->ray.inter->t[1];
 	data->ray.inter->obj = obj;
 }
 
@@ -103,11 +103,10 @@ void	append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj)
 	temp->count = point;
 	temp->t[0] = t[0];
 	temp->t[1] = t[1];
-	if (data->ray.inter->t[0] > 0
-		&& data->ray.inter->t[0] < data->ray.inter->t[1])
-		data->ray.inter->hit = &data->ray.inter->t[0];
-	else if (data->ray.inter->t[1] > 0)
-		data->ray.inter->hit = &data->ray.inter->t[0];
+	if (temp->t[0] > 0 && temp->t[0] < temp->t[1])
+		temp->hit = &temp->t[0];
+	else if (temp->t[1] > 0)
+		temp->hit = &temp->t[1];
 	temp->next = data->ray.inter;
 	temp->obj = obj;
 	data->ray.inter = temp;
