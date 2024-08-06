@@ -152,7 +152,7 @@ t_tuple	position(t_ray *ray, float t);
 //sphere
 //sphere.c
 int8_t	ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t);
-void	set_hit(t_ray *ray);
+void	first_hit(t_ray *ray);
 
 //intersections.c
 void	ray_intersections(t_minirt *data, void *obj);
