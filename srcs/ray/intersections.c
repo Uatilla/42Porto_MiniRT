@@ -15,24 +15,24 @@
 void	check_intersections(t_minirt *data, t_point *point)
 {
 	void	*obj;
+	t_vector	point_to_ray;
 
+	point_to_ray = subtrac_tuples(point, &data->ray.origin);
+	data->ray.direction = normalize(&point_to_ray);
 	obj = data->objs;
 	while (obj)
 	{
-		ray_intersections(data, obj, point);
+		ray_intersections(data, obj);
 		obj = ((t_sphere *)obj)->next;
 	}
 }
 
-void	ray_intersections(t_minirt *data, void *obj, t_point *point)
+void	ray_intersections(t_minirt *data, void *obj)
 {
 	float		t[2];	
-	t_vector	point_to_ray;
 	int8_t		intersection_points;
 
 	intersection_points = 0;
-	point_to_ray = subtrac_tuples(point, &data->ray.origin);
-	data->ray.direction = normalize(&point_to_ray);
 	intersection_points = ray_sphere_intersect(&data->ray, obj, t);
 	if (intersection_points > 0)
 	{

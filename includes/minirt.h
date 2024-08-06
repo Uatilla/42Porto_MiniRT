@@ -149,7 +149,7 @@ int8_t	ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t);
 void	set_hit(t_ray *ray);
 
 //intersections.c
-void	ray_intersections(t_minirt *data, void *obj, t_point *point);
+void	ray_intersections(t_minirt *data, void *obj);
 void	check_intersections(t_minirt *data, t_point *point);
 void	one_intersection(t_minirt *data, int8_t point, float *t, t_sphere *obj);
 void	more_intersections(t_minirt *data, int8_t point, float *t, t_sphere *obj);
