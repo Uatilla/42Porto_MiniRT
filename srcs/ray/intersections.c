@@ -19,57 +19,74 @@ void	check_intersections(t_minirt *data, t_point *point)
 	obj = data->objs;
 	while (obj)
 	{
-		ray_intersections(&data->ray, obj, point);
+		ray_intersections(data, obj, point);
 		obj = ((t_sphere *)obj)->next;
 	}
 }
 
-void	ray_intersections(t_ray *ray, void *obj, t_point *point)
+void	ray_intersections(t_minirt *data, void *obj, t_point *point)
 {
 	float		t[2];	
 	t_vector	point_to_ray;
 	int8_t		intersection_points;
 
 	intersection_points = 0;
-	point_to_ray = subtrac_tuples(point, &ray->origin);
-	ray->direction = normalize(&point_to_ray);
-	intersection_points = ray_sphere_intersect(ray, obj, t);
+	point_to_ray = subtrac_tuples(point, &data->ray.origin);
+	data->ray.direction = normalize(&point_to_ray);
+	intersection_points = ray_sphere_intersect(&data->ray, obj, t);
 	if (intersection_points > 0)
 	{
-		if (ray->inter == NULL)
-		{
-			ray->inter = ft_calloc(sizeof(*ray->inter), 1);
-			ray->inter->count = intersection_points;
-			ray->inter->t[0] = t[0];
-			ray->inter->t[1] = t[1];
-			ray->inter->obj = obj;
-		}
+		if (data->ray.inter == NULL)
+			one_intersection(data, intersection_points, t, obj);
 		else
-		{
-			t_intersections	*temp;
-
-			temp = ft_calloc(sizeof(*temp), 1);
-			temp->count = intersection_points;
-			temp->t[0] = t[0];
-			temp->t[1] = t[1];
-			temp->next = ray->inter;
-			temp->obj = obj;
-			ray->inter = temp;
-		}
-		if (ray->hit == NULL)
-		{
-			if (ray->inter->t[0] > 0)
-				ray->hit = &ray->inter->t[0];
-		}
-		else
-		{
-			if (ray->inter->t[0] > 0 && *ray->hit > ray->inter->t[0])
-				ray->hit = &ray->inter->t[0];
-		}
+			more_intersections(data, intersection_points, t, obj);
+		set_hit(&data->ray);
 	}
 }
 
-void	one_intersection(t_minirt *data)
+void	set_hit(t_ray *ray)
 {
-	return ;
+	if (!ray->first_hit)
+		ray->first_hit = ray->inter;
+	else if (ray->inter && ray->inter->hit)
+	{
+		if (*ray->inter->hit < *ray->first_hit->hit)
+			ray->first_hit = ray->inter;
+	}
+}
+
+void	one_intersection(t_minirt *data, int8_t point, float *t, t_sphere *obj)
+{
+	data->ray.inter = ft_calloc(sizeof(*data->ray.inter), 1);
+	if (data->ray.inter == NULL)
+		clear_exit(data, errno);
+	data->ray.inter->count = point;
+	data->ray.inter->t[0] = t[0];
+	data->ray.inter->t[1] = t[1];
+	if (data->ray.inter->t[0] > 0
+		&& data->ray.inter->t[0] < data->ray.inter->t[1])
+		data->ray.inter->hit = &data->ray.inter->t[0];
+	else if (data->ray.inter->t[1] > 0)
+		data->ray.inter->hit = &data->ray.inter->t[0];
+	data->ray.inter->obj = obj;
+}
+
+void	more_intersections(t_minirt *data, int8_t point, float *t, t_sphere *obj)
+{
+	t_intersections	*temp;
+
+	temp = ft_calloc(sizeof(*temp), 1);
+	if (temp == NULL)
+		clear_exit(data, errno);
+	temp->count = point;
+	temp->t[0] = t[0];
+	temp->t[1] = t[1];
+	if (data->ray.inter->t[0] > 0
+		&& data->ray.inter->t[0] < data->ray.inter->t[1])
+		data->ray.inter->hit = &data->ray.inter->t[0];
+	else if (data->ray.inter->t[1] > 0)
+		data->ray.inter->hit = &data->ray.inter->t[0];
+	temp->next = data->ray.inter;
+	temp->obj = obj;
+	data->ray.inter = temp;
 }

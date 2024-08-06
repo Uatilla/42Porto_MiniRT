@@ -41,3 +41,17 @@ void	clear_objs(void	*objs)
 		}
 	}
 }
+
+void	clear_ray_inter(t_minirt *data)
+{
+	t_intersections *ptr;
+
+	ptr = data->ray.inter;
+	while (ptr)
+	{
+		ptr = ptr->next;
+		free(data->ray.inter);
+		data->ray.inter = ptr;
+	}
+	data->ray.first_hit = NULL;
+}

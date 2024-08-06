@@ -71,6 +71,7 @@ typedef	t_tuple t_color;
 typedef	struct	s_intersections
 {
 	float					t[2];
+	float					*hit;
 	void					*obj;
 	struct s_intersections	*next;
 	int8_t					count;
@@ -81,7 +82,7 @@ typedef	struct	s_ray
 	t_point			origin;
 	t_vector		direction;
 	t_intersections	*inter;
-	float			*hit;
+	t_intersections	*first_hit;
 }	t_ray;
 
 typedef struct s_sphere
@@ -145,9 +146,13 @@ t_tuple	position(t_ray *ray, float t);
 //sphere
 //sphere.c
 int8_t	ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t);
+void	set_hit(t_ray *ray);
+
 //intersections.c
-void	ray_intersections(t_ray *ray, void *obj, t_point *point);
+void	ray_intersections(t_minirt *data, void *obj, t_point *point);
 void	check_intersections(t_minirt *data, t_point *point);
+void	one_intersection(t_minirt *data, int8_t point, float *t, t_sphere *obj);
+void	more_intersections(t_minirt *data, int8_t point, float *t, t_sphere *obj);
 
 //map
 //map.c
@@ -163,6 +168,7 @@ int chk_input(int argc, char *file);
 void    clear_exit(t_minirt *mrt, int status);
 void    ft_error(char *msg);
 void	clear_objs(void	*objs);
+void	clear_ray_inter(t_minirt *data);
 
 //mlx
 //mlx.c

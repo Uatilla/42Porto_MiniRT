@@ -12,7 +12,7 @@
 
 #include "../includes/minirt.h"
 
-void	clear_objs(void	*objs);
+void	clear_ray_inter(t_minirt *data);
 
 int main(void)
 {
@@ -23,6 +23,9 @@ int main(void)
 
 	ft_memset(&data, 0, sizeof(data));
 	parse_objects(SP, &data);
+	parse_objects(SP, &data);
+	parse_objects(SP, &data);
+	parse_objects(SP, &data);
 	start_mlx(&data.canvas);
 	data.ray.origin = (t_point){0,0,-5,1};
 	y = -1;
@@ -31,12 +34,12 @@ int main(void)
 		x = -1;
 		while (++x < WIDTH)
 		{
-			data.ray.hit = NULL;
+			data.ray.first_hit = NULL;
 			point = (t_point){map_x(x, -5, 5), map_y(y, -5, 5), 10, 1};
 			check_intersections(&data, &point);
-			ray_intersections(&data.ray, data.objs, &point);
-			if (data.ray.hit)
+			if (data.ray.first_hit)
 				write_pixel(&data.canvas, x, y, &(t_color){1,0,0,0});
+			clear_ray_inter(&data);
 		}
 	}
 	mlx_put_image_to_window(data.canvas.mlx, data.canvas.win, data.canvas.img, 0,0);
