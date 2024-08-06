@@ -157,8 +157,8 @@ void	set_hit(t_ray *ray);
 //intersections.c
 void	ray_intersections(t_minirt *data, void *obj);
 void	check_intersections(t_minirt *data, t_point *point);
-void	one_intersection(t_minirt *data, int8_t point, float *t, t_sphere *obj);
-void	more_intersections(t_minirt *data, int8_t point, float *t, t_sphere *obj);
+void	first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
+void	append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
 
 //map
 //map.c

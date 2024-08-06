@@ -12,10 +12,15 @@
 
 #include "../../includes/minirt.h"
 
+/*
+*	sets the ray direction relative to the origin and point in the world
+*	loop through the object list and see if the ray intersects each one
+*	sets the first hit point if there is one
+*/
 void	check_intersections(t_minirt *data, t_point *point)
 {
-	void	*obj;
 	t_vector	point_to_ray;
+	void		*obj;
 
 	point_to_ray = subtrac_tuples(point, &data->ray.origin);
 	data->ray.direction = normalize(&point_to_ray);
@@ -28,6 +33,12 @@ void	check_intersections(t_minirt *data, t_point *point)
 	set_hit(&data->ray);
 }
 
+/*
+*	sees the intersection points of the ray to the object
+*
+*	if the ray hits the obj, will allocate a intersection struct with the
+*	intersect points and the object propeties and push it to the top of the stack
+*/
 void	ray_intersections(t_minirt *data, void *obj)
 {
 	float		t[2];	
@@ -38,12 +49,16 @@ void	ray_intersections(t_minirt *data, void *obj)
 	if (intersection_points > 0)
 	{
 		if (data->ray.inter == NULL)
-			one_intersection(data, intersection_points, t, obj);
+			first_inter(data, intersection_points, t, obj);
 		else
-			more_intersections(data, intersection_points, t, obj);
+			append_inter(data, intersection_points, t, obj);
 	}
 }
 
+/*
+*	will update the ray->fisrt_hit pointer to the t_intersection struct if there
+*	is a intersection
+*/
 void	set_hit(t_ray *ray)
 {
 	if (!ray->first_hit)
@@ -55,7 +70,10 @@ void	set_hit(t_ray *ray)
 	}
 }
 
-void	one_intersection(t_minirt *data, int8_t point, float *t, t_sphere *obj)
+/*
+*	will allocate and set the first node of the intersections stack
+*/
+void	first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj)
 {
 	data->ray.inter = ft_calloc(sizeof(*data->ray.inter), 1);
 	if (data->ray.inter == NULL)
@@ -71,7 +89,11 @@ void	one_intersection(t_minirt *data, int8_t point, float *t, t_sphere *obj)
 	data->ray.inter->obj = obj;
 }
 
-void	more_intersections(t_minirt *data, int8_t point, float *t, t_sphere *obj)
+/*
+*	will allocate and set a new node to the intersection stack
+*	and push it to the top
+*/
+void	append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj)
 {
 	t_intersections	*temp;
 
