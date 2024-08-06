@@ -25,6 +25,7 @@ void	check_intersections(t_minirt *data, t_point *point)
 		ray_intersections(data, obj);
 		obj = ((t_sphere *)obj)->next;
 	}
+	set_hit(&data->ray);
 }
 
 void	ray_intersections(t_minirt *data, void *obj)
@@ -40,7 +41,6 @@ void	ray_intersections(t_minirt *data, void *obj)
 			one_intersection(data, intersection_points, t, obj);
 		else
 			more_intersections(data, intersection_points, t, obj);
-		set_hit(&data->ray);
 	}
 }
 

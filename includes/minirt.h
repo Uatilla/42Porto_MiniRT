@@ -34,6 +34,7 @@ enum e_identifyer
 };
 
 //STRUCTURES
+// (8 * 4) +  (4 * 3) = 44 bytes
 typedef struct	s_canvas {
 	void	*mlx;
 	void	*win;
@@ -44,6 +45,7 @@ typedef struct	s_canvas {
 	int		endian;
 }				t_canvas;
 
+// (4 * 4) = 16 bytes
 typedef struct s_tuple
 {
 	union
@@ -68,6 +70,7 @@ typedef	t_tuple t_point;
 typedef	t_tuple t_vector;
 typedef	t_tuple t_color;
 
+// [4 * 2] + (8 * 3) + 1 = 33 bytes
 typedef	struct	s_intersections
 {
 	float					t[2];
@@ -77,6 +80,7 @@ typedef	struct	s_intersections
 	int8_t					count;
 }	t_intersections;
 
+// 44 + 44 + (8 * 2) = 104 bytes
 typedef	struct	s_ray
 {
 	t_point			origin;
@@ -85,19 +89,21 @@ typedef	struct	s_ray
 	t_intersections	*first_hit;
 }	t_ray;
 
+// 44 + 8 + 4 + 4 = 60
 typedef struct s_sphere
 {
 	t_point				center;
+	void				*next;
 	enum e_identifyer	type;
 	float				diameter;
-	void				*next;
 }	t_sphere;
 
+// 104 + 44 + (8 * 2) + 4 = 168 bytes
 typedef struct s_minirt
 {
-	t_tuple     	*tuple;
-	t_canvas		canvas;
 	t_ray			ray;
+	t_canvas		canvas;
+	t_tuple     	*tuple;
 	void			*objs;
 	int				fd;
 }		t_minirt;
