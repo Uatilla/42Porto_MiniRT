@@ -6,7 +6,7 @@
 #    By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/30 20:21:44 by uviana-a          #+#    #+#              #
-#    Updated: 2024/08/05 22:06:48 by Jburlama         ###   ########.fr        #
+#    Updated: 2024/08/07 17:50:17 by Jburlama         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ OBJS_DIR	=	objs
 LIBFT_DIR	=	./libraries/libft
 MLX_DIR		=	./libraries/minilibx-linux
 INC			=	includes
-SUB_DIR		=	tuples input exit mlx ray canvas sphere objects
+SUB_DIR		=	tuples input exit mlx ray canvas sphere objects light
 ALL_OBJS_DIR	= $(foreach dir, $(SUB_DIR), $(addprefix $(OBJS_DIR)/, $(dir)))
 
 # Flags
@@ -46,6 +46,7 @@ SRCS		=	main.c \
 				tuples/chk_tuples_typ.c tuples/creating_tuples.c tuples/operations_tuples.c\
 				input/input_checker.c \
 				objects/parse_objs.c \
+				light/light.c \
 				ray/ray.c ray/intersections.c\
 				canvas/map.c \
 				sphere/sphere.c \
@@ -98,3 +99,8 @@ re: fclean all
 .SILENT:
 
 .PHONY: all clean fclean re
+
+gprof: $(CFLAGS) += -pg
+gprof: $(NAME)
+	 ./$(NAME)
+	 gprof $(NAME) gmon.out > analise.txt

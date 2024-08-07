@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/05 22:05:32 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/07 20:35:52 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,18 @@ typedef	t_tuple t_color;
 typedef	struct	s_intersections
 {
 	float					t[2];
-	float					*hit;
+	float					hit;
 	void					*obj;
 	struct s_intersections	*next;
 	int8_t					count;
 }	t_intersections;
+
+// 16 + 16 = 32 bytes
+typedef	struct s_light
+{
+	t_point	position;
+	t_color	intensity;
+}	t_light;
 
 // 44 + 44 + (8 * 2) = 104 bytes
 typedef	struct	s_ray
@@ -89,20 +96,32 @@ typedef	struct	s_ray
 	t_intersections	*first_hit;
 }	t_ray;
 
-// 44 + 8 + 4 + 4 = 60
+// 16 + (4 * 4) = 32 bytes
+typedef	struct s_attr
+{
+	t_color	color;
+	float	ambient;
+	float	diffuse;
+	float	specular;
+	float	shininess;
+} t_attr;
+
+// 16 + 8 + 4 + 4 = 32 bytes
 typedef struct s_sphere
 {
 	t_point				center;
 	void				*next;
 	enum e_identifyer	type;
 	float				diameter;
+	t_attr				attr;
 }	t_sphere;
 
-// 104 + 44 + (8 * 2) + 4 = 168 bytes
+// 104 + 44 + 32 + (8 * 2) + 4 = 200 bytes
 typedef struct s_minirt
 {
 	t_ray			ray;
 	t_canvas		canvas;
+	t_light			light;
 	t_tuple     	*tuple;
 	void			*objs;
 	int				fd;
@@ -112,8 +131,8 @@ typedef struct s_minirt
 //MACRO
 # define EPSILON 0.00001
 # define ZERO_TUPLE (t_tuple){{0, 0, 0, 0}}
-# define WIDTH 1000
-# define HEIGTH 850
+# define WIDTH 900
+# define HEIGTH 900
 
 //FUNCTIONS
 //Tuples
@@ -139,6 +158,11 @@ float	magnitude(t_tuple *a);
 t_tuple normalize(t_tuple *a);
 t_tuple cross_product(t_tuple *a, t_tuple *b);
 t_tuple div_tuple_scalar(t_tuple *a, float sc);
+t_color	color_multiply(t_color *c1, t_color *c2);
+
+//light
+//light.c
+t_light	set_light(t_point *position, t_color *intensity);
 
 //objects
 //parse_objs.c
