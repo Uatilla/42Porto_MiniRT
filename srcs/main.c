@@ -12,35 +12,40 @@
 
 #include "../includes/minirt.h"
 
+bool	chk_mtx_line(float *matrix, int col)
+{
+	int	j;
+
+	j = 0;
+	while (j < col)
+		{
+			if (matrix[j] == '\0')
+				return (false);
+			j++;
+		}
+		if (j != col)
+			return (false);
+		return (true);
+}
+
+
 bool	chk_mtx_size(float **matrix, int rows, int col)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (matrix[i])
+	j = 0;
+	while (i < rows)
 	{
-		printf("\nROW: %d\n\n", i);
-		j = 0;
-		if (matrix[i][j] == 0)
-			printf("ZERO\n");
-		/*while (matrix[i][j])
-		{
-			printf("COL: %d ->", j);
-			printf("%f\t", matrix[i][j]);
-			j++;
-		}*/
-		printf("WHILE\n");
-		if (j != col)
+		if(matrix[i] == NULL)
 			return (false);
-		//EU CHEGUEI NO FIM?
-			//NAO -> FALSE
-			//SIM -> CONTINUE
-
-		//EU TENTEI PASSAR O LIMITE DO MATRIX?
-			//SIM -> FALSE
-			//NAO -> CONTINUE
 		
+		if (!chk_mtx_line(matrix[i], col))
+		{
+			printf("FAIL\n");
+			return (false);
+		}
 		i++;
 	}
 	if (i != rows)
@@ -48,7 +53,7 @@ bool	chk_mtx_size(float **matrix, int rows, int col)
 	return (true);
 }
 
-/*float **creating_matrix(int rows, int col)
+float **creating_matrix(int rows, int col)
 {
 	float	**mtx_ret;
 	int		curr_row;
@@ -66,7 +71,7 @@ bool	chk_mtx_size(float **matrix, int rows, int col)
 		curr_row++;
 	}
 	return(mtx_ret);
-}*/
+}
 
 int main(void)
 {
@@ -74,19 +79,11 @@ int main(void)
     int cols = 4;
 
     // Allocate memory for the matrix
-    float **mtx = (float **)malloc(rows * sizeof(float *));
-    for (int i = 0; i < rows; ++i) {
-        mtx[i] = (float *)malloc(cols * sizeof(float));
-    }
+   float **mtx = creating_matrix(rows, cols);
+    };
 	if (!chk_mtx_size(mtx, rows, cols))
 		printf("FALSE\n");
 	else
 		printf("TRUE\n");
-    // Free the allocated memory
-    for (int i = 0; i < rows; ++i) {
-        free(mtx[i]);
-    }
-    free(mtx);
-
     return 0;
 }
