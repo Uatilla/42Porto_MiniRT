@@ -12,78 +12,33 @@
 
 #include "../includes/minirt.h"
 
-bool	chk_mtx_line(float *matrix, int col)
-{
-	int	j;
-
-	j = 0;
-	while (j < col)
-		{
-			if (matrix[j] == '\0')
-				return (false);
-			j++;
-		}
-		if (j != col)
-			return (false);
-		return (true);
-}
-
-
-bool	chk_mtx_size(float **matrix, int rows, int col)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (i < rows)
-	{
-		if(matrix[i] == NULL)
-			return (false);
-		
-		if (!chk_mtx_line(matrix[i], col))
-		{
-			printf("FAIL\n");
-			return (false);
-		}
-		i++;
-	}
-	if (i != rows)
-		return(false);
-	return (true);
-}
-
-float **creating_matrix(int rows, int col)
-{
-	float	**mtx_ret;
-	int		curr_row;
-
-	curr_row = 0;
-
-	mtx_ret = malloc(rows * sizeof(float *));
-	//if (!mtx_ret)
-	//	return 
-	while (curr_row < rows)
-	{
-		mtx_ret[curr_row] = malloc(col * sizeof(float *));
-		//if (!mtx_ret)
-		//return 
-		curr_row++;
-	}
-	return(mtx_ret);
-}
-
 int main(void)
 {
-    int rows = 4;
-    int cols = 4;
 
-    // Allocate memory for the matrix
-   float **mtx = creating_matrix(rows, cols);
-    };
-	if (!chk_mtx_size(mtx, rows, cols))
-		printf("FALSE\n");
-	else
-		printf("TRUE\n");
+	t_minirt	data;
+	t_matrix	*mtx;
+	t_point		point;
+	int			x;
+	int			y;
+    int rows;
+    int cols;
+
+	rows = 4;
+	cols = 4;
+	ft_memset(&data, 0, sizeof(data));
+	mtx = creating_matrix(&data, rows, cols);
+	parse_objects(SP, &data);
+	parse_objects(SP, &data);
+	parse_objects(SP, &data);
+	parse_objects(SP, &data);
+	start_mlx(&data.canvas);
+	fill_mtx(mtx);
+	print_mtx(mtx);
+	clean_matrix(&data, mtx, 0);
+
+	mlx_hook(data.canvas.win, 17, 0L, close_window, &data);
+	mlx_key_hook(data.canvas.win, &handle_key_event, &data);
+	mlx_loop(data.canvas.mlx);
+	clear_exit(&data, 0);
     return 0;
 }

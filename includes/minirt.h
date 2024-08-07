@@ -35,7 +35,8 @@ enum e_identifyer
 
 //STRUCTURES
 // (8 * 4) +  (4 * 3) = 44 bytes
-typedef struct	s_canvas {
+typedef struct s_canvas
+{
 	void	*mlx;
 	void	*win;
 	void	*img;
@@ -61,22 +62,24 @@ typedef struct s_tuple
 		{
 			float	r;
 			float	g;
-			float 	b;
+			float	b;
 		};
 	};
 }	t_tuple;
 
-typedef	t_tuple t_point;
-typedef	t_tuple t_vector;
-typedef	t_tuple t_color;
+typedef t_tuple	t_point;
+typedef t_tuple	t_vector;
+typedef t_tuple	t_color;
 
-typedef struct	s_matrix
+typedef struct s_matrix
 {
-	float	mtx[4][4];
+	int		rows;
+	int		cols;
+	float	**mtx;
 }	t_matrix;
 
 // [4 * 2] + (8 * 3) + 1 = 33 bytes
-typedef	struct	s_intersections
+typedef struct s_intersections
 {
 	float					t[2];
 	float					*hit;
@@ -86,7 +89,7 @@ typedef	struct	s_intersections
 }	t_intersections;
 
 // 44 + 44 + (8 * 2) = 104 bytes
-typedef	struct	s_ray
+typedef struct s_ray
 {
 	t_point			origin;
 	t_vector		direction;
@@ -108,42 +111,42 @@ typedef struct s_minirt
 {
 	t_ray			ray;
 	t_canvas		canvas;
-	t_tuple     	*tuple;
+	t_tuple			*tuple;
 	void			*objs;
 	int				fd;
 }		t_minirt;
-
 
 //MACRO
 # define EPSILON 0.00001
 # define ZERO_TUPLE (t_tuple){{0, 0, 0, 0}}
 # define WIDTH 1000
 # define HEIGTH 850
+# define ESC 65307
 
 //FUNCTIONS
 //Tuples
 //creating_tuples.c
-t_tuple creating_tuple(float x, float y, float z, float w);
-t_tuple creating_point(float x, float y, float z);
-t_tuple creating_vector(float x, float y, float z);
-t_tuple creating_color(float r, float g, float b);
+t_tuple	creating_tuple(float x, float y, float z, float w);
+t_tuple	creating_point(float x, float y, float z);
+t_tuple	creating_vector(float x, float y, float z);
+t_tuple	creating_color(float r, float g, float b);
 
 //chk_tuples.typ.c
-bool    is_point(t_tuple *tuple);
-bool    is_vector(t_tuple *tuple);
-bool    is_color(t_tuple *tuple);
-bool    is_tuple_equal(t_tuple *a, t_tuple *b);
+bool	is_point(t_tuple *tuple);
+bool	is_vector(t_tuple *tuple);
+bool	is_color(t_tuple *tuple);
+bool	is_tuple_equal(t_tuple *a, t_tuple *b);
 
 //operations_tuples.c
-t_tuple sum_tuples(t_tuple *a, t_tuple *b);
-t_tuple subtrac_tuples(t_tuple *a, t_tuple *b);
-t_tuple negating_tuple(t_tuple *a);
-t_tuple mult_tuple_scalar(t_tuple *a, float sc);
+t_tuple	sum_tuples(t_tuple *a, t_tuple *b);
+t_tuple	subtrac_tuples(t_tuple *a, t_tuple *b);
+t_tuple	negating_tuple(t_tuple *a);
+t_tuple	mult_tuple_scalar(t_tuple *a, float sc);
+t_tuple	normalize(t_tuple *a);
+t_tuple	cross_product(t_tuple *a, t_tuple *b);
+t_tuple	div_tuple_scalar(t_tuple *a, float sc);
 float	dot_product(t_tuple *a, t_tuple *b);
 float	magnitude(t_tuple *a);
-t_tuple normalize(t_tuple *a);
-t_tuple cross_product(t_tuple *a, t_tuple *b);
-t_tuple div_tuple_scalar(t_tuple *a, float sc);
 
 //objects
 //parse_objs.c
@@ -172,19 +175,31 @@ float	map_y(float y, float world_min, float world_max);
 
 //Input
 //input_checker.c
-int chk_input(int argc, char *file);
+int		chk_input(int argc, char *file);
 
 //Exit
 //exit_cleaner.c
-void    clear_exit(t_minirt *mrt, int status);
-void    ft_error(char *msg);
+void	clear_exit(t_minirt *mrt, int status);
+void	ft_error(char *msg);
 void	clear_objs(void	*objs);
 void	clear_ray_inter(t_minirt *data);
+void	clean_matrix(t_minirt *mrt, t_matrix *mtx_struct, int status);
 
 //mlx
 //mlx.c
 void	start_mlx(t_canvas	*canvas);
 void	write_pixel(t_canvas *canvas, int x, int y, t_color *color);
-int		map_color(float	c);
+int		map_color(float c);
+int		close_window(t_minirt *win);
+int		handle_key_event(int key_pressed, void *param);
 
+//Matrix
+//matrix.c
+bool	check_mtx_size(t_matrix *mtx, int rows, int cols);
+t_matrix	*creating_matrix(t_minirt *data, int rows, int cols);
+
+//FUNCOES TEMPORARIAS APENAS PARA TESTE!!!!!VVVVVVVVV
+void	fill_mtx(t_matrix *mtx);
+void	print_mtx(t_matrix *mtx);
+//FUNCOES TEMPORARIAS APENAS PARA TESTE!!!!!^^^^^^^^^^^
 #endif
