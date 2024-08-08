@@ -34,7 +34,7 @@ void	parse_sphere(t_minirt *data)
 		((t_sphere *)data->objs)->center = (t_tuple){0, 0, 0, 1};
 		((t_sphere *)data->objs)->type = SP;
 		((t_sphere *)data->objs)->diameter = 2;
-		((t_sphere *)data->objs)->attr.color = (t_color){1, 0, 0, 999999};
+		((t_sphere *)data->objs)->material.color = (t_color){1, 0, 0, 999999};
 		return ;
 	}
 	sphere = ft_calloc(sizeof(t_sphere), 1);
@@ -43,7 +43,7 @@ void	parse_sphere(t_minirt *data)
 	sphere->center = (t_tuple){0, 0, 0, 1};
 	sphere->type = SP;
 	sphere->diameter = 2;
-	sphere->attr.color = (t_color){1, 0, 0, 999999};
+	sphere->material.color = (t_color){1, 0, 0, 999999};
 	sphere->next = data->objs;
 	data->objs = sphere;
 }

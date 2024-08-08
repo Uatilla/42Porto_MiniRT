@@ -97,14 +97,14 @@ typedef	struct	s_ray
 }	t_ray;
 
 // 16 + (4 * 4) = 32 bytes
-typedef	struct s_attr
+typedef	struct s_material
 {
 	t_color	color;
 	float	ambient;
 	float	diffuse;
 	float	specular;
 	float	shininess;
-} t_attr;
+} t_material;
 
 // 16 + 8 + 4 + 4 = 32 bytes
 typedef struct s_sphere
@@ -113,7 +113,7 @@ typedef struct s_sphere
 	void				*next;
 	enum e_identifyer	type;
 	float				diameter;
-	t_attr				attr;
+	t_material			material;
 }	t_sphere;
 
 // 104 + 44 + 32 + (8 * 2) + 4 = 200 bytes
@@ -137,73 +137,75 @@ typedef struct s_minirt
 //FUNCTIONS
 //Tuples
 //creating_tuples.c
-t_tuple creating_tuple(float x, float y, float z, float w);
-t_tuple creating_point(float x, float y, float z);
-t_tuple creating_vector(float x, float y, float z);
-t_tuple creating_color(float r, float g, float b);
+t_tuple		creating_tuple(float x, float y, float z, float w);
+t_tuple		creating_point(float x, float y, float z);
+t_tuple		creating_vector(float x, float y, float z);
+t_tuple		creating_color(float r, float g, float b);
 
 //chk_tuples.typ.c
-bool    is_point(t_tuple *tuple);
-bool    is_vector(t_tuple *tuple);
-bool    is_color(t_tuple *tuple);
-bool    is_tuple_equal(t_tuple *a, t_tuple *b);
+bool   		is_point(t_tuple *tuple);
+bool   		is_vector(t_tuple *tuple);
+bool   		is_color(t_tuple *tuple);
+bool   		is_tuple_equal(t_tuple *a, t_tuple *b);
 
 //operations_tuples.c
-t_tuple sum_tuples(t_tuple *a, t_tuple *b);
-t_tuple subtrac_tuples(t_tuple *a, t_tuple *b);
-t_tuple negating_tuple(t_tuple *a);
-t_tuple mult_tuple_scalar(t_tuple *a, float sc);
-float	dot_product(t_tuple *a, t_tuple *b);
-float	magnitude(t_tuple *a);
-t_tuple normalize(t_tuple *a);
-t_tuple cross_product(t_tuple *a, t_tuple *b);
-t_tuple div_tuple_scalar(t_tuple *a, float sc);
-t_color	color_multiply(t_color *c1, t_color *c2);
+t_tuple		sum_tuples(t_tuple *a, t_tuple *b);
+t_tuple		subtrac_tuples(t_tuple *a, t_tuple *b);
+t_tuple		negating_tuple(t_tuple *a);
+t_tuple		mult_tuple_scalar(t_tuple *a, float sc);
+float  		dot_product(t_tuple *a, t_tuple *b);
+float  		magnitude(t_tuple *a);
+t_tuple		normalize(t_tuple *a);
+t_tuple		cross_product(t_tuple *a, t_tuple *b);
+t_tuple		div_tuple_scalar(t_tuple *a, float sc);
+t_color		color_multiply(t_color *c1, t_color *c2);
 
 //light
 //light.c
-t_light	set_light(t_point *position, t_color *intensity);
+t_light		set_light(t_point *position, t_color *intensity);
+t_vector	normal_at(void *obj, t_point *point);
+t_vector	reflect(t_vector *in, t_vector *normal);
 
 //objects
 //parse_objs.c
-void	parse_objects(enum e_identifyer type, t_minirt *data);
-void	parse_sphere(t_minirt *data);
+void   		parse_objects(enum e_identifyer type, t_minirt *data);
+void   		parse_sphere(t_minirt *data);
 
 //ray
 //ray.c
-t_tuple	position(t_ray *ray, float t);
+t_tuple		position(t_ray *ray, float t);
 
 //sphere
 //sphere.c
-int8_t	ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t);
-void	first_hit(t_ray *ray);
+int8_t		ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t);
 
 //intersections.c
-void	ray_intersections(t_minirt *data, void *obj);
-void	check_intersections(t_minirt *data, t_point *point);
-void	first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
-void	append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
+void   		ray_intersections(t_minirt *data, void *obj);
+void   		check_intersections(t_minirt *data, t_point *point);
+void   		first_hit(t_ray *ray);
+void   		first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
+void   		append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
 
 //map
 //map.c
-float	map_x(float x, float world_min, float world_max);
-float	map_y(float y, float world_min, float world_max);
+float  		map_x(float x, float world_min, float world_max);
+float  		map_y(float y, float world_min, float world_max);
 
 //Input
 //input_checker.c
-int chk_input(int argc, char *file);
+int			chk_input(int argc, char *file);
 
 //Exit
 //exit_cleaner.c
-void    clear_exit(t_minirt *mrt, int status);
-void    ft_error(char *msg);
-void	clear_objs(void	*objs);
-void	clear_ray_inter(t_minirt *data);
+void   		clear_exit(t_minirt *mrt, int status);
+void   		ft_error(char *msg);
+void   		clear_objs(void	*objs);
+void   		clear_ray_inter(t_minirt *data);
 
 //mlx
 //mlx.c
-void	start_mlx(t_canvas	*canvas);
-void	write_pixel(t_canvas *canvas, int x, int y, t_color *color);
-int		map_color(float	c);
+void   		start_mlx(t_canvas	*canvas);
+void   		write_pixel(t_canvas *canvas, int x, int y, t_color *color);
+int	   		map_color(float	c);
 
 #endif
