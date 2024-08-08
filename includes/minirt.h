@@ -70,9 +70,10 @@ typedef	t_tuple t_point;
 typedef	t_tuple t_vector;
 typedef	t_tuple t_color;
 
-// [4 * 2] + (8 * 3) + 1 = 33 bytes
+// 16 + [4 * 2] + (8 * 3) + 1 = 49 bytes
 typedef	struct	s_intersections
 {
+	t_point					point;
 	float					t[2];
 	float					hit;
 	void					*obj;
@@ -130,7 +131,7 @@ typedef struct s_minirt
 
 //MACRO
 # define EPSILON 0.00001
-# define ZERO_TUPLE (t_tuple){{0, 0, 0, 0}}
+# define ZERO_TUPLE (t_tuple){0, 0, 0, 0}
 # define WIDTH 900
 # define HEIGTH 900
 
@@ -165,11 +166,13 @@ t_color		color_multiply(t_color *c1, t_color *c2);
 t_light		set_light(t_point *position, t_color *intensity);
 t_vector	normal_at(void *obj, t_point *point);
 t_vector	reflect(t_vector *in, t_vector *normal);
+t_tuple		lighting(t_material *m, t_light *light, t_point *point, t_vector *eyev, t_vector *normalv);
 
 //objects
 //parse_objs.c
 void   		parse_objects(enum e_identifyer type, t_minirt *data);
 void   		parse_sphere(t_minirt *data);
+void		set_materials(t_material	*material);
 
 //ray
 //ray.c

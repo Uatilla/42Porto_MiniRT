@@ -83,9 +83,15 @@ void	first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj)
 	data->ray.inter->t[1] = t[1];
 	if (data->ray.inter->t[0] > 0
 		&& data->ray.inter->t[0] < data->ray.inter->t[1])
+	{
 		data->ray.inter->hit = data->ray.inter->t[0];
+		data->ray.inter->point = position(&data->ray, t[0]);
+	}
 	else if (data->ray.inter->t[1] > 0)
+	{
 		data->ray.inter->hit = data->ray.inter->t[1];
+		data->ray.inter->point = position(&data->ray, t[1]);
+	}
 	data->ray.inter->obj = obj;
 }
 
@@ -104,9 +110,15 @@ void	append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj)
 	temp->t[0] = t[0];
 	temp->t[1] = t[1];
 	if (temp->t[0] > 0 && temp->t[0] < temp->t[1])
+	{
 		temp->hit = temp->t[0];
+		temp->point = position(&data->ray, t[0]);
+	}
 	else if (temp->t[1] > 0)
+	{
 		temp->hit = temp->t[1];
+		temp->point = position(&data->ray, t[1]);
+	}
 	temp->next = data->ray.inter;
 	temp->obj = obj;
 	data->ray.inter = temp;

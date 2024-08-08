@@ -34,7 +34,7 @@ void	parse_sphere(t_minirt *data)
 		((t_sphere *)data->objs)->center = (t_tuple){0, 0, 0, 1};
 		((t_sphere *)data->objs)->type = SP;
 		((t_sphere *)data->objs)->diameter = 2;
-		((t_sphere *)data->objs)->material.color = (t_color){1, 0, 0, 999999};
+		set_materials(&((t_sphere *)data->objs)->material);
 		return ;
 	}
 	sphere = ft_calloc(sizeof(t_sphere), 1);
@@ -43,7 +43,19 @@ void	parse_sphere(t_minirt *data)
 	sphere->center = (t_tuple){0, 0, 0, 1};
 	sphere->type = SP;
 	sphere->diameter = 2;
-	sphere->material.color = (t_color){1, 0, 0, 999999};
+	set_materials(&sphere->material);
 	sphere->next = data->objs;
 	data->objs = sphere;
+}
+
+/*
+*	fisrst inplementation
+*/
+void	set_materials(t_material *material)
+{
+	material->color = (t_color){1, 0.2, 1, 999999};
+	material->ambient = 0.1;
+	material->diffuse = 0.9;
+	material->specular = 0.9;
+	material->shininess = 200.0;
 }
