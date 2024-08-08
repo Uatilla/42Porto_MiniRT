@@ -17,20 +17,13 @@ bool	check_mtx_size(t_matrix *mtx, int rows, int cols)
 	return (rows == mtx->rows && cols == mtx->rows);
 }
 
-/// @brief Create a new matrix allocating memory to the struct, \
-matrix, and lines.
-/// @param data Main struct to deal with events.
-/// @param rows 
-/// @param cols 
-/// @return 
-t_matrix *creating_matrix(t_minirt *data, int rows, int cols)
+t_matrix	*creating_matrix(t_minirt *data, int rows, int cols)
 {
 	t_matrix	*mtx_struct;
-	float		**matrix;
-	int		curr_row;
+	int			curr_row;
 
 	curr_row = 0;
-	mtx_struct  = (t_matrix *)ft_calloc(sizeof(t_matrix), 1);
+	mtx_struct = (t_matrix *)ft_calloc(sizeof(t_matrix), 1);
 	if (!mtx_struct)
 		clean_matrix(data, mtx_struct, errno);
 	mtx_struct->rows = rows;
@@ -48,7 +41,8 @@ t_matrix *creating_matrix(t_minirt *data, int rows, int cols)
 	return (mtx_struct);
 }
 
-void	fill_mtx(t_matrix *mtx)//FUNCAO TEMPORARIA APENAS PARA FINS DE TESTE!!
+//FUNCAO TEMPORARIA APENAS PARA FINS DE TESTE!!
+void	fill_mtx(t_matrix *mtx)
 {
 	int	value;
 	int	i;

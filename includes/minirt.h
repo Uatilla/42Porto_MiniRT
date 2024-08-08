@@ -126,80 +126,82 @@ typedef struct s_minirt
 //FUNCTIONS
 //Tuples
 //creating_tuples.c
-t_tuple	creating_tuple(float x, float y, float z, float w);
-t_tuple	creating_point(float x, float y, float z);
-t_tuple	creating_vector(float x, float y, float z);
-t_tuple	creating_color(float r, float g, float b);
+t_tuple		creating_tuple(float x, float y, float z, float w);
+t_tuple		creating_point(float x, float y, float z);
+t_tuple		creating_vector(float x, float y, float z);
+t_tuple		creating_color(float r, float g, float b);
 
 //chk_tuples.typ.c
-bool	is_point(t_tuple *tuple);
-bool	is_vector(t_tuple *tuple);
-bool	is_color(t_tuple *tuple);
-bool	is_tuple_equal(t_tuple *a, t_tuple *b);
+bool		is_point(t_tuple *tuple);
+bool		is_vector(t_tuple *tuple);
+bool		is_color(t_tuple *tuple);
+bool		is_tuple_equal(t_tuple *a, t_tuple *b);
+
+//basic_operations_tuples.c
+t_tuple		sum_tuples(t_tuple *a, t_tuple *b);
+t_tuple		subtrac_tuples(t_tuple *a, t_tuple *b);
+t_tuple		negating_tuple(t_tuple *a);
+t_tuple		mult_tuple_scalar(t_tuple *a, float sc);
 
 //operations_tuples.c
-t_tuple	sum_tuples(t_tuple *a, t_tuple *b);
-t_tuple	subtrac_tuples(t_tuple *a, t_tuple *b);
-t_tuple	negating_tuple(t_tuple *a);
-t_tuple	mult_tuple_scalar(t_tuple *a, float sc);
-t_tuple	normalize(t_tuple *a);
-t_tuple	cross_product(t_tuple *a, t_tuple *b);
-t_tuple	div_tuple_scalar(t_tuple *a, float sc);
-float	dot_product(t_tuple *a, t_tuple *b);
-float	magnitude(t_tuple *a);
+t_tuple		cross_product(t_tuple *a, t_tuple *b);
+t_tuple		div_tuple_scalar(t_tuple *a, float sc);
+t_tuple		normalize(t_tuple *a);
+float		dot_product(t_tuple *a, t_tuple *b);
+float		magnitude(t_tuple *a);
 
 //objects
 //parse_objs.c
-void	parse_objects(enum e_identifyer type, t_minirt *data);
-void	parse_sphere(t_minirt *data);
+void		parse_objects(enum e_identifyer type, t_minirt *data);
+void		parse_sphere(t_minirt *data);
 
 //ray
 //ray.c
-t_tuple	position(t_ray *ray, float t);
+t_tuple		position(t_ray *ray, float t);
 
 //sphere
 //sphere.c
-int8_t	ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t);
-void	first_hit(t_ray *ray);
+int8_t		ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t);
+void		first_hit(t_ray *ray);
 
 //intersections.c
-void	ray_intersections(t_minirt *data, void *obj);
-void	check_intersections(t_minirt *data, t_point *point);
-void	first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
-void	append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
+void		ray_intersections(t_minirt *data, void *obj);
+void		check_intersections(t_minirt *data, t_point *point);
+void		first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
+void		append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
 
 //map
 //map.c
-float	map_x(float x, float world_min, float world_max);
-float	map_y(float y, float world_min, float world_max);
+float		map_x(float x, float world_min, float world_max);
+float		map_y(float y, float world_min, float world_max);
 
 //Input
 //input_checker.c
-int		chk_input(int argc, char *file);
+int			chk_input(int argc, char *file);
 
 //Exit
 //exit_cleaner.c
-void	clear_exit(t_minirt *mrt, int status);
-void	ft_error(char *msg);
-void	clear_objs(void	*objs);
-void	clear_ray_inter(t_minirt *data);
-void	clean_matrix(t_minirt *mrt, t_matrix *mtx_struct, int status);
+void		clear_exit(t_minirt *mrt, int status);
+void		ft_error(char *msg);
+void		clear_objs(void	*objs);
+void		clear_ray_inter(t_minirt *data);
+void		clean_matrix(t_minirt *mrt, t_matrix *mtx_struct, int status);
 
 //mlx
 //mlx.c
-void	start_mlx(t_canvas	*canvas);
-void	write_pixel(t_canvas *canvas, int x, int y, t_color *color);
-int		map_color(float c);
-int		close_window(t_minirt *win);
-int		handle_key_event(int key_pressed, void *param);
+void		start_mlx(t_canvas	*canvas);
+void		write_pixel(t_canvas *canvas, int x, int y, t_color *color);
+int			map_color(float c);
+int			close_window(t_minirt *win);
+int			handle_key_event(int key_pressed, void *param);
 
 //Matrix
 //matrix.c
-bool	check_mtx_size(t_matrix *mtx, int rows, int cols);
+bool		check_mtx_size(t_matrix *mtx, int rows, int cols);
 t_matrix	*creating_matrix(t_minirt *data, int rows, int cols);
 
 //FUNCOES TEMPORARIAS APENAS PARA TESTE!!!!!VVVVVVVVV
-void	fill_mtx(t_matrix *mtx);
-void	print_mtx(t_matrix *mtx);
+void		fill_mtx(t_matrix *mtx);
+void		print_mtx(t_matrix *mtx);
 //FUNCOES TEMPORARIAS APENAS PARA TESTE!!!!!^^^^^^^^^^^
 #endif

@@ -12,20 +12,20 @@
 
 #include "../../includes/minirt.h"
 
-int chk_input(int argc, char *file)
+int	chk_input(int argc, char *file)
 {
-    int fd;
+	int	fd;
 
-    if (argc != 2)
-    {
-        ft_error("ERROR: Input invalid!\n  Try:\n\t./minirt <scene>.rt\n");
-        clear_exit(NULL, 1);
-    }
-    fd = open(file, O_RDONLY, 0);
-    if (fd == -1)
-    {
-        ft_error("ERROR: Failed to open the scene, try another one.\n");
-        clear_exit(NULL, 1);
-    }
-    return (fd);
+	if (argc != 2)
+	{
+		ft_error("ERROR: Input invalid!\n  Try:\n\t./minirt <scene>.rt\n");
+		clear_exit(NULL, 1);
+	}
+	fd = open(file, O_RDONLY, 0);
+	if (fd == -1)
+	{
+		ft_error("ERROR: Failed to open the scene, try another one.\n");
+		clear_exit(NULL, 1);
+	}
+	return (fd);
 }

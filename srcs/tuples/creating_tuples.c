@@ -12,9 +12,9 @@
 
 #include "../../includes/minirt.h"
 
-t_tuple creating_tuple(float x, float y, float z, float w)
+t_tuple	creating_tuple(float x, float y, float z, float w)
 {
-	t_tuple ret;
+	t_tuple	ret;
 
 	ret.x = x;
 	ret.y = y;
@@ -23,17 +23,17 @@ t_tuple creating_tuple(float x, float y, float z, float w)
 	return (ret);
 }
 
-t_tuple creating_point(float x, float y, float z)
+t_tuple	creating_point(float x, float y, float z)
 {
-    return(creating_tuple(x, y, z, 1));
+	return (creating_tuple(x, y, z, 1));
 }
 
-t_tuple creating_vector(float x, float y, float z)
+t_tuple	creating_vector(float x, float y, float z)
 {
-    return(creating_tuple(x, y, z, 0));
+	return (creating_tuple(x, y, z, 0));
 }
 
-t_tuple creating_color(float r, float g, float b)
+t_tuple	creating_color(float r, float g, float b)
 {
-    return(creating_tuple(r, g, b, 999999));
+	return (creating_tuple(r, g, b, 999999));
 }

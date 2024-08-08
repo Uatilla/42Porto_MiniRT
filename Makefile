@@ -43,7 +43,7 @@ MLXFLAGS	=	-lmlx -lXext -lX11 -lm
 
 # Files
 SRCS		=	main.c \
-				tuples/chk_tuples_typ.c tuples/creating_tuples.c tuples/operations_tuples.c\
+				tuples/chk_tuples_typ.c tuples/creating_tuples.c tuples/operations_tuples.c tuples/basic_operations_tuples.c\
 				input/input_checker.c \
 				objects/parse_objs.c \
 				ray/ray.c ray/intersections.c\

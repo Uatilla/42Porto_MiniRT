@@ -12,18 +12,18 @@
 
 #include "../../includes/minirt.h"
 
-void    clear_exit(t_minirt *mrt, int status)
+void	clear_exit(t_minirt *mrt, int status)
 {
-    if (!mrt)
-        exit(EXIT_FAILURE);
+	if (!mrt)
+		exit(EXIT_FAILURE);
 	if (mrt->objs)
 		clear_objs(mrt->objs);
-    exit(status);
+	exit(status);
 }
 
-void    ft_error(char *msg)
+void	ft_error(char *msg)
 {
-    ft_putstr_fd(msg, 2);
+	ft_putstr_fd(msg, 2);
 }
 
 void	clear_objs(void	*objs)
@@ -44,7 +44,7 @@ void	clear_objs(void	*objs)
 
 void	clear_ray_inter(t_minirt *data)
 {
-	t_intersections *ptr;
+	t_intersections	*ptr;
 
 	ptr = data->ray.inter;
 	while (ptr)
@@ -56,7 +56,7 @@ void	clear_ray_inter(t_minirt *data)
 	data->ray.first_hit = NULL;
 }
 
-/// @brief Clean all content of the struct Matrix and calls clear_exit if status != 0.
+/// @brief Clean all content of mtx and calls clear_exit if status != 0.
 /// @param mrt Main structure.
 /// @param mtx_struct Matrix Structure.
 /// @param status Error status (If not an error, 0)
