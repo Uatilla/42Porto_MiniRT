@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:02:44 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/07 21:56:56 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/08 22:41:42 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 // nao esquecer de setar a origem da camera(ray) e depois a direcao;
 // importante chamar clear_ray_inter depoins de check intersection;
+// comecar com start_mlx, e nao esquecer de chamar no fim:
+// 		mlx_put_image_to_window e mlx_loop
 int	main(void)
 {
 	t_minirt 	data;
@@ -22,7 +24,6 @@ int	main(void)
 	int			x;
 	float		world_x;
 	float		world_y;
-	t_vector	normal;
 	t_vector	eye;
 	t_color		color;
 
@@ -43,10 +44,8 @@ int	main(void)
 			check_intersections(&data, &(t_point){world_x, world_y, 5, 1});
 			if (data.ray.first_hit)
 			{
-				normal = normal_at((t_sphere *)data.objs, &data.ray.first_hit->point);
-				eye = negating_tuple(&data.ray.direction);
-				color = lighting(&((t_sphere *)data.objs)->material,
-					 			&light, &data.ray.first_hit->point, &eye, &normal);
+				light_vec(&data.ray, &light);
+				color = lighting(data.ray.first_hit, &light);
 				write_pixel(&data.canvas, x, y, &color);
 			}
 			clear_ray_inter(&data);

@@ -81,12 +81,23 @@ typedef	struct	s_intersections
 	int8_t					count;
 }	t_intersections;
 
-// 16 + 16 = 32 bytes
+// 16 * 6 = 96 bytes
 typedef	struct s_light
 {
-	t_point	position;
-	t_color	intensity;
+	t_point		position;
+	t_color		intensity;
+	t_vector	dir;
+	t_vector	reflect;
+	t_vector	eyev;
+	t_vector	normalv;
 }	t_light;
+
+typedef struct	s_phong
+{
+	t_color			ambient;
+	t_color			diffuse;
+	t_color 		spec;
+} t_phong;
 
 // 44 + 44 + (8 * 2) = 104 bytes
 typedef	struct	s_ray
@@ -117,12 +128,12 @@ typedef struct s_sphere
 	t_material			material;
 }	t_sphere;
 
-// 104 + 44 + 32 + (8 * 2) + 4 = 200 bytes
+// 104 + 96 + 44 + (8 * 2) + 4 = 254 bytes
 typedef struct s_minirt
 {
 	t_ray			ray;
-	t_canvas		canvas;
 	t_light			light;
+	t_canvas		canvas;
 	t_tuple     	*tuple;
 	void			*objs;
 	int				fd;
@@ -166,7 +177,11 @@ t_color		color_multiply(t_color *c1, t_color *c2);
 t_light		set_light(t_point *position, t_color *intensity);
 t_vector	normal_at(void *obj, t_point *point);
 t_vector	reflect(t_vector *in, t_vector *normal);
-t_tuple		lighting(t_material *m, t_light *light, t_point *point, t_vector *eyev, t_vector *normalv);
+t_color		lighting(t_intersections *inter, t_light *light);
+void		light_vec(t_ray *ray, t_light *light);
+t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
+void		light_is_behind_obj(t_color *diffuse, t_color *specular);
+t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
 
 //objects
 //parse_objs.c

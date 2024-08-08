@@ -53,9 +53,9 @@ void	parse_sphere(t_minirt *data)
 */
 void	set_materials(t_material *material)
 {
-	material->color = (t_color){1, 0.2, 1, 999999};
+	material->color = (t_color){1, 0.2, 0.8, 999999};
 	material->ambient = 0.1;
 	material->diffuse = 0.9;
 	material->specular = 0.9;
-	material->shininess = 200.0;
+	material->shininess = 100.0;
 }

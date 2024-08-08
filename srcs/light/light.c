@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:48:55 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/07 17:49:42 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/08 22:41:40 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,17 @@
 /*
  * sets the values for the light object
 */
-t_light	set_light(t_point *position, t_color *intensity)
+t_light	set_light(t_point *pos, t_color *intensity)
 {
-	return ((t_light){*position,*intensity});
+	t_light	light;
+
+	light.position = *pos;
+	light.intensity = *intensity;
+	light.eyev = (t_vector){0, 0, 0, 0};
+	light.normalv = (t_vector){0, 0, 0, 0};
+	light.reflect = (t_vector){0, 0, 0, 0};
+	light.dir = (t_vector){0, 0, 0, 0};
+	return (light);
 }
 
 /*
@@ -54,43 +62,35 @@ t_vector	reflect(t_vector *in, t_vector *normal)
 	return (vect);
 }
 
-t_tuple	lighting(t_material *m, t_light *light, t_point *point, t_vector *eyev, t_vector *normalv)
+/*
+*	does the phong reflection algorithm, returns the final collor
+*	acording to the relation with the light reflection and the camera
+*/
+t_color	lighting(t_intersections *inter, t_light *light)
 {
-	t_color		efective_color;
-	t_vector	lightv;
-	t_tuple		ambient;
-	float		light_dot_normal;
-	t_tuple			diffuse;
-	t_tuple 		specular;
-	t_vector		reflectv;
-	float			reflect_dot_eye;
+	t_color			color;
+	t_phong			phong;
+	float			light_normal_dot;
+	float			ref_dot_eye;
 	float			factor;
 
-	efective_color = color_multiply(&m->color, &light->intensity);
-	lightv = subtrac_tuples(&light->position, point);
-	lightv = normalize(&lightv);
-	ambient = mult_tuple_scalar(&efective_color, m->ambient);
-	light_dot_normal = dot_product(&lightv, normalv);
-	if (light_dot_normal < 0)
-	{
-		diffuse = (t_tuple){0,0,0,0};
-		specular = (t_tuple){0,0,0,0};
-	}
+	color = color_multiply(&((t_sphere *)inter->obj)->material.color,
+			&light->intensity);
+	phong.ambient = mult_tuple_scalar(&color,
+			((t_sphere *)inter->obj)->material.ambient);
+	light_normal_dot = dot_product(&light->dir, &light->normalv);
+	if (light_normal_dot < 0)
+		light_is_behind_obj(&phong.diffuse, &phong.spec);
 	else
 	{
-		diffuse = mult_tuple_scalar(&efective_color, m->diffuse * light_dot_normal);
-		reflectv = negating_tuple(&lightv);
-		reflectv = reflect(&reflectv, normalv);
-		reflect_dot_eye = dot_product(&reflectv, eyev);
-		if (reflect_dot_eye <= 0)
-			specular = (t_tuple){0,0,0,0};
+		phong.diffuse = mult_tuple_scalar(&color,
+				((t_sphere *)inter->obj)->material.diffuse * light_normal_dot);
+		ref_dot_eye = dot_product(&light->reflect, &light->eyev);
+		if (ref_dot_eye <= 0)
+			phong.spec = (t_color){0, 0, 0, 0};
 		else
-		{
-			factor = powf(reflect_dot_eye, m->shininess);
-			specular = mult_tuple_scalar(&light->intensity, m->specular * factor);
-		}
+			phong.spec = specular(&((t_sphere *)inter->obj)->material,
+					light, ref_dot_eye);
 	}
-	t_tuple add = sum_tuples(&ambient, &diffuse);
-	add = sum_tuples(&add, &specular);
-	return (add);
+	return (add_color3(&phong.ambient, &phong.diffuse, &phong.spec));
 }
