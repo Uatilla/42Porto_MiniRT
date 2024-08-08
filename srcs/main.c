@@ -12,12 +12,30 @@
 
 #include "../includes/minirt.h"
 
+/// @brief Multiple the components of two matrix.
+/// @param mtx_a 
+/// @param mtx_b 
+/// @return If matrix sizes are different, return NULL.
+t_matrix	*mtx_multiply(t_minirt *mrt, t_matrix *mtx_a, t_matrix *mtx_b)
+{
+	t_matrix	*mtx_res;
+
+	if (!mtx_size_compare(mtx_a, mtx_b))
+	{
+		printf("DIFF\n");
+		return (NULL);
+	}
+	mtx_res = mtx_create(mrt, mtx_a->rows, mtx_a->cols);
+	return (mtx_res);
+}
+
 int main(void)
 {
 
 	t_minirt	data;
 	t_matrix	*mtx;
-	t_point		point;
+	t_matrix	*mtx2;
+	t_matrix	*mtx_res;
 	int			x;
 	int			y;
     int rows;
@@ -26,15 +44,28 @@ int main(void)
 	rows = 4;
 	cols = 4;
 	ft_memset(&data, 0, sizeof(data));
-	mtx = creating_matrix(&data, rows, cols);
 	parse_objects(SP, &data);
 	parse_objects(SP, &data);
 	parse_objects(SP, &data);
 	parse_objects(SP, &data);
 	start_mlx(&data.canvas);
-	fill_mtx(mtx);
-	print_mtx(mtx);
+
+	mtx = mtx_create(&data, rows, cols);
+	mtx_fill(mtx);
+	mtx_print(mtx);
+	mtx2 = mtx_create(&data, rows, cols);
+	mtx_fill(mtx2);
+	mtx_print(mtx2);
+	
+	mtx_res = mtx_multiply(&data, mtx, mtx2);
+	if (mtx_res)
+	{
+		mtx_fill(mtx_res);
+		mtx_print(mtx_res);
+		clean_matrix(&data, mtx_res, 0);
+	}
 	clean_matrix(&data, mtx, 0);
+	clean_matrix(&data, mtx2, 0);
 
 	mlx_hook(data.canvas.win, 17, 0L, close_window, &data);
 	mlx_key_hook(data.canvas.win, &handle_key_event, &data);

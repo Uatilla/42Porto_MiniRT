@@ -119,6 +119,9 @@ typedef struct s_minirt
 //MACRO
 # define EPSILON 0.00001
 # define ZERO_TUPLE (t_tuple){{0, 0, 0, 0}}
+# define BOTH 0
+# define FIRST 1
+# define SECOND 2
 # define WIDTH 1000
 # define HEIGTH 850
 # define ESC 65307
@@ -132,6 +135,7 @@ t_tuple		creating_vector(float x, float y, float z);
 t_tuple		creating_color(float r, float g, float b);
 
 //chk_tuples.typ.c
+bool		compare_float(float a, float b);
 bool		is_point(t_tuple *tuple);
 bool		is_vector(t_tuple *tuple);
 bool		is_color(t_tuple *tuple);
@@ -197,11 +201,13 @@ int			handle_key_event(int key_pressed, void *param);
 
 //Matrix
 //matrix.c
-bool		check_mtx_size(t_matrix *mtx, int rows, int cols);
-t_matrix	*creating_matrix(t_minirt *data, int rows, int cols);
+bool		mtx_chk_size(t_matrix *mtx, int rows, int cols);
+bool		mtx_size_compare(t_matrix *mtx_a, t_matrix *mtx_b);
+bool		mtx_compare(t_matrix *mtx_a, t_matrix *mtx_b);
+t_matrix	*mtx_create(t_minirt *data, int rows, int cols);
 
 //FUNCOES TEMPORARIAS APENAS PARA TESTE!!!!!VVVVVVVVV
-void		fill_mtx(t_matrix *mtx);
-void		print_mtx(t_matrix *mtx);
+void		mtx_fill(t_matrix *mtx);
+void		mtx_print(t_matrix *mtx);
 //FUNCOES TEMPORARIAS APENAS PARA TESTE!!!!!^^^^^^^^^^^
 #endif

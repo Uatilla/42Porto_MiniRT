@@ -12,12 +12,22 @@
 
 #include "../../includes/minirt.h"
 
-bool	check_mtx_size(t_matrix *mtx, int rows, int cols)
+/// @brief Check if the size of a matrix is equal rows and cols
+/// @param mtx 
+/// @param rows 
+/// @param cols 
+/// @return True or False
+bool	mtx_chk_size(t_matrix *mtx, int rows, int cols)
 {
 	return (rows == mtx->rows && cols == mtx->rows);
 }
 
-t_matrix	*creating_matrix(t_minirt *data, int rows, int cols)
+/// @brief Create a new t_matrix.
+/// @param data main structure.
+/// @param rows number of rows.
+/// @param cols number of columns.
+/// @return A pointer to the t_matrix node.
+t_matrix	*mtx_create(t_minirt *data, int rows, int cols)
 {
 	t_matrix	*mtx_struct;
 	int			curr_row;
@@ -42,7 +52,7 @@ t_matrix	*creating_matrix(t_minirt *data, int rows, int cols)
 }
 
 //FUNCAO TEMPORARIA APENAS PARA FINS DE TESTE!!
-void	fill_mtx(t_matrix *mtx)
+void	mtx_fill(t_matrix *mtx)
 {
 	int	value;
 	int	i;
@@ -62,7 +72,7 @@ void	fill_mtx(t_matrix *mtx)
 	}
 }
 
-void	print_mtx(t_matrix *mtx)//FUNCAO TEMPORARIA APENAS PARA FINS DE TESTE!!
+void	mtx_print(t_matrix *mtx)//FUNCAO TEMPORARIA APENAS PARA FINS DE TESTE!!
 {
 	int	value;
 	int	i;
@@ -81,4 +91,40 @@ void	print_mtx(t_matrix *mtx)//FUNCAO TEMPORARIA APENAS PARA FINS DE TESTE!!
 		}
 		printf("\n");
 	}
+}
+
+/// @brief Compare the size of two matrix.
+/// @param mtx_a 
+/// @param mtx_b 
+/// @return True or False
+bool	mtx_size_compare(t_matrix *mtx_a, t_matrix *mtx_b)
+{
+	return(mtx_a->rows == mtx_b->rows && mtx_a->cols == mtx_b->cols);
+}
+
+/// @brief Compare the size and components in each matrix position.
+/// @param mtx_a 
+/// @param mtx_b 
+/// @return True or False
+bool	mtx_compare(t_matrix *mtx_a, t_matrix *mtx_b)
+{
+	int	i;
+	int	j;
+
+	if (mtx_size_compare(mtx_a, mtx_b))
+	{
+		i = -1;
+		while (++i < mtx_a->rows)
+		{
+			j = -1;
+			while (++j < mtx_a->cols)
+			{
+				if (!compare_float(mtx_a->mtx[i][j], mtx_b->mtx[i][j]))
+					return (false);
+			}
+		}
+		return (true);
+	}
+	else
+		return (false);
 }

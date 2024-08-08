@@ -12,19 +12,25 @@
 
 #include "../../includes/minirt.h"
 
+bool	compare_float(float a, float b)
+{
+	//printf("%f\n", (fabs(a -b)));
+	return((fabs(a - b) < EPSILON));
+}
+
 bool	is_point(t_tuple *tuple)
 {
-	return (fabs(tuple->w - 1) < EPSILON);
+	return (compare_float(tuple->w, 1));
 }
 
 bool	is_vector(t_tuple *tuple)
 {
-	return (fabs(tuple->w - 0) < EPSILON);
+	return (compare_float(tuple->w, 0));
 }
 
 bool	is_color(t_tuple *tuple)
 {
-	return (fabs(tuple->w - 999999) < EPSILON);
+	return (compare_float(tuple->w, 999999));
 }
 
 /// @brief Checks if all elements of the tuple are equal (X, Y, Z, W).
