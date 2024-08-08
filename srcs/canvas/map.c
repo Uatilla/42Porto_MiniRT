@@ -13,7 +13,7 @@
 #include "../../includes/minirt.h"
 
 /*
- * map the x from the window to our world
+ * map the x from the window pixel to world coordenates
 */
 float	map_x(float x, float world_min, float world_max)
 {
@@ -21,7 +21,7 @@ float	map_x(float x, float world_min, float world_max)
 }
 
 /*
- * map the y from the window to our world
+ * map the y from the window pixel to world coordenates
 */
 float	map_y(float y, float world_min, float world_max)
 {
