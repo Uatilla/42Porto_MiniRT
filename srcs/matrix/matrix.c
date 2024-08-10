@@ -60,7 +60,7 @@ void	mtx_fill(t_matrix *mtx)
 
 	printf("\n\nmatrix.c/fill_mtx(): ATENCAO ESSA \
 		FUNCAO SO TEM FINALIDADE DE TESTE.\n\n");
-	value = 0;
+	value = 7;
 	i = -1;
 	while (++i < mtx->rows)
 	{
@@ -99,7 +99,7 @@ void	mtx_print(t_matrix *mtx)//FUNCAO TEMPORARIA APENAS PARA FINS DE TESTE!!
 /// @return True or False
 bool	mtx_size_compare(t_matrix *mtx_a, t_matrix *mtx_b)
 {
-	return(mtx_a->rows == mtx_b->rows && mtx_a->cols == mtx_b->cols);
+	return (mtx_a->rows == mtx_b->rows && mtx_a->cols == mtx_b->cols);
 }
 
 /// @brief Compare the size and components in each matrix position.

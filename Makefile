@@ -51,7 +51,7 @@ SRCS		=	main.c \
 				sphere/sphere.c \
 				exit/exit_cleaner.c \
 				mlx/mlx.c \
-				matrix/matrix.c 
+				matrix/matrix.c matrix/matrix_mult.c
 OBJS		=	$(SRCS:%.c=$(OBJS_DIR)/%.o)
 LIBFT		=	$(LIBFT_DIR)/libft.a
 LIBMLX		=	$(MLX_DIR)/libmlx.a

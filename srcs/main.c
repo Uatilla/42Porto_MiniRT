@@ -12,23 +12,6 @@
 
 #include "../includes/minirt.h"
 
-/// @brief Multiple the components of two matrix.
-/// @param mtx_a 
-/// @param mtx_b 
-/// @return If matrix sizes are different, return NULL.
-t_matrix	*mtx_multiply(t_minirt *mrt, t_matrix *mtx_a, t_matrix *mtx_b)
-{
-	t_matrix	*mtx_res;
-
-	if (!mtx_size_compare(mtx_a, mtx_b))
-	{
-		printf("DIFF\n");
-		return (NULL);
-	}
-	mtx_res = mtx_create(mrt, mtx_a->rows, mtx_a->cols);
-	return (mtx_res);
-}
-
 int main(void)
 {
 
