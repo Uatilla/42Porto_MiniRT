@@ -211,6 +211,8 @@ float		get_mtx_value(t_matrix *mtx, int row, int col);
 float		mult_mtx_row_col(t_matrix *mtx_a, t_matrix *mtx_b,
 				int row, int col);
 t_matrix	*mtx_multiply(t_minirt *mrt, t_matrix *mtx_a, t_matrix *mtx_b);
+t_tuple		mtx_mult_tuple(t_matrix *mtx_a, t_tuple *tup);
+float		mult_mtx_row_tuple(t_matrix *mtx_a, t_tuple *tup, int row);
 
 //FUNCOES TEMPORARIAS APENAS PARA TESTE!!!!!VVVVVVVVV
 void		mtx_fill(t_matrix *mtx);

@@ -60,7 +60,7 @@ void	mtx_fill(t_matrix *mtx)
 
 	printf("\n\nmatrix.c/fill_mtx(): ATENCAO ESSA \
 		FUNCAO SO TEM FINALIDADE DE TESTE.\n\n");
-	value = 7;
+	value = 27;
 	i = -1;
 	while (++i < mtx->rows)
 	{

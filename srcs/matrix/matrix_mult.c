@@ -47,7 +47,6 @@ t_matrix	*mtx_multiply(t_minirt *mrt, t_matrix *mtx_a, t_matrix *mtx_b)
 	int			row;
 	int			col;
 
-	(void)mrt;
 	if (!mtx_size_compare(mtx_a, mtx_b))
 		return (NULL);
 	mtx_res = mtx_create(mrt, mtx_a->rows, mtx_a->cols);
@@ -59,4 +58,40 @@ t_matrix	*mtx_multiply(t_minirt *mrt, t_matrix *mtx_a, t_matrix *mtx_b)
 			mtx_res->mtx[row][col] = mult_mtx_row_col(mtx_a, mtx_b, row, col);
 	}
 	return (mtx_res);
+}
+
+/// @brief Multiple a matrix row with a tuple position.
+/// @param mtx_a 
+/// @param tup 
+/// @param row 
+/// @return return a float that represent the multiplication.
+float	mult_mtx_row_tuple(t_matrix *mtx_a, t_tuple *tup, int row)
+{
+	float	res;
+	int		i;
+	float	*ptr;
+
+	res = 0;
+	i = -1;
+	ptr = (float *)tup;
+	while (++i < mtx_a->cols)
+		res += mtx_a->mtx[row][i] * ptr[i];
+	return (res);
+}
+
+/// @brief Multiple a matrix with a tuple.
+/// @param mtx_a 
+/// @param tup 
+/// @return A new tuple with the multiplication done.
+t_tuple	mtx_mult_tuple(t_matrix *mtx_a, t_tuple *tup)
+{
+	t_tuple		tup_res;
+	int			i;
+	float	*ptr_res;
+
+	ptr_res = (float *)&tup_res;
+	i = -1;
+	while (++i < mtx_a->rows)
+		ptr_res[i] = mult_mtx_row_tuple(mtx_a, tup, i);
+	return (tup_res);
 }

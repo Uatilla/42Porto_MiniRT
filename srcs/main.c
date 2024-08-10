@@ -18,7 +18,8 @@ int main(void)
 	t_minirt	data;
 	t_matrix	*mtx;
 	t_matrix	*mtx2;
-	t_matrix	*mtx_res;
+	t_tuple		tuple_res;
+	t_tuple	tup;
 	int			x;
 	int			y;
     int rows;
@@ -36,19 +37,23 @@ int main(void)
 	mtx = mtx_create(&data, rows, cols);
 	mtx_fill(mtx);
 	mtx_print(mtx);
-	mtx2 = mtx_create(&data, rows, cols);
+	/*mtx2 = mtx_create(&data, rows, cols);
 	mtx_fill(mtx2);
-	mtx_print(mtx2);
+	mtx_print(mtx2);*/
+
+	tup.x = 19;
+	tup.y = 22;
+	tup.z = 13;
+	tup.w = 7;
 	
-	mtx_res = mtx_multiply(&data, mtx, mtx2);
-	if (mtx_res)
-	{
-		mtx_fill(mtx_res);
-		mtx_print(mtx_res);
-		clean_matrix(&data, mtx_res, 0);
-	}
+	tuple_res = mtx_mult_tuple(mtx, &tup);
+	printf("X: %f\n", tuple_res.x);
+	printf("Y: %f\n", tuple_res.y);
+	printf("Z: %f\n", tuple_res.z);
+	printf("W: %f\n", tuple_res.w);
+	
 	clean_matrix(&data, mtx, 0);
-	clean_matrix(&data, mtx2, 0);
+	//clean_matrix(&data, mtx2, 0);
 
 	mlx_hook(data.canvas.win, 17, 0L, close_window, &data);
 	mlx_key_hook(data.canvas.win, &handle_key_event, &data);
