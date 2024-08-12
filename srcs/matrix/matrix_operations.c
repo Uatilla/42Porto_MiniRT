@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   matrix_mult.c                                      :+:      :+:    :+:   */
+/*   matrix_operations.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 17:49:57 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/10 17:49:59 by uviana-a         ###   ########.fr       */
+/*   Updated: 2024/08/12 11:49:54 by uviana-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ float	mult_mtx_row_col(t_matrix *mtx_a, t_matrix *mtx_b, int row, int col)
 	return (res);
 }
 
-/// @brief Multiple the components of two matrix.
-/// @param mtx_a 
-/// @param mtx_b 
-/// @return If matrix sizes are different (rows and cols), return NULL.
+/// @brief Allocate memory for a new mtx and put the values:(mtx_a * mtx_b).
+/// @param mtx_a First matrix to multiply.
+/// @param mtx_b Second matrix to multiply.
+/// @return If mtx sizes are diff, return NULL without any memory allocation.
 t_matrix	*mtx_multiply(t_minirt *mrt, t_matrix *mtx_a, t_matrix *mtx_b)
 {
 	t_matrix	*mtx_res;
@@ -80,14 +80,14 @@ float	mult_mtx_row_tuple(t_matrix *mtx_a, t_tuple *tup, int row)
 }
 
 /// @brief Multiple a matrix with a tuple.
-/// @param mtx_a 
-/// @param tup 
+/// @param mtx_a Matrix to be multiplied.
+/// @param tup Tuple to be multiplied.
 /// @return A new tuple with the multiplication done.
 t_tuple	mtx_mult_tuple(t_matrix *mtx_a, t_tuple *tup)
 {
-	t_tuple		tup_res;
-	int			i;
+	t_tuple	tup_res;
 	float	*ptr_res;
+	int		i;
 
 	ptr_res = (float *)&tup_res;
 	i = -1;

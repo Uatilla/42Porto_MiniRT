@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   matrix.c                                           :+:      :+:    :+:   */
+/*   matrix_validations.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:57:14 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/07 19:57:18 by uviana-a         ###   ########.fr       */
+/*   Updated: 2024/08/12 11:49:47 by uviana-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ void	mtx_fill(t_matrix *mtx)
 	int	i;
 	int	j;
 
-	printf("\n\nmatrix.c/fill_mtx(): ATENCAO ESSA \
-		FUNCAO SO TEM FINALIDADE DE TESTE.\n\n");
-	value = 27;
+	printf("\nmatrix_validation.c/fill_mtx():\
+		ATENCAO ESSA FUNCAO SO TEM FINALIDADE DE TESTE.");
+	value = 17;
 	i = -1;
 	while (++i < mtx->rows)
 	{
@@ -78,8 +78,8 @@ void	mtx_print(t_matrix *mtx)//FUNCAO TEMPORARIA APENAS PARA FINS DE TESTE!!
 	int	i;
 	int	j;
 
-	printf("\n\nmatrix.c/print_mtx(): ATENCAO ESSA \
-		FUNCAO SO TEM FINALIDADE DE TESTE.\n\n");
+	printf("\n\nmatrix_validation.c/mtx_print():\
+		ATENCAO ESSA FUNCAO SO TEM FINALIDADE DE TESTE.\n\n");
 	value = 0;
 	i = -1;
 	while (++i < mtx->rows)
@@ -127,4 +127,23 @@ bool	mtx_compare(t_matrix *mtx_a, t_matrix *mtx_b)
 	}
 	else
 		return (false);
+}
+
+/// @brief Fill mtx as identity mtx.
+/// @param mtx Matrix to be turned into identity matrix.
+void	fill_idnty_mtx(t_matrix *mtx)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < mtx->rows)
+	{
+		j = -1;
+		while (++j < mtx->cols)
+		{
+			if (i == j)
+				mtx->mtx[i][j] = 1;
+		}
+	}
 }

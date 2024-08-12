@@ -12,14 +12,41 @@
 
 #include "../includes/minirt.h"
 
+void	mtx_fill_value(t_matrix *mtx)
+{
+	mtx->mtx[0][0] = -5;
+	mtx->mtx[0][1] = 2;
+	mtx->mtx[0][2] = 6;
+	mtx->mtx[0][3] = -8;
+
+	mtx->mtx[1][0] = 1;
+	mtx->mtx[1][1] = -5;
+	mtx->mtx[1][2] = 1;
+	mtx->mtx[1][3] = 8;
+
+	mtx->mtx[2][0] = 7;
+	mtx->mtx[2][1] = 7;
+	mtx->mtx[2][2] = -6;
+	mtx->mtx[2][3] = -7;
+
+	mtx->mtx[3][0] = 1;
+	mtx->mtx[3][1] = -3;
+	mtx->mtx[3][2] = 7;
+	mtx->mtx[3][3] = 4;
+}
+
 int main(void)
 {
 
 	t_minirt	data;
-	t_matrix	*mtx;
-	t_matrix	*mtx2;
-	t_tuple		tuple_res;
-	t_tuple	tup;
+	t_matrix	*mtx_a;
+	t_matrix	*mtx_b;
+	t_matrix	*mtx_c;
+
+
+	float	determ_a;
+	float	determ_b;
+
 	int			x;
 	int			y;
     int rows;
@@ -34,26 +61,35 @@ int main(void)
 	parse_objects(SP, &data);
 	start_mlx(&data.canvas);
 
-	mtx = mtx_create(&data, rows, cols);
-	mtx_fill(mtx);
-	mtx_print(mtx);
-	/*mtx2 = mtx_create(&data, rows, cols);
-	mtx_fill(mtx2);
-	mtx_print(mtx2);*/
+	printf("\n=======BEFORE======\n");
+	mtx_a = mtx_create(&data, rows, cols);
+	mtx_b = mtx_create(&data, rows, cols);
+	
+	mtx_fill_value(mtx_a);
+	mtx_fill(mtx_b);
 
-	tup.x = 19;
-	tup.y = 22;
-	tup.z = 13;
-	tup.w = 7;
+	mtx_print(mtx_a);
+	mtx_print(mtx_b);
+
+	determ_a = determinant(&data, mtx_a);
+	printf("Determ A: %f\n", determ_a);
+
+	determ_b = determinant(&data, mtx_b);
+	printf("Determ B: %f\n", determ_b);
+
+	mtx_c = mtx_inverse(&data, mtx_a);
+	printf("\n=======AFTER======\n");
+
+	clean_matrix(&data, mtx_a, 0);
+	clean_matrix(&data, mtx_b, 0);
+	if (mtx_c)
+	{
+		mtx_print(mtx_c);
+		clean_matrix(&data, mtx_c, 0);
+	}
 	
-	tuple_res = mtx_mult_tuple(mtx, &tup);
-	printf("X: %f\n", tuple_res.x);
-	printf("Y: %f\n", tuple_res.y);
-	printf("Z: %f\n", tuple_res.z);
-	printf("W: %f\n", tuple_res.w);
+
 	
-	clean_matrix(&data, mtx, 0);
-	//clean_matrix(&data, mtx2, 0);
 
 	mlx_hook(data.canvas.win, 17, 0L, close_window, &data);
 	mlx_key_hook(data.canvas.win, &handle_key_event, &data);
