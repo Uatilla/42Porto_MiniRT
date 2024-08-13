@@ -14,6 +14,12 @@
 
 /*
  * Finds the t position along the ray.
+ * P(t) = O + Dt
+ * O -> the ray origim
+ * D -> Normalize direction
+ * t -> units along the ray
+ *
+ * returns a the point t along the ray
 */
 t_tuple	position(t_ray *ray, float t)
 {

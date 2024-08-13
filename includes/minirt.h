@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/05 22:05:32 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/07 20:35:52 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,15 +78,34 @@ typedef struct s_matrix
 	float	**mtx;
 }	t_matrix;
 
-// [4 * 2] + (8 * 3) + 1 = 33 bytes
-typedef struct s_intersections
+// 16 + [4 * 2] + (8 * 3) + 1 = 49 bytes
+typedef	struct	s_intersections
 {
+	t_point					point;
 	float					t[2];
-	float					*hit;
+	float					hit;
 	void					*obj;
 	struct s_intersections	*next;
 	int8_t					count;
 }	t_intersections;
+
+// 16 * 6 = 96 bytes
+typedef	struct s_light
+{
+	t_point		position;
+	t_color		intensity;
+	t_vector	dir;
+	t_vector	reflect;
+	t_vector	eyev;
+	t_vector	normalv;
+}	t_light;
+
+typedef struct	s_phong
+{
+	t_color			ambient;
+	t_color			diffuse;
+	t_color 		spec;
+} t_phong;
 
 // 44 + 44 + (8 * 2) = 104 bytes
 typedef struct s_ray
@@ -97,19 +116,31 @@ typedef struct s_ray
 	t_intersections	*first_hit;
 }	t_ray;
 
-// 44 + 8 + 4 + 4 = 60
+// 16 + (4 * 4) = 32 bytes
+typedef	struct s_material
+{
+	t_color	color;
+	float	ambient;
+	float	diffuse;
+	float	specular;
+	float	shininess;
+} t_material;
+
+// 16 + 8 + 4 + 4 = 32 bytes
 typedef struct s_sphere
 {
 	t_point				center;
 	void				*next;
 	enum e_identifyer	type;
 	float				diameter;
+	t_material			material;
 }	t_sphere;
 
-// 104 + 44 + (8 * 2) + 4 = 168 bytes
+// 104 + 96 + 44 + (8 * 2) + 4 = 254 bytes
 typedef struct s_minirt
 {
 	t_ray			ray;
+	t_light			light;
 	t_canvas		canvas;
 	t_tuple			*tuple;
 	void			*objs;
@@ -118,12 +149,12 @@ typedef struct s_minirt
 
 //MACRO
 # define EPSILON 0.00001
-# define ZERO_TUPLE (t_tuple){{0, 0, 0, 0}}
+# define ZERO_TUPLE (t_tuple){0, 0, 0, 0}
+# define WIDTH 900
+# define HEIGTH 900
 # define BOTH 0
 # define FIRST 1
 # define SECOND 2
-# define WIDTH 1000
-# define HEIGTH 850
 # define ESC 65307
 
 //FUNCTIONS
@@ -133,6 +164,7 @@ t_tuple		creating_tuple(float x, float y, float z, float w);
 t_tuple		creating_point(float x, float y, float z);
 t_tuple		creating_vector(float x, float y, float z);
 t_tuple		creating_color(float r, float g, float b);
+
 
 //chk_tuples.typ.c
 bool		compare_float(float a, float b);
@@ -148,16 +180,33 @@ t_tuple		negating_tuple(t_tuple *a);
 t_tuple		mult_tuple_scalar(t_tuple *a, float sc);
 
 //operations_tuples.c
+t_tuple		sum_tuples(t_tuple *a, t_tuple *b);
+t_tuple		subtrac_tuples(t_tuple *a, t_tuple *b);
+t_tuple		negating_tuple(t_tuple *a);
+t_tuple		mult_tuple_scalar(t_tuple *a, float sc);
+float  		dot_product(t_tuple *a, t_tuple *b);
+float  		magnitude(t_tuple *a);
+t_tuple		normalize(t_tuple *a);
 t_tuple		cross_product(t_tuple *a, t_tuple *b);
 t_tuple		div_tuple_scalar(t_tuple *a, float sc);
-t_tuple		normalize(t_tuple *a);
-float		dot_product(t_tuple *a, t_tuple *b);
-float		magnitude(t_tuple *a);
+t_color		color_multiply(t_color *c1, t_color *c2);
+
+//light
+//light.c
+t_light		set_light(t_point *position, t_color *intensity);
+t_vector	normal_at(void *obj, t_point *point);
+t_vector	reflect(t_vector *in, t_vector *normal);
+t_color		lighting(t_intersections *inter, t_light *light);
+void		light_vec(t_ray *ray, t_light *light);
+t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
+void		light_is_behind_obj(t_color *diffuse, t_color *specular);
+t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
 
 //objects
 //parse_objs.c
-void		parse_objects(enum e_identifyer type, t_minirt *data);
-void		parse_sphere(t_minirt *data);
+void   		parse_objects(enum e_identifyer type, t_minirt *data);
+void   		parse_sphere(t_minirt *data);
+void		set_materials(t_material	*material);
 
 //ray
 //ray.c
@@ -166,13 +215,13 @@ t_tuple		position(t_ray *ray, float t);
 //sphere
 //sphere.c
 int8_t		ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t);
-void		first_hit(t_ray *ray);
 
 //intersections.c
-void		ray_intersections(t_minirt *data, void *obj);
-void		check_intersections(t_minirt *data, t_point *point);
-void		first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
-void		append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
+void   		ray_intersections(t_minirt *data, void *obj);
+void   		check_intersections(t_minirt *data, t_point *point);
+void   		first_hit(t_ray *ray);
+void   		first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
+void   		append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
 
 //map
 //map.c

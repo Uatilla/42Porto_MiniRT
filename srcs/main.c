@@ -6,110 +6,54 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:02:44 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/03 19:15:50 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/08 22:41:42 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 
-void	mtx_fill_value(t_matrix *mtx)
+// nao esquecer de setar a origem da camera(ray) e depois a direcao;
+// importante chamar clear_ray_inter depoins de check intersection;
+// comecar com start_mlx, e nao esquecer de chamar no fim:
+// 		mlx_put_image_to_window e mlx_loop
+int	main(void)
 {
-	mtx->mtx[0][0] = 3;
-	mtx->mtx[0][1] = -9;
-	mtx->mtx[0][2] = 7;
-	mtx->mtx[0][3] = 3;
-
-	mtx->mtx[1][0] = 3;
-	mtx->mtx[1][1] = -8;
-	mtx->mtx[1][2] = 2;
-	mtx->mtx[1][3] = -9;
-
-	mtx->mtx[2][0] = -4;
-	mtx->mtx[2][1] = 4;
-	mtx->mtx[2][2] = 4;
-	mtx->mtx[2][3] = 1;
-
-	mtx->mtx[3][0] = -6;
-	mtx->mtx[3][1] = 5;
-	mtx->mtx[3][2] = -1;
-	mtx->mtx[3][3] = 1;
-}
-
-void	mtx_fill_value_b(t_matrix *mtx)
-{
-	mtx->mtx[0][0] = 8;
-	mtx->mtx[0][1] = 2;
-	mtx->mtx[0][2] = 2;
-	mtx->mtx[0][3] = 2;
-
-	mtx->mtx[1][0] = 3;
-	mtx->mtx[1][1] = -1;
-	mtx->mtx[1][2] = 7;
-	mtx->mtx[1][3] = 0;
-
-	mtx->mtx[2][0] = 7;
-	mtx->mtx[2][1] = 0;
-	mtx->mtx[2][2] = 5;
-	mtx->mtx[2][3] = 4;
-
-	mtx->mtx[3][0] = 6;
-	mtx->mtx[3][1] = -2;
-	mtx->mtx[3][2] = 0;
-	mtx->mtx[3][3] = 5;
-}
-
-int main(void)
-{
-
-	t_minirt	data;
-	t_matrix	*mtx_a;
-	t_matrix	*mtx_a_inv;
-	t_matrix	*mtx_res;
-
-
-	float	determ_a;
-	float	determ_a_inv;
-
-	int			x;
+	t_minirt 	data;
+	t_light		light;
 	int			y;
-    int rows;
-    int cols;
+	int			x;
+	float		world_x;
+	float		world_y;
+	t_vector	eye;
+	t_color		color;
 
-	rows = 4;
-	cols = 4;
 	ft_memset(&data, 0, sizeof(data));
-	parse_objects(SP, &data);
-	parse_objects(SP, &data);
-	parse_objects(SP, &data);
-	parse_objects(SP, &data);
 	start_mlx(&data.canvas);
+	parse_objects(SP, &data);
+	light = set_light(&(t_point){-10,10,-10,1}, &(t_color){1,1,1,999999});
+	data.ray.origin = (t_point){0,0,-5,1};
 
-	printf("\n=======MATRIX A======\n");
-	mtx_a = mtx_create(&data, rows, cols);
-	mtx_fill_value(mtx_a);
-	mtx_print(mtx_a);
-	determ_a = determinant(&data, mtx_a);
-	printf("Determ A: %f\n", determ_a);
-
-	printf("\n=======MATRIX A (inverse)======\n");
-
-	mtx_a_inv = mtx_inverse(&data, mtx_a);
-	mtx_print(mtx_a_inv);
-	determ_a_inv = determinant(&data, mtx_a_inv);
-	printf("Determ A (inverse): %f\n", determ_a_inv);
-
-	printf("\n=======MATRIX A * A(inverse)======\n");
-	mtx_res = mtx_multiply(&data, mtx_a, mtx_a_inv);
-	mtx_print(mtx_res);
-
-
-	clean_matrix(&data, mtx_a, 0);
-	clean_matrix(&data, mtx_a_inv, 0);
-	clean_matrix(&data, mtx_res, 0);
-
+	y = -1;
+	while (++y < HEIGTH)
+	{
+		x = -1;
+		while (++x < WIDTH)
+		{
+			world_x = map_x(x, -5, 5);
+			world_y = map_y(y, -5, 5);
+			check_intersections(&data, &(t_point){world_x, world_y, 5, 1});
+			if (data.ray.first_hit)
+			{
+				light_vec(&data.ray, &light);
+				color = lighting(data.ray.first_hit, &light);
+				write_pixel(&data.canvas, x, y, &color);
+			}
+			clear_ray_inter(&data);
+		}
+	}
+	mlx_put_image_to_window(data.canvas.mlx, data.canvas.win, data.canvas.img, 0, 0);
 	mlx_hook(data.canvas.win, 17, 0L, close_window, &data);
 	mlx_key_hook(data.canvas.win, &handle_key_event, &data);
 	mlx_loop(data.canvas.mlx);
 	clear_exit(&data, 0);
-    return 0;
 }

@@ -66,3 +66,11 @@ t_tuple	cross_product(t_tuple *a, t_tuple *b)
 			(a->z * b->x) - (a->x * b->z), \
 			(a->x * b->y) - (a->y * b->x), 0));
 }
+
+t_color	color_multiply(t_color *c1, t_color *c2)
+{
+	return ((t_color){{c1->r * c2->r,
+						c1->g * c2->g,
+		 				c1->b * c2->b,
+		 				c1->w * c2->w}});
+}
