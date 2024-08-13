@@ -48,8 +48,10 @@ t_matrix	*mtx_inverse(t_minirt *mrt, t_matrix *mtx)
 	while (++row < mtx->rows)
 	{
 		col = -1;
-		while (++col < mtx->cols) /*LOOK AT THIS FUNCTION*/
-				mtx_res->mtx[row][col] =  cofactor(mrt, mtx, row, col) / determ;
+		while (++col < mtx->cols) /*LOOK AT THIS FUNCTION VALIDAR COFACTOR*/
+				printf("[%d][%d]: Cofa: %f Det: %f\n", row, col, cofactor(mrt, mtx, row, col), determ);
+				//mtx_res->mtx[row][col] =  cofactor(mrt, mtx, row, col) / determ;
+		printf("\n");
 	}
 	return (mtx_res);
 }
