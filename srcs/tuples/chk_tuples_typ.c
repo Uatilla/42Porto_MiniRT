@@ -14,8 +14,7 @@
 
 bool	compare_float(float a, float b)
 {
-	//printf("%f\n", (fabs(a -b)));
-	return((fabs(a - b) < EPSILON));
+	return ((fabs(a - b) < EPSILON));
 }
 
 bool	is_point(t_tuple *tuple)

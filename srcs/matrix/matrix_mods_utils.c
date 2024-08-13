@@ -29,29 +29,26 @@ float	cofactor(t_minirt *mrt, t_matrix *mtx, int row, int col)
 /// @brief Calculates the inverse matrix.
 /// @param mrt Main structure.
 /// @param mtx Matrix to find the inverse.
-/// @return If there is no determinant == NULL.
+/// @return If there is no determinant == NULL, otherwise a new mtx.
 t_matrix	*mtx_inverse(t_minirt *mrt, t_matrix *mtx)
 {
 	t_matrix	*mtx_res;
 	float		determ;
-	int		row;
-	int		col;
-	
-  
+	int			row;
+	int			col;
+
 	determ = determinant(mrt, mtx);
 	if (compare_float(determ, 0))
-        return (NULL);
-    mtx_res = mtx_create(mrt, mtx->rows, mtx->cols);
+		return (NULL);
+	mtx_res = mtx_create(mrt, mtx->rows, mtx->cols);
 	if (!mtx_res)
 		clean_matrix(mrt, mtx_res, errno);
 	row = -1;
 	while (++row < mtx->rows)
 	{
 		col = -1;
-		while (++col < mtx->cols) /*LOOK AT THIS FUNCTION VALIDAR COFACTOR*/
-				printf("[%d][%d]: Cofa: %f Det: %f\n", row, col, cofactor(mrt, mtx, row, col), determ);
-				//mtx_res->mtx[row][col] =  cofactor(mrt, mtx, row, col) / determ;
-		printf("\n");
+		while (++col < mtx->cols)
+			mtx_res->mtx[row][col] = cofactor(mrt, mtx, row, col) / determ;
 	}
-	return (mtx_res);
+	return (mtx_transpose(mrt, mtx_res));
 }

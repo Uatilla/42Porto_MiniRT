@@ -51,48 +51,6 @@ t_matrix	*mtx_create(t_minirt *data, int rows, int cols)
 	return (mtx_struct);
 }
 
-//FUNCAO TEMPORARIA APENAS PARA FINS DE TESTE!!
-void	mtx_fill(t_matrix *mtx)
-{
-	int	value;
-	int	i;
-	int	j;
-
-	printf("\nmatrix_validation.c/fill_mtx():\
-		ATENCAO ESSA FUNCAO SO TEM FINALIDADE DE TESTE.");
-	value = 17;
-	i = -1;
-	while (++i < mtx->rows)
-	{
-		j = -1;
-		while (++j < mtx->cols)
-		{
-			mtx->mtx[i][j] = value++;
-		}
-	}
-}
-
-void	mtx_print(t_matrix *mtx)//FUNCAO TEMPORARIA APENAS PARA FINS DE TESTE!!
-{
-	int	value;
-	int	i;
-	int	j;
-
-	printf("\n\nmatrix_validation.c/mtx_print():\
-		ATENCAO ESSA FUNCAO SO TEM FINALIDADE DE TESTE.\n\n");
-	value = 0;
-	i = -1;
-	while (++i < mtx->rows)
-	{
-		j = -1;
-		while (++j < mtx->cols)
-		{
-			printf("%f | ", mtx->mtx[i][j]);
-		}
-		printf("\n");
-	}
-}
-
 /// @brief Compare the size of two matrix.
 /// @param mtx_a 
 /// @param mtx_b 

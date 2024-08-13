@@ -89,14 +89,14 @@ t_matrix	*submatrix(t_minirt *mrt, t_matrix *mtx, int excl_row, int excl_col)
 float	determinant(t_minirt *mrt, t_matrix *mtx)
 {
 	float	determ;
-	int			i;
-	int			col;
+	int		i;
+	int		col;
 
 	(void)mrt;
 	determ = 0;
 	i = -1;
 	if (mtx->rows == 2 && mtx->cols == 2)
-		return((mtx->mtx[0][0] * mtx->mtx[1][1]) - 
+		return ((mtx->mtx[0][0] * mtx->mtx[1][1]) -
 				(mtx->mtx[0][1] * mtx->mtx[1][0]));
 	else
 	{
@@ -122,5 +122,5 @@ float	minor(t_minirt *mrt, t_matrix *mtx, int row, int col)
 	determ = determinant(mrt, submtx);
 	if (submtx)
 		clean_matrix(mrt, submtx, 0);
-	return(determ);
+	return (determ);
 }
