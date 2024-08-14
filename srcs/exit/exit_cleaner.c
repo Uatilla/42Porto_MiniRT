@@ -46,14 +46,14 @@ void	clear_ray_inter(t_minirt *data)
 {
 	t_intersections	*ptr;
 
-	ptr = data->ray.inter;
+	ptr = data->inter;
 	while (ptr)
 	{
 		ptr = ptr->next;
-		free(data->ray.inter);
-		data->ray.inter = ptr;
+		free(data->inter);
+		data->inter = ptr;
 	}
-	data->ray.first_hit = NULL;
+	data->first_hit = NULL;
 }
 
 /// @brief Clean all content of mtx and calls clear_exit if status != 0.

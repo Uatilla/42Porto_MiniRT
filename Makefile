@@ -34,11 +34,8 @@ OBJS_DIR	=	objs
 LIBFT_DIR	=	./libraries/libft
 MLX_DIR		=	./libraries/minilibx-linux
 INC			=	includes
-<<<<<<< HEAD
-SUB_DIR		=	tuples input exit mlx ray canvas sphere objects light cylinder 
-=======
-SUB_DIR		=	tuples input exit mlx ray canvas sphere window objects light matrix matrix_transformations
->>>>>>> matrix
+SUB_DIR		=	tuples input exit mlx ray canvas sphere window objects light \
+				matrix matrix_transformations cylinder
 ALL_OBJS_DIR	= $(foreach dir, $(SUB_DIR), $(addprefix $(OBJS_DIR)/, $(dir)))
 
 # Flags

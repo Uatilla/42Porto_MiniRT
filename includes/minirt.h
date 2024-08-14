@@ -34,7 +34,7 @@ enum e_identifyer
 };
 
 //STRUCTURES
-// (8 * 4) +  (4 * 3) = 44 bytes
+// (8 * 4) + (4 * 3) = 44 bytes
 typedef struct s_canvas
 {
 	void	*mlx;
@@ -108,13 +108,11 @@ typedef struct	s_phong
 	t_color 		spec;
 } t_phong;
 
-// 44 + 44 + (8 * 2) = 104 bytes
+// (8 * 2) = 104 bytes
 typedef struct s_ray
 {
 	t_point			origin;
 	t_vector		direction;
-	t_intersections	*inter;
-	t_intersections	*first_hit;
 }	t_ray;
 
 // 16 + (4 * 4) = 32 bytes
@@ -145,14 +143,16 @@ typedef struct s_sphere
 	void				*next;
 	enum e_identifyer	type;
 	float				diameter;
-	t_matrix			*transform;
+	t_matrix			*trans;
 }	t_sphere;
 
-// 104 + 96 + 44 + (8 * 2) + 4 = 254 bytes
+// 104 + 96 + 44 + (49 * 2) + (8 * 2) + 4 = 352 bytes
 typedef struct s_minirt
 {
 	t_ray			ray;
 	t_light			light;
+	t_intersections	*inter;
+	t_intersections	*first_hit;
 	t_canvas		canvas;
 	t_tuple			*tuple;
 	void			*objs;
@@ -211,7 +211,7 @@ t_vector	reflect(t_vector *in, t_vector *normal);
 t_color		lighting(t_intersections *inter, t_light *light);
 
 // light_utils.c
-void		light_vec(t_ray *ray, t_light *light);
+void		light_vec(t_ray *ray, t_light *light, t_minirt *data);
 t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
 void		light_is_behind_obj(t_color *diffuse, t_color *specular);
 t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
@@ -225,7 +225,7 @@ void		set_materials(t_material	*material);
 //ray
 //ray.c
 t_tuple		position(t_ray *ray, float t);
-t_ray	ray_trasform(t_ray *ray, t_matrix *mtx);
+t_ray		ray_trasform(t_ray *ray, t_matrix *mtx);
 
 //sphere
 //sphere.c
@@ -233,12 +233,12 @@ int8_t		ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t);
 
 //cylinder
 //cylinder.c
-int8_t	ray_cylinder_intersect(t_ray *ray, float *t);
+int8_t		ray_cylinder_intersect(t_ray *ray, float *t);
 
 //intersections.c
-void   		ray_intersections(t_minirt *data, void *obj);
+void		ray_intersections(t_minirt *data, void *obj, t_ray *trans_ray);
 void   		check_intersections(t_minirt *data, t_point *point);
-void   		first_hit(t_ray *ray);
+void		first_hit(t_minirt *data);
 void   		first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
 void   		append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
 
