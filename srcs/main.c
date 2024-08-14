@@ -24,16 +24,9 @@ int	main(void)
 	t_vector	eye;
 	t_color		color;
 
-	t_matrix	*mtx_a;
-	t_matrix	*mtx_inv;
+	t_matrix	*mtx;
 	t_point		pt;
-	t_point		pt_res;
-
-	t_vector	vec;
-	t_vector	vec_cal;
-	t_vector	vec_res;
-
-
+	t_point		new_pt;
 
 	ft_memset(&data, 0, sizeof(data));
 	start_mlx(&data.canvas);
@@ -51,7 +44,6 @@ int	main(void)
 			check_intersections(&data, &(t_point){world_x, world_y, 5, 1});
 			if (data.ray.first_hit)
 			{
-				//data.ray.first_hit->point = mtx_mult_tuple(mtx_a, &data.ray.first_hit->point);
 				light_vec(&data.ray, &light);
 				color = lighting(data.ray.first_hit, &light);
 				write_pixel(&data.canvas, x, y, &color);
@@ -59,22 +51,15 @@ int	main(void)
 			clear_ray_inter(&data);
 		}
 	}
-	
-	mtx_a = mtx_create(&data, 4 ,4);
-	fill_idnty_mtx(mtx_a);
-	pt = creating_point(-1, 1, 1);
-	mtx_scaling(mtx_a, &pt);
-	mtx_inv = mtx_inverse(&data, mtx_a);
-	mtx_print(mtx_inv);
 
-	vec_cal = creating_vector(2, 3, 4);
-	vec_res = mtx_mult_tuple(mtx_inv, &vec_cal);
-	printf("pt X:%f Y:%f Z:%f W:%f\n", vec_res.x, vec_res.y, vec_res.z, vec_res.w);
-	
-	printf("Degree: %f, Radians: %f\n", 180.00, degree_to_rad(180.00));
+	pt = creating_point(0, 0, 1);
+	mtx = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(mtx);
+	mtx_rotation_y(mtx, 90);
+	new_pt = mtx_mult_tuple(mtx, &pt);
+	printf("new PT X:%f Y:%f Z:%f W:%f\n", new_pt.x, new_pt.y, new_pt.z, new_pt.w);
+	clean_matrix(&data, mtx, 0);
 
-	
-	clean_matrix(&data, mtx_inv, 0);
 	mlx_put_image_to_window(data.canvas.mlx, data.canvas.win, data.canvas.img, 0, 0);
 	mlx_hook(data.canvas.win, 17, 0L, close_window, &data);
 	mlx_key_hook(data.canvas.win, &handle_key_event, &data);

@@ -79,7 +79,7 @@ typedef struct s_matrix
 }	t_matrix;
 
 // 16 + [4 * 2] + (8 * 3) + 1 = 49 bytes
-typedef	struct	s_intersections
+typedef struct s_intersections
 {
 	t_point					point;
 	float					t[2];
@@ -90,7 +90,7 @@ typedef	struct	s_intersections
 }	t_intersections;
 
 // 16 * 6 = 96 bytes
-typedef	struct s_light
+typedef struct s_light
 {
 	t_point		position;
 	t_color		intensity;
@@ -100,12 +100,12 @@ typedef	struct s_light
 	t_vector	normalv;
 }	t_light;
 
-typedef struct	s_phong
+typedef struct s_phong
 {
 	t_color			ambient;
 	t_color			diffuse;
-	t_color 		spec;
-} t_phong;
+	t_color			spec;
+}	t_phong;
 
 // 44 + 44 + (8 * 2) = 104 bytes
 typedef struct s_ray
@@ -117,14 +117,14 @@ typedef struct s_ray
 }	t_ray;
 
 // 16 + (4 * 4) = 32 bytes
-typedef	struct s_material
+typedef struct s_material
 {
 	t_color	color;
 	float	ambient;
 	float	diffuse;
 	float	specular;
 	float	shininess;
-} t_material;
+}	t_material;
 
 // 16 + 8 + 4 + 4 = 32 bytes
 typedef struct s_sphere
@@ -165,7 +165,6 @@ t_tuple		creating_point(float x, float y, float z);
 t_tuple		creating_vector(float x, float y, float z);
 t_tuple		creating_color(float r, float g, float b);
 
-
 //chk_tuples.typ.c
 bool		compare_float(float a, float b);
 bool		is_point(t_tuple *tuple);
@@ -184,8 +183,8 @@ t_tuple		sum_tuples(t_tuple *a, t_tuple *b);
 t_tuple		subtrac_tuples(t_tuple *a, t_tuple *b);
 t_tuple		negating_tuple(t_tuple *a);
 t_tuple		mult_tuple_scalar(t_tuple *a, float sc);
-float  		dot_product(t_tuple *a, t_tuple *b);
-float  		magnitude(t_tuple *a);
+float		dot_product(t_tuple *a, t_tuple *b);
+float		magnitude(t_tuple *a);
 t_tuple		normalize(t_tuple *a);
 t_tuple		cross_product(t_tuple *a, t_tuple *b);
 t_tuple		div_tuple_scalar(t_tuple *a, float sc);
@@ -204,8 +203,8 @@ t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
 
 //objects
 //parse_objs.c
-void   		parse_objects(enum e_identifyer type, t_minirt *data);
-void   		parse_sphere(t_minirt *data);
+void		parse_objects(enum e_identifyer type, t_minirt *data);
+void		parse_sphere(t_minirt *data);
 void		set_materials(t_material	*material);
 
 //ray
@@ -217,11 +216,11 @@ t_tuple		position(t_ray *ray, float t);
 int8_t		ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t);
 
 //intersections.c
-void   		ray_intersections(t_minirt *data, void *obj);
-void   		check_intersections(t_minirt *data, t_point *point);
-void   		first_hit(t_ray *ray);
-void   		first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
-void   		append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
+void		ray_intersections(t_minirt *data, void *obj);
+void		check_intersections(t_minirt *data, t_point *point);
+void		first_hit(t_ray *ray);
+void		first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
+void		append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
 
 //map
 //map.c
@@ -286,5 +285,8 @@ t_matrix	*mtx_inverse(t_minirt *mrt, t_matrix *mtx);
 //Matrix_transformations
 //matrix_transformations.c
 float		degree_to_rad(float degree);
+void		mtx_rotation_x(t_matrix *mtx, float rot_deg);
+void		mtx_rotation_y(t_matrix *mtx, float rot_deg);
+void		mtx_rotation_z(t_matrix *mtx, float rot_deg);
 
 #endif
