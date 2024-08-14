@@ -50,5 +50,42 @@ t_matrix	*mtx_inverse(t_minirt *mrt, t_matrix *mtx)
 		while (++col < mtx->cols)
 			mtx_res->mtx[row][col] = cofactor(mrt, mtx, row, col) / determ;
 	}
+	clean_matrix(mrt, mtx, 0);
 	return (mtx_transpose(mrt, mtx_res));
+}
+
+/// @brief Adds a tuple into a mtx on column 3.(NO mem)
+/// @param mtx Mtx to be translated.
+/// @param tup_transl Tuple that will have its values add.
+void	mtx_translation(t_matrix *mtx, t_tuple *tup_transl)
+{
+	int			row;
+	float		*tup_arr;
+
+	tup_arr = (float *)tup_transl;
+	row = -1;
+	while (++row < 3)
+		mtx->mtx[row][3] = tup_arr[row];
+}
+
+/// @brief Add a tuple into a mtx on identity pos [0][0], [1][1]...
+/// @param mtx Mtx to be scaled.
+/// @param tup_scale Tuple that will scale the matrix.
+void	mtx_scaling(t_matrix *mtx, t_tuple *tup_scale)
+{
+	int			row;
+	int			col;
+	float		*tup_arr;
+
+	tup_arr = (float *)tup_scale;
+	row = -1;
+	while (++row < 3)
+	{
+		col = -1;
+		while (++col < 3)
+		{
+			if (row == col)
+				mtx->mtx[row][col] = tup_arr[row];
+		}
+	}
 }

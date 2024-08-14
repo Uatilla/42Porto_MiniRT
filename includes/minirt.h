@@ -278,7 +278,13 @@ t_matrix	*submatrix(t_minirt *mrt, t_matrix *mtx, int excl_row,
 				int excl_col);
 
 //matrix_mods_utils.c
+void		mtx_translation(t_matrix *mtx, t_tuple *tup_transl);
+void		mtx_scaling(t_matrix *mtx, t_tuple *tup_scale);
 float		cofactor(t_minirt *mrt, t_matrix *mtx, int row, int col);
 t_matrix	*mtx_inverse(t_minirt *mrt, t_matrix *mtx);
+
+//Matrix_transformations
+//matrix_transformations.c
+float		degree_to_rad(float degree);
 
 #endif
