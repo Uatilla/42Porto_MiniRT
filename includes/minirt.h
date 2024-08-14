@@ -134,6 +134,7 @@ typedef struct s_sphere
 	enum e_identifyer	type;
 	float				diameter;
 	t_material			material;
+	t_matrix			*transform;
 }	t_sphere;
 
 // 104 + 96 + 44 + (8 * 2) + 4 = 254 bytes
@@ -204,13 +205,14 @@ t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
 
 //objects
 //parse_objs.c
-void   		parse_objects(enum e_identifyer type, t_minirt *data);
-void   		parse_sphere(t_minirt *data);
+void		parse_objects(enum e_identifyer type, t_minirt *data);
+void		parse_sphere(t_minirt *data);
 void		set_materials(t_material	*material);
 
 //ray
 //ray.c
 t_tuple		position(t_ray *ray, float t);
+t_ray	ray_trasform(t_ray *ray, t_matrix *mtx);
 
 //sphere
 //sphere.c
