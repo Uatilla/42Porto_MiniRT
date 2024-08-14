@@ -22,14 +22,14 @@
 void	start_mlx(t_canvas	*canvas)
 {
 	canvas->mlx = mlx_init();
-	canvas->win = mlx_new_window(canvas->mlx, WIDTH, HEIGTH, "tua mae");
+	canvas->win = mlx_new_window(canvas->mlx, WIDTH, HEIGTH, "MiniRT");
 	canvas->img = mlx_new_image(canvas->mlx, WIDTH, HEIGTH);
 	canvas->addr = mlx_get_data_addr(canvas->img,
 			&canvas->bits_per_pixel, &canvas->line_length, &canvas->endian);
 }
 
 /*
- * Argumenst:
+ * Arguments:
  * 		pointer to a canvas.
  * 		point x, and y, in the window,
  * 		a tupple color
@@ -55,4 +55,27 @@ int	map_color(float c)
 		return (255);
 	else
 		return (c * 255);
+}
+
+int	close_window(t_minirt *win)
+{
+	if (win)
+	{
+		mlx_destroy_image(win->canvas.mlx, win->canvas.img);
+		mlx_destroy_window(win->canvas.mlx, win->canvas.win);
+		mlx_destroy_display(win->canvas.mlx);
+		free(win->canvas.mlx);
+		clear_exit(win, 0);
+	}
+	return (0);
+}
+
+int	handle_key_event(int key_pressed, void *param)
+{
+	t_minirt	*win;
+
+	win = (t_minirt *)param;
+	if (key_pressed == ESC || !win)
+		close_window(win);
+	return (0);
 }

@@ -34,7 +34,11 @@ OBJS_DIR	=	objs
 LIBFT_DIR	=	./libraries/libft
 MLX_DIR		=	./libraries/minilibx-linux
 INC			=	includes
+<<<<<<< HEAD
 SUB_DIR		=	tuples input exit mlx ray canvas sphere objects light cylinder 
+=======
+SUB_DIR		=	tuples input exit mlx ray canvas sphere window objects light matrix matrix_transformations
+>>>>>>> matrix
 ALL_OBJS_DIR	= $(foreach dir, $(SUB_DIR), $(addprefix $(OBJS_DIR)/, $(dir)))
 
 # Flags
@@ -43,7 +47,7 @@ MLXFLAGS	=	-lmlx -lXext -lX11 -lm
 
 # Files
 SRCS		=	main.c \
-				tuples/chk_tuples_typ.c tuples/creating_tuples.c tuples/operations_tuples.c\
+				tuples/chk_tuples_typ.c tuples/creating_tuples.c tuples/operations_tuples.c tuples/basic_operations_tuples.c\
 				input/input_checker.c \
 				objects/parse_objs.c \
 				light/light.c light/light_utils.c\
@@ -52,7 +56,12 @@ SRCS		=	main.c \
 				sphere/sphere.c \
 				cylinder/cylinder.c \
 				exit/exit_cleaner.c \
-				mlx/mlx.c
+				mlx/mlx.c \
+				matrix/matrix_validations.c matrix/matrix_operations.c matrix/matrix_modifications.c matrix/matrix_mods_utils.c \
+				matrix_transformations/matrix_transformations.c \
+				matrix/mtx_temp.c
+
+
 OBJS		=	$(SRCS:%.c=$(OBJS_DIR)/%.o)
 LIBFT		=	$(LIBFT_DIR)/libft.a
 LIBMLX		=	$(MLX_DIR)/libmlx.a

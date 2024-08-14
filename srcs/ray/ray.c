@@ -29,3 +29,14 @@ t_tuple	position(t_ray *ray, float t)
 	ret = sum_tuples(&ret, &ray->origin);
 	return (ret);
 }
+
+// will transform the ray by multipling the origin point and the direction
+// vector by the trasformation matrix
+t_ray	ray_trasform(t_ray *ray, t_matrix *mtx)
+{
+	t_ray	new_ray;
+
+	new_ray.origin = mtx_mult_tuple(mtx, &ray->origin);
+	new_ray.direction = mtx_mult_tuple(mtx, &ray->direction);
+	return (new_ray);
+}

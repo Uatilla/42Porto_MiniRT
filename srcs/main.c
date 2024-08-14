@@ -12,110 +12,28 @@
 
 #include "../includes/minirt.h"
 
-int	main(void)
-{
-	t_cylinder	cylinder;
-	t_ray		ray;
-	int8_t		intercetions;
-	float		t[2];
-	float		point_of_inter = 0;;
-	t_point		point;
-
-	 cylinder.dir = (t_vector){0,1,0,0};
-	cylinder.type = CY;
-	 cylinder.min = 1;
-	 cylinder.max = 2;
-	 cylinder.closed = true;
-
-	ray.origin = (t_point){0, 1.5, -2, 1};
-	ray.direction = (t_vector){0, 0, 1, 0};
-
-	intercetions = ray_cylinder_intersect(&ray, t);
-
-
-	if (intercetions > 0)
-	{
-		if (t[0] < t[1])
-			point_of_inter = t[0];
-		else
-			point_of_inter = t[1];
-		point = position(&ray, point_of_inter);
-		if (point.y <= cylinder.min)
-			intercetions = 0;
-		if (point.y >= cylinder.max)
-			intercetions = 0;
-	}
-
-	if (intercetions == 0)
-		printf("no intersections\n");
-	else if (intercetions == 1)
-		printf("1 intersections\n");
-	else if (intercetions == 2)
-		printf("2 intersections\n");
-	return (0);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//nao esquecer de setar a origem da camera(ray) e depois a direcao;
+// nao esquecer de chamar ft_memeset para data;
+// nao esquecer de setar a origem da camera(ray) e depois a direcao;
 // importante chamar clear_ray_inter depoins de check intersection;
 // comecar com start_mlx, e nao esquecer de chamar no fim:
 // 		mlx_put_image_to_window e mlx_loop
-// int	main(void)
-// {
-// 	t_minirt 	data;
-// 	t_light		light;
-// 	int			y;
-// 	int			x;
-// 	float		world_x;
-// 	float		world_y;
-// 	t_vector	eye;
-// 	t_color		color;
-//
-// 	ft_memset(&data, 0, sizeof(data));
-// 	start_mlx(&data.canvas);
-// 	parse_objects(SP, &data);
-// 	light = set_light(&(t_point){-10,10,-10,1}, &(t_color){1,1,1,999999});
-// 	data.ray.origin = (t_point){0,0,-5,1};
-//
-// 	y = -1;
-// 	while (++y < HEIGTH)
-// 	{
-// 		x = -1;
-// 		while (++x < WIDTH)
-// 		{
-// 			world_x = map_x(x, -5, 5);
-// 			world_y = map_y(y, -5, 5);
-// 			check_intersections(&data, &(t_point){world_x, world_y, 5, 1});
-// 			if (data.ray.first_hit)
-// 			{
-// 				light_vec(&data.ray, &light);
-// 				color = lighting(data.ray.first_hit, &light);
-// 				write_pixel(&data.canvas, x, y, &color);
-// 			}
-// 			clear_ray_inter(&data);
-// 		}
-// 	}
-// 	mlx_put_image_to_window(data.canvas.mlx, data.canvas.win, data.canvas.img, 0, 0);
-// 	mlx_loop(data.canvas.mlx);
-// }
+int	main(void)
+{
+	t_minirt	data;
+
+	ft_memset(&data, 0, sizeof(data));
+	parse_objects(SP, &data);
+
+	mtx_translation(((t_sphere *)data.objs)->transform, &(t_tuple){2, 3, 4, 69});
+	for (t_sphere *ptr = data.objs; ptr; ptr = ((t_sphere *)ptr)->next)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				printf("%f ", ptr->transform->mtx[i][j]);
+			}
+			printf("\n");
+		}
+	}
+}
