@@ -12,7 +12,10 @@
 
 #include "../includes/minirt.h"
 
-
+// nao esquecer de setar a origem da camera(ray) e depois a direcao;
+// importante chamar clear_ray_inter depoins de check intersection;
+// comecar com start_mlx, e nao esquecer de chamar no fim:
+// 		mlx_put_image_to_window e mlx_loop
 int	main(void)
 {
 	t_minirt 	data;
