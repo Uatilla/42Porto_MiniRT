@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/07 20:35:52 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/10 21:32:39 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef	struct s_light
 	t_vector	normalv;
 }	t_light;
 
+// 16 * 3 = 32
 typedef struct	s_phong
 {
 	t_color			ambient;
@@ -118,14 +119,24 @@ typedef	struct s_material
 	float	shininess;
 } t_material;
 
-// 16 + 8 + 4 + 4 = 32 bytes
+// 16  + 4 + 4 + 4  + 1 = 29 bytes;
+typedef	struct s_cylinder
+{
+	t_vector			dir;
+	enum e_identifyer	type;
+	float				min;
+	float				max;
+	bool				closed;
+}	t_cylinder;
+
+// 32 + 16 + 8 + 4 + 4 = 64 bytes
 typedef struct s_sphere
 {
+	t_material			material;
 	t_point				center;
 	void				*next;
 	enum e_identifyer	type;
 	float				diameter;
-	t_material			material;
 }	t_sphere;
 
 // 104 + 96 + 44 + (8 * 2) + 4 = 254 bytes
@@ -138,7 +149,6 @@ typedef struct s_minirt
 	void			*objs;
 	int				fd;
 }		t_minirt;
-
 
 //MACRO
 # define EPSILON 0.00001
@@ -178,6 +188,9 @@ t_light		set_light(t_point *position, t_color *intensity);
 t_vector	normal_at(void *obj, t_point *point);
 t_vector	reflect(t_vector *in, t_vector *normal);
 t_color		lighting(t_intersections *inter, t_light *light);
+
+
+// light_utils.c
 void		light_vec(t_ray *ray, t_light *light);
 t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
 void		light_is_behind_obj(t_color *diffuse, t_color *specular);
@@ -196,6 +209,10 @@ t_tuple		position(t_ray *ray, float t);
 //sphere
 //sphere.c
 int8_t		ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t);
+
+//cylinder
+//cylinder.c
+int8_t	ray_cylinder_intersect(t_ray *ray, float *t);
 
 //intersections.c
 void   		ray_intersections(t_minirt *data, void *obj);

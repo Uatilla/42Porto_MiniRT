@@ -6,7 +6,7 @@
 #    By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/30 20:21:44 by uviana-a          #+#    #+#              #
-#    Updated: 2024/08/08 22:32:31 by Jburlama         ###   ########.fr        #
+#    Updated: 2024/08/10 20:39:39 by Jburlama         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ OBJS_DIR	=	objs
 LIBFT_DIR	=	./libraries/libft
 MLX_DIR		=	./libraries/minilibx-linux
 INC			=	includes
-SUB_DIR		=	tuples input exit mlx ray canvas sphere objects light
+SUB_DIR		=	tuples input exit mlx ray canvas sphere objects light cylinder 
 ALL_OBJS_DIR	= $(foreach dir, $(SUB_DIR), $(addprefix $(OBJS_DIR)/, $(dir)))
 
 # Flags
@@ -50,6 +50,7 @@ SRCS		=	main.c \
 				ray/ray.c ray/intersections.c\
 				canvas/map.c \
 				sphere/sphere.c \
+				cylinder/cylinder.c \
 				exit/exit_cleaner.c \
 				mlx/mlx.c
 OBJS		=	$(SRCS:%.c=$(OBJS_DIR)/%.o)

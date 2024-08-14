@@ -1,38 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sphere.c                                           :+:      :+:    :+:   */
+/*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/03 18:27:44 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/10 21:21:05 by Jburlama         ###   ########.fr       */
+/*   Created: 2024/08/10 20:37:04 by Jburlama          #+#    #+#             */
+/*   Updated: 2024/08/10 21:49:38 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../../includes/minirt.h"
 
-/*
- * finds the intersections points from the ray to the sphere
- * store them at t[0] and t[1] and return the number of intersection
- * if the determinant is < 0 there is no intersection and returns 0
- * if t[0] == t[1] there is only one point and return 1
- * if the determinat is > 0 there is two points and returns 2
-*/
-int8_t	ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t)
+// sets the t values for the ray cylinder intersections
+// returns 0 if no intersections
+// returns 1 if only one intersection
+// returns 2 if tow intersections
+//
+// The algorithm derivates from the formula
+// vetorial V(t) = O + Dt com a do circulo x^2 + z^2 = r^2 (asumindo que o 
+// cylindro tem altura infinita no eixo y e raio 1)
+//
+// (Ox + Dxt)^2 + (Oz + Dzt)^2 = 1
+int8_t	ray_cylinder_intersect(t_ray *ray, float *t)
 {
 	float	a;
 	float	b;
 	float	c;
-	t_tuple	sphere_to_ray;
 	float	discriminant;
 
-	if (!ray || !sphere || !t)
+	a = (ray->direction.x * ray->direction.x) +
+		(ray->direction.z * ray->direction.z);
+	if (a < 0)
 		return (0);
-	sphere_to_ray = subtrac_tuples(&ray->origin, &sphere->center);
-	a = dot_product(&ray->direction, &ray->direction);
-	b = 2 * dot_product(&ray->direction, &sphere_to_ray);
-	c = dot_product(&sphere_to_ray, &sphere_to_ray) - 1;
+	b = (2 * ray->origin.x * ray->direction.x) +
+		(2 * ray->origin.z * ray->direction.z);
+	c = (ray->origin.x * ray->origin.x) + (ray->origin.z * ray->origin.z) - 1;
 	discriminant = (b * b) - 4 * a * c;
 	if (discriminant < 0)
 		return (0);

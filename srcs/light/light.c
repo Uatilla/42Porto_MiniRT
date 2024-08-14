@@ -35,6 +35,7 @@ t_light	set_light(t_point *pos, t_color *intensity)
  *
 * care to not have the point has the same cordenates as the obj.center
 * the result will be nan in that case
+*
 */
 t_vector	normal_at(void *obj, t_point *point)
 {
@@ -44,6 +45,12 @@ t_vector	normal_at(void *obj, t_point *point)
 	{
 		vec = subtrac_tuples(point, &((t_sphere *)obj)->center);
 		vec = normalize(&vec);
+	}
+	else if (((t_cylinder *)obj)->type == CY)
+	{
+		vec.x = point->x;
+		vec.y = 0;
+		vec.z = point->z;
 	}
 	return (vec);
 }
