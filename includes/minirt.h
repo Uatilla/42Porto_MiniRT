@@ -108,7 +108,7 @@ typedef struct	s_phong
 	t_color 		spec;
 } t_phong;
 
-// (8 * 2) = 104 bytes
+// (16 * 2) = 32 bytes
 typedef struct s_ray
 {
 	t_point			origin;
@@ -139,21 +139,22 @@ typedef	struct s_cylinder
 typedef struct s_sphere
 {
 	t_material			material;
+	t_ray				trans_ray;
 	t_point				center;
 	void				*next;
 	enum e_identifyer	type;
 	float				diameter;
-	t_matrix			*trans;
+	t_matrix			*mtx_trans;
 }	t_sphere;
 
-// 104 + 96 + 44 + (49 * 2) + (8 * 2) + 4 = 352 bytes
+// 96 + 44 + 32 + (8 * 4) + 4 = 208 bytes
 typedef struct s_minirt
 {
-	t_ray			ray;
 	t_light			light;
+	t_canvas		canvas;
+	t_ray			ray;
 	t_intersections	*inter;
 	t_intersections	*first_hit;
-	t_canvas		canvas;
 	t_tuple			*tuple;
 	void			*objs;
 	int				fd;

@@ -28,21 +28,23 @@ int	main(void)
 	data.ray.origin = (t_point){0, 0, -5, 1};
 	data.ray.direction = (t_vector){0, 0, 1, 0};
 	parse_objects(SP, &data);
-	mtx_scaling(((t_sphere *)data.objs)->trans, &(t_tuple){2,2,2,69});
+	mtx_scaling(((t_sphere *)data.objs)->mtx_trans, &(t_tuple){2,2,2,69});
 	
-	inver_trans = mtx_inverse(&data, ((t_sphere *)data.objs)->trans);
-	trans_ray = ray_trasform(&data.ray, inver_trans);
+	inver_trans = mtx_inverse(&data, ((t_sphere *)data.objs)->mtx_trans);
+	((t_sphere *)data.objs)->trans_ray = ray_trasform(&data.ray, inver_trans);
 
-	// printf("origin %f %f %f\n", trans_ray.origin.x, trans_ray.origin.y, trans_ray.origin.z);
-	// printf("direct %f %f %f\n", trans_ray.direction.x, trans_ray.direction.y, trans_ray.direction.z);
-	ray_intersections(&data, data.objs, &trans_ray);
+	ray_intersections(&data, data.objs, &((t_sphere *)data.objs)->trans_ray);
+	first_hit(&data);
 
 	if (data.first_hit)
 	{
 		if (data.first_hit->count == 1)
 			printf("one hit\n");
 		if (data.first_hit->count == 2)
+		{
 			printf("two hit\n");
+			printf("%f %f\n", data.first_hit->t[0], data.first_hit->t[1]);
+		}
 	}
 	else
 		printf("not hit\n");

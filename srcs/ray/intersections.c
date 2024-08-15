@@ -27,7 +27,7 @@ void	check_intersections(t_minirt *data, t_point *point)
 	obj = data->objs;
 	while (obj)
 	{
-		// ray_intersections(data, obj);
+		ray_intersections(data, obj, &((t_sphere *)obj)->trans_ray);
 		obj = ((t_sphere *)obj)->next;
 	}
 	first_hit(data);

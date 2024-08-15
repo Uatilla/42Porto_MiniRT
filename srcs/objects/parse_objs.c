@@ -37,7 +37,7 @@ void	parse_sphere(t_minirt *data)
 		((t_sphere *)data->objs)->center = (t_point){0, 0, 0, 1};
 		((t_sphere *)data->objs)->type = SP;
 		((t_sphere *)data->objs)->diameter = 2;
-		((t_sphere *)data->objs)->trans = mtx;
+		((t_sphere *)data->objs)->mtx_trans = mtx;
 		set_materials(&((t_sphere *)data->objs)->material);
 		return ;
 	}
@@ -47,7 +47,7 @@ void	parse_sphere(t_minirt *data)
 	((t_sphere *)data->objs)->center = (t_point){0, 0, 0, 1};
 	sphere->type = SP;
 	sphere->diameter = 2;
-	sphere->trans = mtx;
+	sphere->mtx_trans = mtx;
 	set_materials(&sphere->material);
 	sphere->next = data->objs;
 	data->objs = sphere;
