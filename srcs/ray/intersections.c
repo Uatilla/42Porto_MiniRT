@@ -14,21 +14,24 @@
 
 /*
 *	sets the ray direction relative to the origin and point in the world
-*	loop through the object list and see if the ray intersects each one
+*	loop through the object list 
+*		transform the ray with the inverse of the transform matrix
 *	sets the first hit point if there is one
 */
 void	check_intersections(t_minirt *data, t_point *point)
 {
 	t_vector	point_to_ray;
-	void		*obj;
+	t_sphere		*obj;
+	t_ray		ray_trans;
 
 	point_to_ray = subtrac_tuples(point, &data->ray.origin);
 	data->ray.direction = normalize(&point_to_ray);
 	obj = data->objs;
 	while (obj)
 	{
-		ray_intersections(data, obj, &((t_sphere *)obj)->trans_ray);
-		obj = ((t_sphere *)obj)->next;
+		ray_trans = ray_trasform(&data->ray, obj->mtx_inver);
+		ray_intersections(data, obj, &ray_trans);
+		obj = obj->next;
 	}
 	first_hit(data);
 }

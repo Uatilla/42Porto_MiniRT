@@ -34,7 +34,7 @@ t_tuple	position(t_ray *ray, float t)
 // vector by the trasformation matrix
 t_ray	ray_trasform(t_ray *ray, t_matrix *mtx)
 {
-	t_ray	new_ray;
+	t_ray		new_ray;
 
 	new_ray.origin = mtx_mult_tuple(mtx, &ray->origin);
 	new_ray.direction = mtx_mult_tuple(mtx, &ray->direction);

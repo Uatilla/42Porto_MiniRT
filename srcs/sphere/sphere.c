@@ -29,11 +29,10 @@ int8_t	ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t)
 
 	if (!ray || !sphere || !t)
 		return (0);
-	sphere_to_ray = subtrac_tuples(&ray->origin, &sphere->center);
+	sphere_to_ray = subtrac_tuples(&ray->origin, &(t_point){0, 0, 0, 1});
 	a = dot_product(&ray->direction, &ray->direction);
 	b = 2 * dot_product(&ray->direction, &sphere_to_ray);
-	c = dot_product(&sphere_to_ray, &sphere_to_ray) -
-		(sphere->diameter / 2) * (sphere->diameter / 2);
+	c = dot_product(&sphere_to_ray, &sphere_to_ray) - 1;
  	discriminant = (b * b) - 4 * a * c;
 	if (discriminant < 0)
 		return (0);

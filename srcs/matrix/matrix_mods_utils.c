@@ -50,7 +50,6 @@ t_matrix	*mtx_inverse(t_minirt *mrt, t_matrix *mtx)
 		while (++col < mtx->cols)
 			mtx_res->mtx[row][col] = cofactor(mrt, mtx, row, col) / determ;
 	}
-	clean_matrix(mrt, mtx, 0);
 	return (mtx_transpose(mrt, mtx_res));
 }
 

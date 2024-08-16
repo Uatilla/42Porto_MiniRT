@@ -20,32 +20,34 @@
 int	main(void)
 {
 	t_minirt	data;
-	float		t[2];
-	t_ray		trans_ray;
-	t_matrix	*inver_trans;
+	int			x;
+	int			y;
+	float		w_x;
+	float		w_y;
+
 
 	ft_memset(&data, 0, sizeof(data));
-	data.ray.origin = (t_point){0, 0, -5, 1};
-	data.ray.direction = (t_vector){0, 0, 1, 0};
 	parse_objects(SP, &data);
-	mtx_scaling(((t_sphere *)data.objs)->mtx_trans, &(t_tuple){2,2,2,69});
-	
-	inver_trans = mtx_inverse(&data, ((t_sphere *)data.objs)->mtx_trans);
-	((t_sphere *)data.objs)->trans_ray = ray_trasform(&data.ray, inver_trans);
-
-	ray_intersections(&data, data.objs, &((t_sphere *)data.objs)->trans_ray);
-	first_hit(&data);
-
-	if (data.first_hit)
+	mtx_scaling(((t_sphere *)data.objs)->mtx_trans, &(t_point){0.5,0.5,0.5,69});
+	((t_sphere *)data.objs)->mtx_inver = mtx_inverse(&data, ((t_sphere *)data.objs)->mtx_trans);
+	start_mlx(&data.canvas);
+	data.ray.origin = (t_point){0, 0, -5, 1};
+	y = -1;
+	while (++y < HEIGTH)
 	{
-		if (data.first_hit->count == 1)
-			printf("one hit\n");
-		if (data.first_hit->count == 2)
+		x = -1;
+		while (++x < WIDTH)
 		{
-			printf("two hit\n");
-			printf("%f %f\n", data.first_hit->t[0], data.first_hit->t[1]);
+			w_x = map_x(x, -5, 5);		
+			w_y = map_y(y, -5, 5);		
+			check_intersections(&data, &(t_point){w_x, w_y, 5, 1});
+			if (data.first_hit)
+			{
+				write_pixel(&data.canvas, x, y, &(t_color){1, 0, 0, 69});
+			}
+			clear_ray_inter(&data);
 		}
 	}
-	else
-		printf("not hit\n");
+	mlx_put_image_to_window(data.canvas.mlx, data.canvas.win, data.canvas.img, 0, 0);
+	mlx_loop(data.canvas.mlx);
 }

@@ -25,32 +25,32 @@ void	parse_objects(enum e_identifyer type, t_minirt *data)
 void	parse_sphere(t_minirt *data)
 {
 	t_sphere	*sphere;
-	t_matrix	*mtx;
 
-	mtx = mtx_create(data, 4, 4);
-	fill_idnty_mtx(mtx);
 	if (data->objs == NULL)
 	{
 		data->objs = ft_calloc(sizeof(t_sphere), 1);
 		if (data->objs == NULL)
 			clear_exit(data, errno);
-		((t_sphere *)data->objs)->center = (t_point){0, 0, 0, 1};
-		((t_sphere *)data->objs)->type = SP;
-		((t_sphere *)data->objs)->diameter = 2;
-		((t_sphere *)data->objs)->mtx_trans = mtx;
-		set_materials(&((t_sphere *)data->objs)->material);
+		fill_sphere(((t_sphere *)data->objs), data);
 		return ;
 	}
 	sphere = ft_calloc(sizeof(t_sphere), 1);
 	if (sphere == NULL)
 		clear_exit(data, errno);
-	((t_sphere *)data->objs)->center = (t_point){0, 0, 0, 1};
-	sphere->type = SP;
-	sphere->diameter = 2;
-	sphere->mtx_trans = mtx;
-	set_materials(&sphere->material);
+	fill_sphere(sphere, data);
 	sphere->next = data->objs;
 	data->objs = sphere;
+}
+
+void	fill_sphere(t_sphere *sp, t_minirt *data)
+{
+	t_matrix	*mtx;
+
+	mtx = mtx_create(data, 4, 4);
+	fill_idnty_mtx(mtx);
+	sp->type = SP;
+	sp->mtx_trans = mtx;
+	set_materials(&sp->material);
 }
 
 /*
