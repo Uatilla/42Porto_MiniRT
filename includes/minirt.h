@@ -205,7 +205,7 @@ t_color		color_multiply(t_color *c1, t_color *c2);
 //light
 //light.c
 t_light		set_light(t_point *position, t_color *intensity);
-t_vector	normal_at(void *obj, t_point *point);
+t_vector	normal_at(void *obj, t_point *point, t_minirt *data);
 t_vector	reflect(t_vector *in, t_vector *normal);
 t_color		lighting(t_intersections *inter, t_light *light);
 

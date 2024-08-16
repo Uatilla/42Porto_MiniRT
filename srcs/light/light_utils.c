@@ -20,7 +20,7 @@ void	light_vec(t_ray *ray, t_light *light, t_minirt *data)
 {
 	light->dir = subtrac_tuples(&light->position, &data->first_hit->point);
 	light->dir = normalize(&light->dir);
-	light->normalv = normal_at(data->first_hit->obj, &data->first_hit->point);
+	light->normalv = normal_at(data->first_hit->obj, &data->first_hit->point, data);
 	light->reflect = negating_tuple(&light->dir);
 	light->reflect = reflect(&light->reflect, &light->normalv);
 	light->eyev = negating_tuple(&ray->direction);

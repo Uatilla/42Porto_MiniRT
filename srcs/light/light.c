@@ -37,7 +37,7 @@ t_light	set_light(t_point *pos, t_color *intensity)
 * the result will be nan in that case
 *
 */
-t_vector	normal_at(void *obj, t_point *point)
+t_vector	normal_at(void *obj, t_point *point, t_minirt *data)
 {
 	t_vector	vec;
 	t_matrix	*transpose;
@@ -46,11 +46,11 @@ t_vector	normal_at(void *obj, t_point *point)
 	{
 		vec = mtx_mult_tuple(((t_sphere *)obj)->mtx_inver, point);
 		vec = subtrac_tuples(&vec, &(t_point){0, 0, 0, 1});
-		transpose = mtx_transpose(NULL, ((t_sphere *)obj)->mtx_inver);
+		transpose = mtx_transpose(data, ((t_sphere *)obj)->mtx_inver);
 		vec = mtx_mult_tuple(transpose, &vec);
-		vec = normalize(&vec);
 		vec.w = 0;
-		clean_matrix(NULL, transpose, 0);
+		vec = normalize(&vec);
+		clean_matrix(data, transpose, 0);
 	}
 	else if (((t_cylinder *)obj)->type == CY)
 	{

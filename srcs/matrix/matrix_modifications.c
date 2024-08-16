@@ -33,7 +33,6 @@ t_matrix	*mtx_transpose(t_minirt *mrt, t_matrix *mtx)
 		while (++j < mtx->cols)
 			mtx_res->mtx[i][j] = mtx->mtx[j][i];
 	}
-	clean_matrix(mrt, mtx, 0);
 	return (mtx_res);
 }
 

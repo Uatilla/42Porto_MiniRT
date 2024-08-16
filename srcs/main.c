@@ -30,20 +30,17 @@ int	main(void)
 
 	ft_memset(&data, 0, sizeof(data));
 	parse_objects(SP, &data);
-	mtx_scaling(((t_sphere *)data.objs)->mtx_trans, &(t_point){0.5,0.5,0.5,69});
 	mtx_translation(((t_sphere *)data.objs)->mtx_trans, &(t_point){1,2,0,69});
 	((t_sphere *)data.objs)->mtx_inver = mtx_inverse(&data, ((t_sphere *)data.objs)->mtx_trans);
 
-	// parse_objects(SP, &data);
-	// mtx_scaling(((t_sphere *)data.objs)->mtx_trans, &(t_point){2,2,2,69});
-	// mtx_translation(((t_sphere *)data.objs)->mtx_trans, &(t_point){-3,-1,0,69});
-	// ((t_sphere *)data.objs)->mtx_inver = mtx_inverse(&data, ((t_sphere *)data.objs)->mtx_trans);
-	//
-	// parse_objects(SP, &data);
-	// mtx_scaling(((t_sphere *)data.objs)->mtx_trans, &(t_point){1.5,1.5,1.5,69});
-	// mtx_translation(((t_sphere *)data.objs)->mtx_trans, &(t_point){1.5,-1,0,69});
-	// ((t_sphere *)data.objs)->mtx_inver = mtx_inverse(&data, ((t_sphere *)data.objs)->mtx_trans);
-	//
+	parse_objects(SP, &data);
+	mtx_translation(((t_sphere *)data.objs)->mtx_trans, &(t_point){-3,-1,0,69});
+	((t_sphere *)data.objs)->mtx_inver = mtx_inverse(&data, ((t_sphere *)data.objs)->mtx_trans);
+
+	parse_objects(SP, &data);
+	mtx_translation(((t_sphere *)data.objs)->mtx_trans, &(t_point){1.5,-1,0,69});
+	((t_sphere *)data.objs)->mtx_inver = mtx_inverse(&data, ((t_sphere *)data.objs)->mtx_trans);
+
 	start_mlx(&data.canvas);
 	data.ray.origin = (t_point){0, 0, -5, 1};
 	light = set_light(&(t_point){-10, 10, -10, 1}, &(t_tuple){1, 1, 1, 69});
