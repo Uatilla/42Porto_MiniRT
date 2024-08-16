@@ -135,15 +135,15 @@ typedef	struct s_cylinder
 	bool				closed;
 }	t_cylinder;
 
-// 32 + 16 + 8 + 4 + 4 = 64 bytes
+// 32 + 16 + (8 * 3) + 4 = 76 bytes
 typedef struct s_sphere
 {
 	t_material			material;
 	t_ray				trans_ray;
-	void				*next;
-	enum e_identifyer	type;
 	t_matrix			*mtx_trans;
 	t_matrix			*mtx_inver;
+	void				*next;
+	enum e_identifyer	type;
 }	t_sphere;
 
 // 96 + 44 + 32 + (8 * 4) + 4 = 208 bytes
@@ -226,7 +226,7 @@ void		set_materials(t_material	*material);
 //ray
 //ray.c
 t_tuple		position(t_ray *ray, float t);
-t_ray	ray_trasform(t_ray *ray, t_matrix *mtx);
+t_ray		ray_trasform(t_ray *ray, t_matrix *mtx);
 
 //sphere
 //sphere.c

@@ -29,7 +29,19 @@ int	main(void)
 	ft_memset(&data, 0, sizeof(data));
 	parse_objects(SP, &data);
 	mtx_scaling(((t_sphere *)data.objs)->mtx_trans, &(t_point){0.5,0.5,0.5,69});
+	mtx_translation(((t_sphere *)data.objs)->mtx_trans, &(t_point){1,2,0,69});
 	((t_sphere *)data.objs)->mtx_inver = mtx_inverse(&data, ((t_sphere *)data.objs)->mtx_trans);
+
+	parse_objects(SP, &data);
+	mtx_scaling(((t_sphere *)data.objs)->mtx_trans, &(t_point){2,2,2,69});
+	mtx_translation(((t_sphere *)data.objs)->mtx_trans, &(t_point){-3,-1,0,69});
+	((t_sphere *)data.objs)->mtx_inver = mtx_inverse(&data, ((t_sphere *)data.objs)->mtx_trans);
+
+	parse_objects(SP, &data);
+	mtx_scaling(((t_sphere *)data.objs)->mtx_trans, &(t_point){1.5,1.5,1.5,69});
+	mtx_translation(((t_sphere *)data.objs)->mtx_trans, &(t_point){1.5,-1,0,69});
+	((t_sphere *)data.objs)->mtx_inver = mtx_inverse(&data, ((t_sphere *)data.objs)->mtx_trans);
+
 	start_mlx(&data.canvas);
 	data.ray.origin = (t_point){0, 0, -5, 1};
 	y = -1;
@@ -42,12 +54,11 @@ int	main(void)
 			w_y = map_y(y, -5, 5);		
 			check_intersections(&data, &(t_point){w_x, w_y, 5, 1});
 			if (data.first_hit)
-			{
 				write_pixel(&data.canvas, x, y, &(t_color){1, 0, 0, 69});
-			}
 			clear_ray_inter(&data);
 		}
 	}
+	clear_objs(data.objs);
 	mlx_put_image_to_window(data.canvas.mlx, data.canvas.win, data.canvas.img, 0, 0);
 	mlx_loop(data.canvas.mlx);
 }

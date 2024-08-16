@@ -35,6 +35,8 @@ void	clear_objs(void	*objs)
 	{
 		if (((t_sphere *)objs)->type == SP)
 		{
+			clean_matrix(NULL, ((t_sphere *)ptr)->mtx_trans, 0);
+			clean_matrix(NULL, ((t_sphere *)ptr)->mtx_inver, 0);
 			objs = ((t_sphere *)objs)->next;
 			free(ptr);
 			ptr = objs;
