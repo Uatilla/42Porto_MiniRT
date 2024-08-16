@@ -51,8 +51,6 @@ t_vector	normal_at(void *obj, t_point *point)
 		vec = normalize(&vec);
 		vec.w = 0;
 		clean_matrix(NULL, transpose, 0);
-		// vec = subtrac_tuples(point, &(t_point){0,0,0,1});
-		// vec = normalize(&vec);
 	}
 	else if (((t_cylinder *)obj)->type == CY)
 	{

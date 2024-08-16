@@ -22,15 +22,14 @@ void	check_intersections(t_minirt *data, t_point *point)
 {
 	t_vector	point_to_ray;
 	t_sphere		*obj;
-	t_ray		ray_trans;
 
 	point_to_ray = subtrac_tuples(point, &data->ray.origin);
 	data->ray.direction = normalize(&point_to_ray);
 	obj = data->objs;
 	while (obj)
 	{
-		ray_trans = ray_trasform(&data->ray, obj->mtx_inver);
-		ray_intersections(data, obj, &ray_trans);
+		obj->trans_ray = ray_trasform(&data->ray, obj->mtx_inver);
+		ray_intersections(data, obj, &obj->trans_ray);
 		obj = obj->next;
 	}
 	first_hit(data);

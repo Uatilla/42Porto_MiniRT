@@ -142,8 +142,7 @@ typedef struct s_sphere
 	t_ray				trans_ray;
 	t_matrix			*mtx_trans;
 	t_matrix			*mtx_inver;
-	void				*next;
-	enum e_identifyer	type;
+	void				*next; enum e_identifyer	type;
 }	t_sphere;
 
 // 96 + 44 + 32 + (8 * 4) + 4 = 208 bytes
@@ -238,7 +237,7 @@ int8_t		ray_cylinder_intersect(t_ray *ray, float *t);
 
 //intersections.c
 void		ray_intersections(t_minirt *data, void *obj, t_ray *trans_ray);
-void   		check_intersections(t_minirt *data, t_point *point);
+void		check_intersections(t_minirt *data, t_point *point);
 void		first_hit(t_minirt *data);
 void   		first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
 void   		append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
