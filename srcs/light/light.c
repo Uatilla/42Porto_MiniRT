@@ -40,11 +40,19 @@ t_light	set_light(t_point *pos, t_color *intensity)
 t_vector	normal_at(void *obj, t_point *point)
 {
 	t_vector	vec;
+	t_matrix	*transpose;
 
 	if (((t_sphere *)obj)->type == SP)
 	{
-		vec = subtrac_tuples(point, &(t_point){0, 0, 0, 1});
+		vec = mtx_mult_tuple(((t_sphere *)obj)->mtx_inver, point);
+		vec = subtrac_tuples(&vec, &(t_point){0, 0, 0, 1});
+		transpose = mtx_transpose(NULL, ((t_sphere *)obj)->mtx_inver);
+		vec = mtx_mult_tuple(transpose, &vec);
 		vec = normalize(&vec);
+		vec.w = 0;
+		clean_matrix(NULL, transpose, 0);
+		// vec = subtrac_tuples(point, &(t_point){0,0,0,1});
+		// vec = normalize(&vec);
 	}
 	else if (((t_cylinder *)obj)->type == CY)
 	{

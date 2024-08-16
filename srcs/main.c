@@ -13,13 +13,15 @@
 #include "../includes/minirt.h"
 
 // nao esquecer de chamar ft_memeset para data;
-// nao esquecer de setar a origem da camera(ray) e depois a direcao;
+// nao esquecer de setar a origem do ray e depois a direcao;
 // importante chamar clear_ray_inter depoins de check intersection;
 // comecar com start_mlx, e nao esquecer de chamar no fim:
 // 		mlx_put_image_to_window e mlx_loop
 int	main(void)
 {
 	t_minirt	data;
+	t_light		light;
+	t_color		color;
 	int			x;
 	int			y;
 	float		w_x;
@@ -44,6 +46,7 @@ int	main(void)
 
 	start_mlx(&data.canvas);
 	data.ray.origin = (t_point){0, 0, -5, 1};
+	light = set_light(&(t_point){-10, 10, -10, 1}, &(t_tuple){1, 1, 1, 69});
 	y = -1;
 	while (++y < HEIGTH)
 	{
@@ -54,11 +57,14 @@ int	main(void)
 			w_y = map_y(y, -5, 5);		
 			check_intersections(&data, &(t_point){w_x, w_y, 5, 1});
 			if (data.first_hit)
-				write_pixel(&data.canvas, x, y, &(t_color){1, 0, 0, 69});
+			{
+				color = lighting(data.first_hit, &light);
+				write_pixel(&data.canvas, x, y, &color);
+			}
 			clear_ray_inter(&data);
 		}
 	}
-	clear_objs(data.objs);
 	mlx_put_image_to_window(data.canvas.mlx, data.canvas.win, data.canvas.img, 0, 0);
 	mlx_loop(data.canvas.mlx);
+	clear_objs(data.objs);
 }
