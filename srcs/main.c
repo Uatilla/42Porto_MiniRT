@@ -30,6 +30,9 @@ int	main(void)
 
 	ft_memset(&data, 0, sizeof(data));
 	parse_objects(SP, &data);
+	((t_sphere *)data.objs)->mtx_inver = mtx_inverse(&data, ((t_sphere *)data.objs)->mtx_trans);
+
+	parse_objects(SP, &data);
 	mtx_translation(((t_sphere *)data.objs)->mtx_trans, &(t_point){1,2,0,69});
 	((t_sphere *)data.objs)->mtx_inver = mtx_inverse(&data, ((t_sphere *)data.objs)->mtx_trans);
 
