@@ -21,9 +21,11 @@ void	clear_exit(t_minirt *mrt, int status)
 	exit(status);
 }
 
-void	ft_error(char *msg)
+void	ft_error(t_minirt *mrt, char *msg, int status)
 {
 	ft_putstr_fd(msg, 2);
+	if (status)
+		clear_exit(mrt, status);
 }
 
 void	clear_objs(void	*objs)
@@ -35,6 +37,8 @@ void	clear_objs(void	*objs)
 	{
 		if (((t_sphere *)objs)->type == SP)
 		{
+			clean_matrix(NULL, ((t_sphere *)ptr)->mtx_inver,0);
+			clean_matrix(NULL, ((t_sphere *)ptr)->mtx_trans,0);
 			objs = ((t_sphere *)objs)->next;
 			free(ptr);
 			ptr = objs;
@@ -46,14 +50,14 @@ void	clear_ray_inter(t_minirt *data)
 {
 	t_intersections	*ptr;
 
-	ptr = data->ray.inter;
+	ptr = data->inter;
 	while (ptr)
 	{
 		ptr = ptr->next;
-		free(data->ray.inter);
-		data->ray.inter = ptr;
+		free(data->inter);
+		data->inter = ptr;
 	}
-	data->ray.first_hit = NULL;
+	data->first_hit = NULL;
 }
 
 /// @brief Clean all content of mtx and calls clear_exit if status != 0.

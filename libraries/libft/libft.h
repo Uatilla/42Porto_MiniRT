@@ -97,6 +97,9 @@ char	*ft_strrchr(const char *s, int c);
 //string isn't find it returns the big string. 
 char	*ft_strnstr(const char *big, const char *little, size_t len);
 
+//Replace an old char inside a str with a new char.
+void	ft_replace(char *str, char old, char new);
+
 //CHARACTER CLASSIFICATION:***********************************************
 
 //ft_isalnum(): Alphanumeric character test.
@@ -125,6 +128,11 @@ int		ft_atoi(const char *nptr);
 //ft_atoi_hex(): Converts the initial portion of hex string 
 //representation in int.
 int		ft_atoi_hex(char *str);
+
+//STRING TO FLOAT CONVERSION:*********************************************
+
+//ft_atoi(): Converts the initial portion of the string in float.
+float	ft_atof(const char *nptr);
 
 /*-----------------------------*Mandatory Part II*---------------------------*/
 

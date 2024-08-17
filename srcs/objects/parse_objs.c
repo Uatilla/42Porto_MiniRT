@@ -12,8 +12,112 @@
 
 #include "../../includes/minirt.h"
 
-void	parse_objects(enum e_identifyer type, t_minirt *data)
+void	check_range(char *ratio, t_checkstx *chk_stx, float l_rng, float u_rng)
 {
+	float value;
+
+	(void)chk_stx;
+	(void)l_rng;
+	(void)u_rng;
+	value = ft_atof(ratio);
+	if (value < l_rng || value > u_rng)
+		chk_stx->count_err_stx++;
+}
+
+void	parse_ambient(char **line, t_checkstx *chk_stx)
+{
+	int	i;
+
+	i = -1;
+
+	while (line[++i])
+	{
+		if (i == 1)
+			check_range(line[i], chk_stx, 0.0, 1.0);
+		if (i == 2)
+		{
+			
+			//Sao apenas 3 cores SPLIT colocar na estrutura.
+			//estao dentro de 0 a 255
+
+		}
+
+	}
+
+}
+
+
+void	free_split(char **line)
+{
+	int	i;
+
+	i = -1;
+	while (line[++i])
+		free(line[i]);
+	free(line);
+}
+
+void	parse_type(char **line, t_checkstx *chk_stx)
+{
+	(void)chk_stx;
+	if (line[0])
+	{
+		
+		if (!ft_strcmp(line[0], "A"))
+			parse_ambient(line, chk_stx);
+		else if (!ft_strcmp(line[0], "C"))
+			printf("C\n");
+		else if (!ft_strcmp(line[0], "L"))
+			printf("L\n");
+		else if (!ft_strcmp(line[0], "sp"))
+			printf("sp\n");
+		else if (!ft_strcmp(line[0], "pl"))
+			printf("pl\n");
+		else if (!ft_strcmp(line[0], "cy"))
+			printf("cy\n");
+	}
+	free_split(line);
+}
+
+void	check_dup(char *obj_type, t_checkstx *chk_stx)
+{
+	if (obj_type)
+	{
+		if (!ft_strcmp(obj_type, "A"))
+			chk_stx->count_a++;
+		else if (!ft_strcmp(obj_type, "C"))
+			chk_stx->count_c++;
+		else if (!ft_strcmp(obj_type, "L"))
+			chk_stx->count_l++;
+	}
+}
+
+void	parse_objects(enum e_identifyer type, t_minirt *data, int file)
+{
+	bool	stx_failed;
+	char	*line;
+	char	*line_trimmed;
+	char	**line_cleaned;
+	t_checkstx	chk_sintax;
+
+	ft_memset(&chk_sintax, 0, sizeof(t_checkstx));
+	while (1)
+	{
+		line = get_next_line(file);
+		if (!line)
+			break ;
+		ft_replace(line, '\t', ' ');
+		line_trimmed = ft_strtrim(line, "\n");
+		free(line);
+		line_cleaned = ft_split(line_trimmed,' ');
+		free(line_trimmed);
+		check_dup(line_cleaned[0], &chk_sintax);
+		parse_type(line_cleaned, &chk_sintax);
+	}
+	if (chk_sintax.count_a > 1 || chk_sintax.count_l > 1 || chk_sintax.count_c > 1)
+		ft_error(data, "ERROR: Duplicated elements found.\n", 1);
+	if (chk_sintax.count_err_stx > 0)
+		ft_error(data, "ERROR: Invalid Map Syntax\n", 1);
 	if (type == SP)
 		parse_sphere(data);
 }
@@ -31,21 +135,27 @@ void	parse_sphere(t_minirt *data)
 		data->objs = ft_calloc(sizeof(t_sphere), 1);
 		if (data->objs == NULL)
 			clear_exit(data, errno);
-		((t_sphere *)data->objs)->center = (t_tuple){0, 0, 0, 1};
-		((t_sphere *)data->objs)->type = SP;
-		((t_sphere *)data->objs)->diameter = 2;
-		set_materials(&((t_sphere *)data->objs)->material);
+		fill_sphere(((t_sphere *)data->objs), data);
 		return ;
 	}
 	sphere = ft_calloc(sizeof(t_sphere), 1);
 	if (sphere == NULL)
 		clear_exit(data, errno);
-	sphere->center = (t_tuple){0, 0, 0, 1};
-	sphere->type = SP;
-	sphere->diameter = 2;
-	set_materials(&sphere->material);
+	fill_sphere(sphere, data);
 	sphere->next = data->objs;
 	data->objs = sphere;
+}
+
+void	fill_sphere(t_sphere *sp, t_minirt *data)
+{
+	t_matrix	*mtx;
+
+	mtx = mtx_create(data, 4, 4);
+	fill_idnty_mtx(mtx);
+	sp->type = SP;
+	sp->mtx_trans = mtx;
+	//mtx_translation(mtx, &(t_tuple){1, 1, 0, 1});
+	set_materials(&sp->material);
 }
 
 /*

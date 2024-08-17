@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_checker.c                                    :+:      :+:    :+:   */
+/*   ft_replace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/01 20:29:19 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/01 20:29:21 by uviana-a         ###   ########.fr       */
+/*   Created: 2024/08/16 18:37:32 by uviana-a          #+#    #+#             */
+/*   Updated: 2024/08/16 18:37:34 by uviana-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minirt.h"
+#include "libft.h"
 
-int	chk_input(int argc, char *file)
+void	ft_replace(char *str, char old, char new)
 {
-	int	fd;
-
-	if (argc != 2)
+	while (*str)
 	{
-		ft_error(NULL, "ERROR: Input invalid!\n  Try:\n\t./minirt <scene>.rt\n", 0);
-		clear_exit(NULL, 1);
+		if (*str == old)
+			*str = new;
+		str++;
 	}
-	fd = open(file, O_RDONLY, 0);
-	if (fd == -1)
-	{
-		ft_error(NULL, "ERROR: Failed to open the scene, try another one.\n", 0);
-		clear_exit(NULL, 1);
-	}
-	return (fd);
 }
+

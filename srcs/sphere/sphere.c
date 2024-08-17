@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 18:27:44 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/07 18:47:16 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/10 21:21:05 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ int8_t	ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t)
 
 	if (!ray || !sphere || !t)
 		return (0);
-	sphere_to_ray = subtrac_tuples(&ray->origin, &sphere->center);
+	sphere_to_ray = subtrac_tuples(&ray->origin, &(t_point){0, 0, 0, 1});
 	a = dot_product(&ray->direction, &ray->direction);
 	b = 2 * dot_product(&ray->direction, &sphere_to_ray);
 	c = dot_product(&sphere_to_ray, &sphere_to_ray) - 1;
-	discriminant = (b * b) - 4 * a * c;
+ 	discriminant = (b * b) - 4 * a * c;
 	if (discriminant < 0)
 		return (0);
 	t[0] = (-b - sqrtf(discriminant)) / (2 * a);
