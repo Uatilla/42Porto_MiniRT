@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/10 21:32:39 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/18 20:53:24 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,20 @@ typedef t_tuple	t_point;
 typedef t_tuple	t_vector;
 typedef t_tuple	t_color;
 
+// (4 * 2) + 8 = 16 bytes
 typedef struct s_matrix
 {
 	int		rows;
 	int		cols;
 	float	**mtx;
 }	t_matrix;
+
+// 8 + 8 = 16 bytes
+typedef struct s_xs
+{
+	size_t	count;
+	float	*arr;
+}	t_xs;
 
 // 16 + [4 * 2] + (8 * 3) + 1 = 49 bytes
 typedef	struct	s_intersections
@@ -142,21 +150,32 @@ typedef struct s_sphere
 	t_ray				trans_ray;
 	t_matrix			*mtx_trans;
 	t_matrix			*mtx_inver;
-	void				*next; enum e_identifyer	type;
+	void				*next;
+	enum e_identifyer	type;
 }	t_sphere;
 
-// 96 + 44 + 32 + (8 * 4) + 4 = 208 bytes
+// 96 + 44 + 32 + 16 + (8 * 4) + 4 = 222 bytes
 typedef struct s_minirt
 {
 	t_light			light;
 	t_canvas		canvas;
 	t_ray			ray;
+	t_xs			xs;
 	t_intersections	*inter;
 	t_intersections	*first_hit;
 	t_tuple			*tuple;
 	void			*objs;
 	int				fd;
 }		t_minirt;
+
+// (16 * 4) = 64
+typedef struct	s_view
+{
+	t_vector	forward;
+	t_vector	upn;
+	t_vector	left;
+	t_vector	true_uper;
+}	t_view;
 
 //MACRO
 # define EPSILON 0.00001
@@ -241,6 +260,10 @@ void		check_intersections(t_minirt *data, t_point *point);
 void		first_hit(t_minirt *data);
 void   		first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
 void   		append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
+
+//sort_intersections.c
+void	sort_intersections(t_xs	*xs, t_intersections *inter);
+void	sort_xs(t_xs *xs);
 
 //map
 //map.c

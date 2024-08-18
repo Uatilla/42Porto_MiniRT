@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 17:10:00 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/03 17:42:13 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/18 18:23:46 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_tuple	position(t_ray *ray, float t)
 }
 
 // will transform the ray by multipling the origin point and the direction
-// vector by the trasformation matrix
+// vector by the inverse trasformation matrix
 t_ray	ray_trasform(t_ray *ray, t_matrix *mtx)
 {
 	t_ray		new_ray;

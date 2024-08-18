@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 17:12:05 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/07 18:47:15 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/18 19:39:43 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	check_intersections(t_minirt *data, t_point *point)
 		obj = obj->next;
 	}
 	first_hit(data);
+	sort_intersections(&data->xs, data->inter);
 }
 
 /*
@@ -50,6 +51,7 @@ void	ray_intersections(t_minirt *data, void *obj, t_ray *trans_ray)
 	intersection_points = ray_sphere_intersect(trans_ray, obj, t);
 	if (intersection_points > 0)
 	{
+		data->xs.count += 2;
 		if (data->inter == NULL)
 			first_inter(data, intersection_points, t, obj);
 		else
@@ -63,12 +65,18 @@ void	ray_intersections(t_minirt *data, void *obj, t_ray *trans_ray)
 */
 void	first_hit(t_minirt *data)
 {
-	if (!data->first_hit)
-		data->first_hit = data->inter;
-	else if (data->inter && data->inter->hit)
+	t_intersections	*temp;
+
+	temp = data->inter;
+	if (temp == NULL)
+		return ;
+	while (temp)
 	{
-		if (data->inter->hit < data->first_hit->hit)
-			data->first_hit = data->inter;
+		if (!data->first_hit && temp->hit > 0)
+			data->first_hit = temp;
+		if (temp->hit > 0 && temp->hit < data->first_hit->hit)
+			data->first_hit = temp;
+		temp = temp->next;
 	}
 }
 

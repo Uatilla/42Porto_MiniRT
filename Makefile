@@ -6,7 +6,7 @@
 #    By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/30 20:21:44 by uviana-a          #+#    #+#              #
-#    Updated: 2024/08/10 20:39:39 by Jburlama         ###   ########.fr        #
+#    Updated: 2024/08/18 16:54:38 by Jburlama         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ SRCS		=	main.c \
 				input/input_checker.c \
 				objects/parse_objs.c \
 				light/light.c light/light_utils.c\
-				ray/ray.c ray/intersections.c\
+				ray/ray.c ray/intersections.c ray/sort_intersections.c \
 				canvas/map.c \
 				sphere/sphere.c \
 				cylinder/cylinder.c \

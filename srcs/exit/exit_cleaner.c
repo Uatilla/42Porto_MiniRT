@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 20:30:03 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/05 22:06:12 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/18 17:16:21 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ void	clear_ray_inter(t_minirt *data)
 		data->inter = ptr;
 	}
 	data->first_hit = NULL;
+	if (data->xs.count > 0)
+		free(data->xs.arr);
+	data->xs.count = 0;
 }
 
 /// @brief Clean all content of mtx and calls clear_exit if status != 0.
