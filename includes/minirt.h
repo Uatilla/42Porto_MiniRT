@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/18 20:53:24 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/18 21:03:19 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,6 +220,12 @@ t_tuple		normalize(t_tuple *a);
 t_tuple		cross_product(t_tuple *a, t_tuple *b);
 t_tuple		div_tuple_scalar(t_tuple *a, float sc);
 t_color		color_multiply(t_color *c1, t_color *c2);
+
+//view
+//view_transformation.c
+t_matrix	*view_transformation(t_point *from, t_point *to, t_vector *up);
+t_matrix	*view_orientation(t_vector *left, t_vector *up, t_vector *forward);
+
 
 //light
 //light.c

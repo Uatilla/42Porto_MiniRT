@@ -6,14 +6,11 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:02:44 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/18 20:55:25 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/18 21:03:35 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
-
-t_matrix	*view_transformation(t_point *from, t_point *to, t_vector *up);
-t_matrix	*view_orientation(t_vector *left, t_vector *up, t_vector *forward);
 
 int	main(void)
 {
@@ -29,49 +26,9 @@ int	main(void)
 		}
 		printf("\n");
 	}
-
 	clean_matrix(NULL, view, 0);
 }
 
-t_matrix	*view_transformation(t_point *from, t_point *to, t_vector *up)
-{
-	t_view		view;
-	t_matrix	*orientation;
-	t_matrix	*trans;
-	t_matrix	*ret;
-
-	view.forward = subtrac_tuples(to, from);
-	view.forward = normalize(&view.forward);
-	view.upn = normalize(up);
-	view.left = cross_product(&view.forward, &view.upn);
-	view.true_uper = cross_product(&view.left, &view.forward);
-	orientation = view_orientation(&view.left, &view.true_uper, &view.forward);
-	trans = mtx_create(NULL, 4, 4);
-	fill_idnty_mtx(trans);
-	mtx_translation(trans, &(t_point){-from->x, -from->y, -from->z, 1});
-	ret = mtx_multiply(NULL, orientation, trans);
-	clean_matrix(NULL, orientation, 0);
-	clean_matrix(NULL, trans, 0);
-	return (ret);
-}
-
-t_matrix	*view_orientation(t_vector *left, t_vector *up, t_vector *forward)
-{
-	t_matrix	*orientation;
-
-	orientation = mtx_create(NULL, 4, 4);
-	orientation->mtx[0][0] = left->x;
-	orientation->mtx[0][1] = left->y;
-	orientation->mtx[0][2] = left->z;
-	orientation->mtx[1][0] = up->x;
-	orientation->mtx[1][1] = up->y;
-	orientation->mtx[1][2] = up->z;
-	orientation->mtx[2][0] = -forward->x;
-	orientation->mtx[2][1] = -forward->y;
-	orientation->mtx[2][2] = -forward->z;
-	orientation->mtx[3][3] = 1;
-	return (orientation);
-}
 
 
 
