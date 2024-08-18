@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 17:12:05 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/18 22:24:44 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/19 00:07:49 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,11 @@
 *		transform the ray with the inverse of the transform matrix
 *	sets the first hit point if there is one
 */
-void	check_intersections(t_minirt *data, t_point *point)
+void	check_intersections(t_minirt *data)
 {
 	t_vector	point_to_ray;
 	t_sphere		*obj;
 
-	point_to_ray = subtrac_tuples(point, &data->ray.origin);
-	data->ray.direction = normalize(&point_to_ray);
 	obj = data->objs;
 	while (obj)
 	{

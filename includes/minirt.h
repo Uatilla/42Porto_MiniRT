@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/18 22:35:17 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/18 23:47:04 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ typedef struct s_sphere
 	enum e_identifyer	type;
 }	t_sphere;
 
+// (8 * 2) + (8 * 2) + (4 * 4) = 48 bytes
 typedef	struct s_camera
 {
 	t_matrix	*trans;
@@ -177,10 +178,11 @@ typedef	struct s_camera
 	float		pixel_size;
 }	t_camera;
 
-// 96 + 44 + 32 + 16 + (8 * 4) + 4 = 222 bytes
+// 96 + 48 + 44 + 32 + 16 + (8 * 4) + 4 = 270 bytes
 typedef struct s_minirt
 {
 	t_light			light;
+	t_camera		camera;
 	t_canvas		canvas;
 	t_ray			ray;
 	t_xs			xs;
@@ -253,7 +255,7 @@ t_matrix	*view_orientation(t_vector *left, t_vector *up, t_vector *forward);
 //camera
 //camera.c
 t_camera	camera_construct(size_t hsize, size_t vsize, float	vof);
-t_ray	ray_for_pixel(t_camera *camera, size_t px, size_t py);
+t_ray		ray_for_pixel(t_camera *camera, size_t px, size_t py);
 
 //light
 //light.c
@@ -290,7 +292,7 @@ int8_t		ray_cylinder_intersect(t_ray *ray, float *t);
 
 //intersections.c
 void		ray_intersections(t_minirt *data, void *obj, t_ray *trans_ray);
-void		check_intersections(t_minirt *data, t_point *point);
+void		check_intersections(t_minirt *data);
 void		first_hit(t_minirt *data);
 void   		first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
 void   		append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);

@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 20:30:03 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/18 21:13:49 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/18 23:50:54 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	clear_ray_inter(t_minirt *data)
 		data->inter = ptr;
 	}
 	data->first_hit = NULL;
+	data->inter = NULL;
 	if (data->xs.count > 0)
 		free(data->xs.arr);
 	data->xs.count = 0;
