@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/18 21:03:19 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/18 22:01:50 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,17 @@ enum e_identifyer
 	PL = 4,
 	CY = 5,
 };
+
+//MACRO
+# define EPSILON 0.00001
+# define ZERO_TUPLE (t_tuple){0, 0, 0, 0}
+# define WIDTH 900
+# define HEIGTH 900
+# define BOTH 0
+# define FIRST 1
+# define SECOND 2
+# define ESC 65307
+# define PI 3.14159 
 
 //STRUCTURES
 // (8 * 4) + (4 * 3) = 44 bytes
@@ -154,6 +165,17 @@ typedef struct s_sphere
 	enum e_identifyer	type;
 }	t_sphere;
 
+typedef	struct s_camera
+{
+	t_matrix	*trans;
+	size_t		hsize;
+	size_t		vsize;
+	float		half_width;
+	float		half_height;
+	float		vof;
+	float		pixel_size;
+}	t_camera;
+
 // 96 + 44 + 32 + 16 + (8 * 4) + 4 = 222 bytes
 typedef struct s_minirt
 {
@@ -176,16 +198,6 @@ typedef struct	s_view
 	t_vector	left;
 	t_vector	true_uper;
 }	t_view;
-
-//MACRO
-# define EPSILON 0.00001
-# define ZERO_TUPLE (t_tuple){0, 0, 0, 0}
-# define WIDTH 900
-# define HEIGTH 900
-# define BOTH 0
-# define FIRST 1
-# define SECOND 2
-# define ESC 65307
 
 //FUNCTIONS
 //Tuples
@@ -225,7 +237,6 @@ t_color		color_multiply(t_color *c1, t_color *c2);
 //view_transformation.c
 t_matrix	*view_transformation(t_point *from, t_point *to, t_vector *up);
 t_matrix	*view_orientation(t_vector *left, t_vector *up, t_vector *forward);
-
 
 //light
 //light.c

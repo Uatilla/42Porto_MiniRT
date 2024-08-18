@@ -6,27 +6,65 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:02:44 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/18 21:03:35 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/18 22:01:51 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 
+t_camera	camera_construct(size_t hsize, size_t vsize, float	vof);
+
 int	main(void)
 {
-	t_matrix	*view;
+	t_camera	camera;
 
-	view = view_transformation(&(t_point){1, 3, 2, 1}, &(t_point){4, -2, 8, 1}, &(t_point){1, 1, 0, 0});
+	camera = camera_construct(125, 200, PI/2);
 
-	for (int i = 0; i < 4; i++)
+	printf("hsize: %lu\n", camera.hsize);
+	printf("vsize: %lu\n", camera.vsize);
+	printf("vof: %f\n", camera.vof);
+	printf("half_width: %f\n", camera.half_width);
+	printf("half_height: %f\n", camera.half_height);
+	printf("pixel_size: %f\n", camera.pixel_size);
+
+	// for (int i = 0; i < 4; i++)
+	// {
+	// 	for (int j = 0; j < 4; j++)
+	// 		printf("%f ", camera.trans->mtx[i][j]);
+	// 	printf("\n");
+	// }
+
+	clean_matrix(NULL, camera.trans, 0);
+	return (0);
+}
+
+t_camera	camera_construct(size_t hsize, size_t vsize, float	vof)
+{
+	t_camera	camera;
+	float		half_view;
+	float		aspect;
+
+	camera.hsize = hsize;
+	camera.vsize = vsize;
+	camera.vof = vof;
+	camera.trans = mtx_create(NULL, 4, 4);
+	fill_idnty_mtx(camera.trans);
+	half_view = tan(vof / 2);
+	aspect = (float)hsize / (float)vsize;
+	printf("half_view: %f\n", half_view);
+	printf("aspect: %f\n", aspect);
+	if (aspect >= 1)
 	{
-		for (int y = 0; y < 4; y++)
-		{
-			printf("%f ", view->mtx[i][y]);
-		}
-		printf("\n");
+		camera.half_width = half_view;
+		camera.half_height = half_view / aspect;
 	}
-	clean_matrix(NULL, view, 0);
+	else
+	{
+		camera.half_width = half_view * aspect;
+		camera.half_height = half_view;
+	}
+	camera.pixel_size = (camera.half_width * 2) / hsize;
+	return (camera);
 }
 
 
