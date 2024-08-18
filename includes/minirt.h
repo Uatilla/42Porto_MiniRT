@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/18 22:01:50 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/18 22:35:17 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ typedef struct s_sphere
 typedef	struct s_camera
 {
 	t_matrix	*trans;
+	t_matrix	*inver;
 	size_t		hsize;
 	size_t		vsize;
 	float		half_width;
@@ -190,6 +191,7 @@ typedef struct s_minirt
 	int				fd;
 }		t_minirt;
 
+// used in view_transformation func
 // (16 * 4) = 64
 typedef struct	s_view
 {
@@ -198,6 +200,16 @@ typedef struct	s_view
 	t_vector	left;
 	t_vector	true_uper;
 }	t_view;
+
+// used in ray_for_pixel func
+// (4 * 4) = 16 bytes
+typedef struct s_rfp
+{
+	float	xoffset;
+	float	yoffset;
+	float	w_x;
+	float	w_y;
+}	t_rfp;
 
 //FUNCTIONS
 //Tuples
@@ -237,6 +249,11 @@ t_color		color_multiply(t_color *c1, t_color *c2);
 //view_transformation.c
 t_matrix	*view_transformation(t_point *from, t_point *to, t_vector *up);
 t_matrix	*view_orientation(t_vector *left, t_vector *up, t_vector *forward);
+
+//camera
+//camera.c
+t_camera	camera_construct(size_t hsize, size_t vsize, float	vof);
+t_ray	ray_for_pixel(t_camera *camera, size_t px, size_t py);
 
 //light
 //light.c
