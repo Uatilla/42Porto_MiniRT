@@ -3,4 +3,6 @@ objs/*
 objs/*/*
 libraries/minilibx-linux
 libraries/minilibx-linux/*
+libraries/libft/*.o
+libraries/libft/*.a
 minirt
