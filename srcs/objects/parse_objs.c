@@ -12,41 +12,6 @@
 
 #include "../../includes/minirt.h"
 
-void	check_range(char *ratio, t_checkstx *chk_stx, float l_rng, float u_rng)
-{
-	float value;
-
-	(void)chk_stx;
-	(void)l_rng;
-	(void)u_rng;
-	value = ft_atof(ratio);
-	if (value < l_rng || value > u_rng)
-		chk_stx->count_err_stx++;
-}
-
-void	parse_ambient(char **line, t_checkstx *chk_stx)
-{
-	int	i;
-
-	i = -1;
-
-	while (line[++i])
-	{
-		if (i == 1)
-			check_range(line[i], chk_stx, 0.0, 1.0);
-		if (i == 2)
-		{
-			
-			//Sao apenas 3 cores SPLIT colocar na estrutura.
-			//estao dentro de 0 a 255
-
-		}
-
-	}
-
-}
-
-
 void	free_split(char **line)
 {
 	int	i;
@@ -55,6 +20,46 @@ void	free_split(char **line)
 	while (line[++i])
 		free(line[i]);
 	free(line);
+}
+
+void	check_range(char *val, t_checkstx *chk_stx, float l_range, float u_range)
+{
+	float value;
+
+	value = ft_atof(val);
+	if (value < l_range || value > u_range)
+		chk_stx->count_err_stx++;
+}
+
+/// @brief Check the syntax 
+/// @param line 
+/// @param chk_stx 
+void	parse_ambient(char **line, t_checkstx *chk_stx)
+{
+	int	i;
+	int	color;
+	char	**rgb_elemts;
+
+	i = -1;
+	while (line[++i])
+	{
+		if (i == 1)
+			check_range(line[i], chk_stx, 0.0, 1.0);
+		else if (i == 2)
+		{
+			//check_color(line, i, chk_stx);
+			rgb_elemts = ft_split(line[i], ',');
+			color = -1;
+			while (rgb_elemts[++color])
+				check_range(rgb_elemts[color], chk_stx, 0.0,255.0);
+			if (color > 3)
+				chk_stx->count_err_stx++;
+			free_split(rgb_elemts);
+		}
+	}
+	if (i != 3)
+		chk_stx->count_err_stx++;
+
 }
 
 void	parse_type(char **line, t_checkstx *chk_stx)
