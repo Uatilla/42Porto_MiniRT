@@ -22,44 +22,139 @@ void	free_split(char **line)
 	free(line);
 }
 
-void	check_range(char *val, t_checkstx *chk_stx, float l_range, float u_range)
+/// @brief Verify if the element is under the valid value range.
+/// @param val Value to be checked.
+/// @param chk_stx Temp structure to track syntax errors.
+/// @param l_range Lower valid range.
+/// @param u_range Upper valid range.
+void	check_range(char *val, t_checkstx *chk_stx, float *range_limts)
 {
 	float value;
 
 	value = ft_atof(val);
-	if (value < l_range || value > u_range)
+	if (value < range_limts[0] || value > range_limts[1])
 		chk_stx->count_err_stx++;
+}
+
+/// @brief Verify if the string has only three elmnts and is in a valid range.
+/// @param line Elements in the line to be checked.
+/// @param elemnt_str Element index in line. 
+/// @param chk_stx Temp structure to track syntax errors.
+/// @param range_limts Float Array limits.
+void	check_elemnt(char **line, int elemnt_str, t_checkstx *chk_stx, float *range_limts)
+{
+	int	color;
+	char	**rgb_elemts;
+
+	rgb_elemts = ft_split(line[elemnt_str], ',');
+	color = -1;
+	while (rgb_elemts[++color])
+		if (range_limts)
+			check_range(rgb_elemts[color], chk_stx, range_limts);
+	if (color > 3)
+		chk_stx->count_err_stx++;
+	free_split(rgb_elemts);
 }
 
 /// @brief Check the syntax of Ambient Element.
 /// @param line Elements inside Ambient line in the map.
-/// @param chk_stx Temp
+/// @param chk_stx Temp structure to track syntax errors.
 void	parse_ambient(char **line, t_checkstx *chk_stx)
 {
-	int	i;
-	int	color;
-	char	**rgb_elemts;
+	int	n_elem;
 
-	i = -1;
-	while (line[++i])
+	n_elem = -1;
+	while (line[++n_elem])
 	{
-		if (i == 1)
-			check_range(line[i], chk_stx, 0.0, 1.0);
-		else if (i == 2)
-		{
-			//check_color(line, i, chk_stx);
-			rgb_elemts = ft_split(line[i], ',');
-			color = -1;
-			while (rgb_elemts[++color])
-				check_range(rgb_elemts[color], chk_stx, 0.0,255.0);
-			if (color > 3)
-				chk_stx->count_err_stx++;
-			free_split(rgb_elemts);
-		}
+		if (n_elem == 1)
+			check_range(line[n_elem], chk_stx, (float []){0.0, 1.0});
+		else if (n_elem == 2)
+			check_elemnt(line, n_elem, chk_stx, (float []){0.0, 255.0});
 	}
-	if (i != 3)
+	if (n_elem != 3)
 		chk_stx->count_err_stx++;
+}
 
+void	parse_camera(char **line, t_checkstx *chk_stx)
+{
+	int	n_elem;
+
+	n_elem = -1;
+	while (line[++n_elem])
+	{
+		if (n_elem == 1)
+			check_elemnt(line, n_elem, chk_stx, NULL);
+		else if (n_elem == 2)
+			check_elemnt(line, n_elem, chk_stx, (float []){-1.0, 1.0});
+		else if (n_elem == 3)
+			check_range(line[n_elem], chk_stx, (float []){0.0, 180.0});
+	}
+	if (n_elem != 4)
+		chk_stx->count_err_stx++;
+}
+
+void	parse_light(char **line, t_checkstx *chk_stx)
+{
+	int	n_elem;
+
+	n_elem = -1;
+	while (line[++n_elem])
+	{
+		if (n_elem == 1)
+			check_elemnt(line, n_elem, chk_stx, NULL);
+		else if (n_elem == 2)
+			check_range(line[n_elem], chk_stx, (float []){0.0, 1.0});
+		else if (n_elem == 3)
+			check_elemnt(line, n_elem, chk_stx, (float []){0, 255.0});
+	}
+	if (n_elem != 4)
+		chk_stx->count_err_stx++;
+}
+
+void	parse_plane(char **line, t_checkstx *chk_stx)
+{
+	int	n_elem;
+
+	n_elem = -1;
+	while (line[++n_elem])
+	{
+		if (n_elem == 1)
+			check_elemnt(line, n_elem, chk_stx, NULL);
+		else if (n_elem == 2)
+			check_elemnt(line, n_elem, chk_stx, (float []){-1.0, 1.0});
+		else if (n_elem == 3)
+			check_elemnt(line, n_elem, chk_stx, (float []){0, 255.0});
+	}
+	if (n_elem != 4)
+		chk_stx->count_err_stx++;
+}
+
+void	check_negative(char *dimension, t_checkstx *chk_stx)
+{
+	if (atof(dimension) < 0.0)
+		chk_stx->count_err_stx++;
+}
+
+void	parse_cylinder(char **line, t_checkstx *chk_stx)
+{
+	int	n_elem;
+
+	n_elem = -1;
+	while (line[++n_elem])
+	{
+		if (n_elem == 1)
+			check_elemnt(line, n_elem, chk_stx, NULL);
+		else if (n_elem == 2)
+			check_elemnt(line, n_elem, chk_stx, (float []){-1.0, 1.0});
+		else if (n_elem == 3)
+			check_negative(line[n_elem], chk_stx);
+		else if (n_elem == 4)
+			check_negative(line[n_elem], chk_stx);
+		else if (n_elem == 5)
+			check_elemnt(line, n_elem, chk_stx, (float []){0, 255.0});
+	}
+	if (n_elem != 6)
+		chk_stx->count_err_stx++;
 }
 
 void	parse_type(char **line, t_checkstx *chk_stx)
@@ -67,19 +162,19 @@ void	parse_type(char **line, t_checkstx *chk_stx)
 	(void)chk_stx;
 	if (line[0])
 	{
-		
+		//Should we deal with lower A, C, L?
 		if (!ft_strcmp(line[0], "A"))
 			parse_ambient(line, chk_stx);
 		else if (!ft_strcmp(line[0], "C"))
-			printf("C\n");
+			parse_camera(line, chk_stx);
 		else if (!ft_strcmp(line[0], "L"))
-			printf("L\n");
+			parse_light(line, chk_stx);
 		else if (!ft_strcmp(line[0], "sp"))
 			printf("sp\n");
 		else if (!ft_strcmp(line[0], "pl"))
-			printf("pl\n");
+			parse_plane(line, chk_stx);
 		else if (!ft_strcmp(line[0], "cy"))
-			printf("cy\n");
+			parse_cylinder(line, chk_stx);
 	}
 	free_split(line);
 }
