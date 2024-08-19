@@ -43,15 +43,15 @@ void	check_range(char *val, t_checkstx *chk_stx, float *range_limts)
 /// @param range_limts Float Array limits.
 void	check_elemnt(char **line, int elemnt_str, t_checkstx *chk_stx, float *range_limts)
 {
-	int	color;
+	int	elemnt;
 	char	**rgb_elemts;
 
 	rgb_elemts = ft_split(line[elemnt_str], ',');
-	color = -1;
-	while (rgb_elemts[++color])
+	elemnt = -1;
+	while (rgb_elemts[++elemnt])
 		if (range_limts)
-			check_range(rgb_elemts[color], chk_stx, range_limts);
-	if (color > 3)
+			check_range(rgb_elemts[elemnt], chk_stx, range_limts);
+	if (elemnt > 3)
 		chk_stx->count_err_stx++;
 	free_split(rgb_elemts);
 }
