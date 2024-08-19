@@ -17,8 +17,13 @@ t_color	color_at(t_minirt *data)
 	t_color	color;
 
 	check_intersections(data);
-	light_vec(&data->ray, data->world.light, data);
-	color = lighting(data->first_hit, data->world.light);
+	if (data->first_hit)
+	{
+		light_vec(&data->ray, data->world.light, data);
+		color = lighting(data->first_hit, data->world.light);
+	}
+	else
+		color = (t_color){0, 0, 0, 0};
 	return (color);
 }
 

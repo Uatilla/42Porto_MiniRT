@@ -28,17 +28,18 @@ int	main(void)
 	mtx_scaling(data.world.sphere->mtx_trans, &(t_tuple){0.5, 0.5, 0.5, 1});
 	data.world.sphere->mtx_inver = mtx_inverse(NULL, data.world.sphere->mtx_trans);
 
-	set_light(&(t_point){0, 0.25, 0, 1}, &(t_color){1, 1, 1, 1}, &data.world);
-	ray.origin = (t_point){0, 0, 0, 1};
-	ray.direction = (t_vector){0, 0, 1, 0};
+	set_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 1}, &data.world);
+	ray.origin = (t_point){0, 0, 0.75, 1};
+	ray.direction = (t_vector){0, 0, -1, 0};
 	data.ray = ray;
 
 	color = color_at(&data);
-
-	printf("point: %f %f %f\n", data.first_hit->point.x, data.first_hit->point.y, data.first_hit->point.z);
-	printf("eyev: %f %f %f\n", data.world.light->eyev.x, data.world.light->eyev.y, data.world.light->eyev.z);
-	printf("normalv: %f %f %f\n", data.world.light->normalv.x, data.world.light->normalv.y, data.world.light->normalv.z);
-
+	if (data.first_hit)
+	{
+		printf("point: %f %f %f\n", data.first_hit->point.x, data.first_hit->point.y, data.first_hit->point.z);
+		printf("eyev: %f %f %f\n", data.world.light->eyev.x, data.world.light->eyev.y, data.world.light->eyev.z);
+		printf("normalv: %f %f %f\n", data.world.light->normalv.x, data.world.light->normalv.y, data.world.light->normalv.z);
+	}
 	printf("color: %f %f %f\n", color.r, color.g, color.b);
 
 	clear_ray_inter(&data);

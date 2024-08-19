@@ -59,7 +59,7 @@ void	fill_sphere(t_sphere *sp)
 void	set_materials(t_material *material)
 {
 	material->color = (t_color){0.8, 1.0, 0.6, 999999};
-	material->ambient = 0.1;
+	material->ambient = 1;
 	material->diffuse = 0.7;
 	material->specular = 0.2;
 	material->shininess = 100.0;
