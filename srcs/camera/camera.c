@@ -29,7 +29,7 @@ t_ray	ray_for_pixel(t_camera *camera, size_t px, size_t py)
 	return (ray);
 }
 
-t_camera	camera_construct(size_t hsize, size_t vsize, float	vof)
+t_camera	camera_construct(size_t hsize, size_t vsize, float	fov)
 {
 	t_camera	camera;
 	float		half_view;
@@ -37,10 +37,10 @@ t_camera	camera_construct(size_t hsize, size_t vsize, float	vof)
 
 	camera.hsize = hsize;
 	camera.vsize = vsize;
-	camera.vof = vof;
+	camera.fov = fov;
 	camera.trans = mtx_create(NULL, 4, 4);
 	fill_idnty_mtx(camera.trans);
-	half_view = tan(vof / 2);
+	half_view = tan(fov / 2);
 	aspect = (float)hsize / (float)vsize;
 	if (aspect >= 1)
 	{

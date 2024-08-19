@@ -18,7 +18,6 @@
 */
 void	light_vec(t_ray *ray, t_light *light, t_minirt *data)
 {
-	printf("got here\n");
 	light->dir = subtrac_tuples(&light->position, &data->first_hit->point);
 	light->dir = normalize(&light->dir);
 	light->eyev = negating_tuple(&ray->direction);

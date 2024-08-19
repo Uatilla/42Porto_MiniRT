@@ -159,7 +159,6 @@ void	fill_sphere(t_sphere *sp)
 	fill_idnty_mtx(mtx);
 	sp->type = SP;
 	sp->mtx_trans = mtx;
-	//mtx_translation(mtx, &(t_tuple){1, 1, 0, 1});
 	set_materials(&sp->material);
 }
 
@@ -168,9 +167,9 @@ void	fill_sphere(t_sphere *sp)
 */
 void	set_materials(t_material *material)
 {
-	material->color = (t_color){0.8, 1.0, 0.6, 999999};
-	material->ambient = 1;
+	material->color = (t_color){1, 0.9, 0.9, 999999};
+	material->ambient = 0.1;
 	material->diffuse = 0.7;
-	material->specular = 0.2;
+	material->specular = 0;
 	material->shininess = 100.0;
 }

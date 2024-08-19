@@ -49,12 +49,15 @@ void	ray_intersections(t_minirt *data, void *obj, t_ray *trans_ray)
 	intersection_points = ray_sphere_intersect(trans_ray, obj, t);
 	if (intersection_points > 0)
 	{
+		// printf("got here\n");
 		data->xs.count += 2;
 		if (data->inter == NULL)
 			first_inter(data, intersection_points, t, obj);
 		else
 			append_inter(data, intersection_points, t, obj);
 	}
+	// else
+	// 	printf("no inter\n");
 }
 
 /*

@@ -12,102 +12,48 @@
 
 #include "../includes/minirt.h"
 
+void	render(t_minirt *data);
+
 int	main(void)
 {
 	t_minirt	data;
-	t_color		color;
-	t_ray		ray;
 
 	ft_memset(&data, 0, sizeof(data));
-
-	parse_sphere(&data.world);
-	data.world.sphere->mtx_inver = mtx_inverse(NULL, data.world.sphere->mtx_trans);
-
-	parse_sphere(&data.world);
-	mtx_scaling(data.world.sphere->mtx_trans, &(t_tuple){0.5, 0.5, 0.5, 1});
-	data.world.sphere->mtx_inver = mtx_inverse(NULL, data.world.sphere->mtx_trans);
-
+	start_mlx(&data.canvas);
 	set_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 1}, &data.world);
-	ray.origin = (t_point){0, 0, 0.75, 1};
-	ray.direction = (t_vector){0, 0, -1, 0};
-	data.ray = ray;
 
-	color = color_at(&data);
-	if (data.first_hit)
-	{
-		printf("point: %f %f %f\n", data.first_hit->point.x, data.first_hit->point.y, data.first_hit->point.z);
-		printf("eyev: %f %f %f\n", data.world.light->eyev.x, data.world.light->eyev.y, data.world.light->eyev.z);
-		printf("normalv: %f %f %f\n", data.world.light->normalv.x, data.world.light->normalv.y, data.world.light->normalv.z);
-	}
-	printf("color: %f %f %f\n", color.r, color.g, color.b);
+	parse_sphere(&data.world);
+	mtx_scaling(data.world.sphere->mtx_trans, &(t_point){10, 0.01, 10, 1});
+	data.world.sphere->mtx_inver = mtx_inverse(&data, data.world.sphere->mtx_trans);
 
-	clear_ray_inter(&data);
+	data.camera = camera_construct(WIDTH, HEIGTH, PI / 2);
+	clean_matrix(&data, data.camera.trans, 0);
+	data.camera.trans = view_transformation(&(t_point){0, 0, -5, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
+	data.camera.inver = mtx_inverse(&data, data.camera.trans);
+
+	render(&data);
+	clean_matrix(&data, data.camera.trans, 0);
+	clean_matrix(&data, data.camera.inver, 0);
 	clean_world(&data.world);
 	return (0);
 }
 
+void	render(t_minirt *data)
+{
+	int			x;
+	int			y;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// int	main(void)
-// {
-// 	t_minirt	data;
-// 	t_light		light;
-// 	t_color		color;
-// 	int			x;
-// 	int			y;
-//
-// 	ft_memset(&data, 0, sizeof(data));
-// 	parse_objects(SP, &data);
-// 	// mtx_scaling(((t_sphere *)data.objs)->mtx_trans, &(t_tuple){4, 4, 4, 1});
-// 	((t_sphere *)data.objs)->mtx_inver = mtx_inverse(&data, ((t_sphere *)data.objs)->mtx_trans);
-// 	data.camera = camera_construct(HEIGTH, WIDTH, PI / 2);
-// 	data.camera.trans = view_transformation(&(t_point){0, 0, -5, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
-// 	data.camera.inver = mtx_inverse(&data, data.camera.trans);
-// 	set_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 69});
-// 	start_mlx(&data.canvas);
-// 	y = -1;
-// 	while (++y < HEIGTH)
-// 	{
-// 		x = -1;
-// 		while (++x < WIDTH)
-// 		{
-// 			data.ray = ray_for_pixel(&data.camera, x, y);
-// 			check_intersections(&data);
-// 			if (data.first_hit)
-// 			{
-// 				light_vec(&((t_sphere *)data.first_hit->obj)->trans_ray, &light, &data);
-// 				color = lighting(data.first_hit, &light);
-// 				write_pixel(&data.canvas, x, y, &color);
-// 			}
-// 			clear_ray_inter(&data);
-// 		}
-// 	}
-// 	mlx_put_image_to_window(data.canvas.mlx, data.canvas.win, data.canvas.img, 0, 0);
-// 	printf("end\n");
-// 	mlx_loop(data.canvas.mlx);
-// }
+	y = -1;
+	while (++y < data->camera.hsize - 1)
+	{
+		x = -1;
+		while (++x < data->camera.vsize - 1)
+		{
+			data->ray = ray_for_pixel(&data->camera, x, y);
+			color_at(data, x, y);
+		}
+	}
+	printf("end render\n");
+	mlx_put_image_to_window(data->canvas.mlx, data->canvas.win, data->canvas.img, 0, 0);
+	mlx_loop(data->canvas.mlx);
+}

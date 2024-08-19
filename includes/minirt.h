@@ -175,16 +175,16 @@ typedef struct s_sphere
 	enum e_identifyer	type;
 }	t_sphere;
 
-// (8 * 2) + (8 * 2) + (4 * 4) = 48 bytes
+// (8 * 2) + (4 * 2) + (4 * 4) = 40 bytes
 typedef	struct s_camera
 {
 	t_matrix	*trans;
 	t_matrix	*inver;
-	size_t		hsize;
-	size_t		vsize;
+	int			hsize;
+	int			vsize;
 	float		half_width;
 	float		half_height;
-	float		vof;
+	float		fov;
 	float		pixel_size;
 }	t_camera;
 
@@ -196,11 +196,11 @@ typedef	struct	s_world
 	t_light		*light;
 }	t_world;
 
-// 48 + 44 + 32 + 16 + (8 * 3) + 4 = 166 bytes
+// 44 + 40 + 32 + 16 + (8 * 3) + 4 = 160 bytes
 typedef struct s_minirt
 {
-	t_camera		camera;
 	t_canvas		canvas;
+	t_camera		camera;
 	t_ray			ray;
 	t_xs			xs;
 	t_world			world;
@@ -271,12 +271,12 @@ t_matrix	*view_orientation(t_vector *left, t_vector *up, t_vector *forward);
 
 //camera
 //camera.c
-t_camera	camera_construct(size_t hsize, size_t vsize, float	vof);
+t_camera	camera_construct(size_t hsize, size_t vsize, float	fov);
 t_ray		ray_for_pixel(t_camera *camera, size_t px, size_t py);
 
 //light
 //light.c
-t_color		color_at(t_minirt *data);
+void		color_at(t_minirt *data, int x, int y);
 void		set_light(t_point *pos, t_color *intensity, t_world *world);
 t_vector	normal_at(void *obj, t_point *point, t_minirt *data);
 t_vector	reflect(t_vector *in, t_vector *normal);
@@ -316,8 +316,8 @@ void   		first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
 void   		append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
 
 //sort_intersections.c
-void	sort_intersections(t_xs	*xs, t_intersections *inter);
-void	sort_xs(t_xs *xs);
+void		sort_intersections(t_xs	*xs, t_intersections *inter);
+void		sort_xs(t_xs *xs);
 
 //map
 //map.c
@@ -387,5 +387,8 @@ t_matrix	*mtx_inverse(t_minirt *mrt, t_matrix *mtx);
 //Matrix_transformations
 //matrix_transformations.c
 float		degree_to_rad(float degree);
+void		mtx_rotation_x(t_matrix *mtx, float rot_deg);
+void		mtx_rotation_y(t_matrix *mtx, float rot_deg);
+void		mtx_rotation_z(t_matrix *mtx, float rot_deg);
 
 #endif
