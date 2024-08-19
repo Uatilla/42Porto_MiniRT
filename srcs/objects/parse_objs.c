@@ -31,9 +31,9 @@ void	check_range(char *val, t_checkstx *chk_stx, float l_range, float u_range)
 		chk_stx->count_err_stx++;
 }
 
-/// @brief Check the syntax 
-/// @param line 
-/// @param chk_stx 
+/// @brief Check the syntax of Ambient Element.
+/// @param line Elements inside Ambient line in the map.
+/// @param chk_stx Temp
 void	parse_ambient(char **line, t_checkstx *chk_stx)
 {
 	int	i;
