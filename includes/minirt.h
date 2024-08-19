@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/19 00:13:25 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/19 17:02:49 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,13 @@ typedef	struct	s_intersections
 // 16 * 6 = 96 bytes
 typedef	struct s_light
 {
-	t_point		position;
-	t_color		intensity;
-	t_vector	dir;
-	t_vector	reflect;
-	t_vector	eyev;
-	t_vector	normalv;
+	t_point	   		position;
+	t_color	   		intensity;
+	t_vector   		dir;
+	t_vector   		reflect;
+	t_vector   		eyev;
+	t_vector   		normalv;
+	struct s_light	*next;
 }	t_light;
 
 // 16 * 3 = 32
@@ -177,6 +178,14 @@ typedef	struct s_camera
 	float		vof;
 	float		pixel_size;
 }	t_camera;
+
+// needs to call ft_memset
+// (8 * 2) = 16 bytes
+typedef	struct	s_world
+{
+	t_sphere	*sphere;
+	t_light		*light;
+}	t_world;
 
 // 96 + 48 + 44 + 32 + 16 + (8 * 4) + 4 = 270 bytes
 typedef struct s_minirt
@@ -259,7 +268,7 @@ t_ray		ray_for_pixel(t_camera *camera, size_t px, size_t py);
 
 //light
 //light.c
-t_light		set_light(t_point *position, t_color *intensity);
+void		set_light(t_point *pos, t_color *intensity, t_world *world);
 t_vector	normal_at(void *obj, t_point *point, t_minirt *data);
 t_vector	reflect(t_vector *in, t_vector *normal);
 t_color		lighting(t_intersections *inter, t_light *light);
@@ -272,9 +281,9 @@ t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
 
 //objects
 //parse_objs.c
-void		parse_objects(enum e_identifyer type, t_minirt *data);
-void		parse_sphere(t_minirt *data);
-void		fill_sphere(t_sphere *sp, t_minirt *data);
+void		parse_objects(enum e_identifyer type, t_world *world);
+void		parse_sphere(t_world *world);
+void		fill_sphere(t_sphere *sp);
 void		set_materials(t_material	*material);
 
 //ray
@@ -314,9 +323,13 @@ int			chk_input(int argc, char *file);
 //exit_cleaner.c
 void		clear_exit(t_minirt *mrt, int status);
 void		ft_error(char *msg);
-void		clear_objs(void	*objs);
 void		clear_ray_inter(t_minirt *data);
 void		clean_matrix(t_minirt *mrt, t_matrix *mtx_struct, int status);
+
+//clean_world.c
+void		clean_world(t_world *world);
+void		clean_light(t_light *light);
+void		clean_sphere(t_sphere *sphere);
 
 //mlx
 //mlx.c

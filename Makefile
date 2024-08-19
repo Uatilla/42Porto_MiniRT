@@ -6,7 +6,7 @@
 #    By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/30 20:21:44 by uviana-a          #+#    #+#              #
-#    Updated: 2024/08/18 22:34:26 by Jburlama         ###   ########.fr        #
+#    Updated: 2024/08/19 16:31:25 by Jburlama         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ SRCS		=	main.c \
 				canvas/map.c \
 				sphere/sphere.c \
 				cylinder/cylinder.c \
-				exit/exit_cleaner.c \
+				exit/exit_cleaner.c exit/clean_world.c \
 				mlx/mlx.c \
 				matrix/matrix_validations.c matrix/matrix_operations.c matrix/matrix_modifications.c matrix/matrix_mods_utils.c \
 				matrix_transformations/matrix_transformations.c \

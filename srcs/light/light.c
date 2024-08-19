@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:48:55 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/18 23:39:39 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:58:50 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,26 @@
 /*
  * sets the values for the light object
 */
-t_light	set_light(t_point *pos, t_color *intensity)
+void	set_light(t_point *pos, t_color *intensity, t_world *world)
 {
-	t_light	light;
+	t_light	*light;
 
-	light.position = *pos;
-	light.intensity = *intensity;
-	light.eyev = (t_vector){0, 0, 0, 0};
-	light.normalv = (t_vector){0, 0, 0, 0};
-	light.reflect = (t_vector){0, 0, 0, 0};
-	light.dir = (t_vector){0, 0, 0, 0};
-	return (light);
+	if (world->light == NULL)
+	{
+		world->light = ft_calloc(sizeof(*world->light), 1);
+		if (world->light == NULL)
+			exit (errno);
+		world->light->position = *pos;
+		world->light->intensity = *intensity;
+		return ;
+	}
+	light = ft_calloc(sizeof(*light), 1);
+	if (light == NULL)
+		exit(errno);
+	light->position = *pos;
+	light->intensity = *intensity;
+	light->next = world->light;
+	world->light = light;
 }
 
 /*

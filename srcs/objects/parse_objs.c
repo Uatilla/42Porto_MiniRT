@@ -6,47 +6,47 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 22:04:30 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/18 23:25:13 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:57:07 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-void	parse_objects(enum e_identifyer type, t_minirt *data)
+void	parse_objects(enum e_identifyer type, t_world *world)
 {
 	if (type == SP)
-		parse_sphere(data);
+		parse_sphere(world);
 }
 
 /*
 *	adds a object node to the top of the objcts stack
 *	creats a stack if is empty
 */
-void	parse_sphere(t_minirt *data)
+void	parse_sphere(t_world *world)
 {
 	t_sphere	*sphere;
 
-	if (data->objs == NULL)
+	if (world->sphere == NULL)
 	{
-		data->objs = ft_calloc(sizeof(t_sphere), 1);
-		if (data->objs == NULL)
-			clear_exit(data, errno);
-		fill_sphere(((t_sphere *)data->objs), data);
+		world->sphere = ft_calloc(sizeof(t_sphere), 1);
+		if (world->sphere == NULL)
+			clear_exit(NULL, errno);
+		fill_sphere(world->sphere);
 		return ;
 	}
 	sphere = ft_calloc(sizeof(t_sphere), 1);
 	if (sphere == NULL)
-		clear_exit(data, errno);
-	fill_sphere(sphere, data);
-	sphere->next = data->objs;
-	data->objs = sphere;
+		clear_exit(NULL, errno);
+	fill_sphere(sphere);
+	sphere->next = world->sphere;
+	world->sphere = sphere;
 }
 
-void	fill_sphere(t_sphere *sp, t_minirt *data)
+void	fill_sphere(t_sphere *sp)
 {
 	t_matrix	*mtx;
 
-	mtx = mtx_create(data, 4, 4);
+	mtx = mtx_create(NULL, 4, 4);
 	fill_idnty_mtx(mtx);
 	sp->type = SP;
 	sp->mtx_trans = mtx;

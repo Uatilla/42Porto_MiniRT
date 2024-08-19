@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 20:30:03 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/18 23:50:54 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:36:08 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,14 @@ void	clear_exit(t_minirt *mrt, int status)
 {
 	if (!mrt)
 		exit(EXIT_FAILURE);
-	if (mrt->objs)
-		clear_objs(mrt->objs);
+	// if (mrt->objs)
+	// 	clear_objs(mrt->objs);
 	exit(status);
 }
 
 void	ft_error(char *msg)
 {
 	ft_putstr_fd(msg, 2);
-}
-
-void	clear_objs(void	*objs)
-{
-	void	*ptr;
-
-	ptr = objs;
-	while (objs)
-	{
-		if (((t_sphere *)objs)->type == SP)
-		{
-			clean_matrix(NULL, ((t_sphere *)ptr)->mtx_trans, 0);
-			clean_matrix(NULL, ((t_sphere *)ptr)->mtx_inver, 0);
-			objs = ((t_sphere *)objs)->next;
-			free(ptr);
-			ptr = objs;
-		}
-	}
 }
 
 void	clear_ray_inter(t_minirt *data)
