@@ -187,18 +187,17 @@ typedef	struct	s_world
 	t_light		*light;
 }	t_world;
 
-// 96 + 48 + 44 + 32 + 16 + (8 * 4) + 4 = 270 bytes
+// 48 + 44 + 32 + 16 + (8 * 3) + 4 = 166 bytes
 typedef struct s_minirt
 {
-	t_light			light;
 	t_camera		camera;
 	t_canvas		canvas;
 	t_ray			ray;
 	t_xs			xs;
+	t_world			world;
 	t_intersections	*inter;
 	t_intersections	*first_hit;
 	t_tuple			*tuple;
-	void			*objs;
 	int				fd;
 }		t_minirt;
 
@@ -268,6 +267,7 @@ t_ray		ray_for_pixel(t_camera *camera, size_t px, size_t py);
 
 //light
 //light.c
+t_color		color_at(t_minirt *data);
 void		set_light(t_point *pos, t_color *intensity, t_world *world);
 t_vector	normal_at(void *obj, t_point *point, t_minirt *data);
 t_vector	reflect(t_vector *in, t_vector *normal);

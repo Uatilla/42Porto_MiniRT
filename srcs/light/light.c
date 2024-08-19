@@ -12,6 +12,16 @@
 
 #include "../../includes/minirt.h"
 
+t_color	color_at(t_minirt *data)
+{
+	t_color	color;
+
+	check_intersections(data);
+	light_vec(&data->ray, data->world.light, data);
+	color = lighting(data->first_hit, data->world.light);
+	return (color);
+}
+
 /*
  * sets the values for the light object
 */

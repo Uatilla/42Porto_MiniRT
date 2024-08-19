@@ -21,9 +21,9 @@
 void	check_intersections(t_minirt *data)
 {
 	t_vector	point_to_ray;
-	t_sphere		*obj;
+	t_sphere	*obj;
 
-	obj = data->objs;
+	obj = data->world.sphere;
 	while (obj)
 	{
 		obj->trans_ray = ray_trasform(&data->ray, obj->mtx_inver);
