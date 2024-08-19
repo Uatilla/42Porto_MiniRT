@@ -12,7 +12,6 @@
 
 #include "../includes/minirt.h"
 
-
 int	main(void)
 {
 	t_minirt	data;

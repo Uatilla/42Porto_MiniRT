@@ -45,6 +45,15 @@ enum e_identifyer
 # define PI 3.14159 
 
 //STRUCTURES
+
+typedef struct t_checkstx
+{
+	int		count_a;
+	int		count_c;
+	int		count_l;
+	int		count_err_stx;
+}	t_checkstx;
+
 // (8 * 4) + (4 * 3) = 44 bytes
 typedef struct s_canvas
 {
@@ -121,7 +130,7 @@ typedef	struct s_light
 }	t_light;
 
 // 16 * 3 = 32
-typedef struct	s_phong
+typedef struct s_phong
 {
 	t_color			ambient;
 	t_color			diffuse;
@@ -281,8 +290,8 @@ t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
 
 //objects
 //parse_objs.c
-void		parse_objects(enum e_identifyer type, t_world *world);
 void		parse_sphere(t_world *world);
+void		parse_objects(enum e_identifyer type, t_minirt *data, int file);
 void		fill_sphere(t_sphere *sp);
 void		set_materials(t_material	*material);
 
@@ -322,7 +331,8 @@ int			chk_input(int argc, char *file);
 //Exit
 //exit_cleaner.c
 void		clear_exit(t_minirt *mrt, int status);
-void		ft_error(char *msg);
+void		ft_error(t_minirt *mrt, char *msg, int status);
+void		clear_objs(void	*objs);
 void		clear_ray_inter(t_minirt *data);
 void		clean_matrix(t_minirt *mrt, t_matrix *mtx_struct, int status);
 

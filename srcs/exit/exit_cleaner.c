@@ -21,9 +21,11 @@ void	clear_exit(t_minirt *mrt, int status)
 	exit(status);
 }
 
-void	ft_error(char *msg)
+void	ft_error(t_minirt *mrt, char *msg, int status)
 {
 	ft_putstr_fd(msg, 2);
+	if (status)
+		clear_exit(mrt, status);
 }
 
 void	clear_ray_inter(t_minirt *data)
