@@ -97,7 +97,7 @@ void	check_dup(char *obj_type, t_checkstx *chk_stx)
 	}
 }
 
-void	parse_objects(enum e_identifyer type, t_minirt *data, int file)
+void	parse_objects(enum e_identifyer type, t_minirt *data, int file, t_material *m)
 {
 	bool	stx_failed;
 	char	*line;
@@ -124,14 +124,14 @@ void	parse_objects(enum e_identifyer type, t_minirt *data, int file)
 	if (chk_sintax.count_err_stx > 0)
 		ft_error(data, "ERROR: Invalid Map Syntax\n", 1);
 	if (type == SP)
-		parse_sphere(&data->world);
+		parse_sphere(&data->world, m);
 }
 
 /*
 *	adds a object node to the top of the objcts stack
 *	creats a stack if is empty
 */
-void	parse_sphere(t_world *world)
+void	parse_sphere(t_world *world, t_material *m)
 {
 	t_sphere	*sphere;
 
@@ -140,18 +140,18 @@ void	parse_sphere(t_world *world)
 		world->sphere = ft_calloc(sizeof(t_sphere), 1);
 		if (world->sphere == NULL)
 			clear_exit(NULL, errno);
-		fill_sphere(world->sphere);
+		fill_sphere(world->sphere, m);
 		return ;
 	}
 	sphere = ft_calloc(sizeof(t_sphere), 1);
 	if (sphere == NULL)
 		clear_exit(NULL, errno);
-	fill_sphere(sphere);
+	fill_sphere(sphere, m);
 	sphere->next = world->sphere;
 	world->sphere = sphere;
 }
 
-void	fill_sphere(t_sphere *sp)
+void	fill_sphere(t_sphere *sp, t_material *m)
 {
 	t_matrix	*mtx;
 
@@ -159,17 +159,17 @@ void	fill_sphere(t_sphere *sp)
 	fill_idnty_mtx(mtx);
 	sp->type = SP;
 	sp->mtx_trans = mtx;
-	set_materials(&sp->material);
+	set_materials(&sp->material, m);
 }
 
 /*
 *	fisrst inplementation
 */
-void	set_materials(t_material *material)
+void	set_materials(t_material *obj, t_material *m)
 {
-	material->color = (t_color){1, 0.9, 0.9, 999999};
-	material->ambient = 0.1;
-	material->diffuse = 0.7;
-	material->specular = 0;
-	material->shininess = 100.0;
+	obj->color = m->color;
+	obj->ambient = m->ambient;
+	obj->diffuse = m->diffuse;
+	obj->specular = m->specular;
+	obj->shininess = m->shininess;
 }

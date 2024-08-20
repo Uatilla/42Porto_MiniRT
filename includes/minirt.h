@@ -36,8 +36,8 @@ enum e_identifyer
 //MACRO
 # define EPSILON 0.00001
 # define ZERO_TUPLE (t_tuple){0, 0, 0, 0}
-# define WIDTH 900
-# define HEIGTH 900
+# define WIDTH 1200
+# define HEIGTH 600
 # define BOTH 0
 # define FIRST 1
 # define SECOND 2
@@ -290,10 +290,10 @@ t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
 
 //objects
 //parse_objs.c
-void		parse_sphere(t_world *world);
-void		parse_objects(enum e_identifyer type, t_minirt *data, int file);
-void		fill_sphere(t_sphere *sp);
-void		set_materials(t_material	*material);
+void		parse_sphere(t_world *world, t_material *m);
+void		parse_objects(enum e_identifyer type, t_minirt *data, int file, t_material *m);
+void		fill_sphere(t_sphere *sp, t_material *m);
+void		set_materials(t_material *obj, t_material *m);
 
 //ray
 //ray.c
