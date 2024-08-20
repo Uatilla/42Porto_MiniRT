@@ -46,7 +46,8 @@ MLXFLAGS	=	-lmlx -lXext -lX11 -lm
 SRCS		=	main.c \
 				tuples/chk_tuples_typ.c tuples/creating_tuples.c tuples/operations_tuples.c tuples/basic_operations_tuples.c\
 				input/input_checker.c \
-				objects/parse_objs.c \
+				objects/parse_objs.c objects/parse_objs_ambient.c objects/parse_objs_camera.c objects/parse_objs_cylinder.c\
+				objects/parse_objs_light.c objects/parse_objs_plane.c objects/parse_objs_sphere.c objects/parse_objs_utils.c\
 				light/light.c light/light_utils.c\
 				ray/ray.c ray/intersections.c\
 				canvas/map.c \
@@ -54,7 +55,7 @@ SRCS		=	main.c \
 				cylinder/cylinder.c \
 				exit/exit_cleaner.c \
 				mlx/mlx.c \
-				matrix/matrix_validations.c matrix/matrix_operations.c matrix/matrix_modifications.c matrix/matrix_mods_utils.c \
+				matrix/matrix_validations.c matrix/matrix_operations.c matrix/matrix_modifications.c matrix/matrix_mods_utils.c\
 				matrix_transformations/matrix_transformations.c \
 				matrix/mtx_temp.c
 

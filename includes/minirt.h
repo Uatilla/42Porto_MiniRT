@@ -228,14 +228,39 @@ t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
 //objects
 //parse_objs.c
 void		parse_objects(enum e_identifyer type, t_minirt *data, int file);
-void		parse_sphere(t_minirt *data);
+void		parse_sphere2(t_minirt *data);
 void		fill_sphere(t_sphere *sp, t_minirt *data);
 void		set_materials(t_material	*material);
+
+//parse_objs_ambient.c
+void		parse_ambient(t_minirt *mrt, char **line, t_checkstx *chk_stx);
+
+//parse_objs_camera.c
+void	parse_camera(t_minirt *mrt, char **line, t_checkstx *chk_stx);
+
+//parse_objs_cylinder.c
+void	parse_cylinder(t_minirt *mrt, char **line, t_checkstx *chk_stx);
+
+//parse_objs_light.c
+void		parse_light(t_minirt *mrt, char **line, t_checkstx *chk_stx);
+
+//parse_objs_sphere.c
+void		parse_sphere(t_minirt *mrt, char **line, t_checkstx *chk_stx);
+
+//parse_objs_plane.c
+void		parse_plane(t_minirt *mrt, char **line, t_checkstx *chk_stx);
+
+//parse_objs_utils.c
+void		check_negative(char *dimension, t_checkstx *chk_stx);
+void		check_elemnt(char **line, int elemnt_str, t_checkstx *chk_stx, float *range_limts);
+void		check_range(char *val, t_checkstx *chk_stx, float *range_limts);
+void		free_split(char **line);
+void		check_dup(char *obj_type, t_checkstx *chk_stx);
 
 //ray
 //ray.c
 t_tuple		position(t_ray *ray, float t);
-t_ray	ray_trasform(t_ray *ray, t_matrix *mtx);
+t_ray		ray_trasform(t_ray *ray, t_matrix *mtx);
 
 //sphere
 //sphere.c
@@ -305,6 +330,12 @@ float		minor(t_minirt *mrt, t_matrix *mtx, int row, int col);
 t_matrix	*mtx_transpose(t_minirt *mrt, t_matrix *mtx);
 t_matrix	*submatrix(t_minirt *mrt, t_matrix *mtx, int excl_row,
 				int excl_col);
+
+//matrix_transformations.c
+void	mtx_rotation_x(t_matrix *mtx, float rot_deg);
+void	mtx_rotation_y(t_matrix *mtx, float rot_deg);
+void	mtx_rotation_z(t_matrix *mtx, float rot_deg);
+
 
 //matrix_mods_utils.c
 void		mtx_translation(t_matrix *mtx, t_tuple *tup_transl);
