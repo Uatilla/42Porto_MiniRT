@@ -36,8 +36,8 @@ enum e_identifyer
 //MACRO
 # define EPSILON 0.00001
 # define ZERO_TUPLE (t_tuple){0, 0, 0, 0}
-# define WIDTH 1200
-# define HEIGTH 600
+# define WIDTH 600
+# define HEIGTH 300
 # define BOTH 0
 # define FIRST 1
 # define SECOND 2
@@ -108,7 +108,7 @@ typedef struct s_xs
 
 // 16 + [4 * 2] + (8 * 3) + 1 = 49 bytes
 typedef	struct	s_intersections
-{
+{ 
 	t_point					point;
 	float					t[2];
 	float					hit;

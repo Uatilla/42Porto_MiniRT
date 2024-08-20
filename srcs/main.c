@@ -23,14 +23,15 @@ int	main(void)
 
 	t_material floor;
 	floor.color = (t_color){1, 0.9, 0.9, 69};
-	floor.specular = 0;
 	floor.ambient = 0.1;
+	floor.specular = 0;
 	floor.shininess = 200;
 	floor.diffuse = 0.7;
 
-	// parse_sphere(&data.world, &floor);
-	// mtx_scaling(data.world.sphere->mtx_trans, &(t_point){10, 0.01, 10, 1});
-	// data.world.sphere->mtx_inver = mtx_inverse(&data, data.world.sphere->mtx_trans);
+	parse_sphere(&data.world, &floor);
+	mtx_scaling(data.world.sphere->mtx_trans, &(t_point){10, 0.01, 10, 1});
+	data.world.sphere->mtx_inver = mtx_inverse(&data, data.world.sphere->mtx_trans);
+
 
 	t_material left_wall;
 	left_wall.color = (t_color){1, 0.9, 0.9, 69};
@@ -39,32 +40,61 @@ int	main(void)
 	left_wall.shininess = 200;
 	left_wall.diffuse = 0.7;
 
+	t_matrix *translation_left_wall = mtx_create(&data, 4, 4);
+	mtx_fill(translation_left_wall);
+	mtx_translation(translation_left_wall, &(t_point){0, 0, 5, 1});
+
 	t_matrix *rot_y = mtx_create(&data, 4, 4);
+	mtx_fill(rot_y);
 	mtx_rotation_y(rot_y, -PI / 4);
+
 	t_matrix *rot_x = mtx_create(&data, 4, 4);
+	mtx_fill(rot_x);
 	mtx_rotation_x(rot_x, PI / 2);
 
+	t_matrix *scaling_left_wall = mtx_create(&data, 4, 4);
+	mtx_fill(scaling_left_wall);
+	mtx_scaling(scaling_left_wall, &(t_point){10, 0.01, 10, 1});
+
 	parse_sphere(&data.world, &left_wall);
-	mtx_translation(data.world.sphere->mtx_trans, &(t_point){0, 0, 5, 1});
+	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, translation_left_wall);
 	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, rot_y);
 	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, rot_x);
-	mtx_scaling(data.world.sphere->mtx_trans, &(t_point){10, 0.01, 10, 1});
+	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, scaling_left_wall);
 	data.world.sphere->mtx_inver = mtx_inverse(&data, data.world.sphere->mtx_trans);
 
+
 	t_material right_wall;
-	right_wall = floor;
+	right_wall.color = (t_color){1, 0.9, 0.9, 69};
+	right_wall.specular = 0;
+	right_wall.ambient = 0.1;
+	right_wall.shininess = 200;
+	right_wall.diffuse = 0.7;
+
+	t_matrix *translation_right_wall = mtx_create(&data, 4, 4);
+	mtx_fill(translation_right_wall);
+	mtx_translation(translation_right_wall, &(t_point){0, 0, 5, 1});
 
 	t_matrix *rot_right_y = mtx_create(&data, 4, 4);
+	mtx_fill(rot_right_y);
 	mtx_rotation_y(rot_right_y, PI / 4);
+
 	t_matrix *rot_right_x = mtx_create(&data, 4, 4);
+	mtx_fill(rot_right_x);
 	mtx_rotation_x(rot_right_x, PI / 2);
 
-	// parse_sphere(&data.world, &right_wall);
-	// mtx_translation(data.world.sphere->mtx_trans, &(t_point){0, 0, 5, 1});
-	// data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, rot_right_y);
-	// data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, rot_right_x);
-	// mtx_scaling(data.world.sphere->mtx_trans, &(t_point){10, 0.01, 10, 1});
-	// data.world.sphere->mtx_inver = mtx_inverse(&data, data.world.sphere->mtx_trans);
+	t_matrix *scaling_right_wall = mtx_create(&data, 4, 4);
+	mtx_fill(scaling_right_wall);
+	mtx_scaling(scaling_right_wall, &(t_point){10, 0.01, 10, 1});
+
+
+	parse_sphere(&data.world, &right_wall);
+	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, translation_right_wall);
+	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, rot_right_y);
+	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, rot_right_x);
+	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, scaling_right_wall);
+	data.world.sphere->mtx_inver = mtx_inverse(&data, data.world.sphere->mtx_trans);
+
 
 	t_material middle;
 	middle.color = (t_tuple){0.1, 1, 0.5, 1};
@@ -77,7 +107,6 @@ int	main(void)
 	mtx_translation(data.world.sphere->mtx_trans, &(t_point){-0.5, 1, 0.5, 1});
 	data.world.sphere->mtx_inver = mtx_inverse(&data, data.world.sphere->mtx_trans);
 
-
 	t_material right;
 	right.color = (t_color){0.5, 1, 0.1, 69};
 	right.diffuse = 0.7;
@@ -85,10 +114,14 @@ int	main(void)
 	right.ambient = 0.1;
 	right.shininess = 200;
 
-	parse_sphere(&data.world, &right);
-	mtx_translation(data.world.sphere->mtx_trans, &(t_point){1.5, 0.5, -0.5, 1});
-	mtx_scaling(data.world.sphere->mtx_trans, &(t_point){0.5, 0.5, 0.5, 1});
-	data.world.sphere->mtx_inver = mtx_inverse(&data, data.world.sphere->mtx_trans);
+	// t_matrix *scaling_right_ball = mtx_create(&data, 4, 4);
+	// mtx_fill(scaling_right_ball);
+	// mtx_scaling(scaling_right_ball, &(t_point){0.5, 0.5, 0.5, 1});
+
+	// parse_sphere(&data.world, &right);
+	// mtx_translation(data.world.sphere->mtx_trans, &(t_point){1.5, 0.5, -0.5, 1});
+	// data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, scaling_right_ball);
+	// data.world.sphere->mtx_inver = mtx_inverse(&data, data.world.sphere->mtx_trans);
 
 	t_material	left;
 	left.color = (t_color){1, 0.8, 0.1, 1};
@@ -97,10 +130,10 @@ int	main(void)
 	left.ambient = 0.1;
 	left.shininess = 200;
 
-	parse_sphere(&data.world, &left);
-	mtx_translation(data.world.sphere->mtx_trans, &(t_point){-1.5, 0.33, -0.75, 1});
-	mtx_scaling(data.world.sphere->mtx_trans, &(t_point){0.33, 0.33, 0.33, 1});
-	data.world.sphere->mtx_inver = mtx_inverse(&data, data.world.sphere->mtx_trans);
+	// parse_sphere(&data.world, &left);
+	// mtx_translation(data.world.sphere->mtx_trans, &(t_point){-1.5, 0.33, -0.75, 1});
+	// mtx_scaling(data.world.sphere->mtx_trans, &(t_point){0.33, 0.33, 0.33, 1});
+	// data.world.sphere->mtx_inver = mtx_inverse(&data, data.world.sphere->mtx_trans);
 
 	set_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 1}, &data.world);
 
