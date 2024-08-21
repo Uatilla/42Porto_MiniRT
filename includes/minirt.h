@@ -37,8 +37,8 @@ enum e_identifyer
 //MACRO
 # define EPSILON 0.00001
 # define ZERO_TUPLE (t_tuple){0, 0, 0, 0}
-# define WIDTH 600
-# define HEIGTH 300
+# define WIDTH 1000
+# define HEIGTH 500
 # define BOTH 0
 # define FIRST 1
 # define SECOND 2
@@ -300,7 +300,7 @@ void		set_materials(t_material *obj, t_material *m);
 //ray.c
 t_tuple		position(t_ray *ray, float t);
 t_ray		ray_trasform(t_ray *ray, t_matrix *mtx);
-
+//
 //sphere
 //sphere.c
 int8_t		ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t);
