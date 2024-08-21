@@ -20,6 +20,7 @@
 # include <stdio.h>
 # include <math.h>
 # include "../libraries/minilibx-linux/mlx.h"
+# include "../libraries/minilibx-linux/mlx_int.h"
 # include "../libraries/libft/libft.h"
 
 // enums

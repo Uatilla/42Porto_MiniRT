@@ -39,7 +39,7 @@ SUB_DIR		=	tuples input exit mlx ray canvas sphere window objects light \
 ALL_OBJS_DIR	= $(foreach dir, $(SUB_DIR), $(addprefix $(OBJS_DIR)/, $(dir)))
 
 # Flags
-CFLAGS		=	-Wall -Wextra -Werror -g
+CFLAGS		=	-Wall -Wextra -Werror -g -pg
 MLXFLAGS	=	-lmlx -lXext -lX11 -lm
 
 # Files
@@ -94,7 +94,7 @@ $(MLX_DIR):
 	@mv minilibx-linux libraries/
 
 clean:
-	@ $(RM) $(OBJS_DIR)
+	@ $(RM) $(OBJS_DIR) gmon.out analise.txt 2> /dev/null
 	@ printf "cleaning MiniRT files	$(CYAN)[OK]$(RESET)\n"
 	@ $(MAKE) $(MK_FLAG) clean -sC $(LIBFT_DIR)
 
@@ -109,7 +109,6 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
-gprof: $(CFLAGS) += -pg
 gprof: $(NAME)
 	 ./$(NAME)
 	 gprof $(NAME) gmon.out > analise.txt
