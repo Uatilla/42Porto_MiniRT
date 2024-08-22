@@ -12,28 +12,27 @@
 
 #include "../includes/minirt.h"
 
-
 void	mtx_fill_a(t_matrix *mtx)
 {
-	mtx->mtx[0][0] = -5;
+	mtx->mtx[0][0] = 1;
 	mtx->mtx[0][1] = 2;
-	mtx->mtx[0][2] = 6;
-	mtx->mtx[0][3] = -8;
+	mtx->mtx[0][2] = 3;
+	mtx->mtx[0][3] = 4;
 
-	mtx->mtx[1][0] = 1;
-	mtx->mtx[1][1] = -5;
-	mtx->mtx[1][2] = 1;
+	mtx->mtx[1][0] = 5;
+	mtx->mtx[1][1] = 6;
+	mtx->mtx[1][2] = 7;
 	mtx->mtx[1][3] = 8;
 
-	mtx->mtx[2][0] = 7;
-	mtx->mtx[2][1] = 7;
-	mtx->mtx[2][2] = -6;
-	mtx->mtx[2][3] = -7;
+	mtx->mtx[2][0] = 9;
+	mtx->mtx[2][1] = 8;
+	mtx->mtx[2][2] = 7;
+	mtx->mtx[2][3] = 6;
 
-	mtx->mtx[3][0] = 1;
-	mtx->mtx[3][1] = -3;
-	mtx->mtx[3][2] = 7;
-	mtx->mtx[3][3] = 4;
+	mtx->mtx[3][0] = 5;
+	mtx->mtx[3][1] = 4;
+	mtx->mtx[3][2] = 3;
+	mtx->mtx[3][3] = 2;
 }
 
 void	mtx_fill_b(t_matrix *mtx)
@@ -60,7 +59,6 @@ void	mtx_fill_b(t_matrix *mtx)
 }
 
 
-
 // nao esquecer de chamar ft_memeset para data;
 // nao esquecer de setar a origem da camera(ray) e depois a direcao;
 // importante chamar clear_ray_inter depoins de check intersection;
@@ -74,6 +72,7 @@ int	main(int argc, char **argv)
 	int			fd;
 	float		w_x;
 	float		w_y;
+
 
 	ft_memset(&data, 0, sizeof(data));
 	fd = chk_input(argc, argv[1]);
@@ -102,5 +101,6 @@ int	main(int argc, char **argv)
 	mlx_hook(data.canvas.win, 17, 0L, close_window, &data);
 	mlx_key_hook(data.canvas.win, &handle_key_event, &data);
 	mlx_loop(data.canvas.mlx);
-	clear_exit(&data, 0);
+
+		clear_exit(&data, 0);
 }

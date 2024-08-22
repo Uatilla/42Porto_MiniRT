@@ -12,6 +12,14 @@
 
 #include "../../includes/minirt.h"
 
+void	fill_ambient(t_minirt *mrt, char **line)
+{
+	(void)mrt;
+	(void)line;
+
+	printf("FILL AMBIENT\n");
+}
+
 /// @brief Check the syntax of Ambient Element.
 /// @param line Elements inside Ambient line in the Scene.
 /// @param chk_stx Temp structure to track syntax errors.
@@ -30,4 +38,6 @@ void	parse_ambient(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 	}
 	if (n_elem != 3)
 		chk_stx->count_err_stx++;
+	if (chk_stx->count_err_stx == 0)
+		fill_ambient(mrt, line);
 }
