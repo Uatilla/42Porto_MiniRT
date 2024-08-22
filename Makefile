@@ -6,7 +6,7 @@
 #    By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/30 20:21:44 by uviana-a          #+#    #+#              #
-#    Updated: 2024/08/19 16:31:25 by Jburlama         ###   ########.fr        #
+#    Updated: 2024/08/22 15:25:08 by Jburlama         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ LIBFT_DIR	=	./libraries/libft
 MLX_DIR		=	./libraries/minilibx-linux
 INC			=	includes
 SUB_DIR		=	tuples input exit mlx ray canvas sphere window objects light \
-				matrix matrix_transformations cylinder view camera
+				matrix matrix_transformations cylinder view camera render
 ALL_OBJS_DIR	= $(foreach dir, $(SUB_DIR), $(addprefix $(OBJS_DIR)/, $(dir)))
 
 # Flags
@@ -58,7 +58,8 @@ SRCS		=	main.c \
 				matrix_transformations/matrix_transformations.c \
 				matrix/mtx_temp.c \
 				view/view_transformation.c \
-				camera/camera.c
+				camera/camera.c	\
+				render/render.c
 
 
 OBJS		=	$(SRCS:%.c=$(OBJS_DIR)/%.o)

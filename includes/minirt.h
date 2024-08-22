@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/19 17:02:49 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:21:08 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ typedef struct s_matrix
 // 8 + 8 = 16 bytes
 typedef struct s_xs
 {
-	size_t	count;
+	int	count;
 	float	*arr;
 }	t_xs;
 
@@ -274,6 +274,10 @@ t_matrix	*view_orientation(t_vector *left, t_vector *up, t_vector *forward);
 //camera.c
 t_camera	camera_construct(size_t hsize, size_t vsize, float	fov);
 t_ray		ray_for_pixel(t_camera *camera, size_t px, size_t py);
+
+//render
+//render.c
+void	render(t_minirt *data);
 
 //light
 //light.c
