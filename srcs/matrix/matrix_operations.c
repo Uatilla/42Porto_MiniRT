@@ -58,6 +58,8 @@ t_matrix	*mtx_multiply(t_minirt *mrt, t_matrix *mtx_a, t_matrix *mtx_b)
 			mtx_res->mtx[row][col] = mult_mtx_row_col(mtx_a, mtx_b, row, col);
 	}
 	// maybe free mtx_a and mtx_b
+	clean_matrix(mrt, mtx_b, 0);
+	clean_matrix(mrt, mtx_a, 0);
 	return (mtx_res);
 }
 

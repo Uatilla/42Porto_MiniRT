@@ -115,7 +115,7 @@ t_color	lighting(t_intersections *inter, t_light *light)
 	phong.ambient = mult_tuple_scalar(&color,
 			((t_sphere *)inter->obj)->material.ambient);
 	light_normal_dot = dot_product(&light->dir, &light->normalv);
-	if (light_normal_dot < 0)
+	if (light_normal_dot < 0 || light->is_shadown)
 		light_is_behind_obj(&phong.diffuse, &phong.spec);
 	else
 	{

@@ -33,8 +33,8 @@ void	sort_intersections(t_xs	*xs, t_intersections *inter)
 
 void	sort_xs(t_xs *xs)
 {
-	size_t 	i;
-	size_t 	j;
+	int 	i;
+	int 	j;
 	float	temp;
 
 	i = 0;

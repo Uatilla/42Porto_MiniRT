@@ -29,8 +29,6 @@ t_matrix	*view_transformation(t_point *from, t_point *to, t_vector *up)
 	fill_idnty_mtx(trans);
 	mtx_translation(trans, &(t_point){-from->x, -from->y, -from->z, 1});
 	ret = mtx_multiply(NULL, orientation, trans);
-	clean_matrix(NULL, orientation, 0);
-	clean_matrix(NULL, trans, 0);
 	return (ret);
 }
 

@@ -118,7 +118,7 @@ typedef	struct	s_intersections
 	int8_t					count;
 }	t_intersections;
 
-// 16 * 6 = 96 bytes
+// 16 * 6 + 6 + 1 = 123 bytes
 typedef	struct s_light
 {
 	t_point	   		position;
@@ -128,6 +128,7 @@ typedef	struct s_light
 	t_vector   		eyev;
 	t_vector   		normalv;
 	struct s_light	*next;
+	bool			is_shadown;
 }	t_light;
 
 // 16 * 3 = 32
@@ -292,6 +293,7 @@ void		light_vec(t_ray *ray, t_light *light, t_minirt *data);
 t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
 void		light_is_behind_obj(t_color *diffuse, t_color *specular);
 t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
+bool		is_shadowed(t_world *w, t_point *p);
 
 //objects
 //parse_objs.c

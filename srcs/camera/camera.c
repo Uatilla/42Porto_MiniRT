@@ -38,8 +38,6 @@ t_camera	camera_construct(size_t hsize, size_t vsize, float	fov)
 	camera.hsize = hsize;
 	camera.vsize = vsize;
 	camera.fov = fov;
-	camera.trans = mtx_create(NULL, 4, 4);
-	fill_idnty_mtx(camera.trans);
 	half_view = tan(fov / 2);
 	aspect = (float)hsize / (float)vsize;
 	if (aspect >= 1)
