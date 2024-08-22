@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 22:04:30 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/07 21:06:28 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:57:07 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	parse_type(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 /// @param  
 /// @param data Main program structure.
 /// @param file Scene file.
-void	parse_objects(enum e_identifyer type, t_minirt *data, int file)
+void	parse_objects(enum e_identifyer type, t_minirt *data, int file, t_material *m)
 {
 	char		*line;
 	char		*line_trimmed;
@@ -67,7 +67,7 @@ void	parse_objects(enum e_identifyer type, t_minirt *data, int file)
 	if (chk_sintax.count_err_stx > 0)
 		ft_error(data, "ERROR: Invalid Scene Syntax\n", 1);
 	if (type == SP)
-		parse_sphere2(data);
+		parse_sphere2(&data->world, m);
 }
 
 
@@ -75,46 +75,45 @@ void	parse_objects(enum e_identifyer type, t_minirt *data, int file)
 *	adds a object node to the top of the objcts stack
 *	creats a stack if is empty
 */
-void	parse_sphere2(t_minirt *data)
+void	parse_sphere2(t_world *world, t_material *m)
 {
 	t_sphere	*sphere;
 
-	if (data->objs == NULL)
+	if (world->sphere == NULL)
 	{
-		data->objs = ft_calloc(sizeof(t_sphere), 1);
-		if (data->objs == NULL)
-			clear_exit(data, errno);
-		fill_sphere(((t_sphere *)data->objs), data);
+		world->sphere = ft_calloc(sizeof(t_sphere), 1);
+		if (world->sphere == NULL)
+			clear_exit(NULL, errno);
+		fill_sphere(world->sphere, m);
 		return ;
 	}
 	sphere = ft_calloc(sizeof(t_sphere), 1);
 	if (sphere == NULL)
-		clear_exit(data, errno);
-	fill_sphere(sphere, data);
-	sphere->next = data->objs;
-	data->objs = sphere;
+		clear_exit(NULL, errno);
+	fill_sphere(sphere, m);
+	sphere->next = world->sphere;
+	world->sphere = sphere;
 }
 
-void	fill_sphere(t_sphere *sp, t_minirt *data)
+void	fill_sphere(t_sphere *sp, t_material *m)
 {
 	t_matrix	*mtx;
 
-	mtx = mtx_create(data, 4, 4);
+	mtx = mtx_create(NULL, 4, 4);
 	fill_idnty_mtx(mtx);
 	sp->type = SP;
 	sp->mtx_trans = mtx;
-	//mtx_translation(mtx, &(t_tuple){1, 1, 0, 1});
-	set_materials(&sp->material);
+	set_materials(&sp->material, m);
 }
 
 /*
 *	fisrst inplementation
 */
-void	set_materials(t_material *material)
+void	set_materials(t_material *obj, t_material *m)
 {
-	material->color = (t_color){1, 0.2, 0.8, 999999};
-	material->ambient = 0.1;
-	material->diffuse = 0.9;
-	material->specular = 0.9;
-	material->shininess = 100.0;
+	obj->color = m->color;
+	obj->ambient = m->ambient;
+	obj->diffuse = m->diffuse;
+	obj->specular = m->specular;
+	obj->shininess = m->shininess;
 }

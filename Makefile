@@ -6,7 +6,7 @@
 #    By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/30 20:21:44 by uviana-a          #+#    #+#              #
-#    Updated: 2024/08/10 20:39:39 by Jburlama         ###   ########.fr        #
+#    Updated: 2024/08/22 15:25:08 by Jburlama         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,11 +35,11 @@ LIBFT_DIR	=	./libraries/libft
 MLX_DIR		=	./libraries/minilibx-linux
 INC			=	includes
 SUB_DIR		=	tuples input exit mlx ray canvas sphere window objects light \
-				matrix matrix_transformations cylinder
+				matrix matrix_transformations cylinder view camera render
 ALL_OBJS_DIR	= $(foreach dir, $(SUB_DIR), $(addprefix $(OBJS_DIR)/, $(dir)))
 
 # Flags
-CFLAGS		=	-Wall -Wextra -Werror -g
+CFLAGS		=	-Wall -Wextra -Werror -g -pg
 MLXFLAGS	=	-lmlx -lXext -lX11 -lm
 
 # Files
@@ -49,15 +49,18 @@ SRCS		=	main.c \
 				objects/parse_objs.c objects/parse_objs_ambient.c objects/parse_objs_camera.c objects/parse_objs_cylinder.c\
 				objects/parse_objs_light.c objects/parse_objs_plane.c objects/parse_objs_sphere.c objects/parse_objs_utils.c\
 				light/light.c light/light_utils.c\
-				ray/ray.c ray/intersections.c\
+				ray/ray.c ray/intersections.c ray/sort_intersections.c \
 				canvas/map.c \
 				sphere/sphere.c \
 				cylinder/cylinder.c \
-				exit/exit_cleaner.c \
+				exit/exit_cleaner.c exit/clean_world.c \
 				mlx/mlx.c \
 				matrix/matrix_validations.c matrix/matrix_operations.c matrix/matrix_modifications.c matrix/matrix_mods_utils.c\
 				matrix_transformations/matrix_transformations.c \
-				matrix/mtx_temp.c
+				matrix/mtx_temp.c \
+				view/view_transformation.c \
+				camera/camera.c	\
+				render/render.c
 
 
 OBJS		=	$(SRCS:%.c=$(OBJS_DIR)/%.o)
@@ -93,7 +96,7 @@ $(MLX_DIR):
 	@mv minilibx-linux libraries/
 
 clean:
-	@ $(RM) $(OBJS_DIR)
+	@ $(RM) $(OBJS_DIR) gmon.out analise.txt 2> /dev/null
 	@ printf "cleaning MiniRT files	$(CYAN)[OK]$(RESET)\n"
 	@ $(MAKE) $(MK_FLAG) clean -sC $(LIBFT_DIR)
 
@@ -108,7 +111,6 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
-gprof: $(CFLAGS) += -pg
 gprof: $(NAME)
 	 ./$(NAME)
 	 gprof $(NAME) gmon.out > analise.txt

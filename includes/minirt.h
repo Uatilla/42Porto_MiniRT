@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/10 21:32:39 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:21:08 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdio.h>
 # include <math.h>
 # include "../libraries/minilibx-linux/mlx.h"
+# include "../libraries/minilibx-linux/mlx_int.h"
 # include "../libraries/libft/libft.h"
 
 // enums
@@ -32,6 +33,17 @@ enum e_identifyer
 	PL = 4,
 	CY = 5,
 };
+
+//MACRO
+# define EPSILON 0.00001
+# define ZERO_TUPLE (t_tuple){0, 0, 0, 0}
+# define WIDTH 1000
+# define HEIGTH 500
+# define BOTH 0
+# define FIRST 1
+# define SECOND 2
+# define ESC 65307
+# define PI 3.14159 
 
 //STRUCTURES
 
@@ -80,6 +92,7 @@ typedef t_tuple	t_point;
 typedef t_tuple	t_vector;
 typedef t_tuple	t_color;
 
+// (4 * 2) + 8 = 16 bytes
 typedef struct s_matrix
 {
 	int		rows;
@@ -87,9 +100,16 @@ typedef struct s_matrix
 	float	**mtx;
 }	t_matrix;
 
+// 8 + 8 = 16 bytes
+typedef struct s_xs
+{
+	int	count;
+	float	*arr;
+}	t_xs;
+
 // 16 + [4 * 2] + (8 * 3) + 1 = 49 bytes
 typedef	struct	s_intersections
-{
+{ 
 	t_point					point;
 	float					t[2];
 	float					hit;
@@ -101,12 +121,13 @@ typedef	struct	s_intersections
 // 16 * 6 = 96 bytes
 typedef	struct s_light
 {
-	t_point		position;
-	t_color		intensity;
-	t_vector	dir;
-	t_vector	reflect;
-	t_vector	eyev;
-	t_vector	normalv;
+	t_point	   		position;
+	t_color	   		intensity;
+	t_vector   		dir;
+	t_vector   		reflect;
+	t_vector   		eyev;
+	t_vector   		normalv;
+	struct s_light	*next;
 }	t_light;
 
 // 16 * 3 = 32
@@ -144,39 +165,71 @@ typedef	struct s_cylinder
 	bool				closed;
 }	t_cylinder;
 
-// 32 + 16 + 8 + 4 + 4 = 64 bytes
+// 32 + 16 + (8 * 3) + 4 = 76 bytes
 typedef struct s_sphere
 {
 	t_material			material;
 	t_ray				trans_ray;
-	void				*next;
-	enum e_identifyer	type;
 	t_matrix			*mtx_trans;
 	t_matrix			*mtx_inver;
+	void				*next;
+	enum e_identifyer	type;
 }	t_sphere;
 
-// 96 + 44 + 32 + (8 * 4) + 4 = 208 bytes
+// (8 * 2) + (4 * 2) + (4 * 4) = 40 bytes
+typedef	struct s_camera
+{
+	t_matrix	*trans;
+	t_matrix	*inver;
+	int			hsize;
+	int			vsize;
+	float		half_width;
+	float		half_height;
+	float		fov;
+	float		pixel_size;
+}	t_camera;
+
+// needs to call ft_memset
+// (8 * 2) = 16 bytes
+typedef	struct	s_world
+{
+	t_sphere	*sphere;
+	t_light		*light;
+}	t_world;
+
+// 44 + 40 + 32 + 16 + (8 * 3) + 4 = 160 bytes
 typedef struct s_minirt
 {
-	t_light			light;
 	t_canvas		canvas;
+	t_camera		camera;
 	t_ray			ray;
+	t_xs			xs;
+	t_world			world;
 	t_intersections	*inter;
 	t_intersections	*first_hit;
 	t_tuple			*tuple;
-	void			*objs;
 	int				fd;
 }		t_minirt;
 
-//MACRO
-# define EPSILON 0.00001
-# define ZERO_TUPLE (t_tuple){0, 0, 0, 0}
-# define WIDTH 900
-# define HEIGTH 900
-# define BOTH 0
-# define FIRST 1
-# define SECOND 2
-# define ESC 65307
+// used in view_transformation func
+// (16 * 4) = 64
+typedef struct	s_view
+{
+	t_vector	forward;
+	t_vector	upn;
+	t_vector	left;
+	t_vector	true_uper;
+}	t_view;
+
+// used in ray_for_pixel func
+// (4 * 4) = 16 bytes
+typedef struct s_rfp
+{
+	float	xoffset;
+	float	yoffset;
+	float	w_x;
+	float	w_y;
+}	t_rfp;
 
 //FUNCTIONS
 //Tuples
@@ -212,10 +265,25 @@ t_tuple		cross_product(t_tuple *a, t_tuple *b);
 t_tuple		div_tuple_scalar(t_tuple *a, float sc);
 t_color		color_multiply(t_color *c1, t_color *c2);
 
+//view
+//view_transformation.c
+t_matrix	*view_transformation(t_point *from, t_point *to, t_vector *up);
+t_matrix	*view_orientation(t_vector *left, t_vector *up, t_vector *forward);
+
+//camera
+//camera.c
+t_camera	camera_construct(size_t hsize, size_t vsize, float	fov);
+t_ray		ray_for_pixel(t_camera *camera, size_t px, size_t py);
+
+//render
+//render.c
+void	render(t_minirt *data);
+
 //light
 //light.c
-t_light		set_light(t_point *position, t_color *intensity);
-t_vector	normal_at(void *obj, t_point *point);
+void		color_at(t_minirt *data, int x, int y);
+void		set_light(t_point *pos, t_color *intensity, t_world *world);
+t_vector	normal_at(void *obj, t_point *point, t_minirt *data);
 t_vector	reflect(t_vector *in, t_vector *normal);
 t_color		lighting(t_intersections *inter, t_light *light);
 
@@ -227,10 +295,10 @@ t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
 
 //objects
 //parse_objs.c
-void		parse_objects(enum e_identifyer type, t_minirt *data, int file);
-void		parse_sphere2(t_minirt *data);
-void		fill_sphere(t_sphere *sp, t_minirt *data);
-void		set_materials(t_material	*material);
+void		parse_sphere(t_world *world, t_material *m);
+void		parse_objects(enum e_identifyer type, t_minirt *data, int file, t_material *m);
+void		fill_sphere(t_sphere *sp, t_material *m);
+void		set_materials(t_material *obj, t_material *m);
 
 //parse_objs_ambient.c
 void		parse_ambient(t_minirt *mrt, char **line, t_checkstx *chk_stx);
@@ -261,7 +329,7 @@ void		check_dup(char *obj_type, t_checkstx *chk_stx);
 //ray.c
 t_tuple		position(t_ray *ray, float t);
 t_ray		ray_trasform(t_ray *ray, t_matrix *mtx);
-
+//
 //sphere
 //sphere.c
 int8_t		ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t);
@@ -272,10 +340,14 @@ int8_t		ray_cylinder_intersect(t_ray *ray, float *t);
 
 //intersections.c
 void		ray_intersections(t_minirt *data, void *obj, t_ray *trans_ray);
-void   		check_intersections(t_minirt *data, t_point *point);
+void		check_intersections(t_minirt *data);
 void		first_hit(t_minirt *data);
 void   		first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
 void   		append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
+
+//sort_intersections.c
+void		sort_intersections(t_xs	*xs, t_intersections *inter);
+void		sort_xs(t_xs *xs);
 
 //map
 //map.c
@@ -293,6 +365,11 @@ void		ft_error(t_minirt *mrt, char *msg, int status);
 void		clear_objs(void	*objs);
 void		clear_ray_inter(t_minirt *data);
 void		clean_matrix(t_minirt *mrt, t_matrix *mtx_struct, int status);
+
+//clean_world.c
+void		clean_world(t_world *world);
+void		clean_light(t_light *light);
+void		clean_sphere(t_sphere *sphere);
 
 //mlx
 //mlx.c
@@ -346,5 +423,8 @@ t_matrix	*mtx_inverse(t_minirt *mrt, t_matrix *mtx);
 //Matrix_transformations
 //matrix_transformations.c
 float		degree_to_rad(float degree);
+void		mtx_rotation_x(t_matrix *mtx, float rot_deg);
+void		mtx_rotation_y(t_matrix *mtx, float rot_deg);
+void		mtx_rotation_z(t_matrix *mtx, float rot_deg);
 
 #endif

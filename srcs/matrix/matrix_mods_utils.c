@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 17:48:27 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/12 17:48:29 by uviana-a         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:36:10 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ float	cofactor(t_minirt *mrt, t_matrix *mtx, int row, int col)
 t_matrix	*mtx_inverse(t_minirt *mrt, t_matrix *mtx)
 {
 	t_matrix	*mtx_res;
+	t_matrix	*mtx_trans;
 	float		determ;
 	int			row;
 	int			col;
@@ -50,7 +51,9 @@ t_matrix	*mtx_inverse(t_minirt *mrt, t_matrix *mtx)
 		while (++col < mtx->cols)
 			mtx_res->mtx[row][col] = cofactor(mrt, mtx, row, col) / determ;
 	}
-	return (mtx_transpose(mrt, mtx_res));
+	mtx_trans = mtx_transpose(mrt, mtx_res);
+	clean_matrix(mrt, mtx_res, 0);
+	return (mtx_trans);
 }
 
 /// @brief Adds a tuple into a mtx on column 3.(NO mem)

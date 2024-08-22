@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:31:14 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/08 22:35:12 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:45:08 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@ void	light_vec(t_ray *ray, t_light *light, t_minirt *data)
 {
 	light->dir = subtrac_tuples(&light->position, &data->first_hit->point);
 	light->dir = normalize(&light->dir);
-	light->normalv = normal_at(data->first_hit->obj, &data->first_hit->point);
+	light->eyev = negating_tuple(&ray->direction);
+	light->normalv = normal_at(data->first_hit->obj, &data->first_hit->point, data);
+	if (dot_product(&light->normalv, &light->eyev) < 0)
+		light->normalv = negating_tuple(&light->normalv);
 	light->reflect = negating_tuple(&light->dir);
 	light->reflect = reflect(&light->reflect, &light->normalv);
-	light->eyev = negating_tuple(&ray->direction);
 }
 
 /*
