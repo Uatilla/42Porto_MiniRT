@@ -33,7 +33,7 @@ int	main(void)
 	mtx_scaling(sc, &(t_point){0.5, 0.5, 0.5, 1});
 
 	t_material	m_2;
-	m_2.color = (t_color){0.8, 4.0, 0.6, 1};
+	m_2.color = (t_color){0.3, 5.0, 0.6, 1};
 	m_2.diffuse = 0.7;
 	m_2.specular = 0.2;
 	m_2.ambient = 0.1;
