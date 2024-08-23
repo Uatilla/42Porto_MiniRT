@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 17:12:05 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/22 16:57:05 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:27:25 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	check_intersections(t_minirt *data)
 	while (obj)
 	{
 		obj->trans_ray = ray_trasform(&data->ray, obj->mtx_inver);
-		ray_intersections(data, obj, &obj->trans_ray);
+		ray_intersections(data, obj, &data->ray);
+		// ray_intersections(data, obj, &obj->trans_ray);
 		obj = obj->next;
 	}
 	first_hit(data);
@@ -46,7 +47,9 @@ void	ray_intersections(t_minirt *data, t_shape *obj, t_ray *trans_ray)
 
 	intersection_points = 0;
 	if (obj->type == SP)
-		intersection_points = ray_sphere_intersect(trans_ray, obj, t);
+		intersection_points = ray_sphere_intersect(trans_ray, t);
+	else if (obj->type == PL)
+		intersection_points = ray_plane_intersect(trans_ray, t);
 	if (intersection_points > 0)
 	{
 		data->xs.count += 2;

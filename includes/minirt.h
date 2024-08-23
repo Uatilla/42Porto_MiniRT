@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/22 16:21:08 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:26:42 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,7 +287,7 @@ void	render(t_minirt *data);
 //light.c
 void		color_at(t_minirt *data, int x, int y);
 void		set_light(t_point *pos, t_color *intensity, t_world *world);
-t_vector	normal_at(void *obj, t_point *point, t_minirt *data);
+t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data);
 t_vector	reflect(t_vector *in, t_vector *normal);
 t_color		lighting(t_intersections *inter, t_light *light);
 
@@ -300,19 +300,23 @@ bool		is_shadowed(t_world *w, t_point *p);
 
 //objects
 //parse_objs.c
-void		parse_sphere(t_world *world, t_material *m);
+void		parse_shape(t_world *world, t_material *m, enum e_id type);
 void		parse_objects(enum e_id type, t_minirt *data, int file, t_material *m);
-void		fill_sphere(t_sphere *sp, t_material *m);
+void		fill_sphape(t_sphere *sp, t_material *m, enum e_id type);
 void		set_materials(t_material *obj, t_material *m);
 
 //ray
 //ray.c
 t_tuple		position(t_ray *ray, float t);
 t_ray		ray_trasform(t_ray *ray, t_matrix *mtx);
-//
+
 //sphere
 //sphere.c
-int8_t		ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t);
+int8_t		ray_sphere_intersect(t_ray *ray, float *t);
+
+//plane
+//plane.c
+int8_t		ray_plane_intersect(t_ray *ray, float *t);
 
 //cylinder
 //cylinder.c

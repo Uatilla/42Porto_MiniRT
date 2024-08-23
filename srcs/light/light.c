@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:48:55 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/22 16:47:06 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:09:39 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,22 +60,24 @@ void	set_light(t_point *pos, t_color *intensity, t_world *world)
 * the result will be nan in that case
 *
 */
-t_vector	normal_at(void *obj, t_point *point, t_minirt *data)
+t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data)
 {
 	t_vector	vec;
 	t_matrix	*transpose;
 
-	if (((t_sphere *)obj)->type == SP)
+	if (obj->type == SP)
 	{
-		vec = mtx_mult_tuple(((t_sphere *)obj)->mtx_inver, point);
+		vec = mtx_mult_tuple(obj->mtx_inver, point);
 		vec = subtrac_tuples(&vec, &(t_point){0, 0, 0, 1});
-		transpose = mtx_transpose(data, ((t_sphere *)obj)->mtx_inver);
+		transpose = mtx_transpose(data, obj->mtx_inver);
 		vec = mtx_mult_tuple(transpose, &vec);
 		vec.w = 0;
 		vec = normalize(&vec);
 		clean_matrix(data, transpose, 0);
 	}
-	else if (((t_cylinder *)obj)->type == CY)
+	else if (obj->type == PL)
+		return ((t_vector){0, 1, 0, 0});
+	else if (obj->type == CY)
 	{
 		vec.x = point->x;
 		vec.y = 0;
@@ -110,23 +112,20 @@ t_color	lighting(t_intersections *inter, t_light *light)
 	float			ref_dot_eye;
 	float			factor;
 
-	color = color_multiply(&((t_sphere *)inter->obj)->material.color,
-			&light->intensity);
-	phong.ambient = mult_tuple_scalar(&color,
-			((t_sphere *)inter->obj)->material.ambient);
+	color = color_multiply(&inter->obj->material.color, &light->intensity);
+	phong.ambient = mult_tuple_scalar(&color, inter->obj->material.ambient);
 	light_normal_dot = dot_product(&light->dir, &light->normalv);
 	if (light_normal_dot < 0 || light->is_shadown)
 		light_is_behind_obj(&phong.diffuse, &phong.spec);
 	else
 	{
 		phong.diffuse = mult_tuple_scalar(&color,
-				((t_sphere *)inter->obj)->material.diffuse * light_normal_dot);
+							inter->obj->material.diffuse * light_normal_dot);
 		ref_dot_eye = dot_product(&light->reflect, &light->eyev);
 		if (ref_dot_eye <= 0)
 			phong.spec = (t_color){0, 0, 0, 0};
 		else
-			phong.spec = specular(&((t_sphere *)inter->obj)->material,
-					light, ref_dot_eye);
+			phong.spec = specular(&inter->obj->material, light, ref_dot_eye);
 	}
 	return (add_color3(&phong.ambient, &phong.diffuse, &phong.spec));
 }

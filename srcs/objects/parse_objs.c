@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 22:04:30 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/19 16:57:07 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:07:49 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,15 +123,14 @@ void	parse_objects(enum e_id type, t_minirt *data, int file, t_material *m)
 		ft_error(data, "ERROR: Duplicated elements found.\n", 1);
 	if (chk_sintax.count_err_stx > 0)
 		ft_error(data, "ERROR: Invalid Map Syntax\n", 1);
-	if (type == SP)
-		parse_sphere(&data->world, m);
+	parse_shape(&data->world, m, type);
 }
 
 /*
 *	adds a object node to the top of the objcts stack
 *	creats a stack if is empty
 */
-void	parse_sphere(t_world *world, t_material *m)
+void	parse_shape(t_world *world, t_material *m, enum e_id type)
 {
 	t_sphere	*sphere;
 
@@ -140,24 +139,24 @@ void	parse_sphere(t_world *world, t_material *m)
 		world->objs = ft_calloc(sizeof(t_sphere), 1);
 		if (world->objs == NULL)
 			clear_exit(NULL, errno);
-		fill_sphere(world->objs, m);
+		fill_sphape(world->objs, m, type);
 		return ;
 	}
 	sphere = ft_calloc(sizeof(t_sphere), 1);
 	if (sphere == NULL)
 		clear_exit(NULL, errno);
-	fill_sphere(sphere, m);
+	fill_sphape(sphere, m, type);
 	sphere->next = world->objs;
 	world->objs = sphere;
 }
 
-void	fill_sphere(t_sphere *sp, t_material *m)
+void	fill_sphape(t_sphere *sp, t_material *m, enum e_id type)
 {
 	t_matrix	*mtx;
 
 	mtx = mtx_create(NULL, 4, 4);
 	fill_idnty_mtx(mtx);
-	sp->type = SP;
+	sp->type = type;
 	sp->mtx_trans = mtx;
 	set_materials(&sp->material, m);
 }
