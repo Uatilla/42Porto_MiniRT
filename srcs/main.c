@@ -178,7 +178,6 @@ int	main(void)
 	data.world.sphere->mtx_inver = mtx_inverse(&data, data.world.sphere->mtx_trans);
 
 
-
 	set_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 1}, &data.world);
 	data.camera = camera_construct(WIDTH, HEIGTH, PI / 3);
 	data.camera.trans = view_transformation(&(t_point){0, 1.5, -5, 1}, &(t_point){0, 1, 0, 1}, &(t_vector){0, 1, 0, 0});
