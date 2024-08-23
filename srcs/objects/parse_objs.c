@@ -97,7 +97,7 @@ void	check_dup(char *obj_type, t_checkstx *chk_stx)
 	}
 }
 
-void	parse_objects(enum e_identifyer type, t_minirt *data, int file, t_material *m)
+void	parse_objects(enum e_id type, t_minirt *data, int file, t_material *m)
 {
 	bool	stx_failed;
 	char	*line;
@@ -135,20 +135,20 @@ void	parse_sphere(t_world *world, t_material *m)
 {
 	t_sphere	*sphere;
 
-	if (world->sphere == NULL)
+	if (world->objs == NULL)
 	{
-		world->sphere = ft_calloc(sizeof(t_sphere), 1);
-		if (world->sphere == NULL)
+		world->objs = ft_calloc(sizeof(t_sphere), 1);
+		if (world->objs == NULL)
 			clear_exit(NULL, errno);
-		fill_sphere(world->sphere, m);
+		fill_sphere(world->objs, m);
 		return ;
 	}
 	sphere = ft_calloc(sizeof(t_sphere), 1);
 	if (sphere == NULL)
 		clear_exit(NULL, errno);
 	fill_sphere(sphere, m);
-	sphere->next = world->sphere;
-	world->sphere = sphere;
+	sphere->next = world->objs;
+	world->objs = sphere;
 }
 
 void	fill_sphere(t_sphere *sp, t_material *m)

@@ -12,6 +12,39 @@
 
 #include "../includes/minirt.h"
 
+// void	parse_shape(enum e_id type, t_minirt *data, t_material *m);
+//
+// int	main(void)
+// {
+// 	t_minirt data;
+// 	t_material m;
+//
+// 	ft_memset(&data, 0, sizeof(data));
+// 	parse_shape(SP, &data, &m);
+//
+// 	
+//
+//
+// }
+//
+// void	parse_shape(enum e_id type, t_minirt *data, t_material *m)
+// {
+// 	if (type == SP)
+// 		parse_sphere(&data->world, m);
+// 	return ;
+// }
+
+
+
+
+
+
+
+
+
+
+
+
 int	main(void)
 {
 	t_minirt	data;
@@ -33,8 +66,8 @@ int	main(void)
 	mtx_scaling(floor_scaling, &(t_point){10, 0.01, 10, 1});
 
 	parse_sphere(&data.world, &m_floor);
-	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, floor_scaling);
-	data.world.sphere->mtx_inver = mtx_inverse(&data, data.world.sphere->mtx_trans);
+	data.world.objs->mtx_trans = mtx_multiply(&data, data.world.objs->mtx_trans, floor_scaling);
+	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 
 	// LEFT WALL
@@ -66,11 +99,11 @@ int	main(void)
 	mtx_scaling(left_wall_scaling, &(t_point){10, 0.01, 10, 1});
 
 	parse_sphere(&data.world, &m_left_wall);
-	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, left_wall_trans);
-	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, left_wall_rotation_y);
-	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, left_wall_rotation_x);
-	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, left_wall_scaling);
-	data.world.sphere->mtx_inver = mtx_inverse(&data, data.world.sphere->mtx_trans);
+	data.world.objs->mtx_trans = mtx_multiply(&data, data.world.objs->mtx_trans, left_wall_trans);
+	data.world.objs->mtx_trans = mtx_multiply(&data, data.world.objs->mtx_trans, left_wall_rotation_y);
+	data.world.objs->mtx_trans = mtx_multiply(&data, data.world.objs->mtx_trans, left_wall_rotation_x);
+	data.world.objs->mtx_trans = mtx_multiply(&data, data.world.objs->mtx_trans, left_wall_scaling);
+	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 
 	// RIGHT WALLL
@@ -103,11 +136,11 @@ int	main(void)
 	mtx_scaling(right_wall_scaling, &(t_point){10, 0.01, 10, 1});
 
 	parse_sphere(&data.world, &m_right_wall);
-	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, right_wall_trans);
-	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, right_wall_rotation_y);
-	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, right_wall_rotation_x);
-	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, right_wall_scaling);
-	data.world.sphere->mtx_inver = mtx_inverse(&data, data.world.sphere->mtx_trans);
+	data.world.objs->mtx_trans = mtx_multiply(&data, data.world.objs->mtx_trans, right_wall_trans);
+	data.world.objs->mtx_trans = mtx_multiply(&data, data.world.objs->mtx_trans, right_wall_rotation_y);
+	data.world.objs->mtx_trans = mtx_multiply(&data, data.world.objs->mtx_trans, right_wall_rotation_x);
+	data.world.objs->mtx_trans = mtx_multiply(&data, data.world.objs->mtx_trans, right_wall_scaling);
+	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 
 	// MIDDLE SPHERE
@@ -125,8 +158,8 @@ int	main(void)
 	mtx_translation(middle_tras, &(t_point){-0.5, 1, 0.5, 1});
 
 	parse_sphere(&data.world, &middle);
-	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, middle_tras);
-	data.world.sphere->mtx_inver = mtx_inverse(&data, data.world.sphere->mtx_trans);
+	data.world.objs->mtx_trans = mtx_multiply(&data, data.world.objs->mtx_trans, middle_tras);
+	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 
 	// SMALL SPHERE
@@ -149,9 +182,9 @@ int	main(void)
 	mtx_scaling(small_scaling, &(t_point){0.5, 0.5, 0.5, 1});
 
 	parse_sphere(&data.world, &small);
-	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, small_trans);
-	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, small_scaling);
-	data.world.sphere->mtx_inver = mtx_inverse(&data, data.world.sphere->mtx_trans);
+	data.world.objs->mtx_trans = mtx_multiply(&data, data.world.objs->mtx_trans, small_trans);
+	data.world.objs->mtx_trans = mtx_multiply(&data, data.world.objs->mtx_trans, small_scaling);
+	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 	// SMALLEST SPHERE
 	
@@ -173,9 +206,9 @@ int	main(void)
 	mtx_scaling(smallest_scaling, &(t_point){0.33, 0.33, 0.33, 1});
 
 	parse_sphere(&data.world, &smallest);
-	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, smallest_trans);
-	data.world.sphere->mtx_trans = mtx_multiply(&data, data.world.sphere->mtx_trans, smallest_scaling);
-	data.world.sphere->mtx_inver = mtx_inverse(&data, data.world.sphere->mtx_trans);
+	data.world.objs->mtx_trans = mtx_multiply(&data, data.world.objs->mtx_trans, smallest_trans);
+	data.world.objs->mtx_trans = mtx_multiply(&data, data.world.objs->mtx_trans, smallest_scaling);
+	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 
 	set_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 1}, &data.world);

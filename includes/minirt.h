@@ -24,7 +24,7 @@
 # include "../libraries/libft/libft.h"
 
 // enums
-enum e_identifyer
+enum e_id
 {
 	A = 0,
 	C = 1,
@@ -107,13 +107,44 @@ typedef struct s_xs
 	float	*arr;
 }	t_xs;
 
+// (16 * 2) = 32 bytes
+typedef struct s_ray
+{
+	t_point			origin;
+	t_vector		direction;
+}	t_ray;
+
+// 16 + (4 * 4) = 32 bytes
+typedef	struct s_material
+{
+	t_color	color;
+	float	ambient;
+	float	diffuse;
+	float	specular;
+	float	shininess;
+} t_material;
+
+// 32 + 16 + (8 * 3) + 4 = 76 bytes
+typedef	struct s_shape
+{
+	t_material			material;
+	t_ray				trans_ray;
+	t_matrix			*mtx_trans;
+	t_matrix			*mtx_inver;
+	void				*next;
+	enum e_id			type;
+} t_shape;
+
+typedef	t_shape t_sphere;
+typedef	t_shape t_plane;
+
 // 16 + [4 * 2] + (8 * 3) + 1 = 49 bytes
 typedef	struct	s_intersections
 { 
 	t_point					point;
 	float					t[2];
 	float					hit;
-	void					*obj;
+	t_shape					*obj;
 	struct s_intersections	*next;
 	int8_t					count;
 }	t_intersections;
@@ -139,43 +170,15 @@ typedef struct s_phong
 	t_color 		spec;
 } t_phong;
 
-// (16 * 2) = 32 bytes
-typedef struct s_ray
-{
-	t_point			origin;
-	t_vector		direction;
-}	t_ray;
-
-// 16 + (4 * 4) = 32 bytes
-typedef	struct s_material
-{
-	t_color	color;
-	float	ambient;
-	float	diffuse;
-	float	specular;
-	float	shininess;
-} t_material;
-
 // 16  + 4 + 4 + 4  + 1 = 29 bytes;
 typedef	struct s_cylinder
 {
 	t_vector			dir;
-	enum e_identifyer	type;
+	enum e_id			type;
 	float				min;
 	float				max;
 	bool				closed;
 }	t_cylinder;
-
-// 32 + 16 + (8 * 3) + 4 = 76 bytes
-typedef struct s_sphere
-{
-	t_material			material;
-	t_ray				trans_ray;
-	t_matrix			*mtx_trans;
-	t_matrix			*mtx_inver;
-	void				*next;
-	enum e_identifyer	type;
-}	t_sphere;
 
 // (8 * 2) + (4 * 2) + (4 * 4) = 40 bytes
 typedef	struct s_camera
@@ -194,7 +197,7 @@ typedef	struct s_camera
 // (8 * 2) = 16 bytes
 typedef	struct	s_world
 {
-	t_sphere	*sphere;
+	t_shape		*objs;
 	t_light		*light;
 }	t_world;
 
@@ -298,7 +301,7 @@ bool		is_shadowed(t_world *w, t_point *p);
 //objects
 //parse_objs.c
 void		parse_sphere(t_world *world, t_material *m);
-void		parse_objects(enum e_identifyer type, t_minirt *data, int file, t_material *m);
+void		parse_objects(enum e_id type, t_minirt *data, int file, t_material *m);
 void		fill_sphere(t_sphere *sp, t_material *m);
 void		set_materials(t_material *obj, t_material *m);
 
@@ -316,7 +319,7 @@ int8_t		ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t);
 int8_t		ray_cylinder_intersect(t_ray *ray, float *t);
 
 //intersections.c
-void		ray_intersections(t_minirt *data, void *obj, t_ray *trans_ray);
+void		ray_intersections(t_minirt *data, t_shape *obj, t_ray *trans_ray);
 void		check_intersections(t_minirt *data);
 void		first_hit(t_minirt *data);
 void   		first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
