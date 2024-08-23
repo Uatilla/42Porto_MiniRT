@@ -26,8 +26,7 @@ void	check_intersections(t_minirt *data)
 	while (obj)
 	{
 		obj->trans_ray = ray_trasform(&data->ray, obj->mtx_inver);
-		ray_intersections(data, obj, &data->ray);
-		// ray_intersections(data, obj, &obj->trans_ray);
+		ray_intersections(data, obj, &obj->trans_ray);
 		obj = obj->next;
 	}
 	first_hit(data);
