@@ -54,8 +54,6 @@ void	input_chk_plane(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 	}
 	if (n_elem != 4)
 		chk_stx->count_err_stx++;
-	if(chk_stx->count_err_stx == 0)
-		printf("Call parse Plane\n");
 }
 
 /// @brief Check the syntax of the cylinder.
@@ -82,6 +80,4 @@ void	input_chk_cylinder(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 	}
 	if (n_elem != 6)
 		chk_stx->count_err_stx++;
-	if(chk_stx->count_err_stx == 0)
-		printf("Call parse Cylinder\n");
 }

@@ -30,8 +30,6 @@ void	input_chk_ambient(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 	}
 	if (n_elem != 3)
 		chk_stx->count_err_stx++;
-	if(chk_stx->count_err_stx == 0)
-		printf("Call parse Ambient\n");
 }
 
 /// @brief Check the syntax of the camera.
@@ -54,8 +52,6 @@ void	input_chk_camera(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 	}
 	if (n_elem != 4)
 		chk_stx->count_err_stx++;
-	if(chk_stx->count_err_stx == 0)
-		printf("Call parse Camera\n");
 }
 
 /// @brief Check the syntax of the light.
@@ -78,7 +74,5 @@ void	input_chk_light(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 	}
 	if (n_elem != 4)
 		chk_stx->count_err_stx++;
-	if(chk_stx->count_err_stx == 0)
-		printf("Call parse Light\n");
 }
 
