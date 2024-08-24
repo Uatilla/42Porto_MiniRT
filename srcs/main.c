@@ -12,19 +12,54 @@
 
 #include "../includes/minirt.h"
 
-/*void	set_scene(t_minirt *mrt, int fd)
+/*void	parse_camera(t_minirt *mrt, char **line)
 {
-	mrt->world.
+	int	n_elem;
+
+	n_elem = -1;
+	*(mrt->camera) = (t_camera *)ft_calloc(sizeof(t_camera), 1);
+	if (!mrt->camera)
+		clear_exit(mrt, 1);
+	while (line[++n_elem])
+	{
+		if (n_elem == 1)
+			get_tuple(&mrt->camera.cam_pos, line[n_elem]);
+		else if (n_elem == 2)
+			get_tuple(&mrt->camera.cam_norm_vect, line[n_elem]);
+		else if (n_elem == 3)
+			mrt->camera.fov = ft_atof(line[n_elem]);
+	}
 }*/
+
+void	parse_ambient(t_minirt *mrt, char **line)
+{
+	int	n_elem;
+
+	n_elem = -1;
+	mrt->world.ambient = (t_ambient *)ft_calloc(sizeof(t_ambient), 1);
+	if (!mrt->world.ambient)
+		clear_exit(mrt, 1);
+	while (line[++n_elem])
+	{
+		if (n_elem == 1)
+			mrt->world.ambient->ratio = ft_atof(line[n_elem]);
+		else if (n_elem == 2)
+			get_tuple(&mrt->world.ambient->color, line[n_elem]);
+	}
+}
 
 int	main(int argc, char **argv)
 {
-	int			fd;
 	t_minirt	data;
 
 	ft_memset(&data, 0, sizeof(data));
-	fd = chk_input(&data, argc, argv[1]);
-	//set_scene(&data, fd);
+	chk_input(&data, argc, argv[1]);
+	set_scene(&data, argv[1]);
+	
+
+	//Function to be better called.
+	free(data.world.ambient);
+
 
 	start_mlx(&data.canvas);
 	data.ray.origin = (t_point){0, 0, -5, 1};

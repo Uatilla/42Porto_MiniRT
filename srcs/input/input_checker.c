@@ -64,7 +64,7 @@ t_checkstx	chk_scene_objs(t_minirt *data, int file)
 	return (chk_sintax);
 }
 
-int	chk_input(t_minirt *mrt, int argc, char *file)
+void	chk_input(t_minirt *mrt, int argc, char *file)
 {
 	int			fd;
 	t_checkstx	chk_stx;
@@ -85,8 +85,8 @@ int	chk_input(t_minirt *mrt, int argc, char *file)
 	chk_stx = chk_scene_objs(mrt, fd);
 	if (chk_stx.count_a > 1 || chk_stx.count_l > 1
 		|| chk_stx.count_c > 1)
-		(close(fd), ft_error(mrt, "ERROR: Duplicated elements found.\n", 1));
+		ft_error(mrt, "ERROR: Duplicated elements found.\n", 1);
 	if (chk_stx.count_err_stx > 0)
-		(close(fd), ft_error(mrt, "ERROR: Invalid Scene Syntax\n", 1));
-	return (fd);
+		ft_error(mrt, "ERROR: Invalid Scene Syntax\n", 1);
+	close (fd);
 }

@@ -184,14 +184,24 @@ typedef	struct s_camera
 	int			vsize;
 	float		half_width;
 	float		half_height;
-	float		fov;
 	float		pixel_size;
+	
+	
+	
+	t_point		cam_pos;
+	t_vector	cam_vect;
+	float		fov;
 }	t_camera;
 
-typedef struct s_ambient
+
+
+
+
+typedef	struct s_ambient
 {
-	
-}	t_ambient;
+	float	ratio;
+	t_color	color;
+} t_ambient;
 
 // needs to call ft_memset
 // (8 * 2) = 16 bytes
@@ -304,6 +314,12 @@ void		parse_sphere2(t_world *world, t_material *m);
 //void		parse_objects(enum e_identifyer type, t_minirt *data, int file, t_material *m);
 void		fill_sphere(t_sphere *sp, t_material *m);
 void		set_materials(t_material *obj, t_material *m);
+void		parse_line(t_minirt *mrt, char **line);
+void		set_scene(t_minirt *mrt, char *file);
+void		get_tuple(t_tuple *tuple, char *str_tuple);
+
+
+void		parse_ambient(t_minirt *mrt, char **line);
 
 //ray
 //ray.c
@@ -336,7 +352,7 @@ float		map_y(float y, float world_min, float world_max);
 
 //Input
 //input_checker.c
-int		chk_input(t_minirt *mrt, int argc, char *file);
+void		chk_input(t_minirt *mrt, int argc, char *file);
 t_checkstx	chk_scene_objs(t_minirt *data, int file);
 
 //input_checker_utils.c
