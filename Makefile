@@ -39,15 +39,14 @@ SUB_DIR		=	tuples input exit mlx ray canvas sphere window objects light \
 ALL_OBJS_DIR	= $(foreach dir, $(SUB_DIR), $(addprefix $(OBJS_DIR)/, $(dir)))
 
 # Flags
-CFLAGS		=	-Wall -Wextra -Werror -g -pg
+CFLAGS		=	-Wall -Wextra -Werror -g #-pg
 MLXFLAGS	=	-lmlx -lXext -lX11 -lm
 
 # Files
 SRCS		=	main.c \
 				tuples/chk_tuples_typ.c tuples/creating_tuples.c tuples/operations_tuples.c tuples/basic_operations_tuples.c\
-				input/input_checker.c \
-				objects/parse_objs.c objects/parse_objs_ambient.c objects/parse_objs_camera.c objects/parse_objs_cylinder.c\
-				objects/parse_objs_light.c objects/parse_objs_plane.c objects/parse_objs_sphere.c objects/parse_objs_utils.c\
+				input/input_checker.c input/input_checker_utils.c input/input_chk_render_setup.c input/input_chk_scene_objs.c\
+				objects/parse_objs.c\
 				light/light.c light/light_utils.c\
 				ray/ray.c ray/intersections.c ray/sort_intersections.c \
 				canvas/map.c \

@@ -46,8 +46,7 @@ enum e_identifyer
 # define PI 3.14159 
 
 //STRUCTURES
-
-typedef struct t_checkstx
+typedef struct s_checkstx
 {
 	int		count_a;
 	int		count_c;
@@ -189,12 +188,18 @@ typedef	struct s_camera
 	float		pixel_size;
 }	t_camera;
 
+typedef struct s_ambient
+{
+	
+}	t_ambient;
+
 // needs to call ft_memset
 // (8 * 2) = 16 bytes
 typedef	struct	s_world
 {
 	t_sphere	*sphere;
 	t_light		*light;
+	t_ambient	*ambient;
 }	t_world;
 
 // 44 + 40 + 32 + 16 + (8 * 3) + 4 = 160 bytes
@@ -295,35 +300,10 @@ t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
 
 //objects
 //parse_objs.c
-void		parse_sphere(t_world *world, t_material *m);
-void		parse_objects(enum e_identifyer type, t_minirt *data, int file, t_material *m);
+void		parse_sphere2(t_world *world, t_material *m);
+//void		parse_objects(enum e_identifyer type, t_minirt *data, int file, t_material *m);
 void		fill_sphere(t_sphere *sp, t_material *m);
 void		set_materials(t_material *obj, t_material *m);
-
-//parse_objs_ambient.c
-void		parse_ambient(t_minirt *mrt, char **line, t_checkstx *chk_stx);
-
-//parse_objs_camera.c
-void	parse_camera(t_minirt *mrt, char **line, t_checkstx *chk_stx);
-
-//parse_objs_cylinder.c
-void	parse_cylinder(t_minirt *mrt, char **line, t_checkstx *chk_stx);
-
-//parse_objs_light.c
-void		parse_light(t_minirt *mrt, char **line, t_checkstx *chk_stx);
-
-//parse_objs_sphere.c
-void		parse_sphere(t_minirt *mrt, char **line, t_checkstx *chk_stx);
-
-//parse_objs_plane.c
-void		parse_plane(t_minirt *mrt, char **line, t_checkstx *chk_stx);
-
-//parse_objs_utils.c
-void		check_negative(char *dimension, t_checkstx *chk_stx);
-void		check_elemnt(char **line, int elemnt_str, t_checkstx *chk_stx, float *range_limts);
-void		check_range(char *val, t_checkstx *chk_stx, float *range_limts);
-void		free_split(char **line);
-void		check_dup(char *obj_type, t_checkstx *chk_stx);
 
 //ray
 //ray.c
@@ -356,7 +336,25 @@ float		map_y(float y, float world_min, float world_max);
 
 //Input
 //input_checker.c
-int			chk_input(int argc, char *file);
+int		chk_input(t_minirt *mrt, int argc, char *file);
+t_checkstx	chk_scene_objs(t_minirt *data, int file);
+
+//input_checker_utils.c
+void		check_negative(char *dimension, t_checkstx *chk_stx);
+void		check_elemnt(char **line, int elemnt_str, t_checkstx *chk_stx, float *range_limts);
+void		check_range(char *val, t_checkstx *chk_stx, float *range_limts);
+void		free_split(char **line);
+void		check_dup(char *obj_type, t_checkstx *chk_stx);
+
+//input_chk_render_setup.c
+void		input_chk_ambient(t_minirt *mrt, char **line, t_checkstx *chk_stx);
+void		input_chk_camera(t_minirt *mrt, char **line, t_checkstx *chk_stx);
+void		input_chk_light(t_minirt *mrt, char **line, t_checkstx *chk_stx);
+
+//input_chk_scene_objs.c
+void		input_chk_cylinder(t_minirt *mrt, char **line, t_checkstx *chk_stx);
+void		input_chk_sphere(t_minirt *mrt, char **line, t_checkstx *chk_stx);
+void		input_chk_plane(t_minirt *mrt, char **line, t_checkstx *chk_stx);
 
 //Exit
 //exit_cleaner.c
