@@ -149,7 +149,7 @@ typedef	struct	s_intersections
 	int8_t					count;
 }	t_intersections;
 
-// 16 * 6 + 6 + 1 = 123 bytes
+// 16 * 6 + 6 + 1 + 1 = 123 bytes
 typedef	struct s_light
 {
 	t_point	   		position;
@@ -159,6 +159,7 @@ typedef	struct s_light
 	t_vector   		eyev;
 	t_vector   		normalv;
 	struct s_light	*next;
+	bool			inside;
 	bool			is_shadown;
 }	t_light;
 

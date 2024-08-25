@@ -19,7 +19,7 @@ void	color_at(t_minirt *data, int x, int y)
 	check_intersections(data);
 	if (data->first_hit)
 	{
-		light_vec(&data->ray, data->world.light, data);
+		light_vec(&data->first_hit->obj->trans_ray, data->world.light, data);
 		color = lighting(data->first_hit, data->world.light);
 		write_pixel(&data->canvas, x, y, &color);
 		clear_ray_inter(data);

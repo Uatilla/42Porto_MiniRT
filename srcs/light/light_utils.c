@@ -25,7 +25,12 @@ void	light_vec(t_ray *ray, t_light *light, t_minirt *data)
 	light->eyev = negating_tuple(&ray->direction);
 	light->normalv = normal_at(data->first_hit->obj, &data->first_hit->point, data);
 	if (dot_product(&light->normalv, &light->eyev) < 0)
+	{
+		light->inside = true;
 		light->normalv = negating_tuple(&light->normalv);
+	}
+	else
+		light->inside = false;
 	light->reflect = negating_tuple(&light->dir);
 	light->reflect = reflect(&light->reflect, &light->normalv);
 	over_point = mult_tuple_scalar(&light->normalv, EPSILON * 100);
