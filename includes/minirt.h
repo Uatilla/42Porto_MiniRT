@@ -189,7 +189,7 @@ typedef	struct s_camera
 	
 	
 	t_point		cam_pos;
-	t_vector	cam_vect;
+	t_vector	cam_norm_vect;
 	float		fov;
 }	t_camera;
 

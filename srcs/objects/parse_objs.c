@@ -68,7 +68,8 @@ void	parse_line(t_minirt *mrt, char **line)
 		if (!ft_strcmp(line[0], "A"))
 			parse_ambient(mrt, line);
 		else if (!ft_strcmp(line[0], "C"))
-			parse_camera(mrt, line);
+			printf("C\n");
+			//parse_camera(mrt, line);
 		else if (!ft_strcmp(line[0], "L"))
 			printf("L\n");
 		else if (!ft_strcmp(line[0], "sp"))
