@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/22 16:21:08 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:26:42 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include "../libraries/libft/libft.h"
 
 // enums
-enum e_identifyer
+enum e_id
 {
 	A = 0,
 	C = 1,
@@ -107,37 +107,6 @@ typedef struct s_xs
 	float	*arr;
 }	t_xs;
 
-// 16 + [4 * 2] + (8 * 3) + 1 = 49 bytes
-typedef	struct	s_intersections
-{ 
-	t_point					point;
-	float					t[2];
-	float					hit;
-	void					*obj;
-	struct s_intersections	*next;
-	int8_t					count;
-}	t_intersections;
-
-// 16 * 6 = 96 bytes
-typedef	struct s_light
-{
-	t_point	   		position;
-	t_color	   		intensity;
-	t_vector   		dir;
-	t_vector   		reflect;
-	t_vector   		eyev;
-	t_vector   		normalv;
-	struct s_light	*next;
-}	t_light;
-
-// 16 * 3 = 32
-typedef struct s_phong
-{
-	t_color			ambient;
-	t_color			diffuse;
-	t_color 		spec;
-} t_phong;
-
 // (16 * 2) = 32 bytes
 typedef struct s_ray
 {
@@ -155,26 +124,62 @@ typedef	struct s_material
 	float	shininess;
 } t_material;
 
-// 16  + 4 + 4 + 4  + 1 = 29 bytes;
-typedef	struct s_cylinder
-{
-	t_vector			dir;
-	enum e_identifyer	type;
-	float				min;
-	float				max;
-	bool				closed;
-}	t_cylinder;
-
 // 32 + 16 + (8 * 3) + 4 = 76 bytes
-typedef struct s_sphere
+typedef	struct s_shape
 {
 	t_material			material;
 	t_ray				trans_ray;
 	t_matrix			*mtx_trans;
 	t_matrix			*mtx_inver;
 	void				*next;
-	enum e_identifyer	type;
-}	t_sphere;
+	enum e_id			type;
+} t_shape;
+
+typedef	t_shape t_sphere;
+typedef	t_shape t_plane;
+
+// 16 + [4 * 2] + (8 * 3) + 1 = 49 bytes
+typedef	struct	s_intersections
+{ 
+	t_point					point;
+	float					t[2];
+	float					hit;
+	t_shape					*obj;
+	struct s_intersections	*next;
+	int8_t					count;
+}	t_intersections;
+
+// 16 * 6 + 6 + 1 + 1 = 123 bytes
+typedef	struct s_light
+{
+	t_point	   		position;
+	t_color	   		intensity;
+	t_vector   		dir;
+	t_vector   		reflect;
+	t_vector   		eyev;
+	t_vector   		normalv;
+	struct s_light	*next;
+	bool			inside;
+	bool			is_shadown;
+}	t_light;
+
+// 16 * 3 = 32
+typedef struct s_phong
+{
+	t_color			ambient;
+	t_color			diffuse;
+	t_color 		spec;
+} t_phong;
+
+// 16  + 4 + 4 + 4  + 1 = 29 bytes;
+typedef	struct s_cylinder
+{
+	t_vector			dir;
+	enum e_id			type;
+	float				min;
+	float				max;
+	bool				closed;
+}	t_cylinder;
 
 // (8 * 2) + (4 * 2) + (4 * 4) = 40 bytes
 typedef	struct s_camera
@@ -193,7 +198,7 @@ typedef	struct s_camera
 // (8 * 2) = 16 bytes
 typedef	struct	s_world
 {
-	t_sphere	*sphere;
+	t_shape		*objs;
 	t_light		*light;
 }	t_world;
 
@@ -283,7 +288,7 @@ void	render(t_minirt *data);
 //light.c
 void		color_at(t_minirt *data, int x, int y);
 void		set_light(t_point *pos, t_color *intensity, t_world *world);
-t_vector	normal_at(void *obj, t_point *point, t_minirt *data);
+t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data);
 t_vector	reflect(t_vector *in, t_vector *normal);
 t_color		lighting(t_intersections *inter, t_light *light);
 
@@ -292,29 +297,34 @@ void		light_vec(t_ray *ray, t_light *light, t_minirt *data);
 t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
 void		light_is_behind_obj(t_color *diffuse, t_color *specular);
 t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
+bool		is_shadowed(t_world *w, t_point *p);
 
 //objects
 //parse_objs.c
-void		parse_sphere(t_world *world, t_material *m);
-void		parse_objects(enum e_identifyer type, t_minirt *data, int file, t_material *m);
-void		fill_sphere(t_sphere *sp, t_material *m);
+void		parse_shape(t_world *world, t_material *m, enum e_id type);
+void		parse_objects(enum e_id type, t_minirt *data, int file, t_material *m);
+void		fill_sphape(t_sphere *sp, t_material *m, enum e_id type);
 void		set_materials(t_material *obj, t_material *m);
 
 //ray
 //ray.c
 t_tuple		position(t_ray *ray, float t);
 t_ray		ray_trasform(t_ray *ray, t_matrix *mtx);
-//
+
 //sphere
 //sphere.c
-int8_t		ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t);
+int8_t		ray_sphere_intersect(t_ray *ray, float *t);
+
+//plane
+//plane.c
+int8_t		ray_plane_intersect(t_ray *ray, float *t);
 
 //cylinder
 //cylinder.c
 int8_t		ray_cylinder_intersect(t_ray *ray, float *t);
 
 //intersections.c
-void		ray_intersections(t_minirt *data, void *obj, t_ray *trans_ray);
+void		ray_intersections(t_minirt *data, t_shape *obj, t_ray *trans_ray);
 void		check_intersections(t_minirt *data);
 void		first_hit(t_minirt *data);
 void   		first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);

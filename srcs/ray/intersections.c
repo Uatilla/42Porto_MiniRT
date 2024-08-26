@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 17:12:05 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/22 16:57:05 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:27:25 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 */
 void	check_intersections(t_minirt *data)
 {
-	t_sphere	*obj;
+	t_shape	*obj;
 
-	obj = data->world.sphere;
+	obj = data->world.objs;
 	while (obj)
 	{
 		obj->trans_ray = ray_trasform(&data->ray, obj->mtx_inver);
@@ -39,13 +39,16 @@ void	check_intersections(t_minirt *data)
 *	if the ray hits the obj, will allocate a intersection struct with the
 *	intersect points and the object propeties and push it to the top of the stack
 */
-void	ray_intersections(t_minirt *data, void *obj, t_ray *trans_ray)
+void	ray_intersections(t_minirt *data, t_shape *obj, t_ray *trans_ray)
 {
 	float		t[2];	
 	int8_t		intersection_points;
 
 	intersection_points = 0;
-	intersection_points = ray_sphere_intersect(trans_ray, obj, t);
+	if (obj->type == SP)
+		intersection_points = ray_sphere_intersect(trans_ray, t);
+	else if (obj->type == PL)
+		intersection_points = ray_plane_intersect(trans_ray, t);
 	if (intersection_points > 0)
 	{
 		data->xs.count += 2;
@@ -80,7 +83,7 @@ void	first_hit(t_minirt *data)
 /*
 *	will allocate and set the first node of the intersections stack
 */
-void	first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj)
+void	first_inter(t_minirt *data, int8_t point, float *t, t_shape *obj)
 {
 	data->inter = ft_calloc(sizeof(*data->inter), 1);
 	if (data->inter == NULL)
@@ -106,7 +109,7 @@ void	first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj)
 *	will allocate and set a new node to the intersection stack
 *	and push it to the top
 */
-void	append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj)
+void	append_inter(t_minirt *data, int8_t point, float *t, t_shape *obj)
 {
 	t_intersections	*temp;
 
