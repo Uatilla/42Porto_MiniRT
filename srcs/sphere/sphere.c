@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 18:27:44 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/10 21:21:05 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:25:07 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * if t[0] == t[1] there is only one point and return 1
  * if the determinat is > 0 there is two points and returns 2
 */
-int8_t	ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t)
+int8_t	ray_sphere_intersect(t_ray *ray, float *t)
 {
 	float	a;
 	float	b;
@@ -27,7 +27,7 @@ int8_t	ray_sphere_intersect(t_ray *ray, t_sphere *sphere, float *t)
 	t_tuple	sphere_to_ray;
 	float	discriminant;
 
-	if (!ray || !sphere || !t)
+	if (!ray || !t)
 		return (0);
 	sphere_to_ray = subtrac_tuples(&ray->origin, &(t_point){0, 0, 0, 1});
 	a = dot_product(&ray->direction, &ray->direction);

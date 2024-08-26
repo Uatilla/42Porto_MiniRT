@@ -14,8 +14,8 @@
 
 void	clean_world(t_world *world)
 {
-	if (world->sphere)
-		clean_sphere(world->sphere);
+	if (world->objs)
+		clean_sphere(world->objs);
 	if (world->light)
 		clean_light(world->light);
 }
