@@ -160,6 +160,9 @@ typedef	struct s_light
 	struct s_light	*next;
 	bool			inside;
 	bool			is_shadown;
+
+	float			bright_ratio;
+
 }	t_light;
 
 // 16 * 3 = 32
@@ -190,17 +193,10 @@ typedef	struct s_camera
 	float		half_width;
 	float		half_height;
 	float		pixel_size;
-	
-	
-	
 	t_point		cam_pos;
 	t_vector	cam_norm_vect;
 	float		fov;
 }	t_camera;
-
-
-
-
 
 typedef	struct s_ambient
 {
@@ -322,11 +318,12 @@ void		fill_sphape(t_sphere *sp, t_material *m, enum e_id type);
 void		set_materials(t_material *obj, t_material *m);
 void		parse_line(t_minirt *mrt, char **line);
 void		set_scene(t_minirt *mrt, char *file);
-void		get_tuple(t_tuple *tuple, char *str_tuple);
+void		get_tuple(t_tuple *tuple, char *str_tuple, int w);
 
 
 void		parse_ambient(t_minirt *mrt, char **line);
-
+void		parse_camera(t_minirt *mrt, char **line);
+void		parse_light(t_minirt *mrt, char **line);
 //ray
 //ray.c
 t_tuple		position(t_ray *ray, float t);

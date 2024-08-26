@@ -67,10 +67,9 @@ void	parse_line(t_minirt *mrt, char **line)
 		if (!ft_strcmp(line[0], "A"))
 			parse_ambient(mrt, line);
 		else if (!ft_strcmp(line[0], "C"))
-			printf("C\n");
-			//parse_camera(mrt, line);
+			parse_camera(mrt, line);
 		else if (!ft_strcmp(line[0], "L"))
-			printf("L\n");
+			parse_light(mrt, line);
 		else if (!ft_strcmp(line[0], "sp"))
 			printf("sp\n");
 		else if (!ft_strcmp(line[0], "pl"))
@@ -111,7 +110,11 @@ void	set_scene(t_minirt *mrt, char *file)
 	close (fd);
 }
 
-void	get_tuple(t_tuple *tuple, char *str_tuple)
+/// @brief Takes a string and puts its values into a tuple.
+/// @param tuple Where do you want to have the str elements.
+/// @param str_tuple Source of the tuple elements.
+/// @param w Content of the W pos in the tuple.
+void	get_tuple(t_tuple *tuple, char *str_tuple, int w)
 {
 	int	elemnt;
 	char **rgb_elemnts;
@@ -122,5 +125,6 @@ void	get_tuple(t_tuple *tuple, char *str_tuple)
 	rgb_elemnts = ft_split(str_tuple, ',');
 	while (rgb_elemnts[++elemnt])
 		ptr[elemnt] = ft_atof(rgb_elemnts[elemnt]);
+	ptr[elemnt] = w;
 	free_split(rgb_elemnts);
 }
