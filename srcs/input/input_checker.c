@@ -37,7 +37,6 @@ void	chk_type_objs(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 }
 
 /// @brief Start verifying the Scene syntax.
-/// @param  
 /// @param data Main program structure.
 /// @param file Scene file.
 t_checkstx	chk_scene_objs(t_minirt *data, int file)
@@ -64,6 +63,11 @@ t_checkstx	chk_scene_objs(t_minirt *data, int file)
 	return (chk_sintax);
 }
 
+
+/// @brief Verify scene file if its available or has syntax errors.
+/// @param mrt Main structure.
+/// @param argc Number os args.
+/// @param file Scene file as string.
 void	chk_input(t_minirt *mrt, int argc, char *file)
 {
 	int			fd;

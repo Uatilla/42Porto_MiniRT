@@ -59,6 +59,9 @@ void	set_materials(t_material *obj, t_material *m)
 	obj->shininess = m->shininess;
 }
 
+/// @brief Direct which function should verify the line.
+/// @param mrt Main structure.
+/// @param line Line to be verified.
 void	parse_line(t_minirt *mrt, char **line)
 {
 	(void)mrt;
@@ -80,6 +83,9 @@ void	parse_line(t_minirt *mrt, char **line)
 	free_split(line);
 }
 
+/// @brief Check input scene file line by line.
+/// @param mrt Main structure.
+/// @param file Scene file content.
 void	set_scene(t_minirt *mrt, char *file)
 {
 	char		*line;
@@ -90,11 +96,7 @@ void	set_scene(t_minirt *mrt, char *file)
 	(void)mrt;
 	fd = open(file, O_RDONLY, 0);
 	if (fd == -1)
-	{
-		ft_error(NULL, "ERROR: Failed to open the\
-				scene file, try another one.\n", 0);
 		clear_exit(NULL, 1);
-	}
 	while (1)
 	{
 		line = get_next_line(fd);

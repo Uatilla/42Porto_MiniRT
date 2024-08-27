@@ -34,6 +34,13 @@ enum e_id
 	CY = 5,
 };
 
+/// @brief The idea of this enum is to have the presets for colors (Opaco, Gloss, Metallic, and so on).
+enum e_mat
+{
+	OPC = 0,
+	GLO = 1
+};
+
 //MACRO
 # define EPSILON 0.00001
 # define ZERO_TUPLE (t_tuple){0, 0, 0, 0}
@@ -44,6 +51,7 @@ enum e_id
 # define SECOND 2
 # define ESC 65307
 # define PI 3.14159 
+
 
 //STRUCTURES
 typedef struct s_checkstx
@@ -160,9 +168,6 @@ typedef	struct s_light
 	struct s_light	*next;
 	bool			inside;
 	bool			is_shadown;
-
-	float			bright_ratio;
-
 }	t_light;
 
 // 16 * 3 = 32
@@ -193,16 +198,8 @@ typedef	struct s_camera
 	float		half_width;
 	float		half_height;
 	float		pixel_size;
-	t_point		cam_pos;
-	t_vector	cam_norm_vect;
 	float		fov;
 }	t_camera;
-
-typedef	struct s_ambient
-{
-	float	ratio;
-	t_color	color;
-} t_ambient;
 
 // needs to call ft_memset
 // (8 * 2) = 16 bytes
@@ -210,8 +207,37 @@ typedef	struct	s_world
 {
 	t_shape		*objs;
 	t_light		*light;
-	t_ambient	*ambient;
+	
 }	t_world;
+
+
+//INPUT STRUCTURES
+typedef	struct s_inp_ambient
+{
+	float	ratio;
+	t_color	color;
+} t_inp_ambient;
+
+typedef struct	s_inp_camera
+{
+	t_point		cam_pos;
+	t_vector	cam_norm_vect;
+	float		fov;
+}	t_inp_camera;
+
+typedef struct	s_inp_light
+{
+	float		bright_ratio;
+	t_point		light_pos;
+	t_vector	light_norm_vect;
+}	t_inp_light;
+
+typedef struct s_input
+{
+	t_inp_ambient	ambient;
+	t_inp_camera	camera;
+	t_inp_light		light;
+}	t_input;
 
 // 44 + 40 + 32 + 16 + (8 * 3) + 4 = 160 bytes
 typedef struct s_minirt
@@ -224,6 +250,7 @@ typedef struct s_minirt
 	t_intersections	*inter;
 	t_intersections	*first_hit;
 	t_tuple			*tuple;
+	t_input			input;
 	int				fd;
 }		t_minirt;
 
@@ -447,5 +474,9 @@ float		degree_to_rad(float degree);
 void		mtx_rotation_x(t_matrix *mtx, float rot_deg);
 void		mtx_rotation_y(t_matrix *mtx, float rot_deg);
 void		mtx_rotation_z(t_matrix *mtx, float rot_deg);
+
+
+
+t_material	parse_material(enum e_mat material);
 
 #endif
