@@ -46,7 +46,7 @@ MLXFLAGS	=	-lmlx -lXext -lX11 -lm
 SRCS		=	main.c \
 				tuples/chk_tuples_typ.c tuples/creating_tuples.c tuples/operations_tuples.c tuples/basic_operations_tuples.c\
 				input/input_checker.c input/input_checker_utils.c input/input_chk_render_setup.c input/input_chk_scene_objs.c\
-				objects/parse_objs.c\
+				objects/parse_objs.c objects/parse_render_settings.c objects/parse_objs_settings.c objects/parse_settings_utils.c\
 				light/light.c light/light_utils.c\
 				ray/ray.c ray/intersections.c ray/sort_intersections.c \
 				canvas/map.c \

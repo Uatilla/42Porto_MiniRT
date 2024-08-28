@@ -63,7 +63,6 @@ t_checkstx	chk_scene_objs(t_minirt *data, int file)
 	return (chk_sintax);
 }
 
-
 /// @brief Verify scene file if its available or has syntax errors.
 /// @param mrt Main structure.
 /// @param argc Number os args.

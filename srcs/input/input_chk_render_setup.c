@@ -75,4 +75,3 @@ void	input_chk_light(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 	if (n_elem != 4)
 		chk_stx->count_err_stx++;
 }
-

@@ -12,33 +12,10 @@
 
 #include "../includes/minirt.h"
 
-
-//MAP LIGHT MUST BE 
-void	parse_light(t_minirt *mrt, char **line)
-{
-	get_tuple(&mrt->input.light.light_pos, line[1], 1);
-	mrt->input.light.bright_ratio = ft_atof(line[2]);
-	get_tuple(&mrt->input.light.light_norm_vect, line[2], 999999);
-}
-
-void	parse_camera(t_minirt *mrt, char **line)
-{
-	get_tuple(&mrt->input.camera.cam_pos, line[1], 1);
-	get_tuple(&mrt->input.camera.cam_norm_vect, line[2], 0);
-	mrt->input.camera.fov = ft_atof(line[3]);
-}
-
-void	parse_ambient(t_minirt *mrt, char **line)
-{
-	mrt->input.ambient.ratio = ft_atof(line[1]);
-	get_tuple(&mrt->input.ambient.color, line[2], 999999);
-}
-
 t_material	parse_material(enum e_mat material)
 {
 	t_material m;
 
-	//We could put parameters here inside and the just call a material as we want to.
 	ft_memset(&m, 0, sizeof(t_material));
 	if (material == OPC)
 	{
@@ -64,17 +41,14 @@ int	main(int argc, char **argv)
 	set_scene(&data, argv[1]);
 	start_mlx(&data.canvas);
 
-	printf("BR Ratio: %f\n", data.input.light.bright_ratio);
+	
 	//Define the Material of the Center Sphere
-	
-	
 	m1 = parse_material(OPC);
 	//Parsing First Center Sphere
 	parse_shape(&data.world, &m1, SP);
 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 	//Define the Material of the Left Sphere
-	
 	m2 = parse_material(OPC);
 	//Manipulating the Left Sphere
 	t_matrix *sc_left;
@@ -102,8 +76,6 @@ int	main(int argc, char **argv)
 	data.camera = camera_construct(WIDTH, HEIGTH, PI / 3);
 	data.camera.trans = view_transformation(&(t_point){0, 0, -5, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
 	data.camera.inver = mtx_inverse(&data, data.camera.trans);
-
-	//clean
 
 	//Rendering Image on the screen.
 	render(&data);

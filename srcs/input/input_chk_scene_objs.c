@@ -19,7 +19,7 @@ void	input_chk_sphere(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 {
 	int	n_elem;
 
-    (void)mrt;
+	(void)mrt;
 	n_elem = -1;
 	while (line[++n_elem])
 	{
@@ -41,7 +41,7 @@ void	input_chk_plane(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 {
 	int	n_elem;
 
-    (void)mrt;
+	(void)mrt;
 	n_elem = -1;
 	while (line[++n_elem])
 	{
