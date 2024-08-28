@@ -132,25 +132,25 @@ void	parse_objects(enum e_id type, t_minirt *data, int file, t_material *m)
 */
 void	parse_shape(t_world *world, t_material *m, enum e_id type)
 {
-	t_sphere	*sphere;
+	t_shape	*shape;
 
 	if (world->objs == NULL)
 	{
-		world->objs = ft_calloc(sizeof(t_sphere), 1);
+		world->objs = ft_calloc(sizeof(t_shape), 1);
 		if (world->objs == NULL)
 			clear_exit(NULL, errno);
 		fill_sphape(world->objs, m, type);
 		return ;
 	}
-	sphere = ft_calloc(sizeof(t_sphere), 1);
-	if (sphere == NULL)
+	shape = ft_calloc(sizeof(t_shape), 1);
+	if (shape == NULL)
 		clear_exit(NULL, errno);
-	fill_sphape(sphere, m, type);
-	sphere->next = world->objs;
-	world->objs = sphere;
+	fill_sphape(shape, m, type);
+	shape->next = world->objs;
+	world->objs = shape;
 }
 
-void	fill_sphape(t_sphere *sp, t_material *m, enum e_id type)
+void	fill_sphape(t_shape *sp, t_material *m, enum e_id type)
 {
 	t_matrix	*mtx;
 

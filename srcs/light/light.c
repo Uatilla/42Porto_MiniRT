@@ -22,8 +22,8 @@ void	color_at(t_minirt *data, int x, int y)
 		light_vec(&data->ray, data->world.light, data);
 		color = lighting(data->first_hit, data->world.light);
 		write_pixel(&data->canvas, x, y, &color);
-		clear_ray_inter(data);
 	}
+	clear_ray_inter(data);
 }
 
 /*
@@ -62,28 +62,29 @@ void	set_light(t_point *pos, t_color *intensity, t_world *world)
 */
 t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data)
 {
-	t_vector	vec;
+	t_vector	local_normal;
+	t_vector	world_normal;
 	t_matrix	*transpose;
 
 	if (obj->type == SP)
 	{
-		vec = mtx_mult_tuple(obj->mtx_inver, point);
-		vec = subtrac_tuples(&vec, &(t_point){0, 0, 0, 1});
+		local_normal = mtx_mult_tuple(obj->mtx_inver, point);
+		local_normal = subtrac_tuples(&local_normal, &(t_point){0, 0, 0, 1});
 		transpose = mtx_transpose(data, obj->mtx_inver);
-		vec = mtx_mult_tuple(transpose, &vec);
-		vec.w = 0;
-		vec = normalize(&vec);
+		world_normal = mtx_mult_tuple(transpose, &local_normal);
+		world_normal.w = 0;
+		world_normal = normalize(&world_normal);
 		clean_matrix(data, transpose, 0);
 	}
 	else if (obj->type == PL)
 		return ((t_vector){0, 1, 0, 0});
-	else if (obj->type == CY)
-	{
-		vec.x = point->x;
-		vec.y = 0;
-		vec.z = point->z;
-	}
-	return (vec);
+	// else if (obj->type == CY)
+	// {
+	// 	vec.x = point->x;
+	// 	vec.y = 0;
+	// 	vec.z = point->z;
+	// }
+	return (world_normal);
 }
 
 /*
@@ -115,7 +116,7 @@ t_color	lighting(t_intersections *inter, t_light *light)
 	color = color_multiply(&inter->obj->material.color, &light->intensity);
 	phong.ambient = mult_tuple_scalar(&color, inter->obj->material.ambient);
 	light_normal_dot = dot_product(&light->dir, &light->normalv);
-	if (light_normal_dot < 0) //|| light->is_shadown)
+	if (light_normal_dot < 0 || light->is_shadown)
 		light_is_behind_obj(&phong.diffuse, &phong.spec);
 	else
 	{

@@ -23,7 +23,8 @@ void	light_vec(t_ray *ray, t_light *light, t_minirt *data)
 	light->dir = subtrac_tuples(&light->position, &data->first_hit->point);
 	light->dir = normalize(&light->dir);
 	light->eyev = negating_tuple(&ray->direction);
-	light->normalv = normal_at(data->first_hit->obj, &data->first_hit->point, data);
+	light->normalv = normal_at(data->first_hit->obj, &data->first_hit->point,
+								data);
 	if (dot_product(&light->normalv, &light->eyev) < 0)
 	{
 		light->inside = true;
