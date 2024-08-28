@@ -42,11 +42,17 @@ int	main(int argc, char **argv)
 	start_mlx(&data.canvas);
 
 	
+	t_matrix *sc_center;
+	sc_center = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(sc_center);
+	mtx_scaling(sc_center, &(t_point){2, 2, 2, 1});
 	//Define the Material of the Center Sphere
 	m1 = parse_material(OPC);
 	//Parsing First Center Sphere
 	parse_shape(&data.world, &m1, SP);
+	data.world.objs->mtx_trans = mtx_multiply(&data, sc_center, data.world.objs->mtx_trans);
 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
+	
 
 	//Define the Material of the Left Sphere
 	m2 = parse_material(OPC);
@@ -54,7 +60,7 @@ int	main(int argc, char **argv)
 	t_matrix *sc_left;
 	sc_left = mtx_create(&data, 4, 4);
 	fill_idnty_mtx(sc_left);
-	mtx_scaling(sc_left, &(t_point){0.5, 0.5, 0.5, 1});
+	mtx_scaling(sc_left, &(t_point){1, 1, 1, 1});
 
 	t_matrix *trans_left;
 	trans_left = mtx_create(&data, 4, 4);
@@ -70,15 +76,27 @@ int	main(int argc, char **argv)
 
 	//Setting light of the scene;
 	set_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 1}, &data.world);
-
+	
 
 	//Building Camera
-	data.camera = camera_construct(WIDTH, HEIGTH, PI / 3);
-	data.camera.trans = view_transformation(&(t_point){0, 0, -5, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
+	data.camera = camera_construct(WIDTH, HEIGTH, degree_to_rad(70));
+	//data.camera.trans = view_transformation(&(t_point){-50, 0, 20, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
+	data.camera.trans = view_transformation(&(t_point){0, 0, 20, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
+	
+	
+	//ERRO A CAMERA PRECISA RODAR DENTRO DO PROPRIO EIXO 
+	//Trying to rotate the camera on its own axis.
+	/*t_matrix *cam_transl;
+	cam_transl = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(cam_transl);
+	mtx_translation(cam_transl, &(t_point){-25, 10, 0, 1});
+	data.camera.trans = mtx_multiply(&data, cam_transl, data.camera.trans);*/
+
 	data.camera.inver = mtx_inverse(&data, data.camera.trans);
 
 	//Rendering Image on the screen.
 	render(&data);
+	
 
 
 	/*ATTENTION THIS CODE WAS MOVED TO RENDER:

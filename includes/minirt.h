@@ -371,7 +371,7 @@ void		parse_objects(enum e_id type, t_minirt *data, int file, t_material *m);
 void		fill_sphape(t_sphere *sp, t_material *m, enum e_id type);
 void		set_materials(t_material *obj, t_material *m);
 
-//parse_settings_utils.c
+//parse_settings.c
 void		parse_line(t_minirt *mrt, char **line);
 void		set_scene(t_minirt *mrt, char *file);
 void		get_tuple(t_tuple *tuple, char *str_tuple, int w);
