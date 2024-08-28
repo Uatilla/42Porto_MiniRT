@@ -35,8 +35,12 @@ void	render(t_minirt *data)
 	clean_matrix(data, data->camera.inver, 0);
 
 
+	//mlx_hook(data.canvas.win, 17, 0L, close_window, &data);
+	//mlx_key_hook(data.canvas.win, &handle_key_event, &data);
 
 	mlx_put_image_to_window(data->canvas.mlx, data->canvas.win, data->canvas.img, 0, 0);
-	mlx_hook(data->canvas.win, KeyPress, KeyPressMask, handle_key_event, data);
+	//mlx_hook(data->canvas.win, KeyPress, KeyPressMask, handle_key_event, data);
+	mlx_hook(data->canvas.win, 17, 0L, close_window, data);
+	mlx_key_hook(data->canvas.win, &handle_key_event, data);
 	mlx_loop(data->canvas.mlx);
 }
