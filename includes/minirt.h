@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/23 19:26:42 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/29 17:10:29 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,13 @@ typedef struct s_ray
 	t_point			origin;
 	t_vector		direction;
 }	t_ray;
+
+// (16 * 2) = 32 bytes
+typedef struct s_pattern
+{
+	t_color	a;
+	t_color b;
+}	t_pattern;
 
 // 16 + (4 * 4) = 32 bytes
 typedef	struct s_material
@@ -298,6 +305,11 @@ t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
 void		light_is_behind_obj(t_color *diffuse, t_color *specular);
 t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
 bool		is_shadowed(t_world *w, t_point *p);
+
+// patterns
+// patterns.c
+t_pattern stripe_pattern(t_color *a, t_color *b);
+t_color	stripe_at(t_pattern *patterns, t_point *point);
 
 //objects
 //parse_objs.c
