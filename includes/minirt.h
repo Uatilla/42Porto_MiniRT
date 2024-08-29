@@ -234,9 +234,9 @@ typedef struct	s_inp_light
 
 typedef struct s_inp_sphere
 {
-	float		sp_diam;
 	t_point		sp_center;
 	t_color		sp_color;
+	t_point		sp_diam_scale;
 	
 }	t_inp_sphere;
 

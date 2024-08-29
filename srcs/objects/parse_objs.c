@@ -15,6 +15,7 @@
 /*
 *	adds a object node to the top of the objcts stack
 *	creats a stack if is empty
+*	IT PUT'S THE NEW_OBJS ON HEAD IF STACK IS NOT EMPTY.
 */
 void	parse_shape(t_world *world, t_material *m, enum e_id type)
 {
@@ -36,6 +37,7 @@ void	parse_shape(t_world *world, t_material *m, enum e_id type)
 	world->objs = sphere;
 }
 
+//Essa funcao depende do tipo de shape que esta sendo passado
 void	fill_sphape(t_sphere *sp, t_material *m, enum e_id type)
 {
 	t_matrix	*mtx;
@@ -43,7 +45,11 @@ void	fill_sphape(t_sphere *sp, t_material *m, enum e_id type)
 	mtx = mtx_create(NULL, 4, 4);
 	fill_idnty_mtx(mtx);
 	sp->type = type;
-	sp->mtx_trans = mtx;
+	sp->mtx_trans = mtx; //Modificar o centro do objeto
+	//mtx_translation(sp->mtx_trans, &(t_point){5, 0, 0, 1});
+
+	//Scalo o objeto (dentro da funcao escalar checo sp e aplico a regra)
+	// Chamo normaliza (dentro da funcao...)
 	set_materials(&sp->material, m);
 }
 
@@ -52,6 +58,7 @@ void	fill_sphape(t_sphere *sp, t_material *m, enum e_id type)
 */
 void	set_materials(t_material *obj, t_material *m)
 {
+	//Modificar a cor do objeto
 	obj->color = m->color;
 	obj->ambient = m->ambient;
 	obj->diffuse = m->diffuse;

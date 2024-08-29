@@ -19,7 +19,7 @@ t_material	parse_material(enum e_mat material)
 	ft_memset(&m, 0, sizeof(t_material));
 	if (material == OPC)
 	{
-		m.color = (t_color){1, 0.7, 0.3, 999999};
+		m.color = (t_color){0.0392156, 0, 1, 999999};
 		m.ambient = 0.1;
 		m.diffuse = 0.7;
 		m.shininess = 200;
@@ -36,41 +36,56 @@ int	main(int argc, char **argv)
 
 	(void)argc;
 	(void)argv;
+	(void)m1;
 	ft_memset(&data, 0, sizeof(data));
 	chk_input(&data, argc, argv[1]);
 	set_scene(&data, argv[1]);
 	start_mlx(&data.canvas);
 
-	
+	//0) Define the Material of the Center Sphere
+	m1 = parse_material(OPC);
+	parse_shape(&data.world, &m1, SP);
+
+	//1) Scaling
 	t_matrix *sc_center;
 	sc_center = mtx_create(&data, 4, 4);
 	fill_idnty_mtx(sc_center);
 	mtx_scaling(sc_center, &(t_point){2, 2, 2, 1});
-	//Define the Material of the Center Sphere
-	m1 = parse_material(OPC);
-	//Parsing First Center Sphere
-	parse_shape(&data.world, &m1, SP);
 	data.world.objs->mtx_trans = mtx_multiply(&data, sc_center, data.world.objs->mtx_trans);
+	
+	//2) Applying all modifications made.
 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 	
 
-	//Define the Material of the Left Sphere
-	m2 = parse_material(OPC);
-	//Manipulating the Left Sphere
+	//0) Define the Material of the Left Sphere
+	/*m2 = parse_material(OPC);
+	parse_shape(&data.world, &m2, SP);
+
+
+	//1) Scaling
 	t_matrix *sc_left;
 	sc_left = mtx_create(&data, 4, 4);
 	fill_idnty_mtx(sc_left);
 	mtx_scaling(sc_left, &(t_point){1, 1, 1, 1});
+	data.world.objs->mtx_trans = mtx_multiply(&data, sc_left, data.world.objs->mtx_trans);
 
+	//2) Moving
 	t_matrix *trans_left;
 	trans_left = mtx_create(&data, 4, 4);
 	fill_idnty_mtx(trans_left);
-	mtx_translation(trans_left, &(t_point){-2, 0, 0, 1});
-
-	//Parsing Second Left Sphere
-	parse_shape(&data.world, &m2, SP);
-	data.world.objs->mtx_trans = mtx_multiply(&data, sc_left, data.world.objs->mtx_trans);
+	mtx_translation(trans_left, &(t_point){5, 0, 0, 1});
 	data.world.objs->mtx_trans = mtx_multiply(&data, trans_left, data.world.objs->mtx_trans);
+
+
+	//3) Rotating.
+	t_matrix *rotx_left;
+	rotx_left = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(rotx_left);
+	mtx_rotation_x(rotx_left, 70);
+	data.world.objs->mtx_trans = mtx_multiply(&data, rotx_left, data.world.objs->mtx_trans);*/
+
+
+	//4) Applying all modifications made.
 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 
@@ -79,9 +94,9 @@ int	main(int argc, char **argv)
 	
 
 	//Building Camera
-	data.camera = camera_construct(WIDTH, HEIGTH, degree_to_rad(70));
+	data.camera = camera_construct(WIDTH, HEIGTH, PI / 3);
 	//data.camera.trans = view_transformation(&(t_point){-50, 0, 20, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
-	data.camera.trans = view_transformation(&(t_point){0, 0, 20, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
+	data.camera.trans = view_transformation(&(t_point){0, 0, -15, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
 	
 	
 	//ERRO A CAMERA PRECISA RODAR DENTRO DO PROPRIO EIXO 

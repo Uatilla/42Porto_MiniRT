@@ -17,7 +17,6 @@
 /// @param line Line to be verified.
 void	parse_line(t_minirt *mrt, char **line)
 {
-	(void)mrt;
 	if (line[0])
 	{
 		if (!ft_strcmp(line[0], "A"))
@@ -46,10 +45,10 @@ void	set_scene(t_minirt *mrt, char *file)
 	char		**line_cleaned;
 	int			fd;
 
-	(void)mrt;
 	fd = open(file, O_RDONLY, 0);
 	if (fd == -1)
 		clear_exit(NULL, 1);
+	//Parse material
 	while (1)
 	{
 		line = get_next_line(fd);

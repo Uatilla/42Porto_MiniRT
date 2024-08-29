@@ -17,8 +17,14 @@
 /// @param line Scene line from the file.
 void	parse_sphere(t_minirt *mrt, char **line)
 {
+	float	sp_diam;
+
+	sp_diam = ft_atof(line[2]);
 	get_tuple(&mrt->input.sphere.sp_center, line[1], 1);
-	mrt->input.sphere.sp_diam = ft_atof(line[2]);
+	mrt->input.sphere.sp_diam_scale.x = (2 * sp_diam) / 100;
+	mrt->input.sphere.sp_diam_scale.y = (2 * sp_diam) / 100;
+	mrt->input.sphere.sp_diam_scale.z = (2 * sp_diam) / 100;
+	mrt->input.sphere.sp_diam_scale.w = 1;
 	get_tuple(&mrt->input.sphere.sp_color, line[3], 999999);
 }
 
