@@ -17,9 +17,9 @@
 /// @param line Scene line from the file.
 void	parse_light(t_minirt *mrt, char **line)
 {
-	get_tuple(&mrt->input.light.light_pos, line[1], 1);
+	fill_tuple(&mrt->input.light.light_pos, line[1], 1);
 	mrt->input.light.bright_ratio = ft_atof(line[2]);
-	get_tuple(&mrt->input.light.light_norm_vect, line[2], 999999);
+	fill_tuple(&mrt->input.light.light_norm_vect, line[2], 999999);
 }
 
 /// @brief Just put the camera data into the structure.
@@ -27,8 +27,8 @@ void	parse_light(t_minirt *mrt, char **line)
 /// @param line Scene line from the file.
 void	parse_camera(t_minirt *mrt, char **line)
 {
-	get_tuple(&mrt->input.camera.cam_pos, line[1], 1);
-	get_tuple(&mrt->input.camera.cam_norm_vect, line[2], 0);
+	fill_tuple(&mrt->input.camera.cam_pos, line[1], 1);
+	fill_tuple(&mrt->input.camera.cam_norm_vect, line[2], 0);
 	mrt->input.camera.fov = ft_atof(line[3]);
 }
 
@@ -38,5 +38,5 @@ void	parse_camera(t_minirt *mrt, char **line)
 void	parse_ambient(t_minirt *mrt, char **line)
 {
 	mrt->input.ambient.ratio = ft_atof(line[1]);
-	get_tuple(&mrt->input.ambient.color, line[2], 999999);
+	fill_tuple(&mrt->input.ambient.color, line[2], 999999);
 }

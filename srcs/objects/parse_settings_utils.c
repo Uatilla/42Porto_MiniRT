@@ -12,7 +12,7 @@
 
 #include "../../includes/minirt.h"
 
-/// @brief Direct which function should verify the line.
+/// @brief Build each obj of the scene.
 /// @param mrt Main structure.
 /// @param line Line to be verified.
 void	parse_line(t_minirt *mrt, char **line)
@@ -26,16 +26,16 @@ void	parse_line(t_minirt *mrt, char **line)
 		else if (!ft_strcmp(line[0], "L"))
 			parse_light(mrt, line);
 		else if (!ft_strcmp(line[0], "sp"))
-			parse_sphere(mrt, line);
+			parse_shape(&(mrt->world), SP, line);
 		else if (!ft_strcmp(line[0], "pl"))
-			parse_plane(mrt, line);
+			parse_shape(&(mrt->world), PL, line);
 		else if (!ft_strcmp(line[0], "cy"))
-			parse_cylinder(mrt, line);
+			parse_shape(&(mrt->world), CY, line);
 	}
 	free_split(line);
 }
 
-/// @brief Check input scene file line by line.
+/// @brief Check input scene file line by line ans sets each objs.
 /// @param mrt Main structure.
 /// @param file Scene file content.
 void	set_scene(t_minirt *mrt, char *file)
@@ -48,7 +48,6 @@ void	set_scene(t_minirt *mrt, char *file)
 	fd = open(file, O_RDONLY, 0);
 	if (fd == -1)
 		clear_exit(NULL, 1);
-	//Parse material
 	while (1)
 	{
 		line = get_next_line(fd);
@@ -68,7 +67,7 @@ void	set_scene(t_minirt *mrt, char *file)
 /// @param tuple Where do you want to have the str elements.
 /// @param str_tuple Source of the tuple elements.
 /// @param w Content of the W pos in the tuple.
-void	get_tuple(t_tuple *tuple, char *str_tuple, int w)
+void	fill_tuple(t_tuple *tuple, char *str_tuple, int w)
 {
 	int			elemnt;
 	float		*ptr;
@@ -81,4 +80,25 @@ void	get_tuple(t_tuple *tuple, char *str_tuple, int w)
 		ptr[elemnt] = ft_atof(rgb_elemnts[elemnt]);
 	ptr[elemnt] = w;
 	free_split(rgb_elemnts);
+}
+
+/// @brief Takes a string and returns its corrresponding tuple.
+/// @param str_tuple Source of the tuple elements.
+/// @param w Content of the W pos in the tuple.
+/// @return Tuple with the string content.
+t_tuple	get_tuple(char *str_tuple, int w)
+{
+	int			elemnt;
+	float		*ptr;
+	t_tuple		tup_res;
+	char		**rgb_elemnts;
+
+	elemnt = -1;
+	ptr = (float *)&tup_res;
+	rgb_elemnts = ft_split(str_tuple, ',');
+	while (rgb_elemnts[++elemnt])
+		ptr[elemnt] = ft_atof(rgb_elemnts[elemnt]);
+	ptr[elemnt] = w;
+	free_split(rgb_elemnts);
+	return (tup_res);
 }

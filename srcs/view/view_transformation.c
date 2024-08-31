@@ -19,6 +19,8 @@ t_matrix	*view_transformation(t_point *from, t_point *to, t_vector *up)
 	t_matrix	*trans;
 	t_matrix	*ret;
 
+
+	//calcular a to = norm  + from (both from input)
 	view.forward = subtrac_tuples(to, from);
 	view.forward = normalize(&view.forward);
 	view.upn = normalize(up);

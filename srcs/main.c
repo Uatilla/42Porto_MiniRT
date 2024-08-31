@@ -19,7 +19,7 @@ t_material	parse_material(enum e_mat material)
 	ft_memset(&m, 0, sizeof(t_material));
 	if (material == OPC)
 	{
-		m.color = (t_color){0.0392156, 0, 1, 999999};
+		//m.color = (t_color){0.0392156, 0, 1, 999999};
 		m.ambient = 0.1;
 		m.diffuse = 0.7;
 		m.shininess = 200;
@@ -43,18 +43,18 @@ int	main(int argc, char **argv)
 	start_mlx(&data.canvas);
 
 	//0) Define the Material of the Center Sphere
-	m1 = parse_material(OPC);
-	parse_shape(&data.world, &m1, SP);
+	
+	//parse_shape(&data.world, SP);
 
 	//1) Scaling
-	t_matrix *sc_center;
+	/*t_matrix *sc_center;
 	sc_center = mtx_create(&data, 4, 4);
 	fill_idnty_mtx(sc_center);
-	mtx_scaling(sc_center, &(t_point){2, 2, 2, 1});
-	data.world.objs->mtx_trans = mtx_multiply(&data, sc_center, data.world.objs->mtx_trans);
+	mtx_scaling(sc_center, &(t_point){1, 1, 1, 1});
+	data.world.objs->mtx_trans = mtx_multiply(&data, sc_center, data.world.objs->mtx_trans);*/
 	
 	//2) Applying all modifications made.
-	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
+	//data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 	
 
 	//0) Define the Material of the Left Sphere
@@ -86,7 +86,7 @@ int	main(int argc, char **argv)
 
 
 	//4) Applying all modifications made.
-	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
+	//data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 
 	//Setting light of the scene;

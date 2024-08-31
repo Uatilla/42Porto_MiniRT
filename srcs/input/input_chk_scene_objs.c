@@ -30,7 +30,7 @@ void	input_chk_sphere(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 		else if (n_elem == 3)
 			check_elemnt(line, n_elem, chk_stx, (float []){0, 255.0});
 	}
-	if (n_elem != 4)
+	if (n_elem > 5)
 		chk_stx->count_err_stx++;
 }
 

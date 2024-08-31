@@ -232,38 +232,11 @@ typedef struct	s_inp_light
 	t_vector	light_norm_vect;
 }	t_inp_light;
 
-typedef struct s_inp_sphere
-{
-	t_point		sp_center;
-	t_color		sp_color;
-	t_point		sp_diam_scale;
-	
-}	t_inp_sphere;
-
-typedef struct s_inp_plane
-{
-	t_point		pl_center;
-	t_vector	pl_norm_vect;
-	t_color		pl_color;
-}	t_inp_plane;
-
-typedef struct	s_inp_cylinder
-{
-	float		cy_diam;
-	float		cy_height;
-	t_point		cy_center;
-	t_vector	cy_norm_vect;
-	t_color		cy_color;
-}	t_inp_cylinder;
-
 typedef struct s_input
 {
 	t_inp_ambient	ambient;
 	t_inp_camera	camera;
 	t_inp_light		light;
-	t_inp_sphere	sphere;
-	t_inp_plane		plane;
-	t_inp_cylinder	cylinder;
 }	t_input;
 
 // 44 + 40 + 32 + 16 + (8 * 3) + 4 = 160 bytes
@@ -366,26 +339,21 @@ bool		is_shadowed(t_world *w, t_point *p);
 
 //objects
 //parse_objs.c
-void		parse_shape(t_world *world, t_material *m, enum e_id type);
+void		parse_shape(t_world *world, enum e_id type, char **line);
 void		parse_objects(enum e_id type, t_minirt *data, int file, t_material *m);
-void		fill_sphape(t_sphere *sp, t_material *m, enum e_id type);
-void		set_materials(t_material *obj, t_material *m);
+void		fill_sphape(t_sphere *sp, enum e_id type, char **line);
+void		set_materials(t_material *obj, t_material *m, char **line, enum e_id type);
 
-//parse_settings.c
+//parse_settings_utils.c
 void		parse_line(t_minirt *mrt, char **line);
 void		set_scene(t_minirt *mrt, char *file);
-void		get_tuple(t_tuple *tuple, char *str_tuple, int w);
+void		fill_tuple(t_tuple *tuple, char *str_tuple, int w);
+t_tuple		get_tuple(char *str_tuple, int w);
 
 //parse_render_settings.c
 void		parse_ambient(t_minirt *mrt, char **line);
 void		parse_camera(t_minirt *mrt, char **line);
 void		parse_light(t_minirt *mrt, char **line);
-
-//parse_objs_settings.c
-void		parse_sphere(t_minirt *mrt, char **line);
-void		parse_plane(t_minirt *mrt, char **line);
-void		parse_cylinder(t_minirt *mrt, char **line);
-
 
 //ray
 //ray.c
