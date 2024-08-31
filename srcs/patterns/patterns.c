@@ -18,12 +18,13 @@ t_pattern stripe_pattern(t_color *a, t_color *b)
 
 	stripe.a = *a;
 	stripe.b = *b;
+	stripe.has = true;
 	return (stripe);
 }
 
 t_color	stripe_at(t_pattern *patterns, t_point *point)
 {
-	if (fmod(point->x, 2.0) == 0)
+	if (fmod(point->x, 2) == 0)
 		return (patterns->a);
 	else
 		return (patterns->b);

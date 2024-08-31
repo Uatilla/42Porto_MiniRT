@@ -119,17 +119,19 @@ typedef struct s_pattern
 {
 	t_color	a;
 	t_color b;
+	bool	has;
 }	t_pattern;
 
 // 16 + (4 * 4) = 32 bytes
 typedef	struct s_material
 {
-	t_color	color;
-	float	ambient;
-	float	diffuse;
-	float	specular;
-	float	shininess;
-} t_material;
+	t_pattern	pattern;
+	t_color		color;
+	float		ambient;
+	float		diffuse;
+	float		specular;
+	float	 	shininess;
+}	t_material;
 
 // 32 + 16 + (8 * 3) + 4 = 76 bytes
 typedef	struct s_shape
@@ -140,7 +142,7 @@ typedef	struct s_shape
 	t_matrix			*mtx_inver;
 	void				*next;
 	enum e_id			type;
-} t_shape;
+}	t_shape;
 
 typedef	t_shape t_sphere;
 typedef	t_shape t_plane;

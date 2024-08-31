@@ -158,7 +158,8 @@ void	fill_sphape(t_shape *sp, t_material *m, enum e_id type)
 	fill_idnty_mtx(mtx);
 	sp->type = type;
 	sp->mtx_trans = mtx;
-	set_materials(&sp->material, m);
+	sp->material = *m;
+	// set_materials(&sp->material, m);
 }
 
 /*
@@ -171,4 +172,5 @@ void	set_materials(t_material *obj, t_material *m)
 	obj->diffuse = m->diffuse;
 	obj->specular = m->specular;
 	obj->shininess = m->shininess;
+	obj->pattern = m->pattern;
 }

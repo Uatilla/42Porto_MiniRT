@@ -20,7 +20,10 @@ void	color_at(t_minirt *data, int x, int y)
 	if (data->first_hit)
 	{
 		light_vec(&data->ray, data->world.light, data);
-		color = lighting(data->first_hit, data->world.light);
+		// if (data->first_hit->obj->material.pattern.has)
+		// color = stripe_at(&data->first_hit->obj->material.pattern, &data->first_hit->point);
+		// else
+			color = lighting(data->first_hit, data->world.light);
 		write_pixel(&data->canvas, x, y, &color);
 	}
 	clear_ray_inter(data);
@@ -113,7 +116,10 @@ t_color	lighting(t_intersections *inter, t_light *light)
 	float			ref_dot_eye;
 	float			factor;
 
-	color = color_multiply(&inter->obj->material.color, &light->intensity);
+	if (fmod(inter->point.x, 2.0) == 2.0)
+		color = color_multiply(&(t_color){1, 1, 1, 1}, &light->intensity);
+	else
+		color = color_multiply(&inter->obj->material.color, &light->intensity);
 	phong.ambient = mult_tuple_scalar(&color, inter->obj->material.ambient);
 	light_normal_dot = dot_product(&light->dir, &light->normalv);
 	if (light_normal_dot < 0 || light->is_shadown)

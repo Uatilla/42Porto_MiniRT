@@ -34,7 +34,7 @@ void	light_vec(t_ray *ray, t_light *light, t_minirt *data)
 		light->inside = false;
 	light->reflect = negating_tuple(&light->dir);
 	light->reflect = reflect(&light->reflect, &light->normalv);
-	over_point = mult_tuple_scalar(&light->normalv, EPSILON * 100);
+	over_point = mult_tuple_scalar(&light->normalv, EPSILON);
 	over_point = sum_tuples(&data->first_hit->point, &over_point);
 	light->is_shadown = is_shadowed(&data->world, &over_point);
 }
