@@ -40,7 +40,7 @@ SUB_DIR		=	tuples input exit mlx ray canvas sphere window objects light \
 ALL_OBJS_DIR	= $(foreach dir, $(SUB_DIR), $(addprefix $(OBJS_DIR)/, $(dir)))
 
 # Flags
-CFLAGS		=	-Wall -Wextra -Werror -g -pg
+CFLAGS		=	-Wall -Wextra -Werror -g #-pg
 MLXFLAGS	=	-lmlx -lXext -lX11 -lm
 
 # Files
