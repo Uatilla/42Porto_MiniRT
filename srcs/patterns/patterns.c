@@ -50,6 +50,7 @@ void	set_stripe_pattern(t_intersections *inter)
 		if (inter->obj->material.pattern.has)
 		{
 			inter->obj->material.color =
-			stripe_at(&inter->obj->material.pattern, &inter->point);
+			stripe_at_obj(&inter->obj->material.pattern,
+				 &inter->point, inter->obj);
 		}
 }
