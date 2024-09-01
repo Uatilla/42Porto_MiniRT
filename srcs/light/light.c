@@ -20,10 +20,8 @@ void	color_at(t_minirt *data, int x, int y)
 	if (data->first_hit)
 	{
 		light_vec(&data->ray, data->world.light, data);
-		// if (data->first_hit->obj->material.pattern.has)
-		// color = stripe_at(&data->first_hit->obj->material.pattern, &data->first_hit->point);
-		// else
-			color = lighting(data->first_hit, data->world.light);
+		set_stripe_pattern(data->first_hit);
+		color = lighting(data->first_hit, data->world.light);
 		write_pixel(&data->canvas, x, y, &color);
 	}
 	clear_ray_inter(data);

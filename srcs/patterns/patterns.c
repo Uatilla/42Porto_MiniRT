@@ -24,8 +24,20 @@ t_pattern stripe_pattern(t_color *a, t_color *b)
 
 t_color	stripe_at(t_pattern *patterns, t_point *point)
 {
-	if (fmod(point->x, 2) == 0)
-		return (patterns->a);
+	t_color	c;
+
+	if ((int)point->x % 2 == 0)
+		c = patterns->a;
 	else
-		return (patterns->b);
+		c = patterns->b;
+	return (c);
+}
+
+void	set_stripe_pattern(t_intersections *inter)
+{
+		if (inter->obj->material.pattern.has)
+		{
+			inter->obj->material.color =
+			stripe_at(&inter->obj->material.pattern, &inter->point);
+		}
 }

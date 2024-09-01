@@ -20,7 +20,21 @@
 // 	pattern = stripe_pattern(&(t_color){1, 1, 1, 1}, &(t_color){0, 0, 0, 0});
 //
 // 	color = stripe_at(&pattern, &(t_point){0, 0, 0, 1});
+// 	printf("%f %f %f\n", color.r, color.g, color.b);
 //
+// 	color = stripe_at(&pattern, &(t_point){0.9, 0, 0, 1});
+// 	printf("%f %f %f\n", color.r, color.g, color.b);
+//
+// 	color = stripe_at(&pattern, &(t_point){1, 0, 0, 1});
+// 	printf("%f %f %f\n", color.r, color.g, color.b);
+//
+// 	color = stripe_at(&pattern, &(t_point){-0.1, 0, 0, 1});
+// 	printf("%f %f %f\n", color.r, color.g, color.b);
+//
+// 	color = stripe_at(&pattern, &(t_point){-1, 0, 0, 1});
+// 	printf("%f %f %f\n", color.r, color.g, color.b);
+//
+// 	color = stripe_at(&pattern, &(t_point){-1.1, 0, 0, 1});
 // 	printf("%f %f %f\n", color.r, color.g, color.b);
 // }
 
@@ -104,7 +118,7 @@ int	main(void)
 	floor.diffuse = 0.9;
 	floor.specular = 0.9;
 	floor.shininess = 200;
-	// floor.pattern = stripe_pattern(&(t_color){1, 1, 1, 1}, &(t_color){0, 0, 0, 1});
+	floor.pattern = stripe_pattern(&(t_color){1, 1, 1, 1}, &(t_color){0, 0, 0, 1});
 
 	t_matrix *floor_trans;
 	floor_trans = mtx_create(&data, 4, 4);

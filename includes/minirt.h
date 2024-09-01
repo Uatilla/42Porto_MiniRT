@@ -310,8 +310,9 @@ bool		is_shadowed(t_world *w, t_point *p);
 
 // patterns
 // patterns.c
-t_pattern stripe_pattern(t_color *a, t_color *b);
-t_color	stripe_at(t_pattern *patterns, t_point *point);
+t_pattern 	stripe_pattern(t_color *a, t_color *b);
+t_color		stripe_at(t_pattern *patterns, t_point *point);
+void		set_stripe_pattern(t_intersections *inter);
 
 //objects
 //parse_objs.c
