@@ -38,6 +38,11 @@ t_color	stripe_at(t_pattern *patterns, t_point *point)
 	return (c);
 }
 
+t_color	point_color(t_point *point)
+{
+	return ((t_color){point->x, point->y, point->z, point->w});
+}
+
 // calls the apropriate patterns function for the obj
 t_color	pattern_at(t_pattern *p, t_point *point, t_shape *obj, enum e_p type)
 {
@@ -48,6 +53,8 @@ t_color	pattern_at(t_pattern *p, t_point *point, t_shape *obj, enum e_p type)
 	patterns_point = mtx_mult_tuple(p->inver, &object_point);
 	if (type == STR)
 		return (stripe_at(p, &patterns_point));
+	else if (type == PC)
+		return (point_color(&patterns_point));
 	return ((t_color){0, 0, 0, 0});
 }
 
