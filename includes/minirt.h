@@ -34,6 +34,11 @@ enum e_id
 	CY = 5,
 };
 
+enum e_p
+{
+	STR = 0,
+};
+
 //MACRO
 # define EPSILON 0.00001
 # define ZERO_TUPLE (t_tuple){0, 0, 0, 0}
@@ -115,6 +120,7 @@ typedef struct s_pattern
 	t_matrix	*inver;
 	t_color		a;
 	t_color 	b;
+	enum e_p	type;
 	bool		has;
 }	t_pattern;
 
@@ -295,10 +301,10 @@ bool		is_shadowed(t_world *w, t_point *p);
 
 // patterns
 // patterns.c
-t_pattern 	stripe_pattern(t_color *a, t_color *b);
+t_pattern	stripe_pattern(t_color *a, t_color *b, enum e_p type);
 t_color		stripe_at(t_pattern *patterns, t_point *point);
-t_color		stripe_at_obj(t_pattern *patterns, t_point *point, t_shape *obj);
-void		set_stripe_pattern(t_intersections *inter);
+t_color		pattern_at(t_pattern *p, t_point *point, t_shape *obj, enum e_p type);
+void		set_pattern(t_intersections *inter);
 
 //objects
 //parse_objs.c

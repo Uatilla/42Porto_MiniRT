@@ -20,7 +20,7 @@ void	color_at(t_minirt *data, int x, int y)
 	if (data->first_hit)
 	{
 		light_vec(&data->ray, data->world.light, data);
-		set_stripe_pattern(data->first_hit);
+		set_pattern(data->first_hit);
 		color = lighting(data->first_hit, data->world.light);
 		write_pixel(&data->canvas, x, y, &color);
 	}

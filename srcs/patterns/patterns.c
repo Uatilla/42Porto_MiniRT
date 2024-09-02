@@ -12,7 +12,8 @@
 
 #include "../../includes/minirt.h"
 
-t_pattern stripe_pattern(t_color *a, t_color *b)
+// sets the pattern for the object
+t_pattern	stripe_pattern(t_color *a, t_color *b, enum e_p type)
 {
 	t_pattern stripe;
 
@@ -21,9 +22,11 @@ t_pattern stripe_pattern(t_color *a, t_color *b)
 	stripe.a = *a;
 	stripe.b = *b;
 	stripe.has = true;
+	stripe.type = type;
 	return (stripe);
 }
 
+// return the collor at at given point for a stripe patterns
 t_color	stripe_at(t_pattern *patterns, t_point *point)
 {
 	t_color	c;
@@ -35,22 +38,26 @@ t_color	stripe_at(t_pattern *patterns, t_point *point)
 	return (c);
 }
 
-t_color	stripe_at_obj(t_pattern *patterns, t_point *point, t_shape *obj)
+// calls the apropriate patterns function for the obj
+t_color	pattern_at(t_pattern *p, t_point *point, t_shape *obj, enum e_p type)
 {
 	t_point	object_point;
 	t_point patterns_point;
 
 	object_point = mtx_mult_tuple(obj->mtx_inver, point);
-	patterns_point = mtx_mult_tuple(patterns->inver, &object_point);
-	return (stripe_at(patterns, &patterns_point));
+	patterns_point = mtx_mult_tuple(p->inver, &object_point);
+	if (type == STR)
+		return (stripe_at(p, &patterns_point));
+	return ((t_color){0, 0, 0, 0});
 }
 
-void	set_stripe_pattern(t_intersections *inter)
+// sets the collor of the obj at a given point if te obj has a pattern
+void	set_pattern(t_intersections *inter)
 {
 		if (inter->obj->material.pattern.has)
 		{
 			inter->obj->material.color =
-			stripe_at_obj(&inter->obj->material.pattern,
-				 &inter->point, inter->obj);
+			pattern_at(&inter->obj->material.pattern,
+		   	&inter->point, inter->obj, inter->obj->material.pattern.type);
 		}
 }
