@@ -31,7 +31,7 @@
 // 	m.diffuse = 0.9;
 // 	m.specular = 0.9;
 // 	m.shininess = 200;
-// 	m.pattern = stripe_pattern(&(t_color){1, 1, 1, 1}, &(t_color){0, 0, 0, 1}, PC);
+// 	m.pattern = stripe_pattern(&(t_color){1, 1, 1, 1}, &(t_color){0, 0, 0, 1}, GR);
 // 	m.pattern.trans = mtx_multiply(&data, trans, m.pattern.trans);
 // 	m.pattern.inver = mtx_inverse(&data, m.pattern.trans);
 //
@@ -44,7 +44,7 @@
 // 	data.world.objs->mtx_trans = mtx_multiply(&data, T, data.world.objs->mtx_trans);
 // 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 //
-// 	color = pattern_at(&m.pattern, &(t_point){2.5, 3, 3.5, 1}, data.world.objs, data.world.objs->material.pattern.type);
+// 	color = pattern_at(&m.pattern, &(t_point){0.75, 0, 0, 1}, data.world.objs, data.world.objs->material.pattern.type);
 //
 // 	printf("%f %f %f\n", color.r, color.g, color.b);
 //
@@ -93,7 +93,7 @@ int	main(void)
 	m.diffuse = 0.9;
 	m.specular = 0.9;
 	m.shininess = 200;
-	m.pattern = stripe_pattern(&(t_color){0.1, 0.25, 0.9, 1}, &(t_color){0.42, 0.81, 0.1, 1}, PC);
+	m.pattern = stripe_pattern(&(t_color){0.1, 0.25, 0.9, 1}, &(t_color){0.42, 0.81, 0.1, 1}, GR);
 	mtx_scaling(m.pattern.trans, &(t_point){0.2, 0.2, 0.2, 1});
 	m.pattern.inver = mtx_inverse(&data, m.pattern.trans);
 
@@ -112,7 +112,7 @@ int	main(void)
 	m_2.diffuse = 0.9;
 	m_2.specular = 0.9;
 	m_2.shininess = 200;
-	m_2.pattern = stripe_pattern(&(t_color){0.5, 0.25, 0.5, 1}, &(t_color){0.2, 1, 1, 1}, STR);
+	m_2.pattern = stripe_pattern(&(t_color){0.5, 0.25, 0.5, 1}, &(t_color){0.2, 1, 1, 1}, PC);
 	mtx_scaling(m_2.pattern.trans, &(t_point){0.2, 0.2, 0.2, 1});
 	m_2.pattern.inver = mtx_inverse(&data, m_2.pattern.trans);
 

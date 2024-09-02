@@ -38,9 +38,23 @@ t_color	stripe_at(t_pattern *patterns, t_point *point)
 	return (c);
 }
 
+// directly translate the point x/y/x to color r/g/b
 t_color	point_color(t_point *point)
 {
 	return ((t_color){point->x, point->y, point->z, point->w});
+}
+
+// sets the gradient between collor a and collor b from pattern
+t_color	gradient(t_pattern *pattern, t_point *point)
+{
+	t_color	distance;
+	float	fraction;
+	t_color	ret;
+
+	distance = subtrac_tuples(&pattern->a, &pattern->b);
+	fraction = point->x;
+	ret = mult_tuple_scalar(&distance, fraction);
+	return (sum_tuples(&pattern->a, &ret));
 }
 
 // calls the apropriate patterns function for the obj
@@ -55,6 +69,8 @@ t_color	pattern_at(t_pattern *p, t_point *point, t_shape *obj, enum e_p type)
 		return (stripe_at(p, &patterns_point));
 	else if (type == PC)
 		return (point_color(&patterns_point));
+	else if (type == GR)
+		return (gradient(p, &patterns_point));
 	return ((t_color){0, 0, 0, 0});
 }
 
