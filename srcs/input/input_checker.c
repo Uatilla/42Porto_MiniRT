@@ -63,6 +63,27 @@ t_checkstx	chk_scene_objs(t_minirt *data, int file)
 	return (chk_sintax);
 }
 
+bool	check_extension(char *str, char *ext)
+{
+	int	i;
+	(void)ext;
+	char *substr;
+	
+	if (ft_strlen(str) < ft_strlen(ext))
+        return false;
+	substr = ft_substr(str, ft_strlen(str) - ft_strlen(ext), ft_strlen(ext));
+	if(!ft_strcmp(substr, ext))
+	{
+		free(substr);
+		return (True);
+	}
+	else
+	{
+		free(substr);
+		return (False);
+	}
+}
+
 /// @brief Verify scene file if its available or has syntax errors.
 /// @param mrt Main structure.
 /// @param argc Number os args.
@@ -74,8 +95,13 @@ void	chk_input(t_minirt *mrt, int argc, char *file)
 
 	if (argc != 2)
 	{
+		ft_error(NULL, "ERROR: Input invalid!\nTry:\n\t./minirt <scene>.rt\n", 0);
+		clear_exit(NULL, 1);
+	}
+	if (!check_extension(file, ".rt"))
+	{
 		ft_error(NULL, "ERROR: Input invalid!\n\
-				Try:\n\t./minirt <scene>.rt\n", 0);
+		The input doesn't end with '.rt'\n", 0);
 		clear_exit(NULL, 1);
 	}
 	fd = open(file, O_RDONLY, 0);
@@ -91,5 +117,8 @@ void	chk_input(t_minirt *mrt, int argc, char *file)
 		ft_error(mrt, "ERROR: Duplicated elements found.\n", 1);
 	if (chk_stx.count_err_stx > 0)
 		ft_error(mrt, "ERROR: Invalid Scene Syntax\n", 1);
+	if (chk_stx.count_preset_err > 0)
+		ft_error(mrt, "ERROR: Invalid preset, keep it blank, or select one valid\n\
+				MTL: METALLIC, MAT: MATTE, SAT: SATIN\n", 1);
 	close (fd);
 }

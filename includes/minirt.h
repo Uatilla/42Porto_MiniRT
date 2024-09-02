@@ -60,6 +60,7 @@ typedef struct s_checkstx
 	int		count_c;
 	int		count_l;
 	int		count_err_stx;
+	int		count_preset_err;
 }	t_checkstx;
 
 // (8 * 4) + (4 * 3) = 44 bytes
@@ -481,6 +482,6 @@ void		mtx_rotation_z(t_matrix *mtx, float rot_deg);
 
 
 
-t_material	parse_material(enum e_mat material);
+t_material	parse_material(char **line, enum e_id type);
 
 #endif

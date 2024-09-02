@@ -12,6 +12,16 @@
 
 #include "../../includes/minirt.h"
 
+/// @brief Check if there is the preset indicated is a valid one.
+/// @param str Preset string from the input.
+/// @param chk_stx Temp structure to track syntax errors.
+void	check_preset(char *str, t_checkstx *chk_stx)
+{
+	if (!ft_strcmp(str, "MAT") || !ft_strcmp(str, "MTL") || !ft_strcmp(str, "SAT"))
+		return ;
+	chk_stx->count_preset_err++;
+}
+
 /// @brief Check the syntax of Sphere Element.
 /// @param line Elements inside sphere line in the Scene.
 /// @param chk_stx Temp structure to track syntax errors.
@@ -29,6 +39,9 @@ void	input_chk_sphere(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 			check_negative(line[n_elem], chk_stx);
 		else if (n_elem == 3)
 			check_elemnt(line, n_elem, chk_stx, (float []){0, 255.0});
+		else if (n_elem == 4)
+			if (line[n_elem])
+				check_preset(line[n_elem], chk_stx);
 	}
 	if (n_elem > 5)
 		chk_stx->count_err_stx++;
@@ -51,8 +64,11 @@ void	input_chk_plane(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 			check_elemnt(line, n_elem, chk_stx, (float []){-1.0, 1.0});
 		else if (n_elem == 3)
 			check_elemnt(line, n_elem, chk_stx, (float []){0, 255.0});
+		else if (n_elem == 4)
+			if (line[n_elem])
+				check_preset(line[n_elem], chk_stx);
 	}
-	if (n_elem != 4)
+	if (n_elem > 5)
 		chk_stx->count_err_stx++;
 }
 
@@ -77,7 +93,10 @@ void	input_chk_cylinder(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 			check_negative(line[n_elem], chk_stx);
 		else if (n_elem == 5)
 			check_elemnt(line, n_elem, chk_stx, (float []){0, 255.0});
+		else if (n_elem == 6)
+			if (line[n_elem])
+				check_preset(line[n_elem], chk_stx);
 	}
-	if (n_elem != 6)
+	if (n_elem > 7)
 		chk_stx->count_err_stx++;
 }
