@@ -57,6 +57,17 @@ t_color	gradient(t_pattern *pattern, t_point *point)
 	return (sum_tuples(&pattern->a, &ret));
 }
 
+t_color	ring_patt(t_pattern *pattern, t_point *point)
+{
+	t_color	c;
+
+	if ((int)sqrtf((point->x * point->x) + (point->z * point->z)) % 2 == 0)
+		c = pattern->a;
+	else
+		c = pattern->b;
+	return (c);
+}
+
 // calls the apropriate patterns function for the obj
 t_color	pattern_at(t_pattern *p, t_point *point, t_shape *obj, enum e_p type)
 {
@@ -71,6 +82,8 @@ t_color	pattern_at(t_pattern *p, t_point *point, t_shape *obj, enum e_p type)
 		return (point_color(&patterns_point));
 	else if (type == GR)
 		return (gradient(p, &patterns_point));
+	else if (type == RNG)
+		return (ring_patt(p, &patterns_point));
 	return ((t_color){0, 0, 0, 0});
 }
 
