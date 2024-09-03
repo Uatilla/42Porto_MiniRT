@@ -40,6 +40,7 @@ enum e_p
 	PC = 1,
 	GR = 2,
 	RNG = 3,
+	CHK = 4,
 };
 
 //MACRO
@@ -309,6 +310,7 @@ t_color		point_color(t_point *point);
 t_color		stripe_at(t_pattern *patterns, t_point *point);
 t_color		gradient(t_pattern *pattern, t_point *point);
 t_color		ring_patt(t_pattern *pattern, t_point *point);
+t_color		checker_patt(t_pattern *pattern, t_point *point);
 t_color		pattern_at(t_pattern *p, t_point *point, t_shape *obj, enum e_p type);
 void		set_pattern(t_intersections *inter);
 

@@ -93,8 +93,8 @@ int	main(void)
 	m.diffuse = 0.9;
 	m.specular = 0.9;
 	m.shininess = 200;
-	m.pattern = stripe_pattern(&(t_color){0.1, 0.25, 0.9, 1}, &(t_color){0.42, 0.81, 0.1, 1}, RNG);
-	mtx_scaling(m.pattern.trans, &(t_point){0.2, 0.2, 0.2, 1});
+	m.pattern = stripe_pattern(&(t_color){0.1, 0.25, 0.9, 1}, &(t_color){0.42, 0.81, 0.1, 1}, CHK);
+	mtx_scaling(m.pattern.trans, &(t_point){0.1, 0.1, 0.1, 1});
 	m.pattern.inver = mtx_inverse(&data, m.pattern.trans);
 
 	t_matrix *ball_sc_1;
@@ -112,14 +112,14 @@ int	main(void)
 	m_2.diffuse = 0.9;
 	m_2.specular = 0.9;
 	m_2.shininess = 200;
-	m_2.pattern = stripe_pattern(&(t_color){0.5, 0.25, 0.5, 1}, &(t_color){0.2, 1, 1, 1}, PC);
+	m_2.pattern = stripe_pattern(&(t_color){0.5, 0.25, 0.5, 1}, &(t_color){0.2, 1, 1, 1}, GR);
 	mtx_scaling(m_2.pattern.trans, &(t_point){0.2, 0.2, 0.2, 1});
 	m_2.pattern.inver = mtx_inverse(&data, m_2.pattern.trans);
 
 	t_matrix *ball_trans;
 	ball_trans = mtx_create(&data, 4, 4);
 	fill_idnty_mtx(ball_trans);
-	mtx_translation(ball_trans, &(t_point){-2, -0.6, 0, 1});
+	mtx_translation(ball_trans, &(t_point){-2, -0.66, 0, 1});
 
 	t_matrix *ball_sc;
 	ball_sc = mtx_create(&data, 4, 4);
@@ -143,7 +143,7 @@ int	main(void)
 	floor.diffuse = 0.9;
 	floor.specular = 0.9;
 	floor.shininess = 200;
-	floor.pattern = stripe_pattern(&(t_color){1, 0, 0.5, 1}, &(t_color){0.5, 1, 0, 1}, STR);
+	floor.pattern = stripe_pattern(&(t_color){1, 0, 0.5, 1}, &(t_color){0.5, 1, 0, 1}, CHK);
 	floor.pattern.inver = mtx_inverse(&data, floor.pattern.trans);
 
 	t_matrix *floor_trans;

@@ -52,7 +52,7 @@ t_color	gradient(t_pattern *pattern, t_point *point)
 	t_color	ret;
 
 	distance = subtrac_tuples(&pattern->a, &pattern->b);
-	fraction = point->x;
+	fraction = point->x - floor(point->x);
 	ret = mult_tuple_scalar(&distance, fraction);
 	return (sum_tuples(&pattern->a, &ret));
 }
@@ -62,6 +62,18 @@ t_color	ring_patt(t_pattern *pattern, t_point *point)
 	t_color	c;
 
 	if ((int)sqrtf((point->x * point->x) + (point->z * point->z)) % 2 == 0)
+		c = pattern->a;
+	else
+		c = pattern->b;
+	return (c);
+}
+
+// checker pattern
+t_color checker_patt(t_pattern *pattern, t_point *point)
+{
+	t_color	c;
+
+	if ((int)(floor(point->x) + floor(point->y) + floor(point->z)) % 2 == 0)
 		c = pattern->a;
 	else
 		c = pattern->b;
@@ -84,6 +96,8 @@ t_color	pattern_at(t_pattern *p, t_point *point, t_shape *obj, enum e_p type)
 		return (gradient(p, &patterns_point));
 	else if (type == RNG)
 		return (ring_patt(p, &patterns_point));
+	else if (type == CHK)
+		return (checker_patt(p, &patterns_point));
 	return ((t_color){0, 0, 0, 0});
 }
 
