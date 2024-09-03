@@ -34,23 +34,22 @@ enum e_id
 	CY = 5,
 };
 
-/// @brief The idea of this enum is to have the presets for colors (Opaco, Gloss, Metallic, and so on).
-enum e_mat
-{
-	OPC = 0,
-	GLO = 1
-};
-
-//MACRO
+//MACROS
 # define EPSILON 0.00001
 # define ZERO_TUPLE (t_tuple){0, 0, 0, 0}
 # define WIDTH 1000
 # define HEIGTH 500
-# define BOTH 0
-# define FIRST 1
-# define SECOND 2
-# define ESC 65307
 # define PI 3.14159 
+
+#define KEY_ESC        65307
+#define KEY_A          97
+#define KEY_S          115
+#define KEY_D          100
+#define KEY_W          119
+#define KEY_LEFT       65361
+#define KEY_RIGHT      65363
+#define KEY_DOWN       65364
+#define KEY_UP         65362
 
 
 //STRUCTURES
