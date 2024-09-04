@@ -21,6 +21,7 @@
 void	check_intersections(t_minirt *data)
 {
 	t_shape	*obj;
+	int	i;
 
 	obj = data->world.objs;
 	while (obj)

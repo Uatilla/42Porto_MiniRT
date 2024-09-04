@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/23 19:26:42 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/08/29 17:10:29 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,13 @@ enum e_id
 	CY = 5,
 };
 
-/// @brief The idea of this enum is to have the presets for colors (Opaco, Gloss, Metallic, and so on).
-enum e_mat
+enum e_p
 {
-	OPC = 0,
-	GLO = 1
+	STR = 0,
+	PC = 1,
+	GR = 2,
+	RNG = 3,
+	CHK = 4,
 };
 
 //MACRO
@@ -63,7 +65,6 @@ typedef struct s_checkstx
 	int		count_preset_err;
 }	t_checkstx;
 
-// (8 * 4) + (4 * 3) = 44 bytes
 typedef struct s_canvas
 {
 	void	*mlx;
@@ -75,7 +76,6 @@ typedef struct s_canvas
 	int		endian;
 }				t_canvas;
 
-// (4 * 4) = 16 bytes
 typedef struct s_tuple
 {
 	union
@@ -100,7 +100,6 @@ typedef t_tuple	t_point;
 typedef t_tuple	t_vector;
 typedef t_tuple	t_color;
 
-// (4 * 2) + 8 = 16 bytes
 typedef struct s_matrix
 {
 	int		rows;
@@ -108,31 +107,38 @@ typedef struct s_matrix
 	float	**mtx;
 }	t_matrix;
 
-// 8 + 8 = 16 bytes
 typedef struct s_xs
 {
 	int	count;
 	float	*arr;
 }	t_xs;
 
-// (16 * 2) = 32 bytes
 typedef struct s_ray
 {
 	t_point			origin;
 	t_vector		direction;
 }	t_ray;
 
-// 16 + (4 * 4) = 32 bytes
+typedef struct s_pattern
+{
+	t_matrix	*trans;
+	t_matrix	*inver;
+	t_color		a;
+	t_color 	b;
+	enum e_p	type;
+	bool		has;
+}	t_pattern;
+
 typedef	struct s_material
 {
-	t_color	color;
-	float	ambient;
-	float	diffuse;
-	float	specular;
-	float	shininess;
-} t_material;
+	t_pattern	pattern;
+	t_color		color;
+	float		ambient;
+	float		diffuse;
+	float		specular;
+	float	 	shininess;
+}	t_material;
 
-// 32 + 16 + (8 * 3) + 4 = 76 bytes
 typedef	struct s_shape
 {
 	t_material			material;
@@ -141,12 +147,11 @@ typedef	struct s_shape
 	t_matrix			*mtx_inver;
 	void				*next;
 	enum e_id			type;
-} t_shape;
+}	t_shape;
 
 typedef	t_shape t_sphere;
 typedef	t_shape t_plane;
 
-// 16 + [4 * 2] + (8 * 3) + 1 = 49 bytes
 typedef	struct	s_intersections
 { 
 	t_point					point;
@@ -157,7 +162,6 @@ typedef	struct	s_intersections
 	int8_t					count;
 }	t_intersections;
 
-// 16 * 6 + 6 + 1 + 1 = 123 bytes
 typedef	struct s_light
 {
 	t_point	   		position;
@@ -171,7 +175,6 @@ typedef	struct s_light
 	bool			is_shadown;
 }	t_light;
 
-// 16 * 3 = 32
 typedef struct s_phong
 {
 	t_color			ambient;
@@ -179,7 +182,6 @@ typedef struct s_phong
 	t_color 		spec;
 } t_phong;
 
-// 16  + 4 + 4 + 4  + 1 = 29 bytes;
 typedef	struct s_cylinder
 {
 	t_vector			dir;
@@ -189,7 +191,6 @@ typedef	struct s_cylinder
 	bool				closed;
 }	t_cylinder;
 
-// (8 * 2) + (4 * 2) + (4 * 4) = 40 bytes
 typedef	struct s_camera
 {
 	t_matrix	*trans;
@@ -203,14 +204,12 @@ typedef	struct s_camera
 }	t_camera;
 
 // needs to call ft_memset
-// (8 * 2) = 16 bytes
 typedef	struct	s_world
 {
 	t_shape		*objs;
 	t_light		*light;
 	
 }	t_world;
-
 
 //INPUT STRUCTURES
 typedef	struct s_inp_ambient
@@ -240,7 +239,6 @@ typedef struct s_input
 	t_inp_light		light;
 }	t_input;
 
-// 44 + 40 + 32 + 16 + (8 * 3) + 4 = 160 bytes
 typedef struct s_minirt
 {
 	t_canvas		canvas;
@@ -256,7 +254,6 @@ typedef struct s_minirt
 }		t_minirt;
 
 // used in view_transformation func
-// (16 * 4) = 64
 typedef struct	s_view
 {
 	t_vector	forward;
@@ -266,7 +263,6 @@ typedef struct	s_view
 }	t_view;
 
 // used in ray_for_pixel func
-// (4 * 4) = 16 bytes
 typedef struct s_rfp
 {
 	float	xoffset;
@@ -337,6 +333,17 @@ t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
 void		light_is_behind_obj(t_color *diffuse, t_color *specular);
 t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
 bool		is_shadowed(t_world *w, t_point *p);
+
+// patterns
+// patterns.c
+t_pattern	stripe_pattern(t_color *a, t_color *b, enum e_p type);
+t_color		point_color(t_point *point);
+t_color		stripe_at(t_pattern *patterns, t_point *point);
+t_color		gradient(t_pattern *pattern, t_point *point);
+t_color		ring_patt(t_pattern *pattern, t_point *point);
+t_color		checker_patt(t_pattern *pattern, t_point *point);
+t_color		pattern_at(t_pattern *p, t_point *point, t_shape *obj, enum e_p type);
+void		set_pattern(t_intersections *inter);
 
 //objects
 //parse_objs.c
