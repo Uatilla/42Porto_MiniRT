@@ -16,24 +16,24 @@
 *	adds a object node to the top of the objcts stack
 *	creats a stack if is empty.
 */
-void	parse_shape(t_world *world, enum e_id type, char **line)
+void  parse_shape(t_world *world, enum e_id type, char **line)
 {
-	t_sphere	*sphere;
+	t_shape	*shape;
 
 	if (world->objs == NULL)
 	{
-		world->objs = ft_calloc(sizeof(t_sphere), 1);
+		world->objs = ft_calloc(sizeof(t_shape), 1);
 		if (world->objs == NULL)
 			clear_exit(NULL, errno);
 		fill_sphape(world->objs, type, line);
 		return ;
 	}
-	sphere = ft_calloc(sizeof(t_sphere), 1);
-	if (sphere == NULL)
+	shape = ft_calloc(sizeof(t_shape), 1);
+	if (shape == NULL)
 		clear_exit(NULL, errno);
-	fill_sphape(sphere, type, line);
-	sphere->next = world->objs;
-	world->objs = sphere;
+	fill_sphape(shape, type, line);
+	shape->next = world->objs;
+	world->objs = shape;
 }
 
 /// @brief Scales SP or CY from the scene file.
@@ -123,4 +123,5 @@ void	set_materials(t_material *obj, t_material *m,
 	obj->diffuse = m->diffuse;
 	obj->specular = m->specular;
 	obj->shininess = m->shininess;
+	obj->pattern = m->pattern;
 }

@@ -14,10 +14,7 @@
 
 int8_t ray_plane_intersect(t_ray *ray, float *t)
 {
-	float ray_dir;
-
-	ray_dir = ray->direction.y;
-	if (fabsf(ray->direction.y) < EPSILON)
+	if (fabs(ray->direction.y) < EPSILON)
 		return (0);
 	t[0] = -ray->origin.y / ray->direction.y;
 	t[1] = -ray->origin.y / ray->direction.y;
