@@ -139,6 +139,7 @@ typedef	struct s_material
 	float	 	shininess;
 	float		min;
 	float		max;
+	bool		closed;
 }	t_material;
 
 typedef	struct s_shape
@@ -382,7 +383,9 @@ int8_t		ray_plane_intersect(t_ray *ray, float *t);
 //cylinder.c
 int8_t		ray_cylinder_intersect(t_ray *ray, float *t, t_shape *obj);
 int8_t		cy_intercections_count(bool *count, float *t);
-bool		check_cy_cap(t_ray *ray, float t, t_shape *obj);
+bool		check_cy_range(t_ray *ray, float t, t_shape *obj);
+int8_t		ray_cy_cap_inter(t_ray *ray, float *t, t_shape *obj);
+bool		check_cap(t_ray *ray, float t);
 void		swap(float *t);
 
 //intersections.c
