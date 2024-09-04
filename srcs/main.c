@@ -52,8 +52,8 @@ int	main(void)
 	parse_shape(&data.world, CY, NULL, &m);
 	// data.world.objs->mtx_trans = mtx_multiply(&data, sca, data.world.objs->mtx_trans);
 	// data.world.objs->mtx_trans = mtx_multiply(&data, trans, data.world.objs->mtx_trans);
-	data.world.objs->mtx_trans = mtx_multiply(&data, rot, data.world.objs->mtx_trans);
-	data.world.objs->mtx_trans = mtx_multiply(&data, rot_2, data.world.objs->mtx_trans);
+	// data.world.objs->mtx_trans = mtx_multiply(&data, rot, data.world.objs->mtx_trans);
+	// data.world.objs->mtx_trans = mtx_multiply(&data, rot_2, data.world.objs->mtx_trans);
 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 	// t_vector normal;
