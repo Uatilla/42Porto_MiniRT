@@ -57,30 +57,6 @@ int	map_color(float c)
 		return (c * 255);
 }
 
-int	close_window(t_minirt *win)
-{
-	if (win)
-	{
-		mlx_destroy_image(win->canvas.mlx, win->canvas.img);
-		mlx_destroy_window(win->canvas.mlx, win->canvas.win);
-		mlx_destroy_display(win->canvas.mlx);
-		free(win->canvas.mlx);
-
-
-
-		clean_world(&win->world);
-		clean_matrix(win, win->camera.trans, 0);
-		clean_matrix(win, win->camera.inver, 0);
-
-
-
-		clear_exit(win, 0);
-	}
-	return (0);
-}
-
-
-
 /// @brief Calculates the inverse matrix.
 /// @param mrt Main structure.
 /// @param mtx Matrix to find the inverse.
@@ -113,38 +89,59 @@ t_matrix	*mtx_inverse2(t_minirt *mrt, t_matrix *mtx)
 void	move_win(t_minirt *win, int key)
 {
 	void	*new_img;
-	static float x;
-	static float y;
+	t_point	obj_center;
 	
-	x = 0;
-	y = 0;
+	(void)win;
+	//I'm only doing this definition for one object only.
+	obj_center = win->world.objs->center;
+	printf("\tO_obj_center: X: %f, Y: %f, Z: %f, W: %f\n", win->world.objs->center.x, win->world.objs->center.y, win->world.objs->center.z, win->world.objs->center.w);
 
 	//Instead of moving to a specific point, I should keep iterating in a direction, starting
 	//from the current center of the object.
 	if (key == KEY_LEFT)
 	{
-		if (win->world.objs)
-			mtx_translation(win->world.objs->mtx_trans, &(t_tuple){--x, y, 0, 1});
+		printf("LEFT\n");
+		win->world.objs->center.x = obj_center.x - 1;
 	}
 	else if (key == KEY_RIGHT)
 	{
-		if (win->world.objs)
-			mtx_translation(win->world.objs->mtx_trans, &(t_tuple){++x, y, 0, 1});
+		printf("RIGHT\n");
+		win->world.objs->center.x = obj_center.x + 1;
 	}
 	else if (key == KEY_DOWN)
 	{
-		if (win->world.objs)
-			mtx_translation(win->world.objs->mtx_trans, &(t_tuple){x, --y, 0, 1});
+		printf("DOWN\n");
+		win->world.objs->center.y = obj_center.y - 1;
 	}
 	else if (key == KEY_UP)
 	{
-		if (win->world.objs)
-			mtx_translation(win->world.objs->mtx_trans, &(t_tuple){x, ++y, 0, 1});
+		printf("UP\n");
+		win->world.objs->center.y = obj_center.y + 1;
 	}
+
+
 	//Apply Moviment
+	printf("\tN_obj_center: X: %f, Y: %f, Z: %f, W: %f\n", win->world.objs->center.x, win->world.objs->center.y, win->world.objs->center.z, win->world.objs->center.w);
+	/*t_matrix *mtx;
+	mtx = mtx_create(NULL, 4, 4);
+	fill_idnty_mtx(mtx);
+	mtx_translation(mtx, &win->world.objs->center);
+	mtx_print(mtx);*/
+	printf("===== ANTES\n");
+	mtx_print( win->world.objs->mtx_trans);
+	//win->world.objs->mtx_trans = mtx_multiply(NULL, mtx, win->world.objs->mtx_trans);
+	mtx_translation(win->world.objs->mtx_trans, &win->world.objs->center);
+	printf("===== DEPOIS\n");
+	mtx_print( win->world.objs->mtx_trans);
+	win->world.objs->mtx_inver = mtx_inverse(NULL, win->world.objs->mtx_trans);
+	
+	
+	
 	//free(win->world.objs->mtx_inver);
-	clean_matrix(win, win->camera.inver, 0);
-	win->world.objs->mtx_inver = mtx_inverse2(NULL, win->world.objs->mtx_trans);
+
+	//My free calling functions are not correct
+	//Attention to the mtx_inverse2
+	//clean_matrix(win, win->camera.inver, 0);
 
 	//Destroy old Image
 	mlx_destroy_image(win->canvas.mlx, win->canvas.img);
@@ -156,14 +153,3 @@ void	move_win(t_minirt *win, int key)
 	render(win);
 }
 
-int	handle_key_event(int key_pressed, void *param)
-{
-	t_minirt	*win;
-
-	win = (t_minirt *)param;
-	if (key_pressed == KEY_ESC || !win)
-		close_window(win);
-	if (key_pressed == KEY_LEFT || key_pressed == KEY_RIGHT || key_pressed == KEY_DOWN || key_pressed == KEY_UP)
-		move_win(win, key_pressed);
-	return (0);
-}

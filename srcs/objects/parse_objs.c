@@ -70,9 +70,13 @@ void	fill_sphape(t_sphere *sp, enum e_id type, char **line)
 	t_point		obj_center;
 
 	obj_center = get_tuple(line[1], 1);
+	sp->center = obj_center;
+	//printf("X: %f Y: %f Z: %f W: %f\n", sp->center.x, sp->center.y, sp->center.z, sp->center.w);
+
 	mtx = mtx_create(NULL, 4, 4);
 	fill_idnty_mtx(mtx);
 	sp->type = type;
+	
 	m1 = parse_material(line, type);
 	//Colocando o objeto no centro.
 	sp->mtx_trans = mtx;

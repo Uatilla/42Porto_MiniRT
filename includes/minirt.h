@@ -138,6 +138,7 @@ typedef	struct s_shape
 	t_ray				trans_ray;
 	t_matrix			*mtx_trans;
 	t_matrix			*mtx_inver;
+	t_point				center;
 	void				*next;
 	enum e_id			type;
 } t_shape;
@@ -428,8 +429,13 @@ void		clean_sphere(t_sphere *sphere);
 void		start_mlx(t_canvas	*canvas);
 void		write_pixel(t_canvas *canvas, int x, int y, t_color *color);
 int			map_color(float c);
+
+
+//handle_hooks.c
+void		manage_interface(t_minirt *data);
+int			handle_press_key(int key_pressed, void *param);
+int			handle_release_key(int key_pressed, t_minirt *data);
 int			close_window(t_minirt *win);
-int			handle_key_event(int key_pressed, void *param);
 
 //Matrix
 //matrix_validations.c
@@ -482,5 +488,6 @@ void		mtx_rotation_z(t_matrix *mtx, float rot_deg);
 
 
 t_material	parse_material(char **line, enum e_id type);
+void	move_win(t_minirt *win, int key);
 
 #endif
