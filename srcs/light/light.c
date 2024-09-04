@@ -79,13 +79,21 @@ t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data)
 	else if (obj->type == PL)
 		return ((t_vector){0, 1, 0, 0});
 	else if (obj->type == CY)
-	{
-		world_normal.x = point->x;
-		world_normal.y = 0;
-		world_normal.z = point->z;
-	}
+		world_normal = normal_at_cy(point, obj);
 	world_normal = normalize(&world_normal);
 	return (world_normal);
+}
+
+t_vector	normal_at_cy(t_point *point, t_shape *obj)
+{
+	float	dist;
+
+	dist = (point->x * point->x) + (point->z * point->z);
+	if (dist < 1 && point->y >= obj->material.max - EPSILON)
+		return ((t_vector){0, 1, 0, 0});
+	else if (dist < 1 && point->y <= obj->material.min + EPSILON)
+		return ((t_vector){0, -1, 0, 0});
+	return ((t_vector){point->x, 0, point->z, 0});
 }
 
 /*

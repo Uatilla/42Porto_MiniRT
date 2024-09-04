@@ -20,11 +20,11 @@ int	main(void)
 	start_mlx(&data.canvas);
 
 	t_material m;
-	m.shininess = 200;
+	m.shininess = 100;
 	m.specular = 0.9;
 	m.diffuse = 0.9;
 	m.color = (t_color){1, 0, 0, 999};
-	m.ambient = 0.1;
+	m.ambient = 0.3;
 	m.min = -1;
 	m.max = 1;
 	m.closed = true;
@@ -47,7 +47,7 @@ int	main(void)
 	t_matrix *rot_2;
 	rot_2 = mtx_create(&data, 4, 4);
 	fill_idnty_mtx(rot_2);
-	mtx_rotation_y(rot_2, PI / 4);
+	mtx_rotation_y(rot_2, PI / 3);
 
 	parse_shape(&data.world, CY, NULL, &m);
 	// data.world.objs->mtx_trans = mtx_multiply(&data, sca, data.world.objs->mtx_trans);
@@ -56,20 +56,13 @@ int	main(void)
 	data.world.objs->mtx_trans = mtx_multiply(&data, rot_2, data.world.objs->mtx_trans);
 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
-	// data.ray.origin = (t_point){0, -1, -2, 1};
-	// data.ray.direction = normalize(&(t_vector){0, 1, 1, 0});
+	// t_vector normal;
+	// 
+	// normal = normal_at(data.world.objs, &(t_point){0, 2, 0.5, 1}, &data);
 	//
-	// check_intersections(&data);
-	// printf("cout: %i\n", data.xs.count);
-	// if (data.first_hit)
-	// {
-	// 	for (int i = 0; i < data.xs.count; i++)
-	// 	{
-	// 		printf("%f\n", data.xs.arr[i]);
-	// 	}
-	// }
+	// printf("%f %f %f\n", normal.x, normal.y, normal.z);
 
-	set_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 1}, &data.world);
+	set_light(&(t_point){-5, 0, 0, 1}, &(t_color){1, 1, 1, 1}, &data.world);
 	data.camera = camera_construct(WIDTH, HEIGTH, PI / 3);
 	data.camera.trans = view_transformation(&(t_point){0, 0, -5, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
 	data.camera.inver = mtx_inverse(&data, data.camera.trans);
