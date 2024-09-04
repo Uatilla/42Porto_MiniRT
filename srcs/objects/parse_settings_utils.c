@@ -25,12 +25,12 @@ void	parse_line(t_minirt *mrt, char **line)
 			parse_camera(mrt, line);
 		else if (!ft_strcmp(line[0], "L"))
 			parse_light(mrt, line);
-		else if (!ft_strcmp(line[0], "sp"))
-			parse_shape(&(mrt->world), SP, line);
-		else if (!ft_strcmp(line[0], "pl"))
-			parse_shape(&(mrt->world), PL, line);
-		else if (!ft_strcmp(line[0], "cy"))
-			parse_shape(&(mrt->world), CY, line);
+		// else if (!ft_strcmp(line[0], "sp"))
+		// 	parse_shape(&(mrt->world), SP, line);
+		// else if (!ft_strcmp(line[0], "pl"))
+		// 	parse_shape(&(mrt->world), PL, line);
+		// else if (!ft_strcmp(line[0], "cy"))
+		// 	parse_shape(&(mrt->world), CY, line);
 	}
 	free_split(line);
 }

@@ -13,6 +13,7 @@
 
 #include "../../includes/minirt.h"
 
+
 // sets the t values for the ray cylinder intersections
 // returns 0 if no intersections
 // returns 1 if only one intersection
@@ -23,16 +24,17 @@
 // cylindro tem altura infinita no eixo y e raio 1)
 //
 // (Ox + Dxt)^2 + (Oz + Dzt)^2 = 1
-int8_t	ray_cylinder_intersect(t_ray *ray, float *t)
+int8_t	ray_cylinder_intersect(t_ray *ray, float *t, t_shape *obj)
 {
 	float	a;
 	float	b;
 	float	c;
 	float	discriminant;
+	bool	count[2];
 
 	a = (ray->direction.x * ray->direction.x) +
 		(ray->direction.z * ray->direction.z);
-	if (a < 0)
+	if (fabs(a) < EPSILON)
 		return (0);
 	b = (2 * ray->origin.x * ray->direction.x) +
 		(2 * ray->origin.z * ray->direction.z);
@@ -40,9 +42,54 @@ int8_t	ray_cylinder_intersect(t_ray *ray, float *t)
 	discriminant = (b * b) - 4 * a * c;
 	if (discriminant < 0)
 		return (0);
-	t[0] = (-b - sqrtf(discriminant)) / (2 * a);
-	t[1] = (-b + sqrtf(discriminant)) / (2 * a);
-	if (t[0] == t[1])
+	t[0] = (-b - sqrt(discriminant)) / (2 * a);
+	t[1] = (-b + sqrt(discriminant)) / (2 * a);
+	if (t[0] > t[1])
+		swap(t);
+	count[0] = check_cy_cap(ray, t[0], obj);
+	count[1] = check_cy_cap(ray, t[1], obj);
+	return (cy_intercections_count(count, t));
+}
+
+int8_t cy_intercections_count(bool *count, float *t)
+{
+	if (count[0] && count[1])
+	{
+		if (t[0] == t[1])
+			return (1);
+		else
+			return (2);
+	}
+	else if (!count[0] && !count[1])
+		return (0);
+	else if (count[0])
+	{
+		t[1] = t[0];
 		return (1);
-	return (2);
+	}
+	else if (count[1])
+	{
+		t[0] = t[1];
+		return (1);
+	}
+	return (0);
+}
+
+bool check_cy_cap(t_ray *ray, float t, t_shape *obj)
+{
+	float	y;
+
+	y = ray->origin.y + (ray->direction.y * t);
+	if (obj->material.min < y && y < obj->material.max)
+		return (true);
+	return (false);
+}
+
+void	swap(float *t)
+{
+	float	temp;
+
+	temp = t[0];
+	t[0] = t[1];
+	t[1] = temp;
 }

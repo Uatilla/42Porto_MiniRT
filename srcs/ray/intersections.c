@@ -50,6 +50,8 @@ void	ray_intersections(t_minirt *data, t_shape *obj, t_ray *trans_ray)
 		intersection_points = ray_sphere_intersect(trans_ray, t);
 	else if (obj->type == PL)
 		intersection_points = ray_plane_intersect(trans_ray, t);
+	else if (obj->type == CY)
+		intersection_points = ray_cylinder_intersect(trans_ray, t, obj);
 	if (intersection_points > 0)
 	{
 		data->xs.count += 2;

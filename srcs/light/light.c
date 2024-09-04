@@ -74,17 +74,17 @@ t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data)
 		transpose = mtx_transpose(data, obj->mtx_inver);
 		world_normal = mtx_mult_tuple(transpose, &local_normal);
 		world_normal.w = 0;
-		world_normal = normalize(&world_normal);
 		clean_matrix(data, transpose, 0);
 	}
 	else if (obj->type == PL)
 		return ((t_vector){0, 1, 0, 0});
-	// else if (obj->type == CY)
-	// {
-	// 	vec.x = point->x;
-	// 	vec.y = 0;
-	// 	vec.z = point->z;
-	// }
+	else if (obj->type == CY)
+	{
+		world_normal.x = point->x;
+		world_normal.y = 0;
+		world_normal.z = point->z;
+	}
+	world_normal = normalize(&world_normal);
 	return (world_normal);
 }
 

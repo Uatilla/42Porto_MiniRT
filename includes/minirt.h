@@ -137,6 +137,8 @@ typedef	struct s_material
 	float		diffuse;
 	float		specular;
 	float	 	shininess;
+	float		min;
+	float		max;
 }	t_material;
 
 typedef	struct s_shape
@@ -347,7 +349,7 @@ void		set_pattern(t_intersections *inter);
 
 //objects
 //parse_objs.c
-void		parse_shape(t_world *world, enum e_id type, char **line);
+void		parse_shape(t_world *world, enum e_id type, char **line, t_material *m);
 void		parse_objects(enum e_id type, t_minirt *data, int file, t_material *m);
 void		fill_sphape(t_sphere *sp, enum e_id type, char **line);
 void		set_materials(t_material *obj, t_material *m, char **line, enum e_id type);
@@ -378,7 +380,10 @@ int8_t		ray_plane_intersect(t_ray *ray, float *t);
 
 //cylinder
 //cylinder.c
-int8_t		ray_cylinder_intersect(t_ray *ray, float *t);
+int8_t		ray_cylinder_intersect(t_ray *ray, float *t, t_shape *obj);
+int8_t		cy_intercections_count(bool *count, float *t);
+bool		check_cy_cap(t_ray *ray, float t, t_shape *obj);
+void		swap(float *t);
 
 //intersections.c
 void		ray_intersections(t_minirt *data, t_shape *obj, t_ray *trans_ray);

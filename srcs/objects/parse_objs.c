@@ -12,26 +12,32 @@
 
 #include "../../includes/minirt.h"
 
+void	fill_shape_temp(t_sphere *sp, enum e_id type, t_material *m);
+
 /*
 *	adds a object node to the top of the objcts stack
+	printf("got here\n");
 *	creats a stack if is empty.
 */
-void  parse_shape(t_world *world, enum e_id type, char **line)
+void  parse_shape(t_world *world, enum e_id type, char **line, t_material *m)
 {
 	t_shape	*shape;
+	(void)line;
 
 	if (world->objs == NULL)
 	{
 		world->objs = ft_calloc(sizeof(t_shape), 1);
 		if (world->objs == NULL)
 			clear_exit(NULL, errno);
-		fill_sphape(world->objs, type, line);
+		// fill_sphape(world->objs, type, line);
+		fill_shape_temp(world->objs, type, m);
 		return ;
 	}
 	shape = ft_calloc(sizeof(t_shape), 1);
 	if (shape == NULL)
 		clear_exit(NULL, errno);
-	fill_sphape(shape, type, line);
+	// fill_sphape(shape, type, line);
+	fill_shape_temp(shape, type, m);
 	shape->next = world->objs;
 	world->objs = shape;
 }
@@ -89,6 +95,15 @@ void	fill_sphape(t_sphere *sp, enum e_id type, char **line)
 	set_materials(&sp->material, &m1, line, type);
 	//Aplicando as modificacoes feitas pelo input.
 	sp->mtx_inver = mtx_inverse(NULL, sp->mtx_trans);
+}
+
+
+void	fill_shape_temp(t_sphere *sp, enum e_id type, t_material *m)
+{
+	sp->mtx_trans = mtx_create(NULL, 4, 4);
+	fill_idnty_mtx(sp->mtx_trans);
+	sp->material = *m;
+	sp->type = type;
 }
 
 /// @brief Set the color for the object.

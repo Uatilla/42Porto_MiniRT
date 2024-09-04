@@ -30,7 +30,7 @@ void	render(t_minirt *data)
 	ft_printf("end render\n");
 
 	
-	clean_world(&data->world);
+	// clean_world(&data->world);
 	clean_matrix(data, data->camera.trans, 0);
 	clean_matrix(data, data->camera.inver, 0);
 
