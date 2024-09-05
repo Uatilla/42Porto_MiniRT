@@ -74,7 +74,7 @@ typedef struct s_canvas
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-}				t_canvas;
+}	t_canvas;
 
 typedef struct s_tuple
 {
@@ -137,6 +137,7 @@ typedef	struct s_material
 	float		diffuse;
 	float		specular;
 	float	 	shininess;
+	float		reflective;
 	float		min;
 	float		max;
 	bool		closed;
@@ -154,6 +155,7 @@ typedef	struct s_shape
 
 typedef	t_shape t_sphere;
 typedef	t_shape t_plane;
+typedef t_shape t_cyl;
 
 typedef	struct	s_intersections
 { 
@@ -164,6 +166,15 @@ typedef	struct	s_intersections
 	struct s_intersections	*next;
 	int8_t					count;
 }	t_intersections;
+
+typedef	struct s_comps
+{
+	t_shape 	*obj;
+	t_point		point;
+	t_vector	eyev;
+	t_vector	normalv;
+	float		t;
+} t_comps;
 
 typedef	struct s_light
 {

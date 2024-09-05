@@ -12,62 +12,156 @@
 
 #include "../includes/minirt.h"
 
+t_comps	prepare_computations(t_intersections *i, t_ray *ray, t_minirt *data);
+
 int	main(void)
 {
 	t_minirt	data;
+	t_comps		comps;
 
 	ft_memset(&data, 0, sizeof(data));
-	start_mlx(&data.canvas);
-
+	
 	t_material m;
-	m.shininess = 100;
-	m.specular = 0.9;
-	m.diffuse = 0.9;
-	m.color = (t_color){1, 0, 0, 999};
-	m.ambient = 0.3;
-	m.min = -1;
-	m.max = 1;
-	m.closed = true;
+	m.color = (t_color){0.8, 1.0, 0.6, 1};
+	m.shininess = 200;
+	m.specular = 0.7;
+	m.diffuse = 0.2;
+	m.ambient = 0.1;
 
-	// t_matrix *sca;
-	// sca = mtx_create(&data, 4, 4);
-	// fill_idnty_mtx(sca);
-	// mtx_scaling(sca, &(t_point){0.2, 0.2, 0.2, 1});
-	//
-	// t_matrix *trans;
-	// trans = mtx_create(&data, 4, 4);
-	// fill_idnty_mtx(trans);
-	// mtx_translation(trans, &(t_point){2, 0, 0, 1});
-	//
-	t_matrix *rot;
-	rot = mtx_create(&data, 4, 4);
-	fill_idnty_mtx(rot);
-	mtx_rotation_x(rot, PI / 2);
-
-	t_matrix *rot_2;
-	rot_2 = mtx_create(&data, 4, 4);
-	fill_idnty_mtx(rot_2);
-	mtx_rotation_y(rot_2, PI / 3);
-
-	parse_shape(&data.world, CY, NULL, &m);
-	// data.world.objs->mtx_trans = mtx_multiply(&data, sca, data.world.objs->mtx_trans);
-	// data.world.objs->mtx_trans = mtx_multiply(&data, trans, data.world.objs->mtx_trans);
-	// data.world.objs->mtx_trans = mtx_multiply(&data, rot, data.world.objs->mtx_trans);
-	// data.world.objs->mtx_trans = mtx_multiply(&data, rot_2, data.world.objs->mtx_trans);
+	parse_shape(&data.world, SP, NULL, &m);
 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
-	// t_vector normal;
-	// 
-	// normal = normal_at(data.world.objs, &(t_point){0, 2, 0.5, 1}, &data);
-	//
-	// printf("%f %f %f\n", normal.x, normal.y, normal.z);
+	t_matrix *sc;
+	sc = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(sc);
+	mtx_scaling(sc, &(t_point){0.5, 0.5, 0.5, 1});
 
-	set_light(&(t_point){-5, 0, 0, 1}, &(t_color){1, 1, 1, 1}, &data.world);
-	data.camera = camera_construct(WIDTH, HEIGTH, PI / 3);
-	data.camera.trans = view_transformation(&(t_point){0, 0, -5, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
-	data.camera.inver = mtx_inverse(&data, data.camera.trans);
-	render(&data);
+	parse_shape(&data.world, SP, NULL, &m);
+	data.world.objs->mtx_trans = mtx_multiply(&data, sc, data.world.objs->mtx_trans);
+	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
+
+	set_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 1}, &data.world);
+	data.ray.origin = (t_point){0, 0, -5, 1};
+	data.ray.direction = (t_vector){0, 0, 1, 0};
+
+	check_intersections(&data);
+	printf("xs: %i\n", data.xs.count);
+	for (int i = 0; i < data.xs.count; i++)
+	{
+		printf("%f\n", data.xs.arr[i]);
+	}
+	printf("\n");
+	if (data.first_hit)
+	{
+		comps = prepare_computations(data.first_hit, &data.ray, &data);
+		printf("t: %f\n", comps.t);
+		printf("obj: %i\n", comps.obj->type);
+		printf("point: %f %f %f\n", comps.point.x, comps.point.y, comps.point.z);
+		printf("eyev: %f %f %f\n", comps.eyev.x, comps.eyev.y, comps.eyev.z);
+		printf("normal: %f %f %f\n", comps.normalv.x, comps.normalv.y, comps.normalv.z);
+	}
 }
+
+t_comps	prepare_computations(t_intersections *i, t_ray *ray, t_minirt *data)
+{
+	t_comps	comps;
+
+	comps.t = i->hit;
+	comps.obj = i->obj;
+	comps.point = i->point;
+	comps.eyev = negating_tuple(&ray->direction);
+	comps.normalv = normal_at(i->obj, &i->point, data);
+	return (comps);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+// int	main(void)
+// {
+// 	t_minirt	data;
+//
+// 	ft_memset(&data, 0, sizeof(data));
+// 	start_mlx(&data.canvas);
+//
+// 	t_material m;
+// 	m.shininess = 100;
+// 	m.specular = 0.9;
+// 	m.diffuse = 0.9;
+// 	m.color = (t_color){1, 0.5, 0.2, 999};
+// 	m.ambient = 0.3;
+// 	m.min = -1;
+// 	m.max = 1;
+// 	m.closed = true;
+//
+// 	// t_matrix *sca;
+// 	// sca = mtx_create(&data, 4, 4);
+// 	// fill_idnty_mtx(sca);
+// 	// mtx_scaling(sca, &(t_point){0.2, 0.2, 0.2, 1});
+// 	//
+// 	// t_matrix *trans;
+// 	// trans = mtx_create(&data, 4, 4);
+// 	// fill_idnty_mtx(trans);
+// 	// mtx_translation(trans, &(t_point){2, 0, 0, 1});
+// 	//
+// 	t_matrix *rot;
+// 	rot = mtx_create(&data, 4, 4);
+// 	fill_idnty_mtx(rot);
+// 	mtx_rotation_z(rot, PI / 5);
+//
+// 	t_matrix *rot_2;
+// 	rot_2 = mtx_create(&data, 4, 4);
+// 	fill_idnty_mtx(rot_2);
+// 	mtx_rotation_x(rot_2, PI / 2);
+//
+// 	t_matrix *rot_3;
+// 	rot_3 = mtx_create(&data, 4, 4);
+// 	fill_idnty_mtx(rot_3);
+// 	mtx_rotation_y(rot_3, PI / 3);
+//
+// 	parse_shape(&data.world, SP, NULL, &m);
+// 	// data.world.objs->mtx_trans = mtx_multiply(&data, sca, data.world.objs->mtx_trans);
+// 	// data.world.objs->mtx_trans = mtx_multiply(&data, trans, data.world.objs->mtx_trans);
+// 	data.world.objs->mtx_trans = mtx_multiply(&data, rot_2, data.world.objs->mtx_trans);
+// 	data.world.objs->mtx_trans = mtx_multiply(&data, rot_3, data.world.objs->mtx_trans);
+// 	data.world.objs->mtx_trans = mtx_multiply(&data, rot, data.world.objs->mtx_trans);
+// 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
+//
+// 	// t_vector normal;
+// 	// 
+// 	// normal = normal_at(data.world.objs, &(t_point){0, 2, 0.5, 1}, &data);
+// 	//
+// 	// printf("%f %f %f\n", normal.x, normal.y, normal.z);
+//
+// 	set_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 1}, &data.world);
+// 	data.camera = camera_construct(WIDTH, HEIGTH, PI / 3);
+// 	data.camera.trans = view_transformation(&(t_point){0, 0, -5, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
+// 	data.camera.inver = mtx_inverse(&data, data.camera.trans);
+// 	render(&data);
+// }
 
 
 
