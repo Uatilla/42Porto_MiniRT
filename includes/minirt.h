@@ -174,6 +174,7 @@ typedef	struct s_comps
 	t_vector	eyev;
 	t_vector	normalv;
 	float		t;
+	bool		inside;
 } t_comps;
 
 typedef	struct s_light
