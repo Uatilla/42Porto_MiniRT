@@ -173,21 +173,18 @@ typedef	struct s_comps
 	t_point		point;
 	t_vector	eyev;
 	t_vector	normalv;
+	t_vector	lightv;
+	t_vector   	reflect;
 	float		t;
 	bool		inside;
-} t_comps;
+	bool		is_shadown;
+}	t_comps;
 
 typedef	struct s_light
 {
 	t_point	   		position;
 	t_color	   		intensity;
-	t_vector   		dir;
-	t_vector   		reflect;
-	t_vector   		eyev;
-	t_vector   		normalv;
 	struct s_light	*next;
-	bool			inside;
-	bool			is_shadown;
 }	t_light;
 
 typedef struct s_phong
@@ -337,14 +334,14 @@ void		render(t_minirt *data);
 //light
 //light.c
 void		color_at(t_minirt *data, int x, int y);
-void		set_light(t_point *pos, t_color *intensity, t_world *world);
+void		point_light(t_point *pos, t_color *intensity, t_world *world);
 t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data);
 t_vector	normal_at_cy(t_point *point, t_shape *obj);
 t_vector	reflect(t_vector *in, t_vector *normal);
-t_color		lighting(t_intersections *inter, t_light *light);
+t_color		lighting(t_comps *comps, t_light *light);
 
 // light_utils.c
-void		light_vec(t_ray *ray, t_light *light, t_minirt *data);
+t_comps		prepare_computations(t_intersections *i, t_ray *ray, t_minirt *data);
 t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
 void		light_is_behind_obj(t_color *diffuse, t_color *specular);
 t_color		specular(t_material *material, t_light *light, float refl_dot_eye);

@@ -12,31 +12,30 @@
 
 #include "../../includes/minirt.h"
 
-/*
-*	fills the light strcut with the direction, the normal, the reflect vector
-*	and the eye vector
-*/
-void	light_vec(t_ray *ray, t_light *light, t_minirt *data)
+t_comps	prepare_computations(t_intersections *i, t_ray *ray, t_minirt *data)
 {
+	t_comps	comps;
 	t_point	over_point;
 
-	light->dir = subtrac_tuples(&light->position, &data->first_hit->point);
-	light->dir = normalize(&light->dir);
-	light->eyev = negating_tuple(&ray->direction);
-	light->normalv = normal_at(data->first_hit->obj, &data->first_hit->point,
-								data);
-	if (dot_product(&light->normalv, &light->eyev) < -EPSILON)
+	comps.t = i->hit;
+	comps.obj = i->obj;
+	comps.point = i->point;
+	comps.eyev = negating_tuple(&ray->direction);
+	comps.normalv = normal_at(i->obj, &i->point, data);
+	comps.lightv = sum_tuples(&data->world.light->position, &comps.point);
+	comps.lightv = normalize(&comps.lightv);
+	comps.reflect = negating_tuple(&comps.lightv);
+	comps.reflect = reflect(&comps.reflect, &comps.normalv);
+	if (dot_product(&comps.normalv, &comps.eyev) < 0)
 	{
-		light->inside = true;
-		light->normalv = negating_tuple(&light->normalv);
+		comps.inside = true;
+		comps.normalv = negating_tuple(&comps.normalv);
 	}
 	else
-		light->inside = false;
-	light->reflect = negating_tuple(&light->dir);
-	light->reflect = reflect(&light->reflect, &light->normalv);
-	over_point = mult_tuple_scalar(&light->normalv, EPSILON * 10);
-	over_point = sum_tuples(&data->first_hit->point, &over_point);
-	light->is_shadown = is_shadowed(&data->world, &over_point);
+		comps.inside = false;
+	over_point = sum_tuples(&data->first_hit->point, &comps.point);
+	comps.is_shadown = is_shadowed(&data->world, &over_point);
+	return (comps);
 }
 
 /*

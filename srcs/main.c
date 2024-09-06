@@ -12,79 +12,46 @@
 
 #include "../includes/minirt.h"
 
-t_comps	prepare_computations(t_intersections *i, t_ray *ray, t_minirt *data);
-
 int	main(void)
 {
 	t_minirt	data;
-	t_comps		comps;
 
 	ft_memset(&data, 0, sizeof(data));
-	
+	// start_mlx(&data.canvas);
+
 	t_material m;
-	m.color = (t_color){0.8, 1.0, 0.6, 1};
-	m.shininess = 200;
-	m.specular = 0.7;
-	m.diffuse = 0.2;
+	m.color = (t_color){0.8, 1.0, 0.6, 0};
 	m.ambient = 0.1;
+	m.diffuse = 0.7;
+	m.specular = 0.2;
+	m.shininess = 200;
 
 	parse_shape(&data.world, SP, NULL, &m);
 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
-	// t_matrix *sc;
-	// sc = mtx_create(&data, 4, 4);
-	// fill_idnty_mtx(sc);
-	// mtx_scaling(sc, &(t_point){0.5, 0.5, 0.5, 1});
-	//
-	// parse_shape(&data.world, SP, NULL, &m);
-	// data.world.objs->mtx_trans = mtx_multiply(&data, sc, data.world.objs->mtx_trans);
-	// data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
+	t_matrix *sc;
+	sc = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(sc);
+	mtx_scaling(sc, &(t_point){0.5, 0.5, 0.5, 1});
 
-	set_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 1}, &data.world);
-	data.ray.origin = (t_point){0, 0, 0, 1};
+	parse_shape(&data.world, SP, NULL, &m);
+	data.world.objs->mtx_trans = mtx_multiply(&data, sc, data.world.objs->mtx_trans);
+	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
+
+	point_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 1}, &data.world);
+	data.ray.origin = (t_point){0, 0, -5, 1};
 	data.ray.direction = (t_vector){0, 0, 1, 0};
 
 	check_intersections(&data);
-	printf("xs: %i\n", data.xs.count);
+	printf("count: %i\n", data.xs.count);
 	for (int i = 0; i < data.xs.count; i++)
-	{
 		printf("%f\n", data.xs.arr[i]);
-	}
-	printf("\n");
-	if (data.first_hit)
-	{
-		comps = prepare_computations(data.first_hit, &data.ray, &data);
-		printf("t: %f\n", comps.t);
-		printf("obj: %i\n", comps.obj->type);
-		printf("point: %f %f %f\n", comps.point.x, comps.point.y, comps.point.z);
-		printf("eyev: %f %f %f\n", comps.eyev.x, comps.eyev.y, comps.eyev.z);
-		printf("normal: %f %f %f\n", comps.normalv.x, comps.normalv.y, comps.normalv.z);
-		if (comps.inside)
-			printf("inside = true\n");
-		else
-			printf("inside = false\n");
-	}
+
+	// data.camera = camera_construct(WIDTH, HEIGTH, PI / 3);
+	// data.camera.trans = view_transformation(&(t_point){0, 0, -5, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
+	// data.camera.inver = mtx_inverse(&data, data.camera.trans);
+	// render(&data);
 }
-
-t_comps	prepare_computations(t_intersections *i, t_ray *ray, t_minirt *data)
-{
-	t_comps	comps;
-
-	comps.t = i->hit;
-	comps.obj = i->obj;
-	comps.point = i->point;
-	comps.eyev = negating_tuple(&ray->direction);
-	comps.normalv = normal_at(i->obj, &i->point, data);
-	if (dot_product(&comps.normalv, &comps.eyev) < 0)
-	{
-		comps.inside = true;
-		comps.normalv = negating_tuple(&comps.normalv);
-	}
-	else
-		comps.inside = false;
-	return (comps);
-}
-
 
 
 
