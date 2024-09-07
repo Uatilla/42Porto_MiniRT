@@ -21,11 +21,7 @@ t_comps	prepare_computations(t_intersections *i, t_ray *ray, t_minirt *data)
 	comps.obj = i->obj;
 	comps.point = i->point;
 	comps.eyev = negating_tuple(&ray->direction);
-	comps.normalv = normal_at(i->obj, &i->point, data);
-	comps.lightv = sum_tuples(&data->world.light->position, &comps.point);
-	comps.lightv = normalize(&comps.lightv);
-	comps.reflect = negating_tuple(&comps.lightv);
-	comps.reflect = reflect(&comps.reflect, &comps.normalv);
+	comps.normalv = normal_at(comps.obj, &comps.point, data);
 	if (dot_product(&comps.normalv, &comps.eyev) < 0)
 	{
 		comps.inside = true;
@@ -34,7 +30,7 @@ t_comps	prepare_computations(t_intersections *i, t_ray *ray, t_minirt *data)
 	else
 		comps.inside = false;
 	over_point = sum_tuples(&data->first_hit->point, &comps.point);
-	comps.is_shadown = is_shadowed(&data->world, &over_point);
+	// comps.is_shadown = is_shadowed(&data->world, &over_point);
 	return (comps);
 }
 
@@ -55,8 +51,8 @@ t_color	add_color3(t_color *ambient, t_color *diffuse, t_color *specular)
 */
 void	light_is_behind_obj(t_color *diffuse, t_color *specular)
 {
-	*diffuse = (t_color){0, 0, 0, 0};
-	*specular = (t_color){0, 0, 0, 0};
+	*diffuse = (t_color){0, 0, 0, 999999};
+	*specular = (t_color){0, 0, 0, 999999};
 }
 
 /*

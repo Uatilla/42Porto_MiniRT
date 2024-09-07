@@ -101,7 +101,6 @@ t_vector	normal_at_cy(t_point *point, t_shape *obj)
 */
 t_vector	reflect(t_vector *in, t_vector *normal)
 {
-	float		scalar;
 	t_tuple		vect;
 
 	vect = mult_tuple_scalar(normal, 2);
@@ -123,17 +122,21 @@ t_color	lighting(t_comps *comps, t_light *light)
 	float			factor;
 
 	color = color_multiply(&comps->obj->material.color, &light->intensity);
+	comps->lightv = subtrac_tuples(&light->position, &comps->point);
+	comps->lightv = normalize(&comps->lightv);
 	phong.ambient = mult_tuple_scalar(&color, comps->obj->material.ambient);
 	light_normal_dot = dot_product(&comps->lightv, &comps->normalv);
-	if (light_normal_dot < 0 || comps->is_shadown)
+	if (light_normal_dot < 0) //|| comps->is_shadown)
 		light_is_behind_obj(&phong.diffuse, &phong.spec);
 	else
 	{
 		phong.diffuse = mult_tuple_scalar(&color,
 							comps->obj->material.diffuse * light_normal_dot);
+		comps->reflect = negating_tuple(&comps->lightv);
+		comps->reflect = reflect(&comps->reflect, &comps->normalv);
 		ref_dot_eye = dot_product(&comps->reflect, &comps->eyev);
 		if (ref_dot_eye <= 0)
-			phong.spec = (t_color){0, 0, 0, 0};
+			phong.spec = (t_color){0, 0, 0, 999999};
 		else
 			phong.spec = specular(&comps->obj->material, light, ref_dot_eye);
 	}
