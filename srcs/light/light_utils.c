@@ -29,8 +29,6 @@ t_comps	prepare_computations(t_intersections *i, t_ray *ray, t_minirt *data)
 	}
 	else
 		comps.inside = false;
-	over_point = sum_tuples(&data->first_hit->point, &comps.point);
-	// comps.is_shadown = is_shadowed(&data->world, &over_point);
 	return (comps);
 }
 
@@ -89,3 +87,13 @@ bool	is_shadowed(t_world *w, t_point *p)
 	return (false);
 }
 
+t_color	shade_hit(t_comps *comps, t_light *light, t_minirt *data)
+{
+	t_point	over_point;
+
+	over_point = mult_tuple_scalar(&comps->normalv, EPSILON * 200);
+	over_point = sum_tuples(&comps->point, &over_point);
+	comps->is_shadown = is_shadowed(&data->world, &over_point);
+	set_pattern(data->first_hit, &over_point);
+	return (lighting(comps, light));
+}

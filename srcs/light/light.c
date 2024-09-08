@@ -21,8 +21,7 @@ void	color_at(t_minirt *data, int x, int y)
 	if (data->first_hit)
 	{
 		comps = prepare_computations(data->first_hit, &data->ray, data);
-		set_pattern(data->first_hit);
-		color = lighting(&comps, data->world.light);
+		color = shade_hit(&comps, data->world.light, data);
 		write_pixel(&data->canvas, x, y, &color);
 	}
 	clear_ray_inter(data);
@@ -126,7 +125,7 @@ t_color	lighting(t_comps *comps, t_light *light)
 	comps->lightv = normalize(&comps->lightv);
 	phong.ambient = mult_tuple_scalar(&color, comps->obj->material.ambient);
 	light_normal_dot = dot_product(&comps->lightv, &comps->normalv);
-	if (light_normal_dot < 0) //|| comps->is_shadown)
+	if (light_normal_dot < 0 || comps->is_shadown)
 		light_is_behind_obj(&phong.diffuse, &phong.spec);
 	else
 	{

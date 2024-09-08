@@ -346,6 +346,7 @@ t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
 void		light_is_behind_obj(t_color *diffuse, t_color *specular);
 t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
 bool		is_shadowed(t_world *w, t_point *p);
+t_color		shade_hit(t_comps *comps, t_light *light, t_minirt *data);
 
 // patterns
 // patterns.c
@@ -356,7 +357,7 @@ t_color		gradient(t_pattern *pattern, t_point *point);
 t_color		ring_patt(t_pattern *pattern, t_point *point);
 t_color		checker_patt(t_pattern *pattern, t_point *point);
 t_color		pattern_at(t_pattern *p, t_point *point, t_shape *obj, enum e_p type);
-void		set_pattern(t_intersections *inter);
+void		set_pattern(t_intersections *inter, t_point *point);
 
 //objects
 //parse_objs.c
