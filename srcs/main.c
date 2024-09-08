@@ -31,35 +31,35 @@ int	main(void)
 	fill_idnty_mtx(sc);
 	mtx_scaling(sc, &(t_point){10, 0.01, 10, 1});
 
-	// parse_shape(&data.world, SP, NULL, &m);
-	// data.world.objs->mtx_trans = mtx_multiply(&data, sc, data.world.objs->mtx_trans);
-	// data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
-
-	t_matrix *trans_wall_l;
-	trans_wall_l = mtx_create(&data, 4, 4);
-	fill_idnty_mtx(trans_wall_l);
-	mtx_translation(trans_wall_l, &(t_point){0, 0, 5, 1});
-
-	t_matrix *rot_y_left;
-	rot_y_left = mtx_create(&data, 4, 4);
-	fill_idnty_mtx(rot_y_left);
-	mtx_rotation_y(rot_y_left, -M_PI / 4);
-
-	t_matrix *rot_x_left;
-	rot_x_left = mtx_create(&data, 4, 4);
-	fill_idnty_mtx(rot_x_left);
-	mtx_rotation_x(rot_x_left, M_PI / 2);
-
-	t_matrix *sc_lwall;
-	sc_lwall = mtx_create(&data, 4, 4);
-	fill_idnty_mtx(sc_lwall);
-	mtx_scaling(sc_lwall, &(t_point){10, 0.01, 10, 1});
-
 	parse_shape(&data.world, SP, NULL, &m);
-	data.world.objs->mtx_trans = mtx_multiply(&data, trans_wall_l, data.world.objs->mtx_trans);
-	data.world.objs->mtx_trans = mtx_multiply(&data, rot_y_left, data.world.objs->mtx_trans);
-	data.world.objs->mtx_trans = mtx_multiply(&data, rot_x_left, data.world.objs->mtx_trans);
-	data.world.objs->mtx_trans = mtx_multiply(&data, sc_lwall, data.world.objs->mtx_trans);
+	data.world.objs->mtx_trans = mtx_multiply(&data, sc, data.world.objs->mtx_trans);
+	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
+
+	t_matrix *trans_l;
+	trans_l = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(trans_l);
+	mtx_translation(trans_l, &(t_point){0, 0, 5, 1});
+
+	t_matrix *rot_y_l;
+	rot_y_l = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(rot_y_l);
+	mtx_rotation_y(rot_y_l, -M_PI / 4);
+
+	t_matrix *rot_x_l;
+	rot_x_l = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(rot_x_l);
+	mtx_rotation_y(rot_x_l, M_PI / 2);
+
+	t_matrix *sc_l;
+	sc_l = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(sc_l);
+	mtx_scaling(sc_l, &(t_point){10, 0.01, 10, 1});
+	
+	parse_shape(&data.world, SP, NULL, &m);
+	data.world.objs->mtx_trans = mtx_multiply(&data, trans_l, data.world.objs->mtx_trans);
+	data.world.objs->mtx_trans = mtx_multiply(&data, rot_y_l, data.world.objs->mtx_trans);
+	data.world.objs->mtx_trans = mtx_multiply(&data, rot_x_l, data.world.objs->mtx_trans);
+	data.world.objs->mtx_trans = mtx_multiply(&data, sc_l, data.world.objs->mtx_trans);
 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 	point_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 999999}, &data.world);
