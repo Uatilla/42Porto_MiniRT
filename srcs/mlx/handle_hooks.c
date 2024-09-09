@@ -20,15 +20,9 @@ int	close_window(t_minirt *win)
 		mlx_destroy_window(win->canvas.mlx, win->canvas.win);
 		mlx_destroy_display(win->canvas.mlx);
 		free(win->canvas.mlx);
-
-
-
 		clean_world(&win->world);
 		clean_matrix(win, win->camera.trans, 0);
 		clean_matrix(win, win->camera.inver, 0);
-
-
-
 		clear_exit(win, 0);
 	}
 	return (0);
@@ -42,14 +36,22 @@ int	handle_press_key(int key_pressed, void *param)
 	if (key_pressed == KEY_ESC || !win)
 		close_window(win);
 	else
-	if (win->world.objs && (key_pressed == KEY_LEFT || key_pressed == KEY_RIGHT
-			|| key_pressed == KEY_DOWN || key_pressed == KEY_UP))
-		move_win(win, key_pressed);
-		//printf("%d\n", 1);
+	{
+		if (win->world.objs)
+		{
+			if (key_pressed == KEY_LEFT
+				|| key_pressed == KEY_RIGHT
+				|| key_pressed == KEY_DOWN
+				|| key_pressed == KEY_UP)
+				move_win(win, key_pressed);
+			if (key_pressed == KEY_TAB)
+				select_obj(win);
+		}
+	}
 	return (0);
 }
 
-int handle_release_key(int key_pressed, t_minirt *data)
+int	handle_release_key(int key_pressed, t_minirt *data)
 {
 	(void)data;
 	(void)key_pressed;
@@ -61,8 +63,8 @@ void	manage_interface(t_minirt *data)
 {
 	mlx_do_key_autorepeatoff(data->canvas.mlx);
 	mlx_hook(data->canvas.win, 17, 0L, close_window, data);
-	//mlx_key_hook(data->canvas.win, &handle_press_key, data);
 	mlx_hook(data->canvas.win, KeyPress, KeyPressMask, handle_press_key, data);
-	mlx_hook(data->canvas.win, KeyRelease, KeyReleaseMask, handle_release_key, data);
+	mlx_hook(data->canvas.win, KeyRelease, KeyReleaseMask,
+		handle_release_key, data);
 	mlx_loop(data->canvas.mlx);
 }

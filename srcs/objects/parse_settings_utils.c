@@ -12,6 +12,44 @@
 
 #include "../../includes/minirt.h"
 
+/// @brief Select the preset for each object.
+/// @param line Input line to be checked.
+/// @param  type Object type.
+/// @return Material settings.
+t_material	parse_material(char **line, enum e_id type)
+{
+	t_material	m;
+	char		*preset;
+
+	ft_memset(&m, 0, sizeof(t_material));
+	if ((type == SP || type == PL) && line[4])
+		preset = line[4];
+	else if (type == CY && line[5])
+		preset = line[5];
+	if (!ft_strcmp("MAT", preset) || !preset)
+	{
+		m.ambient = 0.3;
+		m.diffuse = 0.7;
+		m.shininess = 10;
+		m.specular = 0.1;
+	}
+	else if (!ft_strcmp("MTL", preset))
+	{
+		m.ambient = 0.1;
+		m.diffuse = 0.3;
+		m.shininess = 200;
+		m.specular = 0.9;
+	}
+	else if (!ft_strcmp("SAT", preset))
+	{
+		m.ambient = 0.25;
+		m.diffuse = 0.5;
+		m.shininess = 50;
+		m.specular = 0.5;
+	}
+	return (m);
+}
+
 /// @brief Build each obj of the scene.
 /// @param mrt Main structure.
 /// @param line Line to be verified.
@@ -26,11 +64,11 @@ void	parse_line(t_minirt *mrt, char **line)
 		else if (!ft_strcmp(line[0], "L"))
 			parse_light(mrt, line);
 		else if (!ft_strcmp(line[0], "sp"))
-			parse_shape(&(mrt->world), SP, line);
+			parse_shape(mrt, SP, line);
 		else if (!ft_strcmp(line[0], "pl"))
-			parse_shape(&(mrt->world), PL, line);
+			parse_shape(mrt, PL, line);
 		else if (!ft_strcmp(line[0], "cy"))
-			parse_shape(&(mrt->world), CY, line);
+			parse_shape(mrt, CY, line);
 	}
 	free_split(line);
 }
@@ -48,6 +86,8 @@ void	set_scene(t_minirt *mrt, char *file)
 	fd = open(file, O_RDONLY, 0);
 	if (fd == -1)
 		clear_exit(NULL, 1);
+	mrt->world.obj_selected = 0;
+	mrt->world.n_objs = 0;
 	while (1)
 	{
 		line = get_next_line(fd);

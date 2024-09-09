@@ -16,21 +16,26 @@
 *	adds a object node to the top of the objcts stack
 *	creats a stack if is empty.
 */
-void  parse_shape(t_world *world, enum e_id type, char **line)
+void	parse_shape(t_minirt *mrt, enum e_id type, char **line)
 {
 	t_shape	*shape;
+	t_world	*world;
 
+	world = &mrt->world;
+	mrt->world.n_objs++;
 	if (world->objs == NULL)
 	{
 		world->objs = ft_calloc(sizeof(t_shape), 1);
 		if (world->objs == NULL)
 			clear_exit(NULL, errno);
+		world->objs->id = mrt->world.n_objs;
 		fill_sphape(world->objs, type, line);
 		return ;
 	}
 	shape = ft_calloc(sizeof(t_shape), 1);
 	if (shape == NULL)
 		clear_exit(NULL, errno);
+	shape->id = mrt->world.n_objs;
 	fill_sphape(shape, type, line);
 	shape->next = world->objs;
 	world->objs = shape;
@@ -76,10 +81,8 @@ void	fill_sphape(t_sphere *sp, enum e_id type, char **line)
 	sp->type = type;
 	m1 = parse_material(line, type);
 	sp->mtx_trans = mtx;
-	//Scalo o objeto (dentro da funcao escalar checo sp e aplico a regra)
 	if (type == SP || type == CY)
 		scale_objs(sp, type, line);
-	//Colocando o objeto no centro.
 	mtx_translation(sp->mtx_trans, &obj_center);
 	//Normalizo o objeto [TO BE DEFINED]
 	/*if (type == PL || type == CY)

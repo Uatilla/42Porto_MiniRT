@@ -59,6 +59,7 @@ enum e_p
 #define KEY_RIGHT      65363
 #define KEY_DOWN       65364
 #define KEY_UP         65362
+#define KEY_TAB			65289
 
 
 //STRUCTURES
@@ -152,8 +153,9 @@ typedef	struct s_shape
 	t_matrix			*mtx_trans;
 	t_matrix			*mtx_inver;
 	t_point				center;
-	void				*next;
 	enum e_id			type;
+	int					id;
+	void				*next;
 }	t_shape;
 
 typedef	t_shape t_sphere;
@@ -215,7 +217,8 @@ typedef	struct	s_world
 {
 	t_shape		*objs;
 	t_light		*light;
-	
+	int			n_objs;
+	int			obj_selected;	
 }	t_world;
 
 //INPUT STRUCTURES
@@ -354,7 +357,7 @@ void		set_pattern(t_intersections *inter);
 
 //objects
 //parse_objs.c
-void		parse_shape(t_world *world, enum e_id type, char **line);
+void		parse_shape(t_minirt *mrt, enum e_id type, char **line);
 void		parse_objects(enum e_id type, t_minirt *data, int file, t_material *m);
 void		fill_sphape(t_sphere *sp, enum e_id type, char **line);
 void		set_materials(t_material *obj, t_material *m, char **line, enum e_id type);
@@ -444,6 +447,12 @@ void		start_mlx(t_canvas	*canvas);
 void		write_pixel(t_canvas *canvas, int x, int y, t_color *color);
 int			map_color(float c);
 
+//move_objs.c
+void		move_win(t_minirt *win, int key);
+void		select_obj(t_minirt *win);
+void		move_obj(t_world *world, int key, int obj_selected);
+void		execute_move(t_shape *obj, int key);
+
 
 //handle_hooks.c
 void		manage_interface(t_minirt *data);
@@ -502,6 +511,4 @@ void		mtx_rotation_z(t_matrix *mtx, float rot_deg);
 
 
 t_material	parse_material(char **line, enum e_id type);
-void	move_win(t_minirt *win, int key);
-
 #endif
