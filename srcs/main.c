@@ -104,25 +104,38 @@ int	main(void)
 	cylindro.color = (t_color){1, 0.8, 0.1, 1};
 	cylindro.diffuse = 0.7;
 	cylindro.ambient = 0.1;
-	cylindro.specular = 0.3;
+	cylindro.specular = 0.9;
 	cylindro.shininess = 200;
-	cylindro.closed = false;
+	cylindro.closed = true;
 	cylindro.min = -1;
 	cylindro.max = 2;
 
 	t_matrix	*cy_trans;
 	cy_trans = mtx_create(&data, 4, 4);
 	fill_idnty_mtx(cy_trans);
-	mtx_translation(cy_trans, &(t_point){-5, 0, -0.5, 1});
+	mtx_translation(cy_trans, &(t_point){-1.5, 0.5, -0.5, 1});
 
 	t_matrix	*cy_sc;
 	cy_sc = mtx_create(&data, 4, 4);
 	fill_idnty_mtx(cy_sc);
-	mtx_scaling(cy_sc, &(t_point){0.33, 0.33, 0.33, 1});
+	mtx_scaling(cy_sc, &(t_point){0.5, 0.5, 0.5, 1});
+
+	t_matrix	*cy_rot;
+	cy_rot = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(cy_rot);
+	mtx_rotation_x(cy_rot, -M_PI / 6);
+
+	t_matrix	*cy_rot_y;
+	cy_rot_y = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(cy_rot_y);
+	mtx_rotation_y(cy_rot_y, -M_PI / 6);
+
 
 	parse_shape(&data.world, CY, NULL, &cylindro);
-	data.world.objs->mtx_trans = mtx_multiply(&data, cy_trans, data.world.objs->mtx_trans);
 	data.world.objs->mtx_trans = mtx_multiply(&data, cy_sc, data.world.objs->mtx_trans);
+	data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot, data.world.objs->mtx_trans);
+	data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot_y, data.world.objs->mtx_trans);
+	data.world.objs->mtx_trans = mtx_multiply(&data, cy_trans, data.world.objs->mtx_trans);
 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 	point_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 999999}, &data.world);

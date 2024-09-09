@@ -74,8 +74,6 @@ t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data)
 	world_normal = mtx_mult_tuple(transpose, &local_normal);
 	world_normal.w = 0;
 	clean_matrix(data, transpose, 0);
-	if (obj->type == PL)
-		return ((t_vector){0, 1, 0, 0});
 	return (normalize(&world_normal));
 }
 
@@ -87,6 +85,8 @@ t_vector	local_normal_at(t_shape *obj, t_point *local_point)
 		local_normal = subtrac_tuples(local_point, &(t_point){0, 0, 0, 1});
 	else if (obj->type == CY)
 		local_normal = normal_at_cy(local_point, obj);
+	else if (obj->type == PL)
+		local_normal = (t_vector){0, 1, 0, 0};
 	return (local_normal);
 }
 
