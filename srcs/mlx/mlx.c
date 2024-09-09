@@ -90,39 +90,46 @@ void	move_win(t_minirt *win, int key)
 {
 	void	*new_img;
 	t_point	obj_center;
+	t_shape	*obj;
 	
 	(void)win;
 	//I'm only doing this definition for one object only.
-	obj_center = win->world.objs->center;
+	obj = win->world.objs;
+	while (obj)
+	{
 
-	//Instead of moving to a specific point, I should keep iterating in a direction, starting
-	//from the current center of the object.
-	printf("\n");
-	if (key == KEY_LEFT)
-	{
-		printf("LEFT\n");
-		win->world.objs->center.x = obj_center.x - 1;
-	}
-	else if (key == KEY_RIGHT)
-	{
-		printf("RIGHT\n");
-		win->world.objs->center.x = obj_center.x + 1;
-	}
-	else if (key == KEY_DOWN)
-	{
-		printf("DOWN\n");
-		win->world.objs->center.y = obj_center.y - 1;
-	}
-	else if (key == KEY_UP)
-	{
-		printf("UP\n");
-		win->world.objs->center.y = obj_center.y + 1;
-	}
-	printf("\n");
+		obj_center = obj->center;
 
-	mtx_translation(win->world.objs->mtx_trans, &win->world.objs->center);
-	clean_matrix(NULL, win->world.objs->mtx_inver, 0);
-	win->world.objs->mtx_inver = mtx_inverse(NULL, win->world.objs->mtx_trans);
+		//Instead of moving to a specific point, I should keep iterating in a direction, starting
+		//from the current center of the object.
+		printf("\n");
+		if (key == KEY_LEFT)
+		{
+			printf("LEFT\n");
+			obj->center.x = obj_center.x - 1;
+		}
+		else if (key == KEY_RIGHT)
+		{
+			printf("RIGHT\n");
+			obj->center.x = obj_center.x + 1;
+		}
+		else if (key == KEY_DOWN)
+		{
+			printf("DOWN\n");
+			obj->center.y = obj_center.y - 1;
+		}
+		else if (key == KEY_UP)
+		{
+			printf("UP\n");
+			obj->center.y = obj_center.y + 1;
+		}
+		printf("\n");
+
+		mtx_translation(obj->mtx_trans, &obj->center);
+		clean_matrix(NULL, obj->mtx_inver, 0);
+		obj->mtx_inver = mtx_inverse(NULL, obj->mtx_trans);
+		obj = obj->next;
+	}
 
 	//Destroy old Image
 	mlx_destroy_image(win->canvas.mlx, win->canvas.img);
