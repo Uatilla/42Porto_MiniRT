@@ -1,106 +1,77 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 20:02:44 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/10 21:49:33 by Jburlama         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+//0) Define the Material of the Center Sphere
+	
+	//parse_shape(&data.world, SP);
 
-#include "../includes/minirt.h"
+	//1) Scaling
+	/*t_matrix *sc_center;
+	sc_center = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(sc_center);
+	mtx_scaling(sc_center, &(t_point){1, 1, 1, 1});
+	data.world.objs->mtx_trans = mtx_multiply(&data, sc_center, data.world.objs->mtx_trans);*/
+	
+	//2) Applying all modifications made.
+	//data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
+	
 
-void	mtx_fill_a(t_matrix *mtx)
-{
-	mtx->mtx[0][0] = 1;
-	mtx->mtx[0][1] = 2;
-	mtx->mtx[0][2] = 3;
-	mtx->mtx[0][3] = 4;
-
-	mtx->mtx[1][0] = 5;
-	mtx->mtx[1][1] = 6;
-	mtx->mtx[1][2] = 7;
-	mtx->mtx[1][3] = 8;
-
-	mtx->mtx[2][0] = 9;
-	mtx->mtx[2][1] = 8;
-	mtx->mtx[2][2] = 7;
-	mtx->mtx[2][3] = 6;
-
-	mtx->mtx[3][0] = 5;
-	mtx->mtx[3][1] = 4;
-	mtx->mtx[3][2] = 3;
-	mtx->mtx[3][3] = 2;
-}
-
-void	mtx_fill_b(t_matrix *mtx)
-{
-	mtx->mtx[0][0] = -2;
-	mtx->mtx[0][1] = 1;
-	mtx->mtx[0][2] = 2;
-	mtx->mtx[0][3] = 3;
-
-	mtx->mtx[1][0] = 3;
-	mtx->mtx[1][1] = 2;
-	mtx->mtx[1][2] = 1;
-	mtx->mtx[1][3] = -1;
-
-	mtx->mtx[2][0] = 4;
-	mtx->mtx[2][1] = 3;
-	mtx->mtx[2][2] = 6;
-	mtx->mtx[2][3] = 5;
-
-	mtx->mtx[3][0] = 1;
-	mtx->mtx[3][1] = 2;
-	mtx->mtx[3][2] = 7;
-	mtx->mtx[3][3] = 8;
-}
+	//0) Define the Material of the Left Sphere
+	/*m2 = parse_material(OPC);
+	parse_shape(&data.world, &m2, SP);
 
 
-// nao esquecer de chamar ft_memeset para data;
-// nao esquecer de setar a origem da camera(ray) e depois a direcao;
-// importante chamar clear_ray_inter depoins de check intersection;
-// comecar com start_mlx, e nao esquecer de chamar no fim:
-// 		mlx_put_image_to_window e mlx_loop
-int	main(int argc, char **argv)
-{
-	t_minirt	data;
-	int			x;
-	int			y;
-	int			fd;
-	float		w_x;
-	float		w_y;
+	//1) Scaling
+	t_matrix *sc_left;
+	sc_left = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(sc_left);
+	mtx_scaling(sc_left, &(t_point){1, 1, 1, 1});
+	data.world.objs->mtx_trans = mtx_multiply(&data, sc_left, data.world.objs->mtx_trans);
+
+	//2) Moving
+	t_matrix *trans_left;
+	trans_left = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(trans_left);
+	mtx_translation(trans_left, &(t_point){5, 0, 0, 1});
+	data.world.objs->mtx_trans = mtx_multiply(&data, trans_left, data.world.objs->mtx_trans);
 
 
-	ft_memset(&data, 0, sizeof(data));
-	fd = chk_input(argc, argv[1]);
-	parse_objects(SP, &data, fd);
-	mtx_scaling(((t_sphere *)data.objs)->mtx_trans, &(t_point){0.5,0.5,0.5,69});
-	((t_sphere *)data.objs)->mtx_inver = mtx_inverse(&data, ((t_sphere *)data.objs)->mtx_trans);
-	start_mlx(&data.canvas);
-	data.ray.origin = (t_point){0, 0, -5, 1};
-	y = -1;
-	while (++y < HEIGTH)
-	{
-		x = -1;
-		while (++x < WIDTH)
-		{
-			w_x = map_x(x, -5, 5);		
-			w_y = map_y(y, -5, 5);		
-			check_intersections(&data, &(t_point){w_x, w_y, 5, 1});
-			if (data.first_hit)
-			{
-				write_pixel(&data.canvas, x, y, &(t_color){1, 0, 0, 69});
-			}
-			clear_ray_inter(&data);
-		}
-	}
-	mlx_put_image_to_window(data.canvas.mlx, data.canvas.win, data.canvas.img, 0, 0);
-	mlx_hook(data.canvas.win, 17, 0L, close_window, &data);
-	mlx_key_hook(data.canvas.win, &handle_key_event, &data);
-	mlx_loop(data.canvas.mlx);
+	//3) Rotating.
+	t_matrix *rotx_left;
+	rotx_left = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(rotx_left);
+	mtx_rotation_x(rotx_left, 70);
+	data.world.objs->mtx_trans = mtx_multiply(&data, rotx_left, data.world.objs->mtx_trans);*/
 
-		clear_exit(&data, 0);
-}
+
+	//4) Applying all modifications made.
+	//data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
+
+
+	//Setting light of the scene;
+	set_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 1}, &data.world);
+	
+
+	//Building Camera
+	data.camera = camera_construct(WIDTH, HEIGTH, PI / 3);
+	//data.camera.trans = view_transformation(&(t_point){-50, 0, 20, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
+	data.camera.trans = view_transformation(&(t_point){0, 0, -15, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
+	
+	
+	//ERRO A CAMERA PRECISA RODAR DENTRO DO PROPRIO EIXO 
+	//Trying to rotate the camera on its own axis.
+	/*t_matrix *cam_transl;
+	cam_transl = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(cam_transl);
+	mtx_translation(cam_transl, &(t_point){-25, 10, 0, 1});
+	data.camera.trans = mtx_multiply(&data, cam_transl, data.camera.trans);*/
+
+	data.camera.inver = mtx_inverse(&data, data.camera.trans);
+
+	//Rendering Image on the screen.
+	render(&data);
+	
+
+
+	/*ATTENTION THIS CODE WAS MOVED TO RENDER:
+	
+	clean_world(&data.world);
+	clean_matrix(&data, data.camera.trans, 0);
+	clean_matrix(&data, data.camera.inver, 0);*/

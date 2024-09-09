@@ -94,10 +94,10 @@ void	move_win(t_minirt *win, int key)
 	(void)win;
 	//I'm only doing this definition for one object only.
 	obj_center = win->world.objs->center;
-	printf("\tO_obj_center: X: %f, Y: %f, Z: %f, W: %f\n", win->world.objs->center.x, win->world.objs->center.y, win->world.objs->center.z, win->world.objs->center.w);
 
 	//Instead of moving to a specific point, I should keep iterating in a direction, starting
 	//from the current center of the object.
+	printf("\n");
 	if (key == KEY_LEFT)
 	{
 		printf("LEFT\n");
@@ -118,30 +118,11 @@ void	move_win(t_minirt *win, int key)
 		printf("UP\n");
 		win->world.objs->center.y = obj_center.y + 1;
 	}
+	printf("\n");
 
-
-	//Apply Moviment
-	printf("\tN_obj_center: X: %f, Y: %f, Z: %f, W: %f\n", win->world.objs->center.x, win->world.objs->center.y, win->world.objs->center.z, win->world.objs->center.w);
-	/*t_matrix *mtx;
-	mtx = mtx_create(NULL, 4, 4);
-	fill_idnty_mtx(mtx);
-	mtx_translation(mtx, &win->world.objs->center);
-	mtx_print(mtx);*/
-	printf("===== ANTES\n");
-	mtx_print( win->world.objs->mtx_trans);
-	//win->world.objs->mtx_trans = mtx_multiply(NULL, mtx, win->world.objs->mtx_trans);
 	mtx_translation(win->world.objs->mtx_trans, &win->world.objs->center);
-	printf("===== DEPOIS\n");
-	mtx_print( win->world.objs->mtx_trans);
+	clean_matrix(NULL, win->world.objs->mtx_inver, 0);
 	win->world.objs->mtx_inver = mtx_inverse(NULL, win->world.objs->mtx_trans);
-	
-	
-	
-	//free(win->world.objs->mtx_inver);
-
-	//My free calling functions are not correct
-	//Attention to the mtx_inverse2
-	//clean_matrix(win, win->camera.inver, 0);
 
 	//Destroy old Image
 	mlx_destroy_image(win->canvas.mlx, win->canvas.img);

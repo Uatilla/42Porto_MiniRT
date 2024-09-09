@@ -44,8 +44,7 @@ int	handle_press_key(int key_pressed, void *param)
 	else
 	if (win->world.objs && (key_pressed == KEY_LEFT || key_pressed == KEY_RIGHT
 			|| key_pressed == KEY_DOWN || key_pressed == KEY_UP))
-		printf("Pressed\n");
-		//move_win(win, key_pressed);
+		move_win(win, key_pressed);
 		//printf("%d\n", 1);
 	return (0);
 }

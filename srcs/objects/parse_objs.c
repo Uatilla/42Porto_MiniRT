@@ -71,19 +71,16 @@ void	fill_sphape(t_sphere *sp, enum e_id type, char **line)
 
 	obj_center = get_tuple(line[1], 1);
 	sp->center = obj_center;
-	//printf("X: %f Y: %f Z: %f W: %f\n", sp->center.x, sp->center.y, sp->center.z, sp->center.w);
-
 	mtx = mtx_create(NULL, 4, 4);
 	fill_idnty_mtx(mtx);
 	sp->type = type;
-	
 	m1 = parse_material(line, type);
-	//Colocando o objeto no centro.
 	sp->mtx_trans = mtx;
-	mtx_translation(sp->mtx_trans, &obj_center);
 	//Scalo o objeto (dentro da funcao escalar checo sp e aplico a regra)
 	if (type == SP || type == CY)
 		scale_objs(sp, type, line);
+	//Colocando o objeto no centro.
+	mtx_translation(sp->mtx_trans, &obj_center);
 	//Normalizo o objeto [TO BE DEFINED]
 	/*if (type == PL || type == CY)
 		normalize_obj(sp?, type, line);
