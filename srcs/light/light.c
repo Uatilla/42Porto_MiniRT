@@ -63,24 +63,31 @@ void	point_light(t_point *pos, t_color *intensity, t_world *world)
 */
 t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data)
 {
+	t_point		local_point;
 	t_vector	local_normal;
 	t_vector	world_normal;
 	t_matrix	*transpose;
 
-	if (obj->type == SP)
-	{
-		local_normal = mtx_mult_tuple(obj->mtx_inver, point);
-		local_normal = subtrac_tuples(&local_normal, &(t_point){0, 0, 0, 1});
-		transpose = mtx_transpose(data, obj->mtx_inver);
-		world_normal = mtx_mult_tuple(transpose, &local_normal);
-		world_normal.w = 0;
-		clean_matrix(data, transpose, 0);
-	}
-	else if (obj->type == PL)
+	local_point = mtx_mult_tuple(obj->mtx_inver, point);
+	local_normal = local_normal_at(obj, &local_point);
+	transpose = mtx_transpose(data, obj->mtx_inver);
+	world_normal = mtx_mult_tuple(transpose, &local_normal);
+	world_normal.w = 0;
+	clean_matrix(data, transpose, 0);
+	if (obj->type == PL)
 		return ((t_vector){0, 1, 0, 0});
-	else if (obj->type == CY)
-		world_normal = normal_at_cy(point, obj);
 	return (normalize(&world_normal));
+}
+
+t_vector	local_normal_at(t_shape *obj, t_point *local_point)
+{
+	t_vector	local_normal;
+
+	if (obj->type == SP)
+		local_normal = subtrac_tuples(local_point, &(t_point){0, 0, 0, 1});
+	else if (obj->type == CY)
+		local_normal = normal_at_cy(local_point, obj);
+	return (local_normal);
 }
 
 t_vector	normal_at_cy(t_point *point, t_shape *obj)

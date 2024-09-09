@@ -99,27 +99,30 @@ int	main(void)
 	data.world.objs->mtx_trans = mtx_multiply(&data, trans_right, data.world.objs->mtx_trans);
 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
-	t_material left;
-	left.pattern.has = false;
-	left.color = (t_color){1, 0.8, 0.1, 1};
-	left.diffuse = 0.7;
-	left.ambient = 0.1;
-	left.specular = 0.3;
-	left.shininess = 200;
+	t_material cylindro;
+	cylindro.pattern.has = false;
+	cylindro.color = (t_color){1, 0.8, 0.1, 1};
+	cylindro.diffuse = 0.7;
+	cylindro.ambient = 0.1;
+	cylindro.specular = 0.3;
+	cylindro.shininess = 200;
+	cylindro.closed = false;
+	cylindro.min = -1;
+	cylindro.max = 2;
 
-	t_matrix *trans_left;
-	trans_left = mtx_create(&data, 4, 4);
-	fill_idnty_mtx(trans_left);
-	mtx_translation(trans_left, &(t_point){-1.5, 0.33, -0.75, 1});
+	t_matrix	*cy_trans;
+	cy_trans = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(cy_trans);
+	mtx_translation(cy_trans, &(t_point){-5, 0, -0.5, 1});
 
-	t_matrix *sc_left;
-	sc_left = mtx_create(&data, 4, 4);
-	fill_idnty_mtx(sc_left);
-	mtx_scaling(sc_left, &(t_point){0.33, 0.33, 0.33, 1});
+	t_matrix	*cy_sc;
+	cy_sc = mtx_create(&data, 4, 4);
+	fill_idnty_mtx(cy_sc);
+	mtx_scaling(cy_sc, &(t_point){0.33, 0.33, 0.33, 1});
 
-	parse_shape(&data.world, SP, NULL, &left);
-	data.world.objs->mtx_trans = mtx_multiply(&data, sc_left, data.world.objs->mtx_trans);
-	data.world.objs->mtx_trans = mtx_multiply(&data, trans_left, data.world.objs->mtx_trans);
+	parse_shape(&data.world, CY, NULL, &cylindro);
+	data.world.objs->mtx_trans = mtx_multiply(&data, cy_trans, data.world.objs->mtx_trans);
+	data.world.objs->mtx_trans = mtx_multiply(&data, cy_sc, data.world.objs->mtx_trans);
 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 	point_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 999999}, &data.world);
@@ -129,130 +132,6 @@ int	main(void)
 	data.camera.inver = mtx_inverse(&data, data.camera.trans);
 	render(&data);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
-// int	main(void)
-// {
-// 	t_minirt	data;
-//
-// 	ft_memset(&data, 0, sizeof(data));
-// 	start_mlx(&data.canvas);
-//
-// 	t_material m;
-// 	m.shininess = 100;
-// 	m.specular = 0.9;
-// 	m.diffuse = 0.9;
-// 	m.color = (t_color){1, 0.5, 0.2, 999};
-// 	m.ambient = 0.3;
-// 	m.min = -1;
-// 	m.max = 1;
-// 	m.closed = true;
-//
-// 	// t_matrix *sca;
-// 	// sca = mtx_create(&data, 4, 4);
-// 	// fill_idnty_mtx(sca);
-// 	// mtx_scaling(sca, &(t_point){0.2, 0.2, 0.2, 1});
-// 	//
-// 	// t_matrix *trans;
-// 	// trans = mtx_create(&data, 4, 4);
-// 	// fill_idnty_mtx(trans);
-// 	// mtx_translation(trans, &(t_point){2, 0, 0, 1});
-// 	//
-// 	t_matrix *rot;
-// 	rot = mtx_create(&data, 4, 4);
-// 	fill_idnty_mtx(rot);
-// 	mtx_rotation_z(rot, PI / 5);
-//
-// 	t_matrix *rot_2;
-// 	rot_2 = mtx_create(&data, 4, 4);
-// 	fill_idnty_mtx(rot_2);
-// 	mtx_rotation_x(rot_2, PI / 2);
-//
-// 	t_matrix *rot_3;
-// 	rot_3 = mtx_create(&data, 4, 4);
-// 	fill_idnty_mtx(rot_3);
-// 	mtx_rotation_y(rot_3, PI / 3);
-//
-// 	parse_shape(&data.world, SP, NULL, &m);
-// 	// data.world.objs->mtx_trans = mtx_multiply(&data, sca, data.world.objs->mtx_trans);
-// 	// data.world.objs->mtx_trans = mtx_multiply(&data, trans, data.world.objs->mtx_trans);
-// 	data.world.objs->mtx_trans = mtx_multiply(&data, rot_2, data.world.objs->mtx_trans);
-// 	data.world.objs->mtx_trans = mtx_multiply(&data, rot_3, data.world.objs->mtx_trans);
-// 	data.world.objs->mtx_trans = mtx_multiply(&data, rot, data.world.objs->mtx_trans);
-// 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
-//
-// 	// t_vector normal;
-// 	// 
-// 	// normal = normal_at(data.world.objs, &(t_point){0, 2, 0.5, 1}, &data);
-// 	//
-// 	// printf("%f %f %f\n", normal.x, normal.y, normal.z);
-//
-// 	set_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 1}, &data.world);
-// 	data.camera = camera_construct(WIDTH, HEIGTH, PI / 3);
-// 	data.camera.trans = view_transformation(&(t_point){0, 0, -5, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
-// 	data.camera.inver = mtx_inverse(&data, data.camera.trans);
-// 	render(&data);
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 t_material	parse_material(char **line, enum e_id type)
