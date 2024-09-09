@@ -26,11 +26,11 @@ void	parse_line(t_minirt *mrt, char **line)
 		else if (!ft_strcmp(line[0], "L"))
 			parse_light(mrt, line);
 		// else if (!ft_strcmp(line[0], "sp"))
-		// 	parse_shape(&(mrt->world), SP, line);
+		// 	parse_shape(mrt, SP, line);
 		// else if (!ft_strcmp(line[0], "pl"))
-		// 	parse_shape(&(mrt->world), PL, line);
+		// 	parse_shape(mrt, PL, line);
 		// else if (!ft_strcmp(line[0], "cy"))
-		// 	parse_shape(&(mrt->world), CY, line);
+		// 	parse_shape(mrt, CY, line);
 	}
 	free_split(line);
 }
@@ -48,6 +48,8 @@ void	set_scene(t_minirt *mrt, char *file)
 	fd = open(file, O_RDONLY, 0);
 	if (fd == -1)
 		clear_exit(NULL, 1);
+	mrt->world.obj_selected = 0;
+	mrt->world.n_objs = 0;
 	while (1)
 	{
 		line = get_next_line(fd);

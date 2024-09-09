@@ -54,7 +54,7 @@ SRCS		=	main.c \
 				sphere/sphere.c \
 				cylinder/cylinder.c \
 				exit/exit_cleaner.c exit/clean_world.c \
-				mlx/mlx.c \
+				mlx/mlx.c mlx/handle_hooks.c mlx/move_objs.c\
 				matrix/matrix_validations.c matrix/matrix_operations.c matrix/matrix_modifications.c matrix/matrix_mods_utils.c\
 				matrix_transformations/matrix_transformations.c \
 				matrix/mtx_temp.c \

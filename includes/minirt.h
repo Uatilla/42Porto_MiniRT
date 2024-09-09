@@ -48,11 +48,18 @@ enum e_p
 # define ZERO_TUPLE (t_tuple){0, 0, 0, 0}
 # define WIDTH 1000
 # define HEIGTH 500
-# define BOTH 0
-# define FIRST 1
-# define SECOND 2
-# define ESC 65307
 # define PI 3.14159 
+
+#define KEY_ESC        65307
+#define KEY_A          97
+#define KEY_S          115
+#define KEY_D          100
+#define KEY_W          119
+#define KEY_LEFT       65361
+#define KEY_RIGHT      65363
+#define KEY_DOWN       65364
+#define KEY_UP         65362
+#define KEY_TAB			65289
 
 
 //STRUCTURES
@@ -149,8 +156,10 @@ typedef	struct s_shape
 	t_ray				trans_ray;
 	t_matrix			*mtx_trans;
 	t_matrix			*mtx_inver;
-	void				*next;
+	t_point				center;
 	enum e_id			type;
+	int					id;
+	void				*next;
 }	t_shape;
 
 typedef	t_shape t_sphere;
@@ -220,7 +229,8 @@ typedef	struct	s_world
 {
 	t_shape		*objs;
 	t_light		*light;
-	
+	int			n_objs;
+	int			obj_selected;	
 }	t_world;
 
 //INPUT STRUCTURES
@@ -362,7 +372,7 @@ void		set_pattern(t_intersections *inter, t_point *point);
 
 //objects
 //parse_objs.c
-void		parse_shape(t_world *world, enum e_id type, char **line, t_material *m);
+void 		parse_shape(t_world *world, enum e_id type, char **line, t_material *m);
 void		parse_objects(enum e_id type, t_minirt *data, int file, t_material *m);
 void		fill_sphape(t_sphere *sp, enum e_id type, char **line);
 void		set_materials(t_material *obj, t_material *m, char **line, enum e_id type);
@@ -377,6 +387,9 @@ t_tuple		get_tuple(char *str_tuple, int w);
 void		parse_ambient(t_minirt *mrt, char **line);
 void		parse_camera(t_minirt *mrt, char **line);
 void		parse_light(t_minirt *mrt, char **line);
+void		set_preset(t_material *m, char *preset);
+t_material	parse_material(char **line, enum e_id type);
+
 
 //ray
 //ray.c
@@ -456,8 +469,19 @@ void		clean_sphere(t_sphere *sphere);
 void		start_mlx(t_canvas	*canvas);
 void		write_pixel(t_canvas *canvas, int x, int y, t_color *color);
 int			map_color(float c);
+
+//move_objs.c
+void		move_win(t_minirt *win, int key);
+void		select_obj(t_minirt *win);
+void		move_obj(t_world *world, int key, int obj_selected);
+void		execute_move(t_shape *obj, int key);
+
+
+//handle_hooks.c
+void		manage_interface(t_minirt *data);
+int			handle_press_key(int key_pressed, void *param);
+int			handle_release_key(int key_pressed, t_minirt *data);
 int			close_window(t_minirt *win);
-int			handle_key_event(int key_pressed, void *param);
 
 //Matrix
 //matrix_validations.c
@@ -506,9 +530,4 @@ float		degree_to_rad(float degree);
 void		mtx_rotation_x(t_matrix *mtx, float rot_deg);
 void		mtx_rotation_y(t_matrix *mtx, float rot_deg);
 void		mtx_rotation_z(t_matrix *mtx, float rot_deg);
-
-
-
-t_material	parse_material(char **line, enum e_id type);
-
 #endif

@@ -17,7 +17,7 @@
  * canvas->mlx: stabilish a connection with the correct grafical system
  * canvas->win: creates a new window.
  * canvas->img: start a new image.
- * canvas->addr: this will sett the addres accordingly for each pixel.
+ * canvas->addr: this will set the address accordingly for each pixel.
 */
 void	start_mlx(t_canvas	*canvas)
 {
@@ -55,27 +55,4 @@ int	map_color(float c)
 		return (255);
 	else
 		return (c * 255);
-}
-
-int	close_window(t_minirt *win)
-{
-	if (win)
-	{
-		mlx_destroy_image(win->canvas.mlx, win->canvas.img);
-		mlx_destroy_window(win->canvas.mlx, win->canvas.win);
-		mlx_destroy_display(win->canvas.mlx);
-		free(win->canvas.mlx);
-		clear_exit(win, 0);
-	}
-	return (0);
-}
-
-int	handle_key_event(int key_pressed, void *param)
-{
-	t_minirt	*win;
-
-	win = (t_minirt *)param;
-	if (key_pressed == ESC || !win)
-		close_window(win);
-	return (0);
 }
