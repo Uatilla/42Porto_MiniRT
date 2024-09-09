@@ -372,6 +372,9 @@ t_tuple		get_tuple(char *str_tuple, int w);
 void		parse_ambient(t_minirt *mrt, char **line);
 void		parse_camera(t_minirt *mrt, char **line);
 void		parse_light(t_minirt *mrt, char **line);
+void		set_preset(t_material *m, char *preset);
+t_material	parse_material(char **line, enum e_id type);
+
 
 //ray
 //ray.c
@@ -507,8 +510,4 @@ float		degree_to_rad(float degree);
 void		mtx_rotation_x(t_matrix *mtx, float rot_deg);
 void		mtx_rotation_y(t_matrix *mtx, float rot_deg);
 void		mtx_rotation_z(t_matrix *mtx, float rot_deg);
-
-
-
-t_material	parse_material(char **line, enum e_id type);
 #endif
