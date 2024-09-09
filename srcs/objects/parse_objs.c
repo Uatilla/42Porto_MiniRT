@@ -45,7 +45,7 @@ void	parse_shape(t_minirt *mrt, enum e_id type, char **line)
 /// @param sp Shape obj.
 /// @param type Type of the obj.
 /// @param line Line to be used to scale from the scene file.
-void	scale_objs(t_shape *sp, enum e_id type, char **line)
+void	scale_obj(t_shape *sp, enum e_id type, char **line)
 {
 	float		diam;
 	t_matrix	*mtx;
@@ -62,6 +62,42 @@ void	scale_objs(t_shape *sp, enum e_id type, char **line)
 		printf("Scaling Cylinder (TO BE DEFINED)\n");
 		/*mrt->input.cylinder.cy_diam = ft_atof(line[3]);
 	mrt->input.cylinder.cy_height = ft_atof(line[4]);*/
+}
+
+void	normalize_obj(t_shape *sp, enum e_id type, char **line)
+{
+	t_matrix	*mtx;
+	(void)type;
+	(void)line;
+	(void)sp;
+
+
+	mtx = mtx_create(NULL, 4, 4);
+	fill_idnty_mtx(mtx);
+	mtx_rotation_z(mtx, degree_to_rad(45));
+	printf("After Rotation X\n");
+	mtx_print(mtx);
+
+	t_tuple tup_res;
+	t_tuple p;
+
+	p.x = 0;
+	p.y = 1;
+	p.z = 0;
+	p.w = 1;
+	printf("\nP -> X:%f Y:%f Z:%f W:%f\n", p.x, p.y, p.z, p.w);
+	tup_res = mtx_mult_tuple(mtx,&p);
+	printf("Tup_Res -> X:%f Y:%f Z:%f W:%f\n", tup_res.x, tup_res.y, tup_res.z, tup_res.w);
+	sp->mtx_trans = mtx_multiply(NULL, mtx, sp->mtx_trans);
+
+	/*if (type == PL)
+		printf("Normalize: %s\n", line[2]);*/
+
+
+
+		//fill_tuple(&mrt->input.plane.pl_norm_vect, line[2], 0);
+	//else
+		//fill_tuple(&mrt->input.cylinder.cy_norm_vect, line[2], 0);
 }
 
 /// @brief Set the obj parameter (position, scale and so on).
@@ -81,17 +117,13 @@ void	fill_sphape(t_sphere *sp, enum e_id type, char **line)
 	sp->type = type;
 	m1 = parse_material(line, type);
 	sp->mtx_trans = mtx;
+	if (type == PL || type == CY)
+		normalize_obj(sp, type, line);
 	if (type == SP || type == CY)
-		scale_objs(sp, type, line);
+		scale_obj(sp, type, line);
+		
 	mtx_translation(sp->mtx_trans, &obj_center);
-	//Normalizo o objeto [TO BE DEFINED]
-	/*if (type == PL || type == CY)
-		normalize_obj(sp?, type, line);
-		fill_tuple(&mrt->input.plane.pl_norm_vect, line[2], 0);
-		fill_tuple(&mrt->input.cylinder.cy_norm_vect, line[2], 0);
-		*/
 	set_materials(&sp->material, &m1, line, type);
-	//Aplicando as modificacoes feitas pelo input.
 	sp->mtx_inver = mtx_inverse(NULL, sp->mtx_trans);
 }
 
