@@ -25,7 +25,6 @@ int	main(int argc, char **argv)
 
 	//Setting light of the scene;
 	set_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 1}, &data.world);
-	
 
 	//Building Camera
 	data.camera = camera_construct(WIDTH, HEIGTH, PI / 3);
