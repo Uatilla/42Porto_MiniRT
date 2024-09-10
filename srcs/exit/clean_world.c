@@ -44,10 +44,11 @@ void	clean_sphere(t_sphere *sp)
 			clean_matrix(NULL, ptr->mtx_trans, 0);
 		if (ptr->mtx_inver)
 			clean_matrix(NULL, ptr->mtx_inver, 0);
-		if (ptr->material.pattern.trans)
+		if (ptr->material.pattern.has)
+		{
 			clean_matrix(NULL, ptr->material.pattern.trans, 0);
-		if (ptr->material.pattern.inver)
 			clean_matrix(NULL, ptr->material.pattern.inver, 0);
+		}
 		ptr = ptr->next;
 		free(sp);
 		sp = ptr;

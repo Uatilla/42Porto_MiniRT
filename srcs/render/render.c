@@ -28,15 +28,6 @@ void	render(t_minirt *data)
 		}
 	}
 	ft_printf("end render\n");
-
-	// clean_world(&data->world);
-	clean_matrix(data, data->camera.trans, 0);
-	clean_matrix(data, data->camera.inver, 0);
-
-
-	//mlx_hook(data.canvas.win, 17, 0L, close_window, &data);
-	//mlx_key_hook(data.canvas.win, &handle_key_event, &data);
-
 	mlx_put_image_to_window(data->canvas.mlx, data->canvas.win, data->canvas.img, 0, 0);
 	manage_interface(data);
 }

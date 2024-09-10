@@ -18,7 +18,7 @@ int	main(void)
 
 	ft_memset(&data, 0, sizeof(data));
 	start_mlx(&data.canvas);
-
+	//chk_input(&data, argc, argv[1]);
 
 	//WALL
 
