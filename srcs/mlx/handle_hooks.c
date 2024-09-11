@@ -16,13 +16,13 @@ int	close_window(t_minirt *win)
 {
 	if (win)
 	{
+		clean_matrix(win, win->camera.trans, 0);
+		clean_matrix(win, win->camera.inver, 0);
 		mlx_destroy_image(win->canvas.mlx, win->canvas.img);
 		mlx_destroy_window(win->canvas.mlx, win->canvas.win);
 		mlx_destroy_display(win->canvas.mlx);
 		free(win->canvas.mlx);
 		clean_world(&win->world);
-		clean_matrix(win, win->camera.trans, 0);
-		clean_matrix(win, win->camera.inver, 0);
 		clear_exit(win, 0);
 	}
 	return (0);
@@ -61,10 +61,8 @@ int	handle_release_key(int key_pressed, t_minirt *data)
 
 void	manage_interface(t_minirt *data)
 {
-	mlx_do_key_autorepeatoff(data->canvas.mlx);
+	mlx_put_image_to_window(data->canvas.mlx, data->canvas.win, data->canvas.img, 0, 0);
 	mlx_hook(data->canvas.win, 17, 0L, close_window, data);
 	mlx_hook(data->canvas.win, KeyPress, KeyPressMask, handle_press_key, data);
-	mlx_hook(data->canvas.win, KeyRelease, KeyReleaseMask,
-		handle_release_key, data);
 	mlx_loop(data->canvas.mlx);
 }
