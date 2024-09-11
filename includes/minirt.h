@@ -60,6 +60,8 @@ enum e_p
 #define KEY_DOWN       65364
 #define KEY_UP         65362
 #define KEY_TAB			65289
+#define KEY_PLUS       65451
+#define KEY_MINUS      65453
 
 
 //STRUCTURES

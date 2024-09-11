@@ -148,7 +148,7 @@ void	set_cyl_specs(t_point *center, t_material *obj, char **line)
 
 	height = 2 * (ft_atof(line[4]) / 100);
 	obj->min = center->y - (height / 2);
-	obj->max = center->y + (height / 2);	
+	obj->max = center->y + (height / 2);
 	obj->closed = true;
 }
 

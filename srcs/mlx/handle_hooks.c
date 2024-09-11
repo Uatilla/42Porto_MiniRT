@@ -42,7 +42,9 @@ int	handle_press_key(int key_pressed, void *param)
 			if (key_pressed == KEY_LEFT
 				|| key_pressed == KEY_RIGHT
 				|| key_pressed == KEY_DOWN
-				|| key_pressed == KEY_UP)
+				|| key_pressed == KEY_UP
+				|| key_pressed == KEY_PLUS
+				|| key_pressed == KEY_MINUS)
 				move_win(win, key_pressed);
 			if (key_pressed == KEY_TAB)
 				select_obj(win);

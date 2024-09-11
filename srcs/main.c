@@ -198,14 +198,14 @@ int	main(int argc, char **argv)
 
 
 	//LIGHT
-	point_light(&(t_point){0, 0, -5, 1}, &(t_color){1, 1, 1, 999999}, &data.world);
+	point_light(&(t_point){0, 0, -4.5, 1}, &(t_color){1, 1, 1, 999999}, &data.world);
 
 
 
 
 	//CAMERA
 	data.camera = camera_construct(WIDTH, HEIGTH, PI / 3);
-	data.camera.trans = view_transformation(&(t_point){0, 0, -15, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
+	data.camera.trans = view_transformation(&(t_point){0, 0, -10, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
 	data.camera.inver = mtx_inverse(&data, data.camera.trans);
 	
 	//RENDER

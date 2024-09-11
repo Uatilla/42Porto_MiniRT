@@ -17,6 +17,7 @@
 /// @param key Key mapping to move the obj.
 void	execute_move(t_shape *obj, int key)
 {
+	printf("X: %f Y: %f Z: %f W: %f\n", obj->center.x, obj->center.y, obj->center.z, obj->center.w);
 	if (key == KEY_LEFT)
 		obj->center.x = obj->center.x - 1;
 	else if (key == KEY_RIGHT)
@@ -25,7 +26,16 @@ void	execute_move(t_shape *obj, int key)
 		obj->center.y = obj->center.y - 1;
 	else if (key == KEY_UP)
 		obj->center.y = obj->center.y + 1;
+	else if (key == KEY_PLUS)
+		obj->center.z = obj->center.z - 1;
+	else if (key == KEY_MINUS)
+		obj->center.z = obj->center.z + 1;
+	//mtx_print(obj->mtx_trans);
+	
 	mtx_translation(obj->mtx_trans, &obj->center);
+	printf("=====\n");
+	printf("X: %f Y: %f Z: %f W: %f\n", obj->center.x, obj->center.y, obj->center.z, obj->center.w);
+	//mtx_print(obj->mtx_trans);
 	clean_matrix(NULL, obj->mtx_inver, 0);
 	obj->mtx_inver = mtx_inverse(NULL, obj->mtx_trans);
 }
