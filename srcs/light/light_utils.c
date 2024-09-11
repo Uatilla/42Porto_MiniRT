@@ -29,8 +29,25 @@ t_comps	prepare_computations(t_intersections *i, t_ray *ray, t_minirt *data)
 	}
 	else
 		comps.inside = false;
+	comps.over_point = mult_tuple_scalar(&comps.normalv, EPSILON * 200);
+	comps.over_point = sum_tuples(&comps.point, &comps.over_point);
+	// comps.reflectv = reflect(&ray->direction, &comps.normalv);
 	return (comps);
 }
+
+// t_color	reflected_color(t_comps *comps, t_minirt *data, int8_t remaining)
+// {
+// 	t_color	color;
+// 	t_ray	reflected_ray;
+//
+// 	if (comps->obj->material.reflective == 0 || remaining == 0)
+// 		return ((t_color){0, 0, 0, 999999});
+// 	reflected_ray.origin = comps->over_point;
+// 	reflected_ray.direction = comps->reflectv;
+// 	// color = color_at(data, &reflected_ray);
+// 	color = mult_tuple_scalar(&color, comps->obj->material.reflective);
+// 	return (color);
+// }
 
 /*
  * adds the ambient the diffuse and the specular
@@ -69,14 +86,15 @@ bool	is_shadowed(t_world *w, t_point *p)
 	t_minirt	data;
 	t_vector	v;
 	float		distance;
+	t_ray		ray;
 
 	ft_memset(&data, 0, sizeof(data));
 	data.world = *w;
 	v = subtrac_tuples(&data.world.light->position, p);
 	distance = magnitude(&v);
-	data.ray.direction = normalize(&v);
-	data.ray.origin = *p;
-	check_intersections(&data);
+	ray.direction = normalize(&v);
+	ray.origin = *p;
+	check_intersections(&data, &ray);
 	first_hit(&data);
 	if (data.first_hit && distance > data.first_hit->hit)
 	{
@@ -89,11 +107,13 @@ bool	is_shadowed(t_world *w, t_point *p)
 
 t_color	shade_hit(t_comps *comps, t_light *light, t_minirt *data)
 {
-	t_point	over_point;
+	t_color	surface;
+	t_color	reflected;
 
-	over_point = mult_tuple_scalar(&comps->normalv, EPSILON * 200);
-	over_point = sum_tuples(&comps->point, &over_point);
-	comps->is_shadown = is_shadowed(&data->world, &over_point);
-	set_pattern(data->first_hit, &over_point);
+	set_pattern(data->first_hit, &comps->over_point);
+	comps->is_shadown = is_shadowed(&data->world, &comps->over_point);
 	return (lighting(comps, light));
+	// surface = lighting(comps, light);
+	// reflected = reflected_color(comps, data, remaining);
+	// return (sum_tuples(&surface, &reflected));
 }

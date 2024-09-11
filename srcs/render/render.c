@@ -14,9 +14,10 @@
 
 void	render(t_minirt *data)
 {
+	t_color		color;
+	t_ray		ray;
 	int			x;
 	int			y;
-	t_color		color;
 
 	y = -1;
 	while (++y < data->camera.vsize - 1)
@@ -24,8 +25,8 @@ void	render(t_minirt *data)
 		x = -1;
 		while (++x < data->camera.hsize - 1)
 		{
-			data->ray = ray_for_pixel(&data->camera, x, y);
-			color = color_at(data);
+			ray = ray_for_pixel(&data->camera, x, y);
+			color = color_at(data, &ray);
 			write_pixel(&data->canvas, x, y, &color);
 		}
 	}

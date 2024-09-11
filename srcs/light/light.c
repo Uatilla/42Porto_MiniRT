@@ -12,15 +12,15 @@
 
 #include "../../includes/minirt.h"
 
-t_color	color_at(t_minirt *data)
+t_color	color_at(t_minirt *data, t_ray *ray)
 {
 	t_color	color;
 	t_comps	comps;
 
-	check_intersections(data);
+	check_intersections(data, ray);
 	if (data->first_hit)
 	{
-		comps = prepare_computations(data->first_hit, &data->ray, data);
+		comps = prepare_computations(data->first_hit, ray, data);
 		color = shade_hit(&comps, data->world.light, data);
 	}
 	else
@@ -140,9 +140,9 @@ t_color	lighting(t_comps *comps, t_light *light)
 	{
 		phong.diffuse = mult_tuple_scalar(&color,
 							comps->obj->material.diffuse * light_normal_dot);
-		comps->reflect = negating_tuple(&comps->lightv);
-		comps->reflect = reflect(&comps->reflect, &comps->normalv);
-		ref_dot_eye = dot_product(&comps->reflect, &comps->eyev);
+		comps->reflectv = negating_tuple(&comps->lightv);
+		comps->reflectv = reflect(&comps->reflectv, &comps->normalv);
+		ref_dot_eye = dot_product(&comps->reflectv, &comps->eyev);
 		if (ref_dot_eye <= 0)
 			phong.spec = (t_color){0, 0, 0, 999999};
 		else
