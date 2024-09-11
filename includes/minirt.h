@@ -58,7 +58,7 @@ enum e_p
 #define KEY_LEFT       65361
 #define KEY_RIGHT      65363
 #define KEY_DOWN       65364
-#define KEY_UP         65362
+#define KEY_UP         	65362
 #define KEY_TAB			65289
 
 
@@ -116,7 +116,7 @@ typedef struct s_matrix
 
 typedef struct s_xs
 {
-	int	count;
+	int		count;
 	float	*arr;
 }	t_xs;
 
@@ -180,10 +180,11 @@ typedef	struct s_comps
 {
 	t_shape 	*obj;
 	t_point		point;
+	t_point		over_point;
 	t_vector	eyev;
 	t_vector	normalv;
 	t_vector	lightv;
-	t_vector   	reflect;
+	t_vector   	reflectv;
 	float		t;
 	bool		inside;
 	bool		is_shadown;
@@ -273,6 +274,7 @@ typedef struct s_minirt
 	t_tuple			*tuple;
 	t_input			input;
 	int				fd;
+	bool			has_color;
 }		t_minirt;
 
 // used in view_transformation func
@@ -343,7 +345,7 @@ void		render(t_minirt *data);
 
 //light
 //light.c
-void		color_at(t_minirt *data, int x, int y);
+t_color		color_at(t_minirt *data, t_ray *ray, int8_t remaining);
 void		point_light(t_point *pos, t_color *intensity, t_world *world);
 t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data);
 t_vector	local_normal_at(t_shape *obj, t_point *local_point);
@@ -353,11 +355,12 @@ t_color		lighting(t_comps *comps, t_light *light);
 
 // light_utils.c
 t_comps		prepare_computations(t_intersections *i, t_ray *ray, t_minirt *data);
+t_color		reflected_color(t_comps *comps, t_minirt *data, int8_t remaining);
 t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
 void		light_is_behind_obj(t_color *diffuse, t_color *specular);
 t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
 bool		is_shadowed(t_world *w, t_point *p);
-t_color		shade_hit(t_comps *comps, t_light *light, t_minirt *data);
+t_color		shade_hit(t_comps *comps, t_light *light, t_minirt *data, int8_t remaining);
 
 // patterns
 // patterns.c
