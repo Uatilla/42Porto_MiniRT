@@ -375,7 +375,8 @@ void		set_pattern(t_intersections *inter, t_point *point);
 void		parse_shape(t_minirt *mrt, enum e_id type, char **line);
 void		parse_objects(enum e_id type, t_minirt *data, int file, t_material *m);
 void		fill_shape(t_sphere *sp, enum e_id type, char **line);
-void		set_materials(t_material *obj, t_material *m, char **line, enum e_id type);
+void		set_materials(t_shape *sp, t_material *m, char **line, enum e_id type);
+//void		set_materials(t_material *obj, t_material *m, char **line, enum e_id type);
 void		scale_obj(t_shape *sp, enum e_id type, char **line);
 
 //parse_settings_utils.c

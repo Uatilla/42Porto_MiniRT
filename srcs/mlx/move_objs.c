@@ -42,7 +42,7 @@ void	move_obj(t_world *world, int key, int obj_selected)
 	(void)obj_selected;
 	while (obj)
 	{
-		if (obj->type != PL && (world->obj_selected == 0
+		if ((world->obj_selected == 0
 			|| world->obj_selected == obj->id))
 			execute_move(obj, key);
 		obj = obj->next;

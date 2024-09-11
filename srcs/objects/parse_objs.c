@@ -55,7 +55,6 @@ void	scale_obj(t_shape *sp, enum e_id type, char **line)
 		diam = (2 * ft_atof(line[3])) / 100;
 	mtx_scaling(mtx, &(t_point){diam, diam, diam, 1});
 	sp->mtx_trans = mtx_multiply(NULL, mtx, sp->mtx_trans);
-		printf("Scaling Cylinder (TO BE DEFINED)\n");
 		/*mrt->input.cylinder.cy_diam = ft_atof(line[3]);
 	mrt->input.cylinder.cy_height = ft_atof(line[4]);*/
 }
@@ -71,7 +70,7 @@ void	normalize_obj(t_shape *sp, enum e_id type, char **line)
 	/*mtx = mtx_create(NULL, 4, 4);
 	fill_idnty_mtx(mtx);
 	mtx_rotation_z(mtx, degree_to_rad(45));*/
-	printf("After Rotation X\n");
+	printf("Normalize\n");
 	/*mtx_print(mtx);
 
 	t_tuple tup_res;
@@ -114,16 +113,16 @@ void	fill_shape(t_sphere *sp, enum e_id type, char **line)
 	sp->center = obj_center;
 	mtx = mtx_create(NULL, 4, 4);
 	fill_idnty_mtx(mtx);
+	sp->mtx_trans = mtx;
 	sp->type = type;
 	m1 = parse_material(line, type);
-	sp->mtx_trans = mtx;
+
 	if (type == PL || type == CY)
 		normalize_obj(sp, type, line);
 	if (type == SP || type == CY)
 		scale_obj(sp, type, line);
-		
 	mtx_translation(sp->mtx_trans, &obj_center);
-	set_materials(&sp->material, &m1, line, type);
+	set_materials(sp, &m1, line, type);
 	sp->mtx_inver = mtx_inverse(NULL, sp->mtx_trans);
 }
 
@@ -143,18 +142,36 @@ void	set_color(t_color *obj_color, char **line, enum e_id type)
 	obj_color->b = obj_color->b / 255;
 }
 
+void	set_cyl_specs(t_point *center, t_material *obj, char **line)
+{
+	float	height;
+
+	height = 2 * (ft_atof(line[4]) / 100);
+	obj->min = center->y - (height / 2);
+	obj->max = center->y + (height / 2);	
+	obj->closed = true;
+}
+
 /// @brief Set the obj material parameters
 /// @param obj Object to have its materials defined.
 /// @param m Standard material parameters.
 /// @param line Scene line to be used.
 /// @param type Type of the object.
-void	set_materials(t_material *obj, t_material *m,
+void	set_materials(t_shape *sp, t_material *m,
 		char **line, enum e_id type)
 {
+	t_material *obj;
+
+	obj = &sp->material;
 	set_color(&obj->color, line, type);
 	obj->ambient = m->ambient;
 	obj->diffuse = m->diffuse;
 	obj->specular = m->specular;
 	obj->shininess = m->shininess;
 	obj->pattern = m->pattern;
+	if (type == CY)
+		set_cyl_specs(&sp->center, obj, line);
+	obj->pattern.has = false;
+
+
 }

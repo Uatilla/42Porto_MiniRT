@@ -78,11 +78,11 @@ t_material	parse_material(char **line, enum e_id type)
 	t_material	m;
 	char		*preset;
 
-	ft_memset(&m, 0, sizeof(t_material));
+	ft_memset(&m, 0, sizeof(t_material));	
 	if ((type == SP || type == PL) && line[4])
 		preset = line[4];
 	else if (type == CY && line[5])
-		preset = line[5];
+		preset = line[6];	
 	set_preset(&m, preset);
 	return (m);
 }

@@ -133,49 +133,72 @@ int	main(int argc, char **argv)
 
 
 	//CYLINDRO
-	/*
-	t_material cylindro;
+	
+	/*t_material cylindro;
 	cylindro.pattern.has = false;
+
+
 	cylindro.color = (t_color){1, 0.8, 0.1, 1};
+
+
 	cylindro.diffuse = 0.7;
 	cylindro.ambient = 0.1;
 	cylindro.specular = 0.9;
 	cylindro.shininess = 200;
+
+
 	cylindro.closed = true;
 	cylindro.min = -1;
 	cylindro.max = 2;
 
+
+	//Translation Temp
 	t_matrix	*cy_trans;
 	cy_trans = mtx_create(&data, 4, 4);
 	fill_idnty_mtx(cy_trans);
 	mtx_translation(cy_trans, &(t_point){-1.5, 0.5, -0.5, 1});
+	printf("Main: After Translation:\n");
+	mtx_print(cy_trans);
+	printf("=======\n");
 
+
+	//Scale
 	t_matrix	*cy_sc;
 	cy_sc = mtx_create(&data, 4, 4);
 	fill_idnty_mtx(cy_sc);
 	mtx_scaling(cy_sc, &(t_point){0.5, 0.5, 0.5, 1});
+	printf("Main: After Scaling:\n");
+	mtx_print(cy_trans);
+	printf("=======\n");
+	data.world.objs->mtx_trans = mtx_multiply(&data, cy_sc, data.world.objs->mtx_trans);
+	printf("Main: After Multiply Scaling with trans:\n");
+	mtx_print(cy_trans);
+	printf("=======\n");*/
 
-	t_matrix	*cy_rot;
+
+
+	/*t_matrix	*cy_rot;
 	cy_rot = mtx_create(&data, 4, 4);
 	fill_idnty_mtx(cy_rot);
 	mtx_rotation_x(cy_rot, -M_PI / 6);
 
+
+
 	t_matrix	*cy_rot_y;
 	cy_rot_y = mtx_create(&data, 4, 4);
 	fill_idnty_mtx(cy_rot_y);
-	mtx_rotation_y(cy_rot_y, -M_PI / 6);
+	mtx_rotation_y(cy_rot_y, -M_PI / 6);*/
 
 
-	parse_shape(&data.world, CY, NULL, &cylindro);
-	data.world.objs->mtx_trans = mtx_multiply(&data, cy_sc, data.world.objs->mtx_trans);
-	data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot, data.world.objs->mtx_trans);
-	data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot_y, data.world.objs->mtx_trans);
-	data.world.objs->mtx_trans = mtx_multiply(&data, cy_trans, data.world.objs->mtx_trans);
-	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);*/
+	//parse_shape(&data.world, CY, NULL, &cylindro);
+	//data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot, data.world.objs->mtx_trans);
+	//data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot_y, data.world.objs->mtx_trans);
+	//data.world.objs->mtx_trans = mtx_multiply(&data, cy_trans, data.world.objs->mtx_trans);
+	//data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 
 	//LIGHT
-	point_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 999999}, &data.world);
+	point_light(&(t_point){0, 0, -5, 1}, &(t_color){1, 1, 1, 999999}, &data.world);
 
 
 
