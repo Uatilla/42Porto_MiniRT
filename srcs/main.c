@@ -27,13 +27,14 @@ int	main(void)
 	//WALL1
 	t_material m;
 	m.pattern.has = false;
-	m.color = (t_color){1, 0.9, 0.9, 999999};
+	m.color = (t_color){1, 1, 1, 999999};
 	m.ambient = 0.1;
 	m.diffuse = 0.7;
 	m.specular = 0;
-	m.shininess = 200;
-	m.pattern = stripe_pattern(&(t_color){0, 0, 0, 0}, &(t_color){1, 0, 0, 1}, CHK);
-	m.pattern.inver = mtx_inverse(&data, m.pattern.trans);
+	m.shininess = 100;
+	m.reflective = 1;
+	// m.pattern = stripe_pattern(&(t_color){0, 0, 0, 0}, &(t_color){1, 0, 0, 1}, CHK);
+	// m.pattern.inver = mtx_inverse(&data, m.pattern.trans);
 
 	t_matrix	*trans;
 	trans = mtx_create(&data, 4, 4);
@@ -41,9 +42,8 @@ int	main(void)
 	mtx_translation(trans, &(t_point){0, -1, 0, 1});
 
 	parse_shape(&data.world, PL, NULL, &m);
-	data.world.objs->mtx_trans = mtx_multiply(&data, trans, data.world.objs->mtx_trans);
+	// data.world.objs->mtx_trans = mtx_multiply(&data, trans, data.world.objs->mtx_trans);
 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
-
 
 	//WALL2
 	t_material wall;
@@ -53,6 +53,7 @@ int	main(void)
 	wall.diffuse = 0.7;
 	wall.specular = 0;
 	wall.shininess = 200;
+	wall.reflective = 0;
 	wall.pattern = stripe_pattern(&(t_color){0, 0, 0, 0}, &(t_color){1, 0, 0, 1}, RNG);
 	wall.pattern.inver = mtx_inverse(&data, wall.pattern.trans);
 
@@ -80,11 +81,12 @@ int	main(void)
 	midle.ambient = 0.1;
 	midle.specular = 0.3;
 	midle.shininess = 200;
+	midle.reflective = 0;
 	midle.pattern = stripe_pattern(&(t_color){0, 1, 0, 0}, &(t_color){1, 0.33, 0.9, 1}, STR);
 	midle.pattern.inver = mtx_inverse(&data, midle.pattern.trans);
 
-	parse_shape(&data.world, SP, NULL, &midle);
-	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
+	// parse_shape(&data.world, SP, NULL, &midle);
+	// data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 	//SP2
 	t_material right;
@@ -94,6 +96,7 @@ int	main(void)
 	right.ambient = 0.1;
 	right.specular = 0.3;
 	right.shininess = 200;
+	right.reflective = 0;
 
 	t_matrix *trans_right;
 	trans_right = mtx_create(&data, 4, 4);
@@ -105,10 +108,10 @@ int	main(void)
 	fill_idnty_mtx(sc_right);
 	mtx_scaling(sc_right, &(t_point){0.5, 0.5, 0.5, 1});
 
-	parse_shape(&data.world, SP, NULL, &right);
-	data.world.objs->mtx_trans = mtx_multiply(&data, sc_right, data.world.objs->mtx_trans);
-	data.world.objs->mtx_trans = mtx_multiply(&data, trans_right, data.world.objs->mtx_trans);
-	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
+	// parse_shape(&data.world, SP, NULL, &right);
+	// data.world.objs->mtx_trans = mtx_multiply(&data, sc_right, data.world.objs->mtx_trans);
+	// data.world.objs->mtx_trans = mtx_multiply(&data, trans_right, data.world.objs->mtx_trans);
+	// data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 	//CYLINDRO
 	t_material cylindro;
@@ -118,6 +121,7 @@ int	main(void)
 	cylindro.ambient = 0.1;
 	cylindro.specular = 0.9;
 	cylindro.shininess = 200;
+	cylindro.reflective = 0;
 	cylindro.closed = true;
 	cylindro.min = -1;
 	cylindro.max = 2;
@@ -143,12 +147,12 @@ int	main(void)
 	mtx_rotation_y(cy_rot_y, -M_PI / 6);
 
 
-	parse_shape(&data.world, CY, NULL, &cylindro);
-	data.world.objs->mtx_trans = mtx_multiply(&data, cy_sc, data.world.objs->mtx_trans);
-	data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot, data.world.objs->mtx_trans);
-	data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot_y, data.world.objs->mtx_trans);
-	data.world.objs->mtx_trans = mtx_multiply(&data, cy_trans, data.world.objs->mtx_trans);
-	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
+	// parse_shape(&data.world, CY, NULL, &cylindro);
+	// data.world.objs->mtx_trans = mtx_multiply(&data, cy_sc, data.world.objs->mtx_trans);
+	// data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot, data.world.objs->mtx_trans);
+	// data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot_y, data.world.objs->mtx_trans);
+	// data.world.objs->mtx_trans = mtx_multiply(&data, cy_trans, data.world.objs->mtx_trans);
+	// data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 
 	//LIGHT
@@ -156,7 +160,7 @@ int	main(void)
 
 	//CAMERA
 	data.camera = camera_construct(WIDTH, HEIGTH, PI / 3);
-	data.camera.trans = view_transformation(&(t_point){0, 1.5, -6, 1}, &(t_point){0, 0.5, 0, 1}, &(t_vector){0, 1, 0, 0});
+	data.camera.trans = view_transformation(&(t_point){0, 1.5, -5, 1}, &(t_point){0, 1, 0, 1}, &(t_vector){0, 1, 0, 0});
 	data.camera.inver = mtx_inverse(&data, data.camera.trans);
 	
 	//RENDER

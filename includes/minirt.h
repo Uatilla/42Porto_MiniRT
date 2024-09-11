@@ -345,7 +345,7 @@ void		render(t_minirt *data);
 
 //light
 //light.c
-t_color		color_at(t_minirt *data, t_ray *ray);
+t_color		color_at(t_minirt *data, t_ray *ray, int8_t remainer);
 void		point_light(t_point *pos, t_color *intensity, t_world *world);
 t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data);
 t_vector	local_normal_at(t_shape *obj, t_point *local_point);
@@ -360,7 +360,7 @@ t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
 void		light_is_behind_obj(t_color *diffuse, t_color *specular);
 t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
 bool		is_shadowed(t_world *w, t_point *p);
-t_color		shade_hit(t_comps *comps, t_light *light, t_minirt *data);
+t_color		shade_hit(t_comps *comps, t_light *light, t_minirt *data, int8_t remainer);
 
 // patterns
 // patterns.c

@@ -12,7 +12,7 @@
 
 #include "../../includes/minirt.h"
 
-t_color	color_at(t_minirt *data, t_ray *ray)
+t_color	color_at(t_minirt *data, t_ray *ray, int8_t remainer)
 {
 	t_color	color;
 	t_comps	comps;
@@ -21,7 +21,7 @@ t_color	color_at(t_minirt *data, t_ray *ray)
 	if (data->first_hit)
 	{
 		comps = prepare_computations(data->first_hit, ray, data);
-		color = shade_hit(&comps, data->world.light, data);
+		color = shade_hit(&comps, data->world.light, data, remainer);
 	}
 	else
 		color = (t_color){0, 0, 0, 999999};
