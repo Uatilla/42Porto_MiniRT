@@ -12,7 +12,7 @@
 
 #include "../../includes/minirt.h"
 
-void	color_at(t_minirt *data, int x, int y)
+t_color	color_at(t_minirt *data)
 {
 	t_color	color;
 	t_comps	comps;
@@ -22,9 +22,11 @@ void	color_at(t_minirt *data, int x, int y)
 	{
 		comps = prepare_computations(data->first_hit, &data->ray, data);
 		color = shade_hit(&comps, data->world.light, data);
-		write_pixel(&data->canvas, x, y, &color);
 	}
+	else
+		color = (t_color){0, 0, 0, 999999};
 	clear_ray_inter(data);
+	return (color);
 }
 
 /*

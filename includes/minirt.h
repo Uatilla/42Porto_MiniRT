@@ -343,7 +343,7 @@ void		render(t_minirt *data);
 
 //light
 //light.c
-void		color_at(t_minirt *data, int x, int y);
+t_color		color_at(t_minirt *data);
 void		point_light(t_point *pos, t_color *intensity, t_world *world);
 t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data);
 t_vector	local_normal_at(t_shape *obj, t_point *local_point);
