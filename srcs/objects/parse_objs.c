@@ -18,8 +18,6 @@ void	parse_shape(t_minirt *mrt, enum e_id type, char **line)
 	t_world	*world;
 	(void)line;
 
-	printf("OI\n");
-
 	world = &mrt->world;
 	mrt->world.n_objs++;
 	if (world->objs == NULL)
@@ -71,11 +69,11 @@ void	normalize_obj(t_shape *sp, enum e_id type, char **line)
 	(void)sp;
 
 
-	mtx = mtx_create(NULL, 4, 4);
+	/*mtx = mtx_create(NULL, 4, 4);
 	fill_idnty_mtx(mtx);
-	mtx_rotation_z(mtx, degree_to_rad(45));
+	mtx_rotation_z(mtx, degree_to_rad(45));*/
 	printf("After Rotation X\n");
-	mtx_print(mtx);
+	/*mtx_print(mtx);
 
 	t_tuple tup_res;
 	t_tuple p;
@@ -87,7 +85,11 @@ void	normalize_obj(t_shape *sp, enum e_id type, char **line)
 	printf("\nP -> X:%f Y:%f Z:%f W:%f\n", p.x, p.y, p.z, p.w);
 	tup_res = mtx_mult_tuple(mtx,&p);
 	printf("Tup_Res -> X:%f Y:%f Z:%f W:%f\n", tup_res.x, tup_res.y, tup_res.z, tup_res.w);
-	sp->mtx_trans = mtx_multiply(NULL, mtx, sp->mtx_trans);
+	sp->mtx_trans = mtx_multiply(NULL, mtx, sp->mtx_trans);*/
+
+
+
+	
 
 	/*if (type == PL)
 		printf("Normalize: %s\n", line[2]);*/
