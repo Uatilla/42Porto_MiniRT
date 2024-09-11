@@ -61,7 +61,6 @@ int	handle_release_key(int key_pressed, t_minirt *data)
 
 void	manage_interface(t_minirt *data)
 {
-	mlx_hook(data->canvas.win, 17, 0L, close_window, data);
 	mlx_hook(data->canvas.win, KeyPress, KeyPressMask, handle_press_key, data);
 	mlx_hook(data->canvas.win, KeyRelease, KeyReleaseMask,
 		handle_release_key, data);

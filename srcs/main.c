@@ -12,13 +12,14 @@
 
 #include "../includes/minirt.h"
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	t_minirt	data;
 
 	ft_memset(&data, 0, sizeof(data));
+	chk_input(&data, argc, argv[1]);
+	set_scene(&data, argv[1]);
 	start_mlx(&data.canvas);
-	//chk_input(&data, argc, argv[1]);
 
 	//WALL
 
@@ -39,7 +40,7 @@ int	main(void)
 	
 
 	//WALL2
-	t_material wall;
+	/*t_material wall;
 	wall.pattern.has = false;
 	wall.color = (t_color){1, 0.9, 0.9, 999999};
 	wall.ambient = 0.1;
@@ -62,7 +63,7 @@ int	main(void)
 	parse_shape(&data.world, PL, NULL, &wall);
 	data.world.objs->mtx_trans = mtx_multiply(&data, wall_r_x, data.world.objs->mtx_trans);
 	data.world.objs->mtx_trans = mtx_multiply(&data, wall_trans, data.world.objs->mtx_trans);
-	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
+	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);*/
 	
 
 	
@@ -77,7 +78,7 @@ int	main(void)
 	midle.specular = 0.3;
 	midle.shininess = 200;
 	midle.pattern = stripe_pattern(&(t_color){0, 1, 0, 0}, &(t_color){1, 0.33, 0.9, 1}, STR);
-	midle.pattern.inver = mtx_inverse(&data, m.pattern.trans);
+	midle.pattern.inver = mtx_inverse(&data, midle.pattern.trans);
 
 
 
@@ -181,7 +182,7 @@ int	main(void)
 
 	//CAMERA
 	data.camera = camera_construct(WIDTH, HEIGTH, PI / 3);
-	data.camera.trans = view_transformation(&(t_point){0, 1.5, -5, 1}, &(t_point){0, 1, 0, 1}, &(t_vector){0, 1, 0, 0});
+	data.camera.trans = view_transformation(&(t_point){0, 0, -15, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
 	data.camera.inver = mtx_inverse(&data, data.camera.trans);
 	
 	//RENDER
