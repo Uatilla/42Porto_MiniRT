@@ -102,12 +102,12 @@ t_color	pattern_at(t_pattern *p, t_point *point, t_shape *obj, enum e_p type)
 }
 
 // sets the collor of the obj at a given point if te obj has a pattern
-void	set_pattern(t_intersections *inter)
+void	set_pattern(t_intersections *inter, t_point *point)
 {
 		if (inter->obj->material.pattern.has)
 		{
 			inter->obj->material.color =
 			pattern_at(&inter->obj->material.pattern,
-		   	&inter->point, inter->obj, inter->obj->material.pattern.type);
+		   	point, inter->obj, inter->obj->material.pattern.type);
 		}
 }

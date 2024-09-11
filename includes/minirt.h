@@ -81,7 +81,7 @@ typedef struct s_canvas
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-}				t_canvas;
+}	t_canvas;
 
 typedef struct s_tuple
 {
@@ -144,6 +144,10 @@ typedef	struct s_material
 	float		diffuse;
 	float		specular;
 	float	 	shininess;
+	float		reflective;
+	float		min;
+	float		max;
+	bool		closed;
 }	t_material;
 
 typedef	struct s_shape
@@ -160,6 +164,7 @@ typedef	struct s_shape
 
 typedef	t_shape t_sphere;
 typedef	t_shape t_plane;
+typedef t_shape t_cyl;
 
 typedef	struct	s_intersections
 { 
@@ -171,17 +176,24 @@ typedef	struct	s_intersections
 	int8_t					count;
 }	t_intersections;
 
+typedef	struct s_comps
+{
+	t_shape 	*obj;
+	t_point		point;
+	t_vector	eyev;
+	t_vector	normalv;
+	t_vector	lightv;
+	t_vector   	reflect;
+	float		t;
+	bool		inside;
+	bool		is_shadown;
+}	t_comps;
+
 typedef	struct s_light
 {
 	t_point	   		position;
 	t_color	   		intensity;
-	t_vector   		dir;
-	t_vector   		reflect;
-	t_vector   		eyev;
-	t_vector   		normalv;
 	struct s_light	*next;
-	bool			inside;
-	bool			is_shadown;
 }	t_light;
 
 typedef struct s_phong
@@ -332,17 +344,20 @@ void		render(t_minirt *data);
 //light
 //light.c
 void		color_at(t_minirt *data, int x, int y);
-void		set_light(t_point *pos, t_color *intensity, t_world *world);
+void		point_light(t_point *pos, t_color *intensity, t_world *world);
 t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data);
+t_vector	local_normal_at(t_shape *obj, t_point *local_point);
+t_vector	normal_at_cy(t_point *point, t_shape *obj);
 t_vector	reflect(t_vector *in, t_vector *normal);
-t_color		lighting(t_intersections *inter, t_light *light);
+t_color		lighting(t_comps *comps, t_light *light);
 
 // light_utils.c
-void		light_vec(t_ray *ray, t_light *light, t_minirt *data);
+t_comps		prepare_computations(t_intersections *i, t_ray *ray, t_minirt *data);
 t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
 void		light_is_behind_obj(t_color *diffuse, t_color *specular);
 t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
 bool		is_shadowed(t_world *w, t_point *p);
+t_color		shade_hit(t_comps *comps, t_light *light, t_minirt *data);
 
 // patterns
 // patterns.c
@@ -353,7 +368,7 @@ t_color		gradient(t_pattern *pattern, t_point *point);
 t_color		ring_patt(t_pattern *pattern, t_point *point);
 t_color		checker_patt(t_pattern *pattern, t_point *point);
 t_color		pattern_at(t_pattern *p, t_point *point, t_shape *obj, enum e_p type);
-void		set_pattern(t_intersections *inter);
+void		set_pattern(t_intersections *inter, t_point *point);
 
 //objects
 //parse_objs.c
@@ -392,7 +407,12 @@ int8_t		ray_plane_intersect(t_ray *ray, float *t);
 
 //cylinder
 //cylinder.c
-int8_t		ray_cylinder_intersect(t_ray *ray, float *t);
+int8_t		ray_cylinder_intersect(t_ray *ray, float *t, t_shape *obj);
+int8_t		cy_intercections_count(bool *count, float *t);
+bool		check_cy_range(t_ray *ray, float t, t_shape *obj);
+int8_t		ray_cy_cap_inter(t_ray *ray, float *t, t_shape *obj);
+bool		check_cap(t_ray *ray, float t);
+void		swap(float *t);
 
 //intersections.c
 void		ray_intersections(t_minirt *data, t_shape *obj, t_ray *trans_ray);

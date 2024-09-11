@@ -28,8 +28,6 @@ void	render(t_minirt *data)
 		}
 	}
 	ft_printf("end render\n");
-
 	mlx_put_image_to_window(data->canvas.mlx, data->canvas.win, data->canvas.img, 0, 0);
 	manage_interface(data);
-	
 }

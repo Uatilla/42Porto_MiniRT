@@ -12,14 +12,13 @@
 
 #include "../../includes/minirt.h"
 
-/*
-*	adds a object node to the top of the objcts stack
-*	creats a stack if is empty.
-*/
 void	parse_shape(t_minirt *mrt, enum e_id type, char **line)
 {
 	t_shape	*shape;
 	t_world	*world;
+	(void)line;
+
+	printf("OI\n");
 
 	world = &mrt->world;
 	mrt->world.n_objs++;
@@ -126,6 +125,7 @@ void	fill_sphape(t_sphere *sp, enum e_id type, char **line)
 	set_materials(&sp->material, &m1, line, type);
 	sp->mtx_inver = mtx_inverse(NULL, sp->mtx_trans);
 }
+
 
 /// @brief Set the color for the object.
 /// @param obj_color tuple from the object structure.

@@ -15,13 +15,13 @@
 void	color_at(t_minirt *data, int x, int y)
 {
 	t_color	color;
+	t_comps	comps;
 
 	check_intersections(data);
 	if (data->first_hit)
 	{
-		light_vec(&data->ray, data->world.light, data);
-		set_pattern(data->first_hit);
-		color = lighting(data->first_hit, data->world.light);
+		comps = prepare_computations(data->first_hit, &data->ray, data);
+		color = shade_hit(&comps, data->world.light, data);
 		write_pixel(&data->canvas, x, y, &color);
 	}
 	clear_ray_inter(data);
@@ -30,7 +30,7 @@ void	color_at(t_minirt *data, int x, int y)
 /*
  * sets the values for the light object
 */
-void	set_light(t_point *pos, t_color *intensity, t_world *world)
+void	point_light(t_point *pos, t_color *intensity, t_world *world)
 {
 	t_light	*light;
 
@@ -63,29 +63,43 @@ void	set_light(t_point *pos, t_color *intensity, t_world *world)
 */
 t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data)
 {
+	t_point		local_point;
 	t_vector	local_normal;
 	t_vector	world_normal;
 	t_matrix	*transpose;
 
+	local_point = mtx_mult_tuple(obj->mtx_inver, point);
+	local_normal = local_normal_at(obj, &local_point);
+	transpose = mtx_transpose(data, obj->mtx_inver);
+	world_normal = mtx_mult_tuple(transpose, &local_normal);
+	world_normal.w = 0;
+	clean_matrix(data, transpose, 0);
+	return (normalize(&world_normal));
+}
+
+t_vector	local_normal_at(t_shape *obj, t_point *local_point)
+{
+	t_vector	local_normal;
+
 	if (obj->type == SP)
-	{
-		local_normal = mtx_mult_tuple(obj->mtx_inver, point);
-		local_normal = subtrac_tuples(&local_normal, &(t_point){0, 0, 0, 1});
-		transpose = mtx_transpose(data, obj->mtx_inver);
-		world_normal = mtx_mult_tuple(transpose, &local_normal);
-		world_normal.w = 0;
-		world_normal = normalize(&world_normal);
-		clean_matrix(data, transpose, 0);
-	}
+		local_normal = subtrac_tuples(local_point, &(t_point){0, 0, 0, 1});
+	else if (obj->type == CY)
+		local_normal = normal_at_cy(local_point, obj);
 	else if (obj->type == PL)
+		local_normal = (t_vector){0, 1, 0, 0};
+	return (local_normal);
+}
+
+t_vector	normal_at_cy(t_point *point, t_shape *obj)
+{
+	float	dist;
+
+	dist = (point->x * point->x) + (point->z * point->z);
+	if (dist < 1 && point->y >= obj->material.max - EPSILON)
 		return ((t_vector){0, 1, 0, 0});
-	// else if (obj->type == CY)
-	// {
-	// 	vec.x = point->x;
-	// 	vec.y = 0;
-	// 	vec.z = point->z;
-	// }
-	return (world_normal);
+	else if (dist < 1 && point->y <= obj->material.min + EPSILON)
+		return ((t_vector){0, -1, 0, 0});
+	return ((t_vector){point->x, 0, point->z, 0});
 }
 
 /*
@@ -93,7 +107,6 @@ t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data)
 */
 t_vector	reflect(t_vector *in, t_vector *normal)
 {
-	float		scalar;
 	t_tuple		vect;
 
 	vect = mult_tuple_scalar(normal, 2);
@@ -106,7 +119,7 @@ t_vector	reflect(t_vector *in, t_vector *normal)
 *	does the phong reflection algorithm, returns the final collor
 *	acording to the relation with the light reflection and the camera
 */
-t_color	lighting(t_intersections *inter, t_light *light)
+t_color	lighting(t_comps *comps, t_light *light)
 {
 	t_color			color;
 	t_phong			phong;
@@ -114,23 +127,24 @@ t_color	lighting(t_intersections *inter, t_light *light)
 	float			ref_dot_eye;
 	float			factor;
 
-	if (fmod(inter->point.x, 2.0) == 2.0)
-		color = color_multiply(&(t_color){1, 1, 1, 1}, &light->intensity);
-	else
-		color = color_multiply(&inter->obj->material.color, &light->intensity);
-	phong.ambient = mult_tuple_scalar(&color, inter->obj->material.ambient);
-	light_normal_dot = dot_product(&light->dir, &light->normalv);
-	if (light_normal_dot < 0 || light->is_shadown)
+	color = color_multiply(&comps->obj->material.color, &light->intensity);
+	comps->lightv = subtrac_tuples(&light->position, &comps->point);
+	comps->lightv = normalize(&comps->lightv);
+	phong.ambient = mult_tuple_scalar(&color, comps->obj->material.ambient);
+	light_normal_dot = dot_product(&comps->lightv, &comps->normalv);
+	if (light_normal_dot < 0 || comps->is_shadown)
 		light_is_behind_obj(&phong.diffuse, &phong.spec);
 	else
 	{
 		phong.diffuse = mult_tuple_scalar(&color,
-							inter->obj->material.diffuse * light_normal_dot);
-		ref_dot_eye = dot_product(&light->reflect, &light->eyev);
+							comps->obj->material.diffuse * light_normal_dot);
+		comps->reflect = negating_tuple(&comps->lightv);
+		comps->reflect = reflect(&comps->reflect, &comps->normalv);
+		ref_dot_eye = dot_product(&comps->reflect, &comps->eyev);
 		if (ref_dot_eye <= 0)
-			phong.spec = (t_color){0, 0, 0, 0};
+			phong.spec = (t_color){0, 0, 0, 999999};
 		else
-			phong.spec = specular(&inter->obj->material, light, ref_dot_eye);
+			phong.spec = specular(&comps->obj->material, light, ref_dot_eye);
 	}
 	return (add_color3(&phong.ambient, &phong.diffuse, &phong.spec));
 }
