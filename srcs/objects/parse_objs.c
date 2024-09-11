@@ -26,14 +26,14 @@ void	parse_shape(t_minirt *mrt, enum e_id type, char **line)
 		if (world->objs == NULL)
 			clear_exit(NULL, errno);
 		world->objs->id = mrt->world.n_objs;
-		fill_sphape(world->objs, type, line);
+		fill_shape(world->objs, type, line);
 		return ;
 	}
 	shape = ft_calloc(sizeof(t_shape), 1);
 	if (shape == NULL)
 		clear_exit(NULL, errno);
 	shape->id = mrt->world.n_objs;
-	fill_sphape(shape, type, line);
+	fill_shape(shape, type, line);
 	shape->next = world->objs;
 	world->objs = shape;
 }
@@ -55,7 +55,7 @@ void	scale_obj(t_shape *sp, enum e_id type, char **line)
 		diam = (2 * ft_atof(line[3])) / 100;
 	mtx_scaling(mtx, &(t_point){diam, diam, diam, 1});
 	sp->mtx_trans = mtx_multiply(NULL, mtx, sp->mtx_trans);
-		//printf("Scaling Cylinder (TO BE DEFINED)\n");
+		printf("Scaling Cylinder (TO BE DEFINED)\n");
 		/*mrt->input.cylinder.cy_diam = ft_atof(line[3]);
 	mrt->input.cylinder.cy_height = ft_atof(line[4]);*/
 }
@@ -104,7 +104,7 @@ void	normalize_obj(t_shape *sp, enum e_id type, char **line)
 /// @param sp Shape to be filled.
 /// @param type Type of the object identified.
 /// @param line Line from the scene file to be used.
-void	fill_sphape(t_sphere *sp, enum e_id type, char **line)
+void	fill_shape(t_sphere *sp, enum e_id type, char **line)
 {
 	t_matrix	*mtx;
 	t_material	m1;
