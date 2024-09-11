@@ -50,13 +50,12 @@ void	scale_obj(t_shape *sp, enum e_id type, char **line)
 	mtx = mtx_create(NULL, 4, 4);
 	fill_idnty_mtx(mtx);
 	if (type == SP)
-	{
 		diam = (2 * ft_atof(line[2])) / 100;
-		mtx_scaling(mtx, &(t_point){diam, diam, diam, 1});
-		sp->mtx_trans = mtx_multiply(NULL, mtx, sp->mtx_trans);
-	}
 	else
-		printf("Scaling Cylinder (TO BE DEFINED)\n");
+		diam = (2 * ft_atof(line[3])) / 100;
+	mtx_scaling(mtx, &(t_point){diam, diam, diam, 1});
+	sp->mtx_trans = mtx_multiply(NULL, mtx, sp->mtx_trans);
+		//printf("Scaling Cylinder (TO BE DEFINED)\n");
 		/*mrt->input.cylinder.cy_diam = ft_atof(line[3]);
 	mrt->input.cylinder.cy_height = ft_atof(line[4]);*/
 }
@@ -89,7 +88,7 @@ void	normalize_obj(t_shape *sp, enum e_id type, char **line)
 
 
 
-	
+
 
 	/*if (type == PL)
 		printf("Normalize: %s\n", line[2]);*/
