@@ -38,12 +38,10 @@ void	parse_camera(t_minirt *mrt, char **line)
 	t_point	camera_center;
 	t_vector	norm_vect;
 
+	mrt->camera = camera_construct(WIDTH, HEIGTH, degree_to_rad(ft_atof(line[3])));
 	camera_center = get_tuple(line[1], 1);
 	mrt->camera.center = camera_center;
-
 	norm_vect = get_tuple(line[2], 0);
-
-	mrt->camera = camera_construct(WIDTH, HEIGTH, degree_to_rad(ft_atof(line[3])));
 	mrt->camera.trans = view_transformation(&camera_center, &(t_point){0, 0, 0, 1}, &norm_vect);
 	mrt->camera.inver = mtx_inverse(mrt, mrt->camera.trans);
 }

@@ -93,9 +93,11 @@ void	move_camera(t_minirt *win, int key)
 		camera->center.z = camera->center.z - 1;
 	else if (key == KEY_MINUS)
 		camera->center.z = camera->center.z + 1;
+	clean_matrix(NULL, win->camera.trans, 0);	
 	win->camera.trans = view_transformation(&win->camera.center, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
+	//win->camera.trans = view_transformation(&(t_point){0, 0, -20, 1}, &win->camera.center, &(t_vector){0, 1, 0, 0});
+	clean_matrix(NULL, win->camera.inver, 0);
 	win->camera.inver = mtx_inverse(win, win->camera.trans);
-	
 }
 
 /// @brief Move the obj and sets the mlx to display the new image.
@@ -107,8 +109,8 @@ void	move_win(t_minirt *win, int key)
 
 	if (win->world.objs && win->world.scene_elem == OBJECT)
 		move_obj(&win->world, key, win->world.obj_selected);
-	//else if (win->world.scene_elem == CAMERA)
-	//	move_camera(win, key);
+	else if (win->world.scene_elem == CAMERA)
+		move_camera(win, key);
 	else if (win->world.scene_elem == LIGHT)
 		move_light(&win->world, key);
 	mlx_destroy_image(win->canvas.mlx, win->canvas.img);
