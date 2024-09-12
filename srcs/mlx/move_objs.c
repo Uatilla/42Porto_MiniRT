@@ -66,7 +66,12 @@ void	move_win(t_minirt *win, int key)
 {
 	void	*new_img;
 
-	move_obj(&win->world, key, win->world.obj_selected);
+	if (win->world.objs && win->world.scene_elem == OBJECT)
+		move_obj(&win->world, key, win->world.obj_selected);
+	else if (win->world.scene_elem == CAMERA)
+		printf("Move Camera\n");
+	else if (win->world.scene_elem == LIGHT)
+		printf("Move Light\n");
 	mlx_destroy_image(win->canvas.mlx, win->canvas.img);
 	win->canvas.img = mlx_new_image(win->canvas.mlx, WIDTH, HEIGTH);
 	win->canvas.addr = mlx_get_data_addr(win->canvas.img,

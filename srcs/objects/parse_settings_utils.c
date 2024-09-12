@@ -50,6 +50,7 @@ void	set_scene(t_minirt *mrt, char *file)
 		clear_exit(NULL, 1);
 	mrt->world.obj_selected = 0;
 	mrt->world.n_objs = 0;
+	mrt->world.scene_elem = NONE;
 	while (1)
 	{
 		line = get_next_line(fd);

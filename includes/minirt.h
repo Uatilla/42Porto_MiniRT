@@ -43,12 +43,20 @@ enum e_p
 	CHK = 4,
 };
 
+enum e_sc
+{
+	NONE = 0,
+	LIGHT = 1,
+	CAMERA = 2,
+	OBJECT = 3,
+};
+
 //MACRO
 # define EPSILON 0.00001
 # define ZERO_TUPLE (t_tuple){0, 0, 0, 0}
 # define WIDTH 1000
 # define HEIGTH 500
-# define PI 3.14159 
+# define PI 3.14159
 
 #define KEY_ESC        65307
 #define KEY_A          97
@@ -62,6 +70,12 @@ enum e_p
 #define KEY_TAB			65289
 #define KEY_PLUS       65451
 #define KEY_MINUS      65453
+#define KEY_O          111
+#define KEY_C          99
+#define KEY_L          108
+#define KEY_BACK       65288
+#define KEY_HOME       65360
+
 
 
 //STRUCTURES
@@ -231,8 +245,9 @@ typedef	struct	s_world
 {
 	t_shape		*objs;
 	t_light		*light;
+	enum e_sc	scene_elem;
 	int			n_objs;
-	int			obj_selected;	
+	int			obj_selected;
 }	t_world;
 
 //INPUT STRUCTURES
