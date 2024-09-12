@@ -30,19 +30,33 @@ int	close_window(t_minirt *win)
 
 void	select_scene_elemt(t_minirt *win, int key_pressed)
 {
+	
+	printf("Scene element start: %d\n", win->world.scene_elem);
 	if (key_pressed == KEY_C
 			|| key_pressed == KEY_L
 			|| key_pressed == KEY_O
 			|| key_pressed == KEY_HOME)
 	{
 		if (key_pressed == KEY_C)
+		{
+			printf("Camera\n");
 			win->world.scene_elem = CAMERA;
+		}
 		else if (key_pressed == KEY_L)
+		{
+			printf("Light\n");
 			win->world.scene_elem = LIGHT;
+		}
 		else if (key_pressed == KEY_O)
+		{
+			printf("Objects\n");
 			win->world.scene_elem = OBJECT;
+		}
 		else if (key_pressed == KEY_HOME)
+		{
+			printf("NONE\n");
 			win->world.scene_elem = NONE;
+		}
 	}
 	else if (win->world.scene_elem == NONE)
 		printf("First select an element to move/rotate:\n\
@@ -57,7 +71,8 @@ int	handle_press_key(int key_pressed, void *param)
 	if (key_pressed == KEY_ESC || !win)
 		close_window(win);
 	else
-	{
+	{	
+		printf("Handle press Key: Scene Eleme %d\n", win->world.scene_elem);
 		select_scene_elemt(win, key_pressed);
 		if (win->world.scene_elem != NONE)
 		{

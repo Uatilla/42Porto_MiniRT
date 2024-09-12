@@ -59,10 +59,15 @@ enum e_sc
 # define PI 3.14159
 
 #define KEY_ESC        65307
-#define KEY_A          97
-#define KEY_S          115
-#define KEY_D          100
-#define KEY_W          119
+#define KEY_A          65297
+#define KEY_C          65267
+#define KEY_D          65268
+#define KEY_E			65269
+#define KEY_L          65276
+#define KEY_O          65279
+#define KEY_Q			65281
+#define KEY_S          65283
+#define KEY_W          65287
 #define KEY_LEFT       65361
 #define KEY_RIGHT      65363
 #define KEY_DOWN       65364
@@ -70,11 +75,8 @@ enum e_sc
 #define KEY_TAB			65289
 #define KEY_PLUS       65451
 #define KEY_MINUS      65453
-#define KEY_O          111
-#define KEY_C          99
-#define KEY_L          108
-#define KEY_BACK       65288
 #define KEY_HOME       65360
+#define	KEY_BACK		65288
 
 
 
