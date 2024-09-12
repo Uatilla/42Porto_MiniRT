@@ -172,7 +172,7 @@ void	default_world(t_minirt *data)
 	t_material m;
 	m.pattern.has = false;
 	m.color = (t_color){0.8, 1.0, 0.6, 999999};
-	m.ambient = 1;
+	m.ambient = 0.1;
 	m.diffuse = 0.7;
 	m.specular = 0.2;
 	m.shininess = 200;

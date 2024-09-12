@@ -266,8 +266,6 @@ typedef struct s_minirt
 {
 	t_canvas		canvas;
 	t_camera		camera;
-	// t_ray			ray;
-	t_xs			xs;
 	t_world			world;
 	t_intersections	*inter;
 	t_intersections	*first_hit;
@@ -393,7 +391,6 @@ void		parse_light(t_minirt *mrt, char **line);
 void		set_preset(t_material *m, char *preset);
 t_material	parse_material(char **line, enum e_id type);
 
-
 //ray
 //ray.c
 t_tuple		position(t_ray *ray, float t);
@@ -409,17 +406,17 @@ int8_t		ray_plane_intersect(t_ray *ray, float *t);
 
 //cylinder
 //cylinder.c
-int8_t		ray_cylinder_intersect(t_ray *ray, float *t, t_shape *obj);
-int8_t		cy_intercections_count(bool *count, float *t);
-bool		check_cy_range(t_ray *ray, float t, t_shape *obj);
-int8_t		ray_cy_cap_inter(t_ray *ray, float *t, t_shape *obj);
-bool		check_cap(t_ray *ray, float t);
-void		swap(float *t);
+int8_t	ray_cylinder_intersect(t_ray *ray, float *t, t_shape *obj);
+int8_t	cy_intercections_count(bool *count, float *t);
+bool	check_cy_range(t_ray *ray, float t, t_shape *obj);
+int8_t	ray_cy_cap_inter(t_ray *ray, float *t, t_shape *obj);
+bool	check_cap(t_ray *ray, float t);
+void	swap(float *t);
 
 //intersections.c
-void		ray_intersections(t_minirt *data, t_shape *obj, t_ray *trans_ray, t_ray *ray);
-void	check_intersections(t_minirt *data, t_ray *ray);
-void		first_hit(t_minirt *data);
+void	ray_intersections(t_minirt *data, t_shape *obj, t_ray *trans_ray, t_ray *ray);
+void	intersections(t_minirt *data, t_ray *ray);
+void	first_hit(t_minirt *data);
 void	first_inter(t_minirt *data, int8_t point, float *t, t_shape *obj, t_ray *ray);
 void	append_inter(t_minirt *data, int8_t point, float *t, t_shape *obj, t_ray *ray);
 

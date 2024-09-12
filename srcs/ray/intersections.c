@@ -18,10 +18,9 @@
 *		transform the ray with the inverse of the transform matrix
 *	sets the first hit point if there is one
 */
-void	check_intersections(t_minirt *data, t_ray *ray)
+void	intersections(t_minirt *data, t_ray *ray)
 {
 	t_shape	*obj;
-	int		i;
 
 	obj = data->world.objs;
 	while (obj)
@@ -31,7 +30,6 @@ void	check_intersections(t_minirt *data, t_ray *ray)
 		obj = obj->next;
 	}
 	first_hit(data);
-	sort_intersections(&data->xs, data->inter);
 }
 
 /*
@@ -55,7 +53,6 @@ void	ray_intersections(t_minirt *data, t_shape *obj, t_ray *trans_ray, t_ray *ra
 		intersection_points = ray_cy_cap_inter(trans_ray, t, obj);
 		if (intersection_points > 0)
 		{
-			data->xs.count += 2;
 			if (data->inter == NULL)
 				first_inter(data, intersection_points, t, obj, ray);
 			else
@@ -65,7 +62,6 @@ void	ray_intersections(t_minirt *data, t_shape *obj, t_ray *trans_ray, t_ray *ra
 	}
 	if (intersection_points > 0)
 	{
-		data->xs.count += 2;
 		if (data->inter == NULL)
 			first_inter(data, intersection_points, t, obj, ray);
 		else

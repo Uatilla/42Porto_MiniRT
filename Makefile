@@ -49,7 +49,7 @@ SRCS		=	main.c \
 				input/input_checker.c input/input_checker_utils.c input/input_chk_render_setup.c input/input_chk_scene_objs.c\
 				objects/parse_objs.c objects/parse_render_settings.c objects/parse_settings_utils.c\
 				light/light.c light/light_utils.c\
-				ray/ray.c ray/intersections.c ray/sort_intersections.c \
+				ray/ray.c ray/intersections.c\
 				canvas/map.c \
 				sphere/sphere.c \
 				cylinder/cylinder.c \

@@ -94,8 +94,7 @@ bool	is_shadowed(t_world *w, t_point *p)
 	distance = magnitude(&v);
 	ray.direction = normalize(&v);
 	ray.origin = *p;
-	check_intersections(&data, &ray);
-	first_hit(&data);
+	intersections(&data, &ray);
 	if (data.first_hit && distance > data.first_hit->hit)
 	{
 		clear_ray_inter(&data);

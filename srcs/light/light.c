@@ -17,7 +17,7 @@ t_color	color_at(t_minirt *data, t_ray *ray, int8_t remainer)
 	t_color	color;
 	t_comps	comps;
 
-	check_intersections(data, ray);
+	intersections(data, ray);
 	if (data->first_hit)
 	{
 		comps = prepare_computations(data->first_hit, ray, data);

@@ -41,9 +41,6 @@ void	clear_ray_inter(t_minirt *data)
 	}
 	data->first_hit = NULL;
 	data->inter = NULL;
-	if (data->xs.count > 0)
-		free(data->xs.arr);
-	data->xs.count = 0;
 }
 
 /// @brief Clean all content of mtx and calls clear_exit if status != 0.
