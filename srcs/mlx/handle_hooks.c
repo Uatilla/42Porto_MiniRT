@@ -30,33 +30,19 @@ int	close_window(t_minirt *win)
 
 void	select_scene_elemt(t_minirt *win, int key_pressed)
 {
-	
-	printf("Scene element start: %d\n", win->world.scene_elem);
 	if (key_pressed == KEY_C
 			|| key_pressed == KEY_L
 			|| key_pressed == KEY_O
 			|| key_pressed == KEY_HOME)
 	{
 		if (key_pressed == KEY_C)
-		{
-			printf("Camera\n");
 			win->world.scene_elem = CAMERA;
-		}
 		else if (key_pressed == KEY_L)
-		{
-			printf("Light\n");
 			win->world.scene_elem = LIGHT;
-		}
 		else if (key_pressed == KEY_O)
-		{
-			printf("Objects\n");
 			win->world.scene_elem = OBJECT;
-		}
 		else if (key_pressed == KEY_HOME)
-		{
-			printf("NONE\n");
 			win->world.scene_elem = NONE;
-		}
 	}
 	else if (win->world.scene_elem == NONE)
 		printf("First select an element to move/rotate:\n\
@@ -72,7 +58,6 @@ int	handle_press_key(int key_pressed, void *param)
 		close_window(win);
 	else
 	{	
-		printf("Handle press Key: Scene Eleme %d\n", win->world.scene_elem);
 		select_scene_elemt(win, key_pressed);
 		if (win->world.scene_elem != NONE)
 		{
@@ -91,6 +76,22 @@ int	handle_press_key(int key_pressed, void *param)
 			else if (key_pressed == KEY_TAB && win->world.scene_elem == OBJECT)
 				select_obj(win);
 		}
+		/*if (key_pressed == KEY_A)
+			printf("O\n");
+		if (key_pressed == KEY_LEFT
+			|| key_pressed == KEY_RIGHT
+			|| key_pressed == KEY_DOWN
+			|| key_pressed == KEY_UP
+			|| key_pressed == KEY_PLUS
+			|| key_pressed == KEY_MINUS)
+				move_win(win, key_pressed);
+		else if (key_pressed == KEY_W
+			|| key_pressed == KEY_A
+			|| key_pressed == KEY_S
+			|| key_pressed == KEY_D)
+			printf("Rotate\n");
+		else if (key_pressed == KEY_TAB && win->world.scene_elem == OBJECT)
+			select_obj(win);*/
 	}
 	return (0);
 }
@@ -105,6 +106,7 @@ int	handle_release_key(int key_pressed, t_minirt *data)
 
 void	manage_interface(t_minirt *data)
 {
+	//mlx_hook(data->canvas.win, KeyPress, 0, key_hook, data);
 	mlx_hook(data->canvas.win, KeyPress, KeyPressMask, handle_press_key, data);
 	mlx_hook(data->canvas.win, KeyRelease, KeyReleaseMask,
 		handle_release_key, data);
