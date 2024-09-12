@@ -232,12 +232,14 @@ typedef	struct s_camera
 {
 	t_matrix	*trans;
 	t_matrix	*inver;
+	t_point		center;
 	int			hsize;
 	int			vsize;
 	float		half_width;
 	float		half_height;
 	float		pixel_size;
 	float		fov;
+
 }	t_camera;
 
 // needs to call ft_memset
@@ -257,17 +259,9 @@ typedef	struct s_inp_ambient
 	t_color	color;
 } t_inp_ambient;
 
-typedef struct	s_inp_camera
-{
-	t_point		cam_pos;
-	t_vector	cam_norm_vect;
-	float		fov;
-}	t_inp_camera;
-
 typedef struct s_input
 {
 	t_inp_ambient	ambient;
-	t_inp_camera	camera;
 }	t_input;
 
 typedef struct s_minirt
