@@ -59,6 +59,23 @@ void	move_obj(t_world *world, int key, int obj_selected)
 	}
 }
 
+void	move_light(t_world *world, int key)
+{
+	if (key == KEY_LEFT)
+		world->light->position.x = world->light->position.x - 1;
+	else if (key == KEY_RIGHT)
+		world->light->position.x = world->light->position.x + 1;
+	else if (key == KEY_DOWN)
+		world->light->position.y = world->light->position.y - 1;
+	else if (key == KEY_UP)
+		world->light->position.y = world->light->position.y + 1;
+	else if (key == KEY_PLUS)
+		world->light->position.z = world->light->position.z - 1;
+	else if (key == KEY_MINUS)
+		world->light->position.z = world->light->position.z + 1;
+	point_light(&world->light->position, &world->light->intensity, world);
+}
+
 /// @brief Move the obj and sets the mlx to display the new image.
 /// @param win Main code structure.
 /// @param key Key mapping to move the obj.
@@ -71,7 +88,7 @@ void	move_win(t_minirt *win, int key)
 	else if (win->world.scene_elem == CAMERA)
 		printf("Move Camera\n");
 	else if (win->world.scene_elem == LIGHT)
-		printf("Move Light\n");
+		move_light(&win->world, key);
 	mlx_destroy_image(win->canvas.mlx, win->canvas.img);
 	win->canvas.img = mlx_new_image(win->canvas.mlx, WIDTH, HEIGTH);
 	win->canvas.addr = mlx_get_data_addr(win->canvas.img,

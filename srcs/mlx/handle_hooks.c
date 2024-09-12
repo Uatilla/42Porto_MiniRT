@@ -68,10 +68,10 @@ int	handle_press_key(int key_pressed, void *param)
 				|| key_pressed == KEY_PLUS
 				|| key_pressed == KEY_MINUS)
 				move_win(win, key_pressed);
-			else if (key_pressed == KEY_A
+			else if (key_pressed == KEY_W
+				|| key_pressed == KEY_A
 				|| key_pressed == KEY_S
-				|| key_pressed == KEY_D
-				|| key_pressed == KEY_W)
+				|| key_pressed == KEY_D)
 				printf("Rotate\n");
 			else if (key_pressed == KEY_TAB && win->world.scene_elem == OBJECT)
 				select_obj(win);

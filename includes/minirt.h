@@ -264,18 +264,10 @@ typedef struct	s_inp_camera
 	float		fov;
 }	t_inp_camera;
 
-typedef struct	s_inp_light
-{
-	float		bright_ratio;
-	t_point		light_pos;
-	t_vector	light_norm_vect;
-}	t_inp_light;
-
 typedef struct s_input
 {
 	t_inp_ambient	ambient;
 	t_inp_camera	camera;
-	t_inp_light		light;
 }	t_input;
 
 typedef struct s_minirt
@@ -288,7 +280,11 @@ typedef struct s_minirt
 	t_intersections	*inter;
 	t_intersections	*first_hit;
 	t_tuple			*tuple;
+
+
 	t_input			input;
+
+	
 	int				fd;
 }		t_minirt;
 
