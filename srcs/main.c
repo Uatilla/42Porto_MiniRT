@@ -33,7 +33,7 @@ int	main(void)
 	m.specular = 0;
 	m.shininess = 100;
 	m.reflective = 0;
-	m.pattern = stripe_pattern(&(t_color){0, 0, 0, 0}, &(t_color){1, 0, 0, 1}, CHK);
+	m.pattern = stripe_pattern(&(t_color){0, 0, 1, 0}, &(t_color){1, 0, 0, 1}, CHK);
 	m.pattern.inver = mtx_inverse(&data, m.pattern.trans);
 
 	t_matrix	*trans;
@@ -154,13 +154,15 @@ int	main(void)
 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 	//LIGHT
-	point_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 999999}, &data.world);
+	point_light(&(t_point){-10, 10, -10, 1}, &(t_color){0, 0, 1, 999999}, &data.world);
+	point_light(&(t_point){10, 10, -10, 1}, &(t_color){1, 0, 0, 999999}, &data.world);
+	point_light(&(t_point){0, 10, -10, 1}, &(t_color){0, 1, 0, 999999}, &data.world);
 
-	//CAMERA
+	// CAMERA
 	data.camera = camera_construct(WIDTH, HEIGTH, PI / 3);
 	data.camera.trans = view_transformation(&(t_point){0, 1.5, -5, 1}, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
 	data.camera.inver = mtx_inverse(&data, data.camera.trans);
-	
+
 	//RENDER
 	render(&data);
 }

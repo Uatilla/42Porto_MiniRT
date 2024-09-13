@@ -25,7 +25,7 @@ t_color	color_at(t_minirt *data, t_ray *ray, int8_t remainer)
 	if (data->first_hit)
 	{
 		comps = prepare_computations(data->first_hit, ray, data);
-		color = shade_hit(&comps, data->world.light, data, remainer);
+		color = shade_hit(&comps, &data->world, data, remainer);
 	}
 	else
 		color = (t_color){0, 0, 0, 999999};
@@ -47,6 +47,7 @@ void	point_light(t_point *pos, t_color *intensity, t_world *world)
 			exit (errno);
 		world->light->position = *pos;
 		world->light->intensity = *intensity;
+		world->light->next = NULL;
 		return ;
 	}
 	light = ft_calloc(sizeof(*light), 1);

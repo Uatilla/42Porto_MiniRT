@@ -348,7 +348,7 @@ t_vector	normal_at_cy(t_point *point, t_shape *obj);
 //computations
 //computations.c
 t_comps		prepare_computations(t_intersections *i, t_ray *ray, t_minirt *data);
-bool		is_shadowed(t_world *w, t_point *p);
+bool		is_shadowed(t_world *w, t_light *light, t_point *p);
 t_color		reflected_color(t_comps *comps, t_minirt *data, int8_t remaining);
 
 //light
@@ -362,7 +362,7 @@ t_color		lighting(t_comps *comps, t_light *light);
 t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
 void		light_is_behind_obj(t_color *diffuse, t_color *specular);
 t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
-t_color		shade_hit(t_comps *comps, t_light *light, t_minirt *data, int8_t remainer);
+t_color		shade_hit(t_comps *comps, t_world *world, t_minirt *data, int8_t remainer);
 
 // patterns
 // patterns.c

@@ -45,7 +45,7 @@ t_comps	prepare_computations(t_intersections *i, t_ray *ray, t_minirt *data)
  * this is done by casting a ray from the point to the light origim and checks
  * if intercects a object or not
 */
-bool	is_shadowed(t_world *w, t_point *p)
+bool	is_shadowed(t_world *w, t_light *light, t_point *p)
 {
 	t_minirt	data;
 	t_vector	v;
@@ -54,7 +54,7 @@ bool	is_shadowed(t_world *w, t_point *p)
 
 	ft_memset(&data, 0, sizeof(data));
 	data.world = *w;
-	v = subtrac_tuples(&data.world.light->position, p);
+	v = subtrac_tuples(&light->position, p);
 	distance = magnitude(&v);
 	ray.direction = normalize(&v);
 	ray.origin = *p;
