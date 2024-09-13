@@ -1,73 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   intersections.c                                    :+:      :+:    :+:   */
+/*   intersections_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/05 17:12:05 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/23 19:27:25 by Jburlama         ###   ########.fr       */
+/*   Created: 2024/09/13 17:36:50 by Jburlama          #+#    #+#             */
+/*   Updated: 2024/09/13 17:37:19 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
-
-/*
-*	sets the ray direction relative to the origin and point in the world
-*	loop through the object list 
-*		transform the ray with the inverse of the transform matrix
-*	sets the first hit point if there is one
-*/
-void	intersections(t_minirt *data, t_ray *ray)
-{
-	t_shape	*obj;
-
-	obj = data->world.objs;
-	while (obj)
-	{
-		obj->trans_ray = ray_trasform(ray, obj->mtx_inver);
-		ray_intersections(data, obj, &obj->trans_ray, ray);
-		obj = obj->next;
-	}
-	first_hit(data);
-}
-
-/*
-*	sees the intersection points of the ray to the object
-*
-*	if the ray hits the obj, will allocate a intersection struct with the
-*	intersect points and the object propeties and push it to the top of the stack
-*/
-void	ray_intersections(t_minirt *data, t_shape *obj, t_ray *trans_ray, t_ray *ray)
-{
-	float		t[2];	
-	int8_t		intersection_points;
-
-	intersection_points = 0;
-	if (obj->type == SP)
-		intersection_points = ray_sphere_intersect(trans_ray, t);
-	else if (obj->type == PL)
-		intersection_points = ray_plane_intersect(trans_ray, t);
-	else if (obj->type == CY)
-	{
-		intersection_points = ray_cy_cap_inter(trans_ray, t, obj);
-		if (intersection_points > 0)
-		{
-			if (data->inter == NULL)
-				first_inter(data, intersection_points, t, obj, ray);
-			else
-				append_inter(data, intersection_points, t, obj, ray);
-		}
-		intersection_points = ray_cylinder_intersect(trans_ray, t, obj);
-	}
-	if (intersection_points > 0)
-	{
-		if (data->inter == NULL)
-			first_inter(data, intersection_points, t, obj, ray);
-		else
-			append_inter(data, intersection_points, t, obj, ray);
-	}
-}
 
 /*
 *	will update the ray->fisrt_hit pointer to the t_intersection struct if there
@@ -93,12 +36,11 @@ void	first_hit(t_minirt *data)
 /*
 *	will allocate and set the first node of the intersections stack
 */
-void	first_inter(t_minirt *data, int8_t point, float *t, t_shape *obj, t_ray *ray)
+void	first_inter(t_minirt *data, float *t, t_shape *obj, t_ray *ray)
 {
 	data->inter = ft_calloc(sizeof(*data->inter), 1);
 	if (data->inter == NULL)
 		clear_exit(data, errno);
-	data->inter->count = point;
 	data->inter->t[0] = t[0];
 	data->inter->t[1] = t[1];
 	if (data->inter->t[0] > 0
@@ -119,14 +61,13 @@ void	first_inter(t_minirt *data, int8_t point, float *t, t_shape *obj, t_ray *ra
 *	will allocate and set a new node to the intersection stack
 *	and push it to the top
 */
-void	append_inter(t_minirt *data, int8_t point, float *t, t_shape *obj, t_ray *ray)
+void	append_inter(t_minirt *data, float *t, t_shape *obj, t_ray *ray)
 {
 	t_intersections	*temp;
 
 	temp = ft_calloc(sizeof(*temp), 1);
 	if (temp == NULL)
 		clear_exit(data, errno);
-	temp->count = point;
 	temp->t[0] = t[0];
 	temp->t[1] = t[1];
 	if (temp->t[0] > 0 && temp->t[0] < temp->t[1])
@@ -142,4 +83,13 @@ void	append_inter(t_minirt *data, int8_t point, float *t, t_shape *obj, t_ray *r
 	temp->next = data->inter;
 	temp->obj = obj;
 	data->inter = temp;
+}
+
+// add a intersection struct to the stack of intersections
+void	add_intersection(t_minirt *data, float *t, t_shape *obj, t_ray *ray)
+{
+	if (data->inter == NULL)
+		first_inter(data, t, obj, ray);
+	else
+		append_inter(data, t, obj, ray);
 }

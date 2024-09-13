@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:02:44 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/29 17:16:19 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/09/13 17:35:41 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int	main(void)
 	// midle.pattern = stripe_pattern(&(t_color){0, 1, 0, 0}, &(t_color){1, 0.33, 0.9, 1}, STR);
 	// midle.pattern.inver = mtx_inverse(&data, midle.pattern.trans);
 
-
 	parse_shape(&data.world, SP, NULL, &midle);
 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
@@ -97,7 +96,7 @@ int	main(void)
 	right.ambient = 0.1;
 	right.specular = 0.3;
 	right.shininess = 200;
-	right.reflective = 1;
+	right.reflective = 0;
 
 	t_matrix *trans_right;
 	trans_right = mtx_create(&data, 4, 4);
@@ -122,7 +121,7 @@ int	main(void)
 	cylindro.ambient = 0.1;
 	cylindro.specular = 0.9;
 	cylindro.shininess = 200;
-	cylindro.reflective = 1;
+	cylindro.reflective = 0;
 	cylindro.closed = true;
 	cylindro.min = -1;
 	cylindro.max = 2;
@@ -147,14 +146,12 @@ int	main(void)
 	fill_idnty_mtx(cy_rot_y);
 	mtx_rotation_y(cy_rot_y, -M_PI / 6);
 
-
 	parse_shape(&data.world, CY, NULL, &cylindro);
 	data.world.objs->mtx_trans = mtx_multiply(&data, cy_sc, data.world.objs->mtx_trans);
 	data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot, data.world.objs->mtx_trans);
 	data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot_y, data.world.objs->mtx_trans);
 	data.world.objs->mtx_trans = mtx_multiply(&data, cy_trans, data.world.objs->mtx_trans);
 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
-
 
 	//LIGHT
 	point_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 999999}, &data.world);

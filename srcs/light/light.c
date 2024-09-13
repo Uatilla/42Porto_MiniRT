@@ -6,12 +6,16 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:48:55 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/23 19:09:39 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/09/13 17:31:27 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
-
+/*
+ *	The call to intersections will check if the ray intercets a object
+ *		If it does will prepare the compuations then the shade_hit will return
+ *		the color of the pixel
+ */
 t_color	color_at(t_minirt *data, t_ray *ray, int8_t remainer)
 {
 	t_color	color;
@@ -52,56 +56,6 @@ void	point_light(t_point *pos, t_color *intensity, t_world *world)
 	light->intensity = *intensity;
 	light->next = world->light;
 	world->light = light;
-}
-
-/*
- * In the case of a sphere the normal vector will be the normalize distance
- * of point (assuming point is the coordenates of a point in the circunference)
- * and its center.
- *
-* care to not have the point has the same cordenates as the obj.center
-* the result will be nan in that case
-*
-*/
-t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data)
-{
-	t_point		local_point;
-	t_vector	local_normal;
-	t_vector	world_normal;
-	t_matrix	*transpose;
-
-	local_point = mtx_mult_tuple(obj->mtx_inver, point);
-	local_normal = local_normal_at(obj, &local_point);
-	transpose = mtx_transpose(data, obj->mtx_inver);
-	world_normal = mtx_mult_tuple(transpose, &local_normal);
-	world_normal.w = 0;
-	clean_matrix(data, transpose, 0);
-	return (normalize(&world_normal));
-}
-
-t_vector	local_normal_at(t_shape *obj, t_point *local_point)
-{
-	t_vector	local_normal;
-
-	if (obj->type == SP)
-		local_normal = subtrac_tuples(local_point, &(t_point){0, 0, 0, 1});
-	else if (obj->type == CY)
-		local_normal = normal_at_cy(local_point, obj);
-	else if (obj->type == PL)
-		local_normal = (t_vector){0, 1, 0, 0};
-	return (local_normal);
-}
-
-t_vector	normal_at_cy(t_point *point, t_shape *obj)
-{
-	float	dist;
-
-	dist = (point->x * point->x) + (point->z * point->z);
-	if (dist < 1 && point->y >= obj->material.max - EPSILON)
-		return ((t_vector){0, 1, 0, 0});
-	else if (dist < 1 && point->y <= obj->material.min + EPSILON)
-		return ((t_vector){0, -1, 0, 0});
-	return ((t_vector){point->x, 0, point->z, 0});
 }
 
 /*
