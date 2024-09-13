@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/09/13 17:31:30 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/09/13 19:38:54 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ enum e_id
 	SP = 3,
 	PL = 4,
 	CY = 5,
+	CONE = 6,
 };
 
 enum e_p
@@ -344,6 +345,7 @@ void		render(t_minirt *data);
 t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data);
 t_vector	local_normal_at(t_shape *obj, t_point *local_point);
 t_vector	normal_at_cy(t_point *point, t_shape *obj);
+t_vector	normal_at_cone(t_point *point, t_shape *obj);
 
 //computations
 //computations.c
@@ -419,11 +421,16 @@ int8_t		ray_plane_intersect(t_ray *ray, float *t);
 
 //cylinder.c
 int8_t	ray_cylinder_intersect(t_ray *ray, float *t, t_shape *obj);
-int8_t	cy_intercections_count(bool *count, float *t);
-bool	check_cy_range(t_ray *ray, float t, t_shape *obj);
-int8_t	ray_cy_cap_inter(t_ray *ray, float *t, t_shape *obj);
-bool	check_cap(t_ray *ray, float t);
+int8_t	intercections_count(bool *count, float *t);
 void	swap(float *t);
+
+//cylinder_cap.c
+bool	check_cy_range(t_ray *ray, float t, t_shape *obj);
+int8_t	ray_cap_inter(t_ray *ray, float *t, t_shape *obj);
+bool	check_cap(t_ray *ray, float t, t_shape *obj, int8_t order);
+
+// cone.c
+int8_t	ray_cone_intersect(t_ray *ray, float *t, t_shape *obj);
 
 //sort_intersections.c
 void		sort_intersections(t_xs	*xs, t_intersections *inter);

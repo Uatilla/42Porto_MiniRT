@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 17:33:53 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/09/13 17:37:17 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/09/13 19:40:06 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,18 @@ void	ray_intersections(t_minirt *data, t_shape *obj, t_ray *trans_ray, t_ray *ra
 		intersection_points = ray_plane_intersect(trans_ray, t);
 	else if (obj->type == CY)
 	{
-		intersection_points = ray_cy_cap_inter(trans_ray, t, obj);
+		intersection_points = ray_cap_inter(trans_ray, t, obj);
 		if (intersection_points > 0)
 			add_intersection(data, t, obj, ray);
 		intersection_points = ray_cylinder_intersect(trans_ray, t, obj);
 	}
-	if (intersection_points > 0)
+	else if (obj->type == CONE)
+	{
+		intersection_points = ray_cap_inter(trans_ray, t, obj);
+		if (intersection_points > 0)
 			add_intersection(data, t, obj, ray);
+		intersection_points = ray_cone_intersect(trans_ray, t, obj);
+	}
+	if (intersection_points > 0)
+		add_intersection(data, t, obj, ray);
 }

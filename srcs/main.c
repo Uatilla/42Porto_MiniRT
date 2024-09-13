@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:02:44 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/09/13 17:35:41 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/09/13 19:38:56 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	main(void)
 	midle.ambient = 0.1;
 	midle.specular = 0.3;
 	midle.shininess = 200;
-	midle.reflective = 1;
+	midle.reflective = 0;
 	// midle.pattern = stripe_pattern(&(t_color){0, 1, 0, 0}, &(t_color){1, 0.33, 0.9, 1}, STR);
 	// midle.pattern.inver = mtx_inverse(&data, midle.pattern.trans);
 
@@ -97,6 +97,8 @@ int	main(void)
 	right.specular = 0.3;
 	right.shininess = 200;
 	right.reflective = 0;
+	right.max = 2;
+	right.min = -1;
 
 	t_matrix *trans_right;
 	trans_right = mtx_create(&data, 4, 4);
@@ -108,7 +110,7 @@ int	main(void)
 	fill_idnty_mtx(sc_right);
 	mtx_scaling(sc_right, &(t_point){0.5, 0.5, 0.5, 1});
 
-	parse_shape(&data.world, SP, NULL, &right);
+	parse_shape(&data.world, CY, NULL, &right);
 	data.world.objs->mtx_trans = mtx_multiply(&data, sc_right, data.world.objs->mtx_trans);
 	data.world.objs->mtx_trans = mtx_multiply(&data, trans_right, data.world.objs->mtx_trans);
 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
@@ -129,7 +131,7 @@ int	main(void)
 	t_matrix	*cy_trans;
 	cy_trans = mtx_create(&data, 4, 4);
 	fill_idnty_mtx(cy_trans);
-	mtx_translation(cy_trans, &(t_point){-1.5, 0.5, -0.5, 1});
+	mtx_translation(cy_trans, &(t_point){-1.5, 0, -0.5, 1});
 
 	t_matrix	*cy_sc;
 	cy_sc = mtx_create(&data, 4, 4);
@@ -146,17 +148,17 @@ int	main(void)
 	fill_idnty_mtx(cy_rot_y);
 	mtx_rotation_y(cy_rot_y, -M_PI / 6);
 
-	parse_shape(&data.world, CY, NULL, &cylindro);
+	parse_shape(&data.world, CONE, NULL, &cylindro);
 	data.world.objs->mtx_trans = mtx_multiply(&data, cy_sc, data.world.objs->mtx_trans);
-	data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot, data.world.objs->mtx_trans);
-	data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot_y, data.world.objs->mtx_trans);
+	// data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot, data.world.objs->mtx_trans);
+	// data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot_y, data.world.objs->mtx_trans);
 	data.world.objs->mtx_trans = mtx_multiply(&data, cy_trans, data.world.objs->mtx_trans);
 	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 	//LIGHT
-	point_light(&(t_point){-10, 10, -10, 1}, &(t_color){0, 0, 1, 999999}, &data.world);
-	point_light(&(t_point){10, 10, -10, 1}, &(t_color){1, 0, 0, 999999}, &data.world);
-	point_light(&(t_point){0, 10, -10, 1}, &(t_color){0, 1, 0, 999999}, &data.world);
+	// point_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 999999}, &data.world);
+	// point_light(&(t_point){10, 10, -10, 1}, &(t_color){1, 0, 0, 999999}, &data.world);
+	point_light(&(t_point){0, 0, -10, 1}, &(t_color){1, 1, 1, 999999}, &data.world);
 
 	// CAMERA
 	data.camera = camera_construct(WIDTH, HEIGTH, PI / 3);
@@ -165,41 +167,4 @@ int	main(void)
 
 	//RENDER
 	render(&data);
-}
-
-void	default_world(t_minirt *data)
-{
-	t_material m;
-	m.pattern.has = false;
-	m.color = (t_color){0.8, 1.0, 0.6, 999999};
-	m.ambient = 0.1;
-	m.diffuse = 0.7;
-	m.specular = 0.2;
-	m.shininess = 200;
-	m.reflective = 0;
-
-	parse_shape(&data->world, SP, NULL, &m);
-	data->world.objs->mtx_inver = mtx_inverse(data, data->world.objs->mtx_trans);
-
-	t_matrix *sc;
-	sc = mtx_create(data, 4, 4);
-	fill_idnty_mtx(sc);
-	mtx_scaling(sc, &(t_point){0.5, 0.5, 0.5, 1});
-
-	parse_shape(&data->world, SP, NULL, &m);
-	data->world.objs->mtx_trans = mtx_multiply(data, sc, data->world.objs->mtx_trans);
-	data->world.objs->mtx_inver = mtx_inverse(data, data->world.objs->mtx_trans);
-
-	m.reflective = 0.5;
-
-	t_matrix *trans_plane;
-	trans_plane = mtx_create(data, 4, 4);
-	fill_idnty_mtx(trans_plane);
-	mtx_translation(trans_plane, &(t_point){0, -1, 0, 1});
-
-	parse_shape(&data->world, PL, NULL, &m);
-	data->world.objs->mtx_trans = mtx_multiply(data, trans_plane, data->world.objs->mtx_trans);
-	data->world.objs->mtx_inver = mtx_inverse(data, data->world.objs->mtx_trans);
-
-	point_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 999999}, &data->world);
 }

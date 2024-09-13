@@ -46,6 +46,8 @@ t_vector	local_normal_at(t_shape *obj, t_point *local_point)
 		local_normal = normal_at_cy(local_point, obj);
 	else if (obj->type == PL)
 		local_normal = (t_vector){0, 1, 0, 0};
+	else if (obj->type == CONE)
+		local_normal = normal_at_cone(local_point, obj);
 	return (local_normal);
 }
 
@@ -59,4 +61,22 @@ t_vector	normal_at_cy(t_point *point, t_shape *obj)
 	else if (dist < 1 && point->y <= obj->material.min + EPSILON)
 		return ((t_vector){0, -1, 0, 0});
 	return ((t_vector){point->x, 0, point->z, 0});
+}
+
+t_vector	normal_at_cone(t_point *point, t_shape *obj)
+{
+	float		dist;
+	float		y;
+	t_vector	normal;
+
+	dist = (point->x * point->x) + (point->z * point->z);
+	if (dist < obj->material.max * obj->material.max && point->y >= obj->material.max - EPSILON)
+		return ((t_vector){0, 1, 0, 0});
+	else if (dist < obj->material.min * obj->material.min && point->y <= obj->material.min + EPSILON)
+		return ((t_vector){0, -1, 0, 0});
+	y = sqrtf(dist);
+	if (y > EPSILON)
+		y = -y;
+	normal = (t_vector){point->x, y, point->z, 0};
+	return (normal);
 }

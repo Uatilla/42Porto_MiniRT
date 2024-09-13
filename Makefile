@@ -6,7 +6,7 @@
 #    By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/30 20:21:44 by uviana-a          #+#    #+#              #
-#    Updated: 2024/09/13 17:37:47 by Jburlama         ###   ########.fr        #
+#    Updated: 2024/09/13 19:38:06 by Jburlama         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ OBJS_DIR	=	objs
 LIBFT_DIR	=	./libraries/libft
 MLX_DIR		=	./libraries/minilibx-linux
 INC			=	includes
-SUB_DIR		=	tuples input exit mlx ray canvas window objects light \
+SUB_DIR		=	tuples input exit mlx ray canvas window objects light cone\
 				matrix matrix_transformations view camera render \
 				patterns normal computations intersections
 ALL_OBJS_DIR	= $(foreach dir, $(SUB_DIR), $(addprefix $(OBJS_DIR)/, $(dir)))
@@ -52,6 +52,7 @@ SRCS		=	main.c \
 				ray/ray.c \
 				intersections/intersections.c intersections/intersections_utils.c \
 				intersections/sphere.c intersections/plane.c intersections/cylinder.c \
+				intersections/cylinder_cap.c intersections/cone.c\
 				canvas/map.c \
 				exit/exit_cleaner.c exit/clean_world.c \
 				mlx/mlx.c mlx/handle_hooks.c mlx/move_objs.c\
