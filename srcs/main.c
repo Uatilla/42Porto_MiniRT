@@ -157,7 +157,7 @@ int	main(void)
 
 	//LIGHT
 	// point_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 999999}, &data.world);
-	// point_light(&(t_point){10, 10, -10, 1}, &(t_color){1, 0, 0, 999999}, &data.world);
+	point_light(&(t_point){10, 10, -10, 1}, &(t_color){1, 0, 0, 999999}, &data.world);
 	point_light(&(t_point){0, 0, -10, 1}, &(t_color){1, 1, 1, 999999}, &data.world);
 
 	// CAMERA
