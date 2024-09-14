@@ -17,7 +17,6 @@
 /// @param key Key mapping to move the obj.
 void	execute_move(t_shape *obj, int key)
 {
-	printf("X: %f Y: %f Z: %f W: %f\n", obj->center.x, obj->center.y, obj->center.z, obj->center.w);
 	if (key == KEY_LEFT)
 		obj->center.x = obj->center.x - 1;
 	else if (key == KEY_RIGHT)
@@ -30,12 +29,7 @@ void	execute_move(t_shape *obj, int key)
 		obj->center.z = obj->center.z - 1;
 	else if (key == KEY_MINUS)
 		obj->center.z = obj->center.z + 1;
-	//mtx_print(obj->mtx_trans);
-	
 	mtx_translation(obj->mtx_trans, &obj->center);
-	printf("=====\n");
-	printf("X: %f Y: %f Z: %f W: %f\n", obj->center.x, obj->center.y, obj->center.z, obj->center.w);
-	//mtx_print(obj->mtx_trans);
 	clean_matrix(NULL, obj->mtx_inver, 0);
 	obj->mtx_inver = mtx_inverse(NULL, obj->mtx_trans);
 }
@@ -112,10 +106,21 @@ void	move_camera(t_minirt *win, int key)
 		camera->direct_center.z = camera->direct_center.z - 1;
 	}
 	clean_matrix(NULL, win->camera.trans, 0);	
+	//We still need to work with the normal.
 	win->camera.trans = view_transformation(&win->camera.center, &win->camera.direct_center, &(t_vector){0, 1, 0, 0});
-	//win->camera.trans = view_transformation(&(t_point){0, 0, -20, 1}, &win->camera.center, &(t_vector){0, 1, 0, 0});
+	
 	clean_matrix(NULL, win->camera.inver, 0);
 	win->camera.inver = mtx_inverse(win, win->camera.trans);
+}
+
+void	redo_render(t_minirt *win)
+{
+	mlx_destroy_image(win->canvas.mlx, win->canvas.img);
+	win->canvas.img = mlx_new_image(win->canvas.mlx, WIDTH, HEIGTH);
+	win->canvas.addr = mlx_get_data_addr(win->canvas.img,
+			&win->canvas.bits_per_pixel, &win->canvas.line_length,
+			&win->canvas.endian);
+	render(win);
 }
 
 /// @brief Move the obj and sets the mlx to display the new image.
@@ -131,12 +136,7 @@ void	move_win(t_minirt *win, int key)
 		move_camera(win, key);
 	else if (win->world.scene_elem == LIGHT)
 		move_light(&win->world, key);
-	mlx_destroy_image(win->canvas.mlx, win->canvas.img);
-	win->canvas.img = mlx_new_image(win->canvas.mlx, WIDTH, HEIGTH);
-	win->canvas.addr = mlx_get_data_addr(win->canvas.img,
-			&win->canvas.bits_per_pixel, &win->canvas.line_length,
-			&win->canvas.endian);
-	render(win);
+	redo_render(win);
 }
 
 /// @brief Set the obj selected to be moved

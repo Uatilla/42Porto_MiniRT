@@ -124,6 +124,7 @@ typedef struct s_tuple
 typedef t_tuple	t_point;
 typedef t_tuple	t_vector;
 typedef t_tuple	t_color;
+typedef t_tuple t_angle;
 
 typedef struct s_matrix
 {
@@ -175,6 +176,7 @@ typedef	struct s_shape
 	t_matrix			*mtx_trans;
 	t_matrix			*mtx_inver;
 	t_point				center;
+	t_angle				angle;
 	enum e_id			type;
 	int					id;
 	void				*next;
@@ -542,4 +544,9 @@ float		degree_to_rad(float degree);
 void		mtx_rotation_x(t_matrix *mtx, float rot_deg);
 void		mtx_rotation_y(t_matrix *mtx, float rot_deg);
 void		mtx_rotation_z(t_matrix *mtx, float rot_deg);
+
+
+
+void		exec_rotation(t_shape *sp);
+void	redo_render(t_minirt *win);
 #endif

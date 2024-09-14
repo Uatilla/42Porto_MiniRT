@@ -55,48 +55,64 @@ void	scale_obj(t_shape *sp, enum e_id type, char **line)
 		diam = (2 * ft_atof(line[3])) / 100;
 	mtx_scaling(mtx, &(t_point){diam, diam, diam, 1});
 	sp->mtx_trans = mtx_multiply(NULL, mtx, sp->mtx_trans);
-		/*mrt->input.cylinder.cy_diam = ft_atof(line[3]);
-	mrt->input.cylinder.cy_height = ft_atof(line[4]);*/
 }
 
-void	normalize_obj(t_shape *sp, enum e_id type, char **line)
+/// @brief Find the right angle to rotate in each axis.
+/// @param reference Normalized vector reference for each axis.
+/// @param p Normalized vector from the input.
+/// @return The angle found for that axis.
+float	find_angle(t_point	reference, t_point p)
 {
-	t_matrix	*mtx;
+	float dot_p;
+	float mag_ref;
+	float mag_p;
+	dot_p = (reference.x * p.x) + (reference.y * p.y) + (reference.z * p.z);
+	mag_ref = sqrtf((reference.x * reference.x) + (reference.y * reference.y) + (reference.z * reference.z));
+	mag_p = sqrtf((p.x * p.x) + (p.y * p.y) + (p.z * p.z));
+	return(acos(dot_p / (mag_ref * mag_p)));
+}
+
+
+/// @brief Effectively execute the rotation of the object.
+/// @param sp Shape to me rotated.
+void	exec_rotation(t_shape *sp)
+{
+	t_matrix	*cy_rot_x;
+	t_matrix	*cy_rot_y;
+	t_matrix	*cy_rot_z;
+
+	cy_rot_x = mtx_create(NULL, 4, 4);
+	fill_idnty_mtx(cy_rot_x);
+	mtx_rotation_x(cy_rot_x, PI / 4);
+	mtx_rotation_x(cy_rot_x, sp->angle.x);
+	sp->mtx_trans = mtx_multiply(NULL, cy_rot_x, sp->mtx_trans);
+	cy_rot_y = mtx_create(NULL, 4, 4);
+	fill_idnty_mtx(cy_rot_y);
+	mtx_rotation_y(cy_rot_y, sp->angle.y);
+	sp->mtx_trans = mtx_multiply(NULL, cy_rot_y, sp->mtx_trans);
+	cy_rot_z = mtx_create(NULL, 4, 4);
+	fill_idnty_mtx(cy_rot_z);
+	mtx_rotation_z(cy_rot_z, sp->angle.z);
+	sp->mtx_trans = mtx_multiply(NULL, cy_rot_z, sp->mtx_trans);
+}
+
+/// @brief Rotate each object if (PL or CY).
+/// @param sp Shape to be rotate.
+/// @param  type NOT IN USE.
+/// @param line Line of the input to check the normalized vector.
+void	rotate_obj(t_shape *sp, enum e_id type, char **line)
+{
+	t_point	norm_vect;
+
 	(void)type;
-	(void)line;
-	(void)sp;
-
-
-	/*mtx = mtx_create(NULL, 4, 4);
-	fill_idnty_mtx(mtx);
-	mtx_rotation_z(mtx, degree_to_rad(45));*/
-	printf("Normalize\n");
-	/*mtx_print(mtx);
-
-	t_tuple tup_res;
-	t_tuple p;
-
-	p.x = 0;
-	p.y = 1;
-	p.z = 0;
-	p.w = 1;
-	printf("\nP -> X:%f Y:%f Z:%f W:%f\n", p.x, p.y, p.z, p.w);
-	tup_res = mtx_mult_tuple(mtx,&p);
-	printf("Tup_Res -> X:%f Y:%f Z:%f W:%f\n", tup_res.x, tup_res.y, tup_res.z, tup_res.w);
-	sp->mtx_trans = mtx_multiply(NULL, mtx, sp->mtx_trans);*/
-
-
-
-
-
-	/*if (type == PL)
-		printf("Normalize: %s\n", line[2]);*/
-
-
-
-		//fill_tuple(&mrt->input.plane.pl_norm_vect, line[2], 0);
-	//else
-		//fill_tuple(&mrt->input.cylinder.cy_norm_vect, line[2], 0);
+	norm_vect = get_tuple(line[2], 1);
+	sp->angle.x = find_angle((t_point){1,0,0,1}, norm_vect);
+	sp->angle.y = find_angle((t_point){0,1,0,1}, norm_vect);
+	sp->angle.z = find_angle((t_point){0,0,1,1}, norm_vect);
+	//printf("ANG X:%f Y:%f Z:%f\n", sp->angle.x, sp->angle.y, sp->angle.z);
+	//printf("Angles: X: %f Y: %f Z:%f \n", (180 * sp->angle.x)/PI, (180 * sp->angle.y)/PI, (180 * sp->angle.z)/PI);
+	sp->angle.w = 2;
+	exec_rotation(sp);
 }
 
 /// @brief Set the obj parameter (position, scale and so on).
@@ -116,9 +132,8 @@ void	fill_shape(t_sphere *sp, enum e_id type, char **line)
 	sp->mtx_trans = mtx;
 	sp->type = type;
 	m1 = parse_material(line, type);
-
 	if (type == PL || type == CY)
-		normalize_obj(sp, type, line);
+		rotate_obj(sp, type, line);
 	if (type == SP || type == CY)
 		scale_obj(sp, type, line);
 	mtx_translation(sp->mtx_trans, &obj_center);

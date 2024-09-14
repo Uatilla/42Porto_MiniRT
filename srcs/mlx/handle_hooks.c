@@ -49,6 +49,92 @@ void	select_scene_elemt(t_minirt *win, int key_pressed)
 			Use: 'c' - Camera | 'l' - Light | 'o' - Objects\n");
 }
 
+
+/// @brief Execute the movement of the obj.
+/// @param obj Obj to be moved.
+/// @param key Key mapping to move the obj.
+void	execute_rotation(t_shape *obj, int key)
+{
+	t_matrix	*rotation;
+
+	rotation = mtx_create(NULL, 4, 4);
+	fill_idnty_mtx(rotation);
+	mtx_translation(obj->mtx_trans, &(t_point){0,0,0,1});
+	if (key == KEY_Q)
+		mtx_rotation_z(rotation, -PI / 12);
+	else if (key == KEY_E)
+		mtx_rotation_z(rotation, PI / 12);
+	else if (key == KEY_D)
+		mtx_rotation_y(rotation, PI / 12);
+	else if (key == KEY_A)
+		mtx_rotation_y(rotation, -PI / 12);
+	else if (key == KEY_W)
+		mtx_rotation_x(rotation, -PI / 12);
+	else if (key == KEY_S)
+		mtx_rotation_x(rotation, PI / 12);
+	obj->mtx_trans = mtx_multiply(NULL, rotation, obj->mtx_trans);
+	mtx_translation(obj->mtx_trans, &obj->center);
+	clean_matrix(NULL, obj->mtx_inver, 0);
+	obj->mtx_inver = mtx_inverse(NULL, obj->mtx_trans);
+}
+
+/// @brief Move the object selected.
+/// @param world Main code structure.
+/// @param key Key mapping to move the obj.
+/// @param obj_selected Obj selected to be moved.
+void	rotate_obj_running(t_world *world, int key, int obj_selected)
+{
+	t_shape	*obj;
+
+	obj = world->objs;
+	(void)obj_selected;
+	while (obj)
+	{
+		if ((world->obj_selected == 0
+			|| world->obj_selected == obj->id))
+			execute_rotation(obj, key);
+		obj = obj->next;
+	}
+}
+
+void	rotate_camera(t_minirt *win, int key)
+{
+	t_matrix	*rotation;
+	t_camera	*camera;
+
+	camera = &win->camera;
+	rotation = mtx_create(NULL, 4, 4);
+	fill_idnty_mtx(rotation);
+	mtx_translation(camera->trans, &(t_point){0,0,0,1});
+	if (key == KEY_Q)
+		mtx_rotation_z(rotation, -PI / 12);
+	else if (key == KEY_E)
+		mtx_rotation_z(rotation, PI / 12);
+	else if (key == KEY_D)
+		mtx_rotation_y(rotation, PI / 12);
+	else if (key == KEY_A)
+		mtx_rotation_y(rotation, -PI / 12);
+	if (key == KEY_S)
+		mtx_rotation_x(rotation, -PI / 12);
+	else if (key == KEY_W)
+		mtx_rotation_x(rotation, PI / 12);
+	win->camera.trans = mtx_multiply(NULL, rotation, win->camera.trans);
+	mtx_translation(camera->trans, &camera->center);
+	clean_matrix(NULL, win->camera.inver, 0);
+	win->camera.inver = mtx_inverse(win, win->camera.trans);
+}
+
+
+void	rotate_win(t_minirt *win, int key)
+{
+	(void)win;
+	if (win->world.objs && win->world.scene_elem == OBJECT)
+		rotate_obj_running(&win->world, key, win->world.obj_selected);
+	else if (win->world.scene_elem == CAMERA)
+		rotate_camera(win, key);
+	redo_render(win);
+}
+
 int	handle_press_key(int key_pressed, void *param)
 {
 	t_minirt	*win;
@@ -61,37 +147,18 @@ int	handle_press_key(int key_pressed, void *param)
 		select_scene_elemt(win, key_pressed);
 		if (win->world.scene_elem != NONE)
 		{
-			if (key_pressed == KEY_LEFT
-				|| key_pressed == KEY_RIGHT
-				|| key_pressed == KEY_DOWN
-				|| key_pressed == KEY_UP
-				|| key_pressed == KEY_PLUS
-				|| key_pressed == KEY_MINUS)
+
+			if (key_pressed == KEY_LEFT || key_pressed == KEY_RIGHT
+				|| key_pressed == KEY_DOWN || key_pressed == KEY_UP
+				|| key_pressed == KEY_PLUS || key_pressed == KEY_MINUS)
 				move_win(win, key_pressed);
-			else if (key_pressed == KEY_W
-				|| key_pressed == KEY_A
-				|| key_pressed == KEY_S
-				|| key_pressed == KEY_D)
-				printf("Rotate\n");
+			else if (key_pressed == KEY_W || key_pressed == KEY_A
+				|| key_pressed == KEY_S || key_pressed == KEY_D
+				|| key_pressed == KEY_E || key_pressed == KEY_Q)
+				rotate_win(win, key_pressed);
 			else if (key_pressed == KEY_TAB && win->world.scene_elem == OBJECT)
 				select_obj(win);
 		}
-		/*if (key_pressed == KEY_A)
-			printf("O\n");
-		if (key_pressed == KEY_LEFT
-			|| key_pressed == KEY_RIGHT
-			|| key_pressed == KEY_DOWN
-			|| key_pressed == KEY_UP
-			|| key_pressed == KEY_PLUS
-			|| key_pressed == KEY_MINUS)
-				move_win(win, key_pressed);
-		else if (key_pressed == KEY_W
-			|| key_pressed == KEY_A
-			|| key_pressed == KEY_S
-			|| key_pressed == KEY_D)
-			printf("Rotate\n");
-		else if (key_pressed == KEY_TAB && win->world.scene_elem == OBJECT)
-			select_obj(win);*/
 	}
 	return (0);
 }
