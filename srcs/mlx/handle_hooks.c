@@ -16,7 +16,10 @@ int	close_window(t_minirt *win)
 {
 	if (win)
 	{
-		mlx_destroy_image(win->canvas.mlx, win->canvas.img);
+		printf("YES\n");
+		if (win->canvas.img)
+			mlx_destroy_image(win->canvas.mlx, win->canvas.img);
+		printf("YES\n");
 		mlx_destroy_window(win->canvas.mlx, win->canvas.win);
 		mlx_destroy_display(win->canvas.mlx);
 		free(win->canvas.mlx);
@@ -147,7 +150,6 @@ int	handle_press_key(int key_pressed, void *param)
 		select_scene_elemt(win, key_pressed);
 		if (win->world.scene_elem != NONE)
 		{
-
 			if (key_pressed == KEY_LEFT || key_pressed == KEY_RIGHT
 				|| key_pressed == KEY_DOWN || key_pressed == KEY_UP
 				|| key_pressed == KEY_PLUS || key_pressed == KEY_MINUS)
@@ -173,8 +175,8 @@ int	handle_release_key(int key_pressed, t_minirt *data)
 
 void	manage_interface(t_minirt *data)
 {
-	//mlx_hook(data->canvas.win, KeyPress, 0, key_hook, data);
 	mlx_hook(data->canvas.win, KeyPress, KeyPressMask, handle_press_key, data);
+	mlx_hook(data->canvas.win, 17, 0L, close_window, &data);
 	mlx_hook(data->canvas.win, KeyRelease, KeyReleaseMask,
 		handle_release_key, data);
 	mlx_loop(data->canvas.mlx);
