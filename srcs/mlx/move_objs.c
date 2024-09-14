@@ -82,19 +82,37 @@ void	move_camera(t_minirt *win, int key)
 
 	camera = &win->camera;
 	if (key == KEY_LEFT)
+	{
 		camera->center.x = camera->center.x - 1;
+		camera->direct_center.x = camera->direct_center.x - 1;
+	}
 	else if (key == KEY_RIGHT)
+	{
 		camera->center.x = camera->center.x + 1;
+		camera->direct_center.x = camera->direct_center.x + 1;
+	}
 	else if (key == KEY_DOWN)
+	{
 		camera->center.y = camera->center.y - 1;
+		camera->direct_center.y = camera->direct_center.y - 1;
+	}
 	else if (key == KEY_UP)
+	{
 		camera->center.y = camera->center.y + 1;
+		camera->direct_center.y = camera->direct_center.y + 1;
+	}
 	else if (key == KEY_PLUS)
-		camera->center.z = camera->center.z - 1;
-	else if (key == KEY_MINUS)
+	{
 		camera->center.z = camera->center.z + 1;
+		camera->direct_center.z = camera->direct_center.z + 1;
+	}
+	else if (key == KEY_MINUS)
+	{
+		camera->center.z = camera->center.z - 1;
+		camera->direct_center.z = camera->direct_center.z - 1;
+	}
 	clean_matrix(NULL, win->camera.trans, 0);	
-	win->camera.trans = view_transformation(&win->camera.center, &(t_point){0, 0, 0, 1}, &(t_vector){0, 1, 0, 0});
+	win->camera.trans = view_transformation(&win->camera.center, &win->camera.direct_center, &(t_vector){0, 1, 0, 0});
 	//win->camera.trans = view_transformation(&(t_point){0, 0, -20, 1}, &win->camera.center, &(t_vector){0, 1, 0, 0});
 	clean_matrix(NULL, win->camera.inver, 0);
 	win->camera.inver = mtx_inverse(win, win->camera.trans);

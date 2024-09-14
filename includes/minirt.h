@@ -235,6 +235,7 @@ typedef	struct s_camera
 	t_matrix	*trans;
 	t_matrix	*inver;
 	t_point		center;
+	t_point		direct_center;
 	int			hsize;
 	int			vsize;
 	float		half_width;
