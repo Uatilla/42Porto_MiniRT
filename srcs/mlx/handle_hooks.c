@@ -126,6 +126,10 @@ void	rotate_camera(t_minirt *win, int key)
 		mtx_rotation_x(rotation, PI / 12);
 	win->camera.trans = mtx_multiply(NULL, rotation, win->camera.trans);
 	mtx_translation(camera->trans, &camera->center);
+	printf("ROTATION\n");
+	printf("Camera Center: X:%f Y:%f Z:%f\n", camera->center.x, camera->center.y, camera->center.z);
+	printf("Camera Direction Center: X:%f Y:%f Z:%f\n", camera->direct_center.x, camera->direct_center.y, camera->direct_center.z);
+	mtx_print(camera->trans);
 	clean_matrix(NULL, win->camera.inver, 0);
 	win->camera.inver = mtx_inverse(win, win->camera.trans);
 }

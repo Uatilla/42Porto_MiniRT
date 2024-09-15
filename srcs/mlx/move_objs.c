@@ -73,7 +73,11 @@ void	move_light(t_world *world, int key)
 void	move_camera(t_minirt *win, int key)
 {
 	t_camera	*camera;
+	/*t_matrix	*movement;
 
+	movement = mtx_create(NULL, 4, 4);
+	fill_idnty_mtx(movement);
+	mtx_translation(movement, &(t_point){0,0,0,1});*/
 	camera = &win->camera;
 	if (key == KEY_LEFT)
 	{
@@ -105,12 +109,20 @@ void	move_camera(t_minirt *win, int key)
 		camera->center.z = camera->center.z - 1;
 		camera->direct_center.z = camera->direct_center.z - 1;
 	}
-	clean_matrix(NULL, win->camera.trans, 0);	
 	//We still need to work with the normal.
+	//movement = view_transformation(&win->camera.center, &win->camera.direct_center, &(t_vector){0, 1, 0, 0});
+	//win->camera.trans = mtx_multiply(NULL, movement, win->camera.trans);
+	
+	clean_matrix(NULL, win->camera.trans, 0);	
 	win->camera.trans = view_transformation(&win->camera.center, &win->camera.direct_center, &(t_vector){0, 1, 0, 0});
 	
 	clean_matrix(NULL, win->camera.inver, 0);
 	win->camera.inver = mtx_inverse(win, win->camera.trans);
+
+	printf("MOVEMENT\n");
+	printf("Camera Center: X:%f Y:%f Z:%f\n", camera->center.x, camera->center.y, camera->center.z);
+	printf("Camera Direction Center: X:%f Y:%f Z:%f\n", camera->direct_center.x, camera->direct_center.y, camera->direct_center.z);
+	mtx_print(camera->trans);
 }
 
 void	redo_render(t_minirt *win)
