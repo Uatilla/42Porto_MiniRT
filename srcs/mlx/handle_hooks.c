@@ -17,15 +17,18 @@ int	close_window(t_minirt *win)
 	if (win)
 	{
 		printf("YES\n");
-		if (win->canvas.img)
-			mlx_destroy_image(win->canvas.mlx, win->canvas.img);
+		
+		mlx_destroy_image(win->canvas.mlx, win->canvas.img);
 		printf("YES\n");
 		mlx_destroy_window(win->canvas.mlx, win->canvas.win);
 		mlx_destroy_display(win->canvas.mlx);
 		free(win->canvas.mlx);
-		clean_world(&win->world);
-		clean_matrix(win, win->camera.trans, 0);
-		clean_matrix(win, win->camera.inver, 0);
+		if (&win->world)
+			clean_world(&win->world);
+		if (win->camera.trans)
+			clean_matrix(win, win->camera.trans, 0);
+		if (win->camera.inver)
+			clean_matrix(win, win->camera.inver, 0);
 		clear_exit(win, 0);
 	}
 	return (0);
@@ -110,9 +113,9 @@ void	rotate_camera(t_minirt *win, int key)
 	fill_idnty_mtx(rotation);
 	mtx_translation(camera->trans, &(t_point){0,0,0,1});
 	if (key == KEY_Q)
-		mtx_rotation_z(rotation, -PI / 12);
-	else if (key == KEY_E)
 		mtx_rotation_z(rotation, PI / 12);
+	else if (key == KEY_E)
+		mtx_rotation_z(rotation, -PI / 12);
 	else if (key == KEY_D)
 		mtx_rotation_y(rotation, PI / 12);
 	else if (key == KEY_A)
@@ -175,8 +178,8 @@ int	handle_release_key(int key_pressed, t_minirt *data)
 
 void	manage_interface(t_minirt *data)
 {
-	mlx_hook(data->canvas.win, KeyPress, KeyPressMask, handle_press_key, data);
 	mlx_hook(data->canvas.win, 17, 0L, close_window, &data);
+	mlx_hook(data->canvas.win, KeyPress, KeyPressMask, handle_press_key, data);
 	mlx_hook(data->canvas.win, KeyRelease, KeyReleaseMask,
 		handle_release_key, data);
 	mlx_loop(data->canvas.mlx);

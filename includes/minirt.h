@@ -86,8 +86,11 @@ typedef struct s_checkstx
 	int		count_a;
 	int		count_c;
 	int		count_l;
+	int		count_objs;
 	int		count_err_stx;
+	int		count_err_order;
 	int		count_preset_err;
+	int		count_pattern_err;
 }	t_checkstx;
 
 typedef struct s_canvas
@@ -159,6 +162,7 @@ typedef	struct s_material
 {
 	t_pattern	pattern;
 	t_color		color;
+	t_color		color_sec;
 	float		ambient;
 	float		diffuse;
 	float		specular;
@@ -178,6 +182,7 @@ typedef	struct s_shape
 	t_point				center;
 	t_angle				angle;
 	enum e_id			type;
+	float				amb_ratio;
 	int					id;
 	void				*next;
 }	t_shape;
@@ -252,6 +257,8 @@ typedef	struct	s_world
 {
 	t_shape		*objs;
 	t_light		*light;
+	t_color		ambient_light;
+	float		ambient_ratio;
 	enum e_sc	scene_elem;
 	int			n_objs;
 	int			obj_selected;
@@ -386,7 +393,7 @@ void		set_pattern(t_intersections *inter, t_point *point);
 //parse_objs.c
 void		parse_shape(t_minirt *mrt, enum e_id type, char **line);
 void		parse_objects(enum e_id type, t_minirt *data, int file, t_material *m);
-void		fill_shape(t_sphere *sp, enum e_id type, char **line);
+void		fill_shape(t_sphere *sp, enum e_id type, char **line, float amb_ratio);
 void		set_materials(t_shape *sp, t_material *m, char **line, enum e_id type);
 //void		set_materials(t_material *obj, t_material *m, char **line, enum e_id type);
 void		scale_obj(t_shape *sp, enum e_id type, char **line);

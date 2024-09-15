@@ -24,9 +24,9 @@ void	parse_light(t_minirt *mrt, char **line)
 	light_point = get_tuple(line[1], 1);
 	light_intens = ft_atof(line[2]);
 	light_color = get_tuple(line[3], 999999);
-	light_color.r = light_intens * (light_color.r / 255);
-	light_color.g = light_intens * (light_color.g / 255);
-	light_color.b = light_intens * (light_color.b / 255);
+	light_color.r = light_intens * (light_color.r / 255) * (mrt->world.ambient_light.r / 255);
+	light_color.g = light_intens * (light_color.g / 255) * (mrt->world.ambient_light.g / 255);
+	light_color.b = light_intens * (light_color.b / 255) * (mrt->world.ambient_light.b / 255);
 	point_light(&light_point, &light_color, &mrt->world);
 }
 
@@ -50,8 +50,8 @@ void	parse_camera(t_minirt *mrt, char **line)
 /// @param line Scene line from the file.
 void	parse_ambient(t_minirt *mrt, char **line)
 {
-	mrt->input.ambient.ratio = ft_atof(line[1]);
-	fill_tuple(&mrt->input.ambient.color, line[2], 999999);
+	mrt->world.ambient_light = get_tuple(line[2], 999999);
+	mrt->world.ambient_ratio = ft_atof(line[1]);
 }
 
 /// @brief Define the preset to be used.

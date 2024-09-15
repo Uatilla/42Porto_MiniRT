@@ -26,14 +26,14 @@ void	parse_shape(t_minirt *mrt, enum e_id type, char **line)
 		if (world->objs == NULL)
 			clear_exit(NULL, errno);
 		world->objs->id = mrt->world.n_objs;
-		fill_shape(world->objs, type, line);
+		fill_shape(world->objs, type, line, world->ambient_ratio);
 		return ;
 	}
 	shape = ft_calloc(sizeof(t_shape), 1);
 	if (shape == NULL)
 		clear_exit(NULL, errno);
 	shape->id = mrt->world.n_objs;
-	fill_shape(shape, type, line);
+	fill_shape(shape, type, line, world->ambient_ratio);
 	shape->next = world->objs;
 	world->objs = shape;
 }
@@ -74,7 +74,7 @@ float	find_angle(t_point	reference, t_point p)
 
 
 /// @brief Effectively execute the rotation of the object.
-/// @param sp Shape to me rotated.
+/// @param sp Shape to be rotated.
 void	exec_rotation(t_shape *sp)
 {
 	t_matrix	*cy_rot_x;
@@ -109,8 +109,6 @@ void	rotate_obj(t_shape *sp, enum e_id type, char **line)
 	sp->angle.x = find_angle((t_point){1,0,0,1}, norm_vect);
 	sp->angle.y = find_angle((t_point){0,1,0,1}, norm_vect);
 	sp->angle.z = find_angle((t_point){0,0,1,1}, norm_vect);
-	//printf("ANG X:%f Y:%f Z:%f\n", sp->angle.x, sp->angle.y, sp->angle.z);
-	//printf("Angles: X: %f Y: %f Z:%f \n", (180 * sp->angle.x)/PI, (180 * sp->angle.y)/PI, (180 * sp->angle.z)/PI);
 	sp->angle.w = 2;
 	exec_rotation(sp);
 }
@@ -119,12 +117,13 @@ void	rotate_obj(t_shape *sp, enum e_id type, char **line)
 /// @param sp Shape to be filled.
 /// @param type Type of the object identified.
 /// @param line Line from the scene file to be used.
-void	fill_shape(t_sphere *sp, enum e_id type, char **line)
+void	fill_shape(t_sphere *sp, enum e_id type, char **line, float amb_ratio)
 {
 	t_matrix	*mtx;
 	t_material	m1;
 	t_point		obj_center;
 
+	sp->amb_ratio = amb_ratio;
 	obj_center = get_tuple(line[1], 1);
 	sp->center = obj_center;
 	mtx = mtx_create(NULL, 4, 4);
@@ -146,12 +145,28 @@ void	fill_shape(t_sphere *sp, enum e_id type, char **line)
 /// @param obj_color tuple from the object structure.
 /// @param line Scene line to be used.
 /// @param type Type of the object.
-void	set_color(t_color *obj_color, char **line, enum e_id type)
+
+/// @brief Set the color for the object.
+/// @param obj_color tuple from the object structure.
+/// @param line Scene line to be used.
+/// @param type Type of the object.
+/// @param color_type 'P' for Primary or 'S' for Secondary(texture).
+void	set_color(t_color *obj_color, char **line, enum e_id type, char color_type)
 {
-	if (type == SP || type == PL)
-		fill_tuple(obj_color, line[3], 999999);
-	else if (type == CY)
-		fill_tuple(obj_color, line[5], 999999);
+	if (color_type == 'P')
+	{
+		if (type == SP || type == PL)
+			fill_tuple(obj_color, line[3], 999999);
+		else if (type == CY)
+			fill_tuple(obj_color, line[5], 999999);
+	}
+	else if (color_type == 'S')
+	{
+		if (type == SP || type == PL)
+			fill_tuple(obj_color, line[5], 999999);
+		else if (type == CY)
+			fill_tuple(obj_color, line[7], 999999);
+	}
 	obj_color->r = obj_color->r / 255;
 	obj_color->g = obj_color->g / 255;
 	obj_color->b = obj_color->b / 255;
@@ -167,6 +182,28 @@ void	set_cyl_specs(t_point *center, t_material *obj, char **line)
 	obj->closed = true;
 }
 
+void	attribute_pattern(enum e_id type, t_material *obj_mat, char **line)
+{
+	char  *pattern;
+	enum e_p patt_type;
+
+	set_color(&obj_mat->color_sec, line, type, 'S');
+	if (type == PL || type == SP)
+		pattern = line[6];
+	else if (type == CY)
+		pattern = line[8];
+	if (!ft_strcmp(pattern, "PC"))
+		patt_type = PC;
+	else if (!ft_strcmp(pattern, "GR"))
+		patt_type = GR;
+	else if (!ft_strcmp(pattern, "RNG"))
+		patt_type = RNG;
+	else if (!ft_strcmp(pattern, "CHK"))
+		patt_type = CHK;
+	obj_mat->pattern = stripe_pattern(&obj_mat->color, &obj_mat->color_sec, patt_type);
+	obj_mat->pattern.inver = mtx_inverse(NULL, obj_mat->pattern.trans);
+}
+
 /// @brief Set the obj material parameters
 /// @param obj Object to have its materials defined.
 /// @param m Standard material parameters.
@@ -175,18 +212,17 @@ void	set_cyl_specs(t_point *center, t_material *obj, char **line)
 void	set_materials(t_shape *sp, t_material *m,
 		char **line, enum e_id type)
 {
-	t_material *obj;
+	t_material *obj_mat;
 
-	obj = &sp->material;
-	set_color(&obj->color, line, type);
-	obj->ambient = m->ambient;
-	obj->diffuse = m->diffuse;
-	obj->specular = m->specular;
-	obj->shininess = m->shininess;
-	obj->pattern = m->pattern;
+	obj_mat = &sp->material;
+	set_color(&obj_mat->color, line, type, 'P');
+	obj_mat->ambient = m->ambient;
+	obj_mat->diffuse = m->diffuse;
+	obj_mat->specular = m->specular;
+	obj_mat->shininess = m->shininess;
+	obj_mat->pattern.has = false;
 	if (type == CY)
-		set_cyl_specs(&sp->center, obj, line);
-	obj->pattern.has = false;
-
-
+		set_cyl_specs(&sp->center, obj_mat, line);
+	if (((type == PL || type == SP) && line[5]) || (type == CY && line[7]))
+		attribute_pattern(type, obj_mat, line);
 }

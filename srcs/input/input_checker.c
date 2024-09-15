@@ -36,6 +36,13 @@ void	chk_type_objs(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 	free_split(line);
 }
 
+void	check_order(t_checkstx *chk_stx)
+{
+	if (chk_stx->count_a == 0
+		&& (chk_stx->count_l != 0 || chk_stx->count_objs != 0))
+		chk_stx->count_err_order++;
+}
+
 /// @brief Start verifying the Scene syntax.
 /// @param data Main program structure.
 /// @param file Scene file.
@@ -58,6 +65,7 @@ t_checkstx	chk_scene_objs(t_minirt *data, int file)
 		line_cleaned = ft_split(line_trimmed, ' ');
 		free(line_trimmed);
 		check_dup(line_cleaned[0], &chk_sintax);
+		check_order(&chk_sintax);
 		chk_type_objs(data, line_cleaned, &chk_sintax);
 	}
 	return (chk_sintax);
@@ -120,5 +128,9 @@ void	chk_input(t_minirt *mrt, int argc, char *file)
 	if (chk_stx.count_preset_err > 0)
 		ft_error(mrt, "ERROR: Invalid preset, keep it blank, or select one valid\n\
 				MTL: METALLIC, MAT: MATTE, SAT: SATIN\n", 1);
+	if (chk_stx.count_err_order > 0)
+		ft_error(mrt, "ERROR: Invalid input order.\n Ambient 'A' must come before than Light 'L' or Objects 'cy' 'pl' 'sp'.\n", 1);
+	if (chk_stx.count_pattern_err > 0)
+		ft_error(mrt, "ERROR: Review the pattern input, its always <2nd color PATTERN: 'PC', 'GR', 'RNG' or 'CHK'>.\n", 1);
 	close (fd);
 }
