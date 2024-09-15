@@ -92,10 +92,21 @@ t_material	parse_material(char **line, enum e_id type)
 	char		*preset;
 
 	ft_memset(&m, 0, sizeof(t_material));	
-	if ((type == SP || type == PL) && line[4])
-		preset = line[4];
-	else if (type == CY && line[5])
-		preset = line[6];	
+	
+	if (type == SP || type == PL)
+	{
+		if (line[4])
+			preset = line[4];
+		else
+			preset = "MTL";
+	}
+	else if (type == CY)
+	{
+		if (line[6])
+			preset = line[6];	
+		else
+			preset = "MTL";
+	}
 	set_preset(&m, preset);
 	return (m);
 }

@@ -141,10 +141,15 @@ void	fill_shape(t_sphere *sp, enum e_id type, char **line, float amb_ratio)
 }
 
 
-/// @brief Set the color for the object.
-/// @param obj_color tuple from the object structure.
-/// @param line Scene line to be used.
-/// @param type Type of the object.
+int	count_words(char **line)
+{
+	int	i;
+
+	i = -1;
+	while (line[++i])
+		continue ;
+	return (i);
+}
 
 /// @brief Set the color for the object.
 /// @param obj_color tuple from the object structure.
@@ -162,9 +167,9 @@ void	set_color(t_color *obj_color, char **line, enum e_id type, char color_type)
 	}
 	else if (color_type == 'S')
 	{
-		if (type == SP || type == PL)
+		if ((type == SP || type == PL) && count_words(line) == 7)
 			fill_tuple(obj_color, line[5], 999999);
-		else if (type == CY)
+		else if (type == CY && count_words(line) == 9)
 			fill_tuple(obj_color, line[7], 999999);
 	}
 	obj_color->r = obj_color->r / 255;
@@ -204,6 +209,8 @@ void	attribute_pattern(enum e_id type, t_material *obj_mat, char **line)
 	obj_mat->pattern.inver = mtx_inverse(NULL, obj_mat->pattern.trans);
 }
 
+
+
 /// @brief Set the obj material parameters
 /// @param obj Object to have its materials defined.
 /// @param m Standard material parameters.
@@ -223,6 +230,6 @@ void	set_materials(t_shape *sp, t_material *m,
 	obj_mat->pattern.has = false;
 	if (type == CY)
 		set_cyl_specs(&sp->center, obj_mat, line);
-	if (((type == PL || type == SP) && line[5]) || (type == CY && line[7]))
+	if (((type == PL || type == SP) && count_words(line) == 7) || (type == CY && count_words(line) == 9))
 		attribute_pattern(type, obj_mat, line);
 }

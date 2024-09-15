@@ -27,7 +27,7 @@ void	render(t_minirt *data)
 			color_at(data, x, y);
 		}
 	}
-	ft_printf("end render\n");
+	printf("RENDER\t\t[OK]\n");
 	mlx_put_image_to_window(data->canvas.mlx, data->canvas.win, data->canvas.img, 0, 0);
 	manage_interface(data);
 }

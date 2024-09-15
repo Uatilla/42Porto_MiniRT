@@ -64,6 +64,7 @@ void	set_scene(t_minirt *mrt, char *file)
 		parse_line(mrt, line_cleaned);
 	}
 	close (fd);
+	printf("SCENE\t\t[OK]\n");
 }
 
 /// @brief Takes a string and puts its values into a tuple.

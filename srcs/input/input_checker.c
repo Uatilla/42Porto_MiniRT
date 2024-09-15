@@ -73,14 +73,14 @@ t_checkstx	chk_scene_objs(t_minirt *data, int file)
 
 bool	check_extension(char *str, char *ext)
 {
-	int	i;
+	int		i;
+	char	*substr;
+
 	(void)ext;
-	char *substr;
-	
 	if (ft_strlen(str) < ft_strlen(ext))
-        return false;
+		return (False);
 	substr = ft_substr(str, ft_strlen(str) - ft_strlen(ext), ft_strlen(ext));
-	if(!ft_strcmp(substr, ext))
+	if (!ft_strcmp(substr, ext))
 	{
 		free(substr);
 		return (True);
@@ -103,34 +103,40 @@ void	chk_input(t_minirt *mrt, int argc, char *file)
 
 	if (argc != 2)
 	{
-		ft_error(NULL, "ERROR: Input invalid!\nTry:\n\t./minirt <scene>.rt\n", 0);
+		ft_error(NULL, "ERROR: Input invalid!\n\
+			Try: ./minirt <scene>.rt\n", 0);
 		clear_exit(NULL, 1);
 	}
 	if (!check_extension(file, ".rt"))
 	{
 		ft_error(NULL, "ERROR: Input invalid!\n\
-		The input doesn't end with '.rt'\n", 0);
+		The input doesn't have extension '.rt'.\n", 0);
 		clear_exit(NULL, 1);
 	}
 	fd = open(file, O_RDONLY, 0);
 	if (fd == -1)
 	{
-		ft_error(NULL, "ERROR: Failed to open the\
-				scene file, try another one.\n", 0);
+		ft_error(NULL, "ERROR: Failed to open the file.\
+				Try another one.\n", 0);
 		clear_exit(NULL, 1);
 	}
 	chk_stx = chk_scene_objs(mrt, fd);
+	
 	if (chk_stx.count_a > 1 || chk_stx.count_l > 1
 		|| chk_stx.count_c > 1)
-		ft_error(mrt, "ERROR: Duplicated elements found.\n", 1);
+		ft_error(mrt, "ERROR: Duplicated elements (A, C or L) found.\n", 1);
 	if (chk_stx.count_err_stx > 0)
-		ft_error(mrt, "ERROR: Invalid Scene Syntax\n", 1);
+		ft_error(mrt, "ERROR: Invalid scene syntax.\n", 1);
 	if (chk_stx.count_preset_err > 0)
-		ft_error(mrt, "ERROR: Invalid preset, keep it blank, or select one valid\n\
-				MTL: METALLIC, MAT: MATTE, SAT: SATIN\n", 1);
+		ft_error(mrt, "ERROR: Invalid preset.\n\
+				[OPTIONAL] Use one valid or keep it blank\n\
+				METALLIC 'MTL', MATTE 'MAT' or SATIN 'SAT'\n", 1);
 	if (chk_stx.count_err_order > 0)
-		ft_error(mrt, "ERROR: Invalid input order.\n Ambient 'A' must come before than Light 'L' or Objects 'cy' 'pl' 'sp'.\n", 1);
+		ft_error(mrt, "ERROR: Invalid input order.\n\
+			Ambient 'A' must be before:\n\
+			Light 'L' or Objects 'cy' 'pl' 'sp'.\n", 1);
 	if (chk_stx.count_pattern_err > 0)
 		ft_error(mrt, "ERROR: Review the pattern input, its always <2nd color PATTERN: 'PC', 'GR', 'RNG' or 'CHK'>.\n", 1);
 	close (fd);
+	printf("INPUT\t\t[OK]\n");
 }

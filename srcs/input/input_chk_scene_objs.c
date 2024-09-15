@@ -86,7 +86,7 @@ void	input_chk_plane(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 		else if (n_elem == 3)
 			check_elemnt(line, n_elem, chk_stx, (float []){0, 255.0});
 		else if (n_elem == 4)
-			check_preset(line[n_elem], chk_stx);
+				check_preset(line[n_elem], chk_stx);
 		else if (n_elem == 5)
 		{
 			if (line[n_elem])
@@ -108,9 +108,11 @@ void	input_chk_cylinder(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 	int	n_elem;
 	int	limit;
 
+	char **lin;
 	(void)mrt;
 	n_elem = -1;
 	limit = 7;
+	lin = line;
 	while (line[++n_elem])
 	{
 		if (n_elem == 1)
