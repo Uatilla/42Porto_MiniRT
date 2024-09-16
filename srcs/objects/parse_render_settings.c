@@ -24,9 +24,12 @@ void	parse_light(t_minirt *mrt, char **line)
 	light_point = get_tuple(line[1], 1);
 	light_intens = ft_atof(line[2]);
 	light_color = get_tuple(line[3], 999999);
-	light_color.r = light_intens * (light_color.r / 255) * (mrt->world.ambient_light.r / 255);
-	light_color.g = light_intens * (light_color.g / 255) * (mrt->world.ambient_light.g / 255);
-	light_color.b = light_intens * (light_color.b / 255) * (mrt->world.ambient_light.b / 255);
+	light_color.r = light_intens * (light_color.r / 255)
+		* (mrt->world.ambient_light.r / 255);
+	light_color.g = light_intens * (light_color.g / 255)
+		* (mrt->world.ambient_light.g / 255);
+	light_color.b = light_intens * (light_color.b / 255)
+		* (mrt->world.ambient_light.b / 255);
 	point_light(&light_point, &light_color, &mrt->world);
 }
 
@@ -37,11 +40,13 @@ void	parse_camera(t_minirt *mrt, char **line)
 {
 	t_vector	norm_vect;
 
-	mrt->camera = camera_construct(WIDTH, HEIGTH, degree_to_rad(ft_atof(line[3])));
+	mrt->camera = camera_construct(WIDTH, HEIGTH,
+			degree_to_rad(ft_atof(line[3])));
 	mrt->camera.center = get_tuple(line[1], 1);
 	mrt->camera.direct_center = (t_point){0, 0, 0, 1};
 	norm_vect = get_tuple(line[2], 0);
-	mrt->camera.trans = view_transformation(&mrt->camera.center, &mrt->camera.direct_center, &norm_vect);
+	mrt->camera.trans = view_transformation(&mrt->camera.center,
+			&mrt->camera.direct_center, &norm_vect);
 	mrt->camera.inver = mtx_inverse(mrt, mrt->camera.trans);
 }
 
@@ -91,8 +96,7 @@ t_material	parse_material(char **line, enum e_id type)
 	t_material	m;
 	char		*preset;
 
-	ft_memset(&m, 0, sizeof(t_material));	
-	
+	ft_memset(&m, 0, sizeof(t_material));
 	if (type == SP || type == PL)
 	{
 		if (line[4])
@@ -103,7 +107,7 @@ t_material	parse_material(char **line, enum e_id type)
 	else if (type == CY)
 	{
 		if (line[6])
-			preset = line[6];	
+			preset = line[6];
 		else
 			preset = "MTL";
 	}

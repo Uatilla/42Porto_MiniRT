@@ -121,7 +121,6 @@ void	chk_input(t_minirt *mrt, int argc, char *file)
 		clear_exit(NULL, 1);
 	}
 	chk_stx = chk_scene_objs(mrt, fd);
-	
 	if (chk_stx.count_a > 1 || chk_stx.count_l > 1
 		|| chk_stx.count_c > 1)
 		ft_error(mrt, "ERROR: Duplicated elements (A, C or L) found.\n", 1);
@@ -136,7 +135,7 @@ void	chk_input(t_minirt *mrt, int argc, char *file)
 			Ambient 'A' must be before:\n\
 			Light 'L' or Objects 'cy' 'pl' 'sp' 'cn'.\n", 1);
 	if (chk_stx.count_pattern_err > 0)
-		ft_error(mrt, "ERROR: Review the pattern input, its always <2nd color PATTERN: 'PC', 'GR', 'RNG' or 'CHK'>.\n", 1);
+		ft_error(mrt, "ERROR: Check pattern 'PC', 'GR', 'RNG' or 'CHK'>.\n", 1);
 	close (fd);
 	printf("INPUT\t\t[OK]\n");
 }

@@ -16,8 +16,8 @@ void	parse_shape(t_minirt *mrt, enum e_id type, char **line)
 {
 	t_shape	*shape;
 	t_world	*world;
-	(void)line;
 
+	(void)line;
 	world = &mrt->world;
 	mrt->world.n_objs++;
 	if (world->objs == NULL)
@@ -63,15 +63,16 @@ void	scale_obj(t_shape *sp, enum e_id type, char **line)
 /// @return The angle found for that axis.
 float	find_angle(t_point	reference, t_point p)
 {
-	float dot_p;
-	float mag_ref;
-	float mag_p;
-	dot_p = (reference.x * p.x) + (reference.y * p.y) + (reference.z * p.z);
-	mag_ref = sqrtf((reference.x * reference.x) + (reference.y * reference.y) + (reference.z * reference.z));
-	mag_p = sqrtf((p.x * p.x) + (p.y * p.y) + (p.z * p.z));
-	return(acos(dot_p / (mag_ref * mag_p)));
-}
+	float	dot_p;
+	float	mag_ref;
+	float	mag_p;
 
+	dot_p = (reference.x * p.x) + (reference.y * p.y) + (reference.z * p.z);
+	mag_ref = sqrtf((reference.x * reference.x) + (reference.y * reference.y)
+			+ (reference.z * reference.z));
+	mag_p = sqrtf((p.x * p.x) + (p.y * p.y) + (p.z * p.z));
+	return (acos(dot_p / (mag_ref * mag_p)));
+}
 
 /// @brief Effectively execute the rotation of the object.
 /// @param sp Shape to be rotated.
@@ -106,9 +107,9 @@ void	rotate_obj(t_shape *sp, enum e_id type, char **line)
 
 	(void)type;
 	norm_vect = get_tuple(line[2], 1);
-	sp->angle.x = find_angle((t_point){1,0,0,1}, norm_vect);
-	sp->angle.y = find_angle((t_point){0,1,0,1}, norm_vect);
-	sp->angle.z = find_angle((t_point){0,0,1,1}, norm_vect);
+	sp->angle.x = find_angle((t_point){1, 0, 0, 1}, norm_vect);
+	sp->angle.y = find_angle((t_point){0, 1, 0, 1}, norm_vect);
+	sp->angle.z = find_angle((t_point){0, 0, 1, 1}, norm_vect);
 	sp->angle.w = 2;
 	exec_rotation(sp);
 }
@@ -140,7 +141,6 @@ void	fill_shape(t_sphere *sp, enum e_id type, char **line, float amb_ratio)
 	sp->mtx_inver = mtx_inverse(NULL, sp->mtx_trans);
 }
 
-
 int	count_words(char **line)
 {
 	int	i;
@@ -156,7 +156,8 @@ int	count_words(char **line)
 /// @param line Scene line to be used.
 /// @param type Type of the object.
 /// @param color_type 'P' for Primary or 'S' for Secondary(texture).
-void	set_color(t_color *obj_color, char **line, enum e_id type, char color_type)
+void	set_color(t_color *obj_color, char **line,
+	enum e_id type, char color_type)
 {
 	if (color_type == 'P')
 	{
@@ -189,8 +190,8 @@ void	set_cyl_specs(t_point *center, t_material *obj, char **line)
 
 void	attribute_pattern(enum e_id type, t_material *obj_mat, char **line)
 {
-	char  *pattern;
-	enum e_p patt_type;
+	char		*pattern;
+	enum e_p	patt_type;
 
 	set_color(&obj_mat->color_sec, line, type, 'S');
 	if (type == PL || type == SP)
@@ -205,11 +206,10 @@ void	attribute_pattern(enum e_id type, t_material *obj_mat, char **line)
 		patt_type = RNG;
 	else if (!ft_strcmp(pattern, "CHK"))
 		patt_type = CHK;
-	obj_mat->pattern = stripe_pattern(&obj_mat->color, &obj_mat->color_sec, patt_type);
+	obj_mat->pattern = stripe_pattern(&obj_mat->color,
+			&obj_mat->color_sec, patt_type);
 	obj_mat->pattern.inver = mtx_inverse(NULL, obj_mat->pattern.trans);
 }
-
-
 
 /// @brief Set the obj material parameters
 /// @param obj Object to have its materials defined.
@@ -219,7 +219,7 @@ void	attribute_pattern(enum e_id type, t_material *obj_mat, char **line)
 void	set_materials(t_shape *sp, t_material *m,
 		char **line, enum e_id type)
 {
-	t_material *obj_mat;
+	t_material	*obj_mat;
 
 	obj_mat = &sp->material;
 	set_color(&obj_mat->color, line, type, 'P');
@@ -230,6 +230,7 @@ void	set_materials(t_shape *sp, t_material *m,
 	obj_mat->pattern.has = false;
 	if (type == CY || type == CONE)
 		set_cyl_specs(&sp->center, obj_mat, line);
-	if (((type == PL || type == SP) && count_words(line) == 7) || ((type == CY || type == CONE) && count_words(line) == 9))
+	if (((type == PL || type == SP) && count_words(line) == 7)
+		|| ((type == CY || type == CONE) && count_words(line) == 9))
 		attribute_pattern(type, obj_mat, line);
 }

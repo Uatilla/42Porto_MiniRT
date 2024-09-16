@@ -21,7 +21,7 @@ void	execute_rotation(t_shape *obj, int key)
 
 	rotation = mtx_create(NULL, 4, 4);
 	fill_idnty_mtx(rotation);
-	mtx_translation(obj->mtx_trans, &(t_point){0,0,0,1});
+	mtx_translation(obj->mtx_trans, &(t_point){0, 0, 0, 1});
 	if (key == KEY_Q)
 		mtx_rotation_z(rotation, -PI / 12);
 	else if (key == KEY_E)
@@ -53,13 +53,11 @@ void	rotate_obj_running(t_world *world, int key, int obj_selected)
 	while (obj)
 	{
 		if ((world->obj_selected == 0
-			|| world->obj_selected == obj->id))
+				|| world->obj_selected == obj->id))
 			execute_rotation(obj, key);
 		obj = obj->next;
 	}
 }
-
-
 
 void	rotate_camera(t_minirt *win, int key)
 {
@@ -69,7 +67,7 @@ void	rotate_camera(t_minirt *win, int key)
 	camera = &win->camera;
 	rotation = mtx_create(NULL, 4, 4);
 	fill_idnty_mtx(rotation);
-	mtx_translation(camera->trans, &(t_point){0,0,0,1});
+	mtx_translation(camera->trans, &(t_point){0, 0, 0, 1});
 	if (key == KEY_Q)
 		mtx_rotation_z(rotation, -PI / 12);
 	else if (key == KEY_E)
@@ -87,7 +85,6 @@ void	rotate_camera(t_minirt *win, int key)
 	clean_matrix(NULL, win->camera.inver, 0);
 	win->camera.inver = mtx_inverse(win, win->camera.trans);
 }
-
 
 void	rotate_win(t_minirt *win, int key)
 {
