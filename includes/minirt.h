@@ -366,6 +366,7 @@ t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
 void		light_is_behind_obj(t_color *diffuse, t_color *specular);
 t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
 t_color		shade_hit(t_comps *comps, t_world *world, t_minirt *data, int8_t remainer);
+void		bump(t_phong *phong, t_shape *obj);
 
 // patterns
 // patterns.c

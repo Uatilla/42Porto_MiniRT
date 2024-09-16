@@ -71,3 +71,13 @@ t_color	shade_hit(t_comps *comps, t_world *world, t_minirt *data, int8_t remaine
 	}
 	return (sum_tuples(&surface, &reflected));
 }
+
+void	bump(t_phong *phong, t_shape *obj)
+{
+	if (rand() % 7 && obj->material.is_bump)
+	{
+		phong->diffuse.r /= 2;
+		phong->diffuse.g /= 2;
+		phong->diffuse.b /= 2;
+	}
+}
