@@ -125,16 +125,6 @@ void	move_camera(t_minirt *win, int key)
 	mtx_print(camera->trans);
 }
 
-void	redo_render(t_minirt *win)
-{
-	mlx_destroy_image(win->canvas.mlx, win->canvas.img);
-	win->canvas.img = mlx_new_image(win->canvas.mlx, WIDTH, HEIGTH);
-	win->canvas.addr = mlx_get_data_addr(win->canvas.img,
-			&win->canvas.bits_per_pixel, &win->canvas.line_length,
-			&win->canvas.endian);
-	render(win);
-}
-
 /// @brief Move the obj and sets the mlx to display the new image.
 /// @param win Main code structure.
 /// @param key Key mapping to move the obj.
@@ -149,12 +139,4 @@ void	move_win(t_minirt *win, int key)
 	else if (win->world.scene_elem == LIGHT)
 		move_light(&win->world, key);
 	redo_render(win);
-}
-
-/// @brief Set the obj selected to be moved
-/// @param win Main code structure.
-void	select_obj(t_minirt *win)
-{
-	if (++win->world.obj_selected > win->world.n_objs)
-		win->world.obj_selected = 0;
 }

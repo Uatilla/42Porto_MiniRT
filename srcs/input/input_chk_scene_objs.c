@@ -103,7 +103,7 @@ void	input_chk_plane(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 /// @brief Check the syntax of the cylinder.
 /// @param line Elements inside cylinder line in the Scene.
 /// @param chk_stx Temp structure to track syntax errors.
-void	input_chk_cylinder(t_minirt *mrt, char **line, t_checkstx *chk_stx)
+void	input_chk_cyl_con(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 {
 	int	n_elem;
 	int	limit;

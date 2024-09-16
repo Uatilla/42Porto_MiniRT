@@ -131,9 +131,9 @@ void	fill_shape(t_sphere *sp, enum e_id type, char **line, float amb_ratio)
 	sp->mtx_trans = mtx;
 	sp->type = type;
 	m1 = parse_material(line, type);
-	if (type == PL || type == CY)
+	if (type == PL || type == CY || type == CONE)
 		rotate_obj(sp, type, line);
-	if (type == SP || type == CY)
+	if (type == SP || type == CY || type == CONE)
 		scale_obj(sp, type, line);
 	mtx_translation(sp->mtx_trans, &obj_center);
 	set_materials(sp, &m1, line, type);
@@ -162,14 +162,14 @@ void	set_color(t_color *obj_color, char **line, enum e_id type, char color_type)
 	{
 		if (type == SP || type == PL)
 			fill_tuple(obj_color, line[3], 999999);
-		else if (type == CY)
+		else if (type == CY || type == CONE)
 			fill_tuple(obj_color, line[5], 999999);
 	}
 	else if (color_type == 'S')
 	{
 		if ((type == SP || type == PL) && count_words(line) == 7)
 			fill_tuple(obj_color, line[5], 999999);
-		else if (type == CY && count_words(line) == 9)
+		else if ((type == CY || type == CONE) && count_words(line) == 9)
 			fill_tuple(obj_color, line[7], 999999);
 	}
 	obj_color->r = obj_color->r / 255;
@@ -195,7 +195,7 @@ void	attribute_pattern(enum e_id type, t_material *obj_mat, char **line)
 	set_color(&obj_mat->color_sec, line, type, 'S');
 	if (type == PL || type == SP)
 		pattern = line[6];
-	else if (type == CY)
+	else if (type == CY || type == CONE)
 		pattern = line[8];
 	if (!ft_strcmp(pattern, "PC"))
 		patt_type = PC;
@@ -228,8 +228,8 @@ void	set_materials(t_shape *sp, t_material *m,
 	obj_mat->specular = m->specular;
 	obj_mat->shininess = m->shininess;
 	obj_mat->pattern.has = false;
-	if (type == CY)
+	if (type == CY || type == CONE)
 		set_cyl_specs(&sp->center, obj_mat, line);
-	if (((type == PL || type == SP) && count_words(line) == 7) || (type == CY && count_words(line) == 9))
+	if (((type == PL || type == SP) && count_words(line) == 7) || ((type == CY || type == CONE) && count_words(line) == 9))
 		attribute_pattern(type, obj_mat, line);
 }

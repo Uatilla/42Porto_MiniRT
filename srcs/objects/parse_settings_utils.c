@@ -31,6 +31,8 @@ void	parse_line(t_minirt *mrt, char **line)
 			parse_shape(mrt, PL, line);
 		else if (!ft_strcmp(line[0], "cy"))
 			parse_shape(mrt, CY, line);
+		else if (!ft_strcmp(line[0], "cn"))
+			parse_shape(mrt, CONE, line);
 	}
 	free_split(line);
 }

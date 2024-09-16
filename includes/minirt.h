@@ -32,6 +32,7 @@ enum e_id
 	SP = 3,
 	PL = 4,
 	CY = 5,
+	CONE = 6,
 };
 
 enum e_p
@@ -264,17 +265,6 @@ typedef	struct	s_world
 	int			obj_selected;
 }	t_world;
 
-//INPUT STRUCTURES
-typedef	struct s_inp_ambient
-{
-	float	ratio;
-	t_color	color;
-} t_inp_ambient;
-
-typedef struct s_input
-{
-	t_inp_ambient	ambient;
-}	t_input;
 
 typedef struct s_minirt
 {
@@ -285,12 +275,7 @@ typedef struct s_minirt
 	t_world			world;
 	t_intersections	*inter;
 	t_intersections	*first_hit;
-	t_tuple			*tuple;
-
-
-	t_input			input;
-
-	
+	t_tuple			*tuple;	
 	int				fd;
 }		t_minirt;
 
@@ -468,7 +453,7 @@ void		input_chk_camera(t_minirt *mrt, char **line, t_checkstx *chk_stx);
 void		input_chk_light(t_minirt *mrt, char **line, t_checkstx *chk_stx);
 
 //input_chk_scene_objs.c
-void		input_chk_cylinder(t_minirt *mrt, char **line, t_checkstx *chk_stx);
+void		input_chk_cyl_con(t_minirt *mrt, char **line, t_checkstx *chk_stx);
 void		input_chk_sphere(t_minirt *mrt, char **line, t_checkstx *chk_stx);
 void		input_chk_plane(t_minirt *mrt, char **line, t_checkstx *chk_stx);
 
@@ -497,6 +482,16 @@ void		select_obj(t_minirt *win);
 void		move_obj(t_world *world, int key, int obj_selected);
 void		execute_move(t_shape *obj, int key);
 
+//rotate_objs.c
+void		execute_rotation(t_shape *obj, int key);
+void		rotate_obj_running(t_world *world, int key, int obj_selected);
+void		rotate_camera(t_minirt *win, int key);
+void		rotate_win(t_minirt *win, int key);
+void		exec_rotation(t_shape *sp);
+
+//event_utils.c
+void		redo_render(t_minirt *win);
+void		select_obj(t_minirt *win);
 
 //handle_hooks.c
 void		manage_interface(t_minirt *data);
@@ -511,12 +506,6 @@ bool		mtx_size_compare(t_matrix *mtx_a, t_matrix *mtx_b);
 bool		mtx_compare(t_matrix *mtx_a, t_matrix *mtx_b);
 void		fill_idnty_mtx(t_matrix *mtx);
 t_matrix	*mtx_create(t_minirt *data, int rows, int cols);
-
-//mtx_temp.c
-//FUNCOES TEMPORARIAS APENAS PARA TESTE!!!!!VVVVVVVVV
-void		mtx_fill(t_matrix *mtx);
-void		mtx_print(t_matrix *mtx);
-//FUNCOES TEMPORARIAS APENAS PARA TESTE!!!!!^^^^^^^^^^^
 
 //matrix_operations.c
 float		get_mtx_value(t_matrix *mtx, int row, int col);
@@ -552,8 +541,9 @@ void		mtx_rotation_x(t_matrix *mtx, float rot_deg);
 void		mtx_rotation_y(t_matrix *mtx, float rot_deg);
 void		mtx_rotation_z(t_matrix *mtx, float rot_deg);
 
-
-
-void		exec_rotation(t_shape *sp);
-void	redo_render(t_minirt *win);
+//mtx_temp.c
+//FUNCOES TEMPORARIAS APENAS PARA TESTE!!!!!VVVVVVVVV
+void		mtx_fill(t_matrix *mtx);
+void		mtx_print(t_matrix *mtx);
+//FUNCOES TEMPORARIAS APENAS PARA TESTE!!!!!^^^^^^^^^^^
 #endif

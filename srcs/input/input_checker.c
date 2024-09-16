@@ -30,8 +30,8 @@ void	chk_type_objs(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 			input_chk_sphere(mrt, line, chk_stx);
 		else if (!ft_strcmp(line[0], "pl"))
 			input_chk_plane(mrt, line, chk_stx);
-		else if (!ft_strcmp(line[0], "cy"))
-			input_chk_cylinder(mrt, line, chk_stx);
+		else if (!ft_strcmp(line[0], "cy") || !ft_strcmp(line[0], "cn"))
+			input_chk_cyl_con(mrt, line, chk_stx);
 	}
 	free_split(line);
 }
@@ -134,7 +134,7 @@ void	chk_input(t_minirt *mrt, int argc, char *file)
 	if (chk_stx.count_err_order > 0)
 		ft_error(mrt, "ERROR: Invalid input order.\n\
 			Ambient 'A' must be before:\n\
-			Light 'L' or Objects 'cy' 'pl' 'sp'.\n", 1);
+			Light 'L' or Objects 'cy' 'pl' 'sp' 'cn'.\n", 1);
 	if (chk_stx.count_pattern_err > 0)
 		ft_error(mrt, "ERROR: Review the pattern input, its always <2nd color PATTERN: 'PC', 'GR', 'RNG' or 'CHK'>.\n", 1);
 	close (fd);

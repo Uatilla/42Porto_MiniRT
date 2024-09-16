@@ -16,19 +16,14 @@ int	close_window(t_minirt *win)
 {
 	if (win)
 	{
-		printf("YES\n");
-		
+		clean_matrix(win, win->camera.trans, 0);
+		clean_matrix(win, win->camera.inver, 0);
 		mlx_destroy_image(win->canvas.mlx, win->canvas.img);
-		printf("YES\n");
 		mlx_destroy_window(win->canvas.mlx, win->canvas.win);
 		mlx_destroy_display(win->canvas.mlx);
 		free(win->canvas.mlx);
-		if (&win->world)
-			clean_world(&win->world);
-		if (win->camera.trans)
-			clean_matrix(win, win->camera.trans, 0);
-		if (win->camera.inver)
-			clean_matrix(win, win->camera.inver, 0);
+		clean_world(&win->world);
+		printf("Bye\n");
 		clear_exit(win, 0);
 	}
 	return (0);
@@ -42,107 +37,41 @@ void	select_scene_elemt(t_minirt *win, int key_pressed)
 			|| key_pressed == KEY_HOME)
 	{
 		if (key_pressed == KEY_C)
+		{
 			win->world.scene_elem = CAMERA;
+			printf("\t\tCamera selected.\n");
+		}
 		else if (key_pressed == KEY_L)
+		{
 			win->world.scene_elem = LIGHT;
+			printf("\t\tLight selected.\n");
+		}
 		else if (key_pressed == KEY_O)
+		{
 			win->world.scene_elem = OBJECT;
+			printf("\t\tObjects selected.\n");
+			printf("\t\tYou can use TAB to change the object selected.\n");
+		}
 		else if (key_pressed == KEY_HOME)
+		{
 			win->world.scene_elem = NONE;
+			printf("\t\tSelection removed\n");
+		}
+		if (win->world.scene_elem != NONE)
+			printf("\t\tUse A W S D or arrow up, arrow down, +... Or click home remove selection\n");
 	}
 	else if (win->world.scene_elem == NONE)
-		printf("First select an element to move/rotate:\n\
+		printf("\t\tSelect an element to move/rotate:\n\
 			Use: 'c' - Camera | 'l' - Light | 'o' - Objects\n");
-}
-
-
-/// @brief Execute the movement of the obj.
-/// @param obj Obj to be moved.
-/// @param key Key mapping to move the obj.
-void	execute_rotation(t_shape *obj, int key)
-{
-	t_matrix	*rotation;
-
-	rotation = mtx_create(NULL, 4, 4);
-	fill_idnty_mtx(rotation);
-	mtx_translation(obj->mtx_trans, &(t_point){0,0,0,1});
-	if (key == KEY_Q)
-		mtx_rotation_z(rotation, -PI / 12);
-	else if (key == KEY_E)
-		mtx_rotation_z(rotation, PI / 12);
-	else if (key == KEY_D)
-		mtx_rotation_y(rotation, PI / 12);
-	else if (key == KEY_A)
-		mtx_rotation_y(rotation, -PI / 12);
-	else if (key == KEY_W)
-		mtx_rotation_x(rotation, -PI / 12);
-	else if (key == KEY_S)
-		mtx_rotation_x(rotation, PI / 12);
-	obj->mtx_trans = mtx_multiply(NULL, rotation, obj->mtx_trans);
-	mtx_translation(obj->mtx_trans, &obj->center);
-	clean_matrix(NULL, obj->mtx_inver, 0);
-	obj->mtx_inver = mtx_inverse(NULL, obj->mtx_trans);
-}
-
-/// @brief Move the object selected.
-/// @param world Main code structure.
-/// @param key Key mapping to move the obj.
-/// @param obj_selected Obj selected to be moved.
-void	rotate_obj_running(t_world *world, int key, int obj_selected)
-{
-	t_shape	*obj;
-
-	obj = world->objs;
-	(void)obj_selected;
-	while (obj)
-	{
-		if ((world->obj_selected == 0
-			|| world->obj_selected == obj->id))
-			execute_rotation(obj, key);
-		obj = obj->next;
-	}
-}
-
-void	rotate_camera(t_minirt *win, int key)
-{
-	t_matrix	*rotation;
-	t_camera	*camera;
-
-	camera = &win->camera;
-	rotation = mtx_create(NULL, 4, 4);
-	fill_idnty_mtx(rotation);
-	mtx_translation(camera->trans, &(t_point){0,0,0,1});
-	if (key == KEY_Q)
-		mtx_rotation_z(rotation, PI / 12);
-	else if (key == KEY_E)
-		mtx_rotation_z(rotation, -PI / 12);
-	else if (key == KEY_D)
-		mtx_rotation_y(rotation, PI / 12);
-	else if (key == KEY_A)
-		mtx_rotation_y(rotation, -PI / 12);
-	if (key == KEY_S)
-		mtx_rotation_x(rotation, -PI / 12);
-	else if (key == KEY_W)
-		mtx_rotation_x(rotation, PI / 12);
-	win->camera.trans = mtx_multiply(NULL, rotation, win->camera.trans);
-	mtx_translation(camera->trans, &camera->center);
-	printf("ROTATION\n");
-	printf("Camera Center: X:%f Y:%f Z:%f\n", camera->center.x, camera->center.y, camera->center.z);
-	printf("Camera Direction Center: X:%f Y:%f Z:%f\n", camera->direct_center.x, camera->direct_center.y, camera->direct_center.z);
-	mtx_print(camera->trans);
-	clean_matrix(NULL, win->camera.inver, 0);
-	win->camera.inver = mtx_inverse(win, win->camera.trans);
-}
-
-
-void	rotate_win(t_minirt *win, int key)
-{
-	(void)win;
-	if (win->world.objs && win->world.scene_elem == OBJECT)
-		rotate_obj_running(&win->world, key, win->world.obj_selected);
-	else if (win->world.scene_elem == CAMERA)
-		rotate_camera(win, key);
-	redo_render(win);
+	else if (key_pressed != KEY_LEFT && key_pressed != KEY_RIGHT
+				&& key_pressed != KEY_DOWN && key_pressed != KEY_UP
+				&& key_pressed != KEY_PLUS && key_pressed != KEY_MINUS
+				&& key_pressed != KEY_W && key_pressed != KEY_A
+				&& key_pressed != KEY_S && key_pressed != KEY_D
+				&& key_pressed != KEY_E && key_pressed != KEY_Q)
+				printf("\t\tSelect an element to move/rotate:\n\
+			Use: 'c' - Camera | 'l' - Light | 'o' - Objects\n\
+			OR\n\t\tUse A W S D or arrow up, arrow down, +... to move the current selection Or click home remove selection\n");
 }
 
 int	handle_press_key(int key_pressed, void *param)
@@ -153,7 +82,7 @@ int	handle_press_key(int key_pressed, void *param)
 	if (key_pressed == KEY_ESC || !win)
 		close_window(win);
 	else
-	{	
+	{
 		select_scene_elemt(win, key_pressed);
 		if (win->world.scene_elem != NONE)
 		{
@@ -165,7 +94,7 @@ int	handle_press_key(int key_pressed, void *param)
 				|| key_pressed == KEY_S || key_pressed == KEY_D
 				|| key_pressed == KEY_E || key_pressed == KEY_Q)
 				rotate_win(win, key_pressed);
-			else if (key_pressed == KEY_TAB && win->world.scene_elem == OBJECT)
+			if (key_pressed == KEY_TAB)
 				select_obj(win);
 		}
 	}
@@ -182,9 +111,8 @@ int	handle_release_key(int key_pressed, t_minirt *data)
 
 void	manage_interface(t_minirt *data)
 {
-	mlx_hook(data->canvas.win, 17, 0L, close_window, &data);
+	mlx_put_image_to_window(data->canvas.mlx, data->canvas.win, data->canvas.img, 0, 0);
+	mlx_hook(data->canvas.win, 17, 0L, close_window, data);
 	mlx_hook(data->canvas.win, KeyPress, KeyPressMask, handle_press_key, data);
-	mlx_hook(data->canvas.win, KeyRelease, KeyReleaseMask,
-		handle_release_key, data);
 	mlx_loop(data->canvas.mlx);
 }
