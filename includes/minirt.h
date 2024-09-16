@@ -51,14 +51,14 @@ enum e_p
 # define HEIGTH 500
 # define PI 3.14159 
 
-#define KEY_ESC        65307
-#define KEY_A          97
-#define KEY_S          115
-#define KEY_D          100
-#define KEY_W          119
-#define KEY_LEFT       65361
-#define KEY_RIGHT      65363
-#define KEY_DOWN       65364
+#define KEY_ESC         65307
+#define KEY_A           97
+#define KEY_S           115
+#define KEY_D           100
+#define KEY_W           119
+#define KEY_LEFT        65361
+#define KEY_RIGHT       65363
+#define KEY_DOWN        65364
 #define KEY_UP         	65362
 #define KEY_TAB			65289
 
@@ -149,6 +149,7 @@ typedef	struct s_material
 	float		min;
 	float		max;
 	bool		closed;
+	bool		is_bump;
 }	t_material;
 
 typedef	struct s_shape

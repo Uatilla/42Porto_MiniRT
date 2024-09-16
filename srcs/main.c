@@ -27,6 +27,7 @@ int	main(void)
 	//WALL1
 	t_material m;
 	m.pattern.has = false;
+	m.is_bump = false;
 	m.color = (t_color){1, 1, 1, 999999};
 	m.ambient = 0.1;
 	m.diffuse = 0.7;
@@ -47,6 +48,7 @@ int	main(void)
 
 	//WALL2
 	t_material wall;
+	wall.is_bump = false;
 	wall.pattern.has = false;
 	wall.color = (t_color){1, 0.9, 0.9, 999999};
 	wall.ambient = 0.1;
@@ -82,6 +84,7 @@ int	main(void)
 	midle.specular = 0.3;
 	midle.shininess = 200;
 	midle.reflective = 0;
+	midle.is_bump = true;
 	// midle.pattern = stripe_pattern(&(t_color){0, 1, 0, 0}, &(t_color){1, 0.33, 0.9, 1}, STR);
 	// midle.pattern.inver = mtx_inverse(&data, midle.pattern.trans);
 
@@ -110,10 +113,10 @@ int	main(void)
 	fill_idnty_mtx(sc_right);
 	mtx_scaling(sc_right, &(t_point){0.5, 0.5, 0.5, 1});
 
-	parse_shape(&data.world, CY, NULL, &right);
-	data.world.objs->mtx_trans = mtx_multiply(&data, sc_right, data.world.objs->mtx_trans);
-	data.world.objs->mtx_trans = mtx_multiply(&data, trans_right, data.world.objs->mtx_trans);
-	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
+	// parse_shape(&data.world, CY, NULL, &right);
+	// data.world.objs->mtx_trans = mtx_multiply(&data, sc_right, data.world.objs->mtx_trans);
+	// data.world.objs->mtx_trans = mtx_multiply(&data, trans_right, data.world.objs->mtx_trans);
+	// data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 	//CYLINDRO
 	t_material cylindro;
@@ -148,17 +151,17 @@ int	main(void)
 	fill_idnty_mtx(cy_rot_y);
 	mtx_rotation_y(cy_rot_y, -M_PI / 6);
 
-	parse_shape(&data.world, CONE, NULL, &cylindro);
-	data.world.objs->mtx_trans = mtx_multiply(&data, cy_sc, data.world.objs->mtx_trans);
-	// data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot, data.world.objs->mtx_trans);
-	// data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot_y, data.world.objs->mtx_trans);
-	data.world.objs->mtx_trans = mtx_multiply(&data, cy_trans, data.world.objs->mtx_trans);
-	data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
+	// parse_shape(&data.world, CONE, NULL, &cylindro);
+	// data.world.objs->mtx_trans = mtx_multiply(&data, cy_sc, data.world.objs->mtx_trans);
+	// // data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot, data.world.objs->mtx_trans);
+	// // data.world.objs->mtx_trans = mtx_multiply(&data, cy_rot_y, data.world.objs->mtx_trans);
+	// data.world.objs->mtx_trans = mtx_multiply(&data, cy_trans, data.world.objs->mtx_trans);
+	// data.world.objs->mtx_inver = mtx_inverse(&data, data.world.objs->mtx_trans);
 
 	//LIGHT
-	// point_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 999999}, &data.world);
-	point_light(&(t_point){10, 10, -10, 1}, &(t_color){1, 0, 0, 999999}, &data.world);
-	point_light(&(t_point){0, 0, -10, 1}, &(t_color){1, 1, 1, 999999}, &data.world);
+	point_light(&(t_point){-10, 10, -10, 1}, &(t_color){1, 1, 1, 999999}, &data.world);
+	// point_light(&(t_point){10, 0, -10, 1}, &(t_color){1, 1, 1, 999999}, &data.world);
+	// point_light(&(t_point){0, 0, -10, 1}, &(t_color){1, 1, 1, 999999}, &data.world);
 
 	// CAMERA
 	data.camera = camera_construct(WIDTH, HEIGTH, PI / 3);

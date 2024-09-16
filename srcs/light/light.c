@@ -95,6 +95,12 @@ t_color	lighting(t_comps *comps, t_light *light)
 	{
 		phong.diffuse = mult_tuple_scalar(&color,
 							comps->obj->material.diffuse * light_normal_dot);
+		if (rand() % 7 && comps->obj->material.is_bump)
+		{
+			phong.diffuse.r /= 2;
+			phong.diffuse.g /= 2;
+			phong.diffuse.b /= 2;
+		}
 		comps->reflectv = negating_tuple(&comps->lightv);
 		comps->reflectv = reflect(&comps->reflectv, &comps->normalv);
 		ref_dot_eye = dot_product(&comps->reflectv, &comps->eyev);

@@ -41,7 +41,7 @@ t_vector	local_normal_at(t_shape *obj, t_point *local_point)
 	t_vector	local_normal;
 
 	if (obj->type == SP)
-		local_normal = subtrac_tuples(local_point, &(t_point){0, 0, 0, 1});
+		local_normal = subtrac_tuples(&local_normal, &(t_point){0, 0, 0, 1});
 	else if (obj->type == CY)
 		local_normal = normal_at_cy(local_point, obj);
 	else if (obj->type == PL)
