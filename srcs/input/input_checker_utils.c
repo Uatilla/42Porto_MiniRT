@@ -22,6 +22,27 @@ void	free_split(char **line)
 	free(line);
 }
 
+void	check_char(char *val, t_checkstx *chk_stx)
+{
+	int	i;
+	int	count_dot;
+
+	i = -1;
+	count_dot = 0;
+	while (val[++i])
+	{
+		if (val[i] < '0' || val[i] > '9')
+		{
+			if (val[i] == '.')
+				count_dot++;
+			else
+				chk_stx->count_err_stx++;
+		}
+		if (count_dot > 1)
+			chk_stx->count_err_stx++;
+	}
+}
+
 /// @brief Verify if the element is under the valid value range.
 /// @param val Value to be checked.
 /// @param chk_stx Temp structure to track syntax errors.
@@ -31,6 +52,7 @@ void	check_range(char *val, t_checkstx *chk_stx, float *range_limts)
 {
 	float	value;
 
+	check_char(val, chk_stx);
 	value = ft_atof(val);
 	if (value < range_limts[0] || value > range_limts[1])
 		chk_stx->count_err_stx++;
@@ -62,6 +84,7 @@ void	check_elemnt(char **line, int elemnt_str, t_checkstx *chk_stx,
 /// @param chk_stx Temp structure to track syntax errors.
 void	check_negative(char *dimension, t_checkstx *chk_stx)
 {
+	check_char(dimension, chk_stx);
 	if (atof(dimension) < 0.0)
 		chk_stx->count_err_stx++;
 }
@@ -79,5 +102,10 @@ void	check_dup(char *obj_type, t_checkstx *chk_stx)
 			chk_stx->count_c++;
 		else if (!ft_strcmp(obj_type, "L"))
 			chk_stx->count_l++;
+		else if (!ft_strcmp(obj_type, "sp")
+			|| !ft_strcmp(obj_type, "pl")
+			|| !ft_strcmp(obj_type, "cy")
+			|| !ft_strcmp(obj_type, "cn"))
+			chk_stx->count_objs++;
 	}
 }

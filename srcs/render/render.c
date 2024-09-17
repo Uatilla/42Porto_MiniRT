@@ -30,6 +30,6 @@ void	render(t_minirt *data)
 			write_pixel(&data->canvas, x, y, &color);
 		}
 	}
-	ft_printf("end render\n");
+	printf("RENDER\t\t[OK]\n");
 	manage_interface(data);
 }

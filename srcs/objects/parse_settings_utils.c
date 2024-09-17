@@ -25,12 +25,14 @@ void	parse_line(t_minirt *mrt, char **line)
 			parse_camera(mrt, line);
 		else if (!ft_strcmp(line[0], "L"))
 			parse_light(mrt, line);
-		// else if (!ft_strcmp(line[0], "sp"))
-		// 	parse_shape(mrt, SP, line);
-		// else if (!ft_strcmp(line[0], "pl"))
-		// 	parse_shape(mrt, PL, line);
-		// else if (!ft_strcmp(line[0], "cy"))
-		// 	parse_shape(mrt, CY, line);
+		else if (!ft_strcmp(line[0], "sp"))
+			parse_shape(mrt, SP, line);
+		else if (!ft_strcmp(line[0], "pl"))
+			parse_shape(mrt, PL, line);
+		else if (!ft_strcmp(line[0], "cy"))
+			parse_shape(mrt, CY, line);
+		else if (!ft_strcmp(line[0], "cn"))
+			parse_shape(mrt, CONE, line);
 	}
 	free_split(line);
 }
@@ -50,6 +52,7 @@ void	set_scene(t_minirt *mrt, char *file)
 		clear_exit(NULL, 1);
 	mrt->world.obj_selected = 0;
 	mrt->world.n_objs = 0;
+	mrt->world.scene_elem = NONE;
 	while (1)
 	{
 		line = get_next_line(fd);
@@ -63,6 +66,7 @@ void	set_scene(t_minirt *mrt, char *file)
 		parse_line(mrt, line_cleaned);
 	}
 	close (fd);
+	printf("SCENE\t\t[OK]\n");
 }
 
 /// @brief Takes a string and puts its values into a tuple.
