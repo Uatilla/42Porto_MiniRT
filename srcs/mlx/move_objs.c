@@ -107,7 +107,7 @@ void	move_camera(t_minirt *win, int key)
 	}
 	clean_matrix(NULL, win->camera.trans, 0);
 	win->camera.trans = view_transformation(&win->camera.center, \
-		&win->camera.direct_center, &(t_vector){0, 1, 0, 0});
+		&win->camera.direct_center, &camera->up);
 	clean_matrix(NULL, win->camera.inver, 0);
 	win->camera.inver = mtx_inverse(win, win->camera.trans);
 }

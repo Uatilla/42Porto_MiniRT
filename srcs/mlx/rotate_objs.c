@@ -63,25 +63,64 @@ void	rotate_camera(t_minirt *win, int key)
 {
 	t_matrix	*rotation;
 	t_camera	*camera;
+	t_point		angle;
 
 	camera = &win->camera;
 	rotation = mtx_create(NULL, 4, 4);
 	fill_idnty_mtx(rotation);
-	mtx_translation(camera->trans, &(t_point){0, 0, 0, 1});
+	//mtx_translation(camera->trans, &(t_point){0, 0, 0, 1}); //Mova para o centro
+
+	//Rotacione
 	if (key == KEY_Q)
-		mtx_rotation_z(rotation, -PI / 12);
-	else if (key == KEY_E)
+	{
 		mtx_rotation_z(rotation, PI / 12);
+		camera->up = mtx_mult_tuple(rotation, &camera->up);
+		camera->direct_center = mtx_mult_tuple(rotation, &camera->direct_center);
+	}
+	else if (key == KEY_E)
+	{
+		mtx_rotation_z(rotation, -PI / 12);
+		camera->up = mtx_mult_tuple(rotation, &camera->up);
+		camera->direct_center = mtx_mult_tuple(rotation, &camera->direct_center);
+	}
 	else if (key == KEY_D)
+	{
 		mtx_rotation_y(rotation, PI / 12);
+		camera->center = mtx_mult_tuple(rotation, &camera->center);
+	}
 	else if (key == KEY_A)
+	{
 		mtx_rotation_y(rotation, -PI / 12);
+		
+		camera->center = mtx_mult_tuple(rotation, &camera->center);
+	}
 	if (key == KEY_S)
+	{
 		mtx_rotation_x(rotation, -PI / 12);
+		camera->up = mtx_mult_tuple(rotation, &camera->up);
+		win->camera.center = mtx_mult_tuple(rotation, &win->camera.center);
+	}
 	else if (key == KEY_W)
+	{
 		mtx_rotation_x(rotation, PI / 12);
-	win->camera.trans = mtx_multiply(NULL, rotation, win->camera.trans);
-	mtx_translation(camera->trans, &camera->center);
+		camera->up = mtx_mult_tuple(rotation, &camera->up);
+		win->camera.center = mtx_mult_tuple(rotation, &win->camera.center);
+	}
+
+	//printf("OLD FROM: %f %f %f\n", camera->center.x, camera->center.y, camera->center.z);
+	
+	//camera->center = mtx_mult_tuple(rotation, &camera->center);
+	//printf("NEW FROM: %f %f %f\n", camera->center.x, camera->center.y, camera->center.z);
+	
+	//win->camera.trans = mtx_multiply(NULL, rotation, win->camera.trans);
+	
+	
+
+	win->camera.trans = view_transformation(&win->camera.center, \
+		&win->camera.direct_center, &camera->up);
+	//Volte para a posic;'ao anterior
+	//mtx_translation(camera->trans, &camera->center);
+
 	clean_matrix(NULL, win->camera.inver, 0);
 	win->camera.inver = mtx_inverse(win, win->camera.trans);
 }
