@@ -67,7 +67,7 @@ void	move_light(t_world *world, int key)
 		world->light->position.z = world->light->position.z - 1;
 	else if (key == KEY_MINUS)
 		world->light->position.z = world->light->position.z + 1;
-	point_light(&world->light->position, &world->light->intensity, world);
+	//point_light(&world->light->position, &world->light->intensity, world);
 }
 
 void	move_camera(t_minirt *win, int key)

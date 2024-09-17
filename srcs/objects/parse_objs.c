@@ -227,7 +227,10 @@ void	set_materials(t_shape *sp, t_material *m,
 	obj_mat->diffuse = m->diffuse;
 	obj_mat->specular = m->specular;
 	obj_mat->shininess = m->shininess;
+	obj_mat->reflective = m->reflective;
 	obj_mat->pattern.has = false;
+	obj_mat->is_bump = false; //This will change in accordance to the input.
+	
 	if (type == CY || type == CONE)
 		set_cyl_specs(&sp->center, obj_mat, line);
 	if (((type == PL || type == SP) && count_words(line) == 7)

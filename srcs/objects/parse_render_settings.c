@@ -65,6 +65,7 @@ void	set_preset(t_material *m, char *preset)
 		m->diffuse = 0.7;
 		m->shininess = 10;
 		m->specular = 0.1;
+		m->reflective = 0;
 	}
 	else if (!ft_strcmp("MTL", preset))
 	{
@@ -72,6 +73,7 @@ void	set_preset(t_material *m, char *preset)
 		m->diffuse = 0.3;
 		m->shininess = 200;
 		m->specular = 0.9;
+		m->reflective = 0.7;
 	}
 	else if (!ft_strcmp("SAT", preset))
 	{
@@ -79,6 +81,7 @@ void	set_preset(t_material *m, char *preset)
 		m->diffuse = 0.5;
 		m->shininess = 50;
 		m->specular = 0.5;
+		m->reflective = 0.5;
 	}
 }
 
