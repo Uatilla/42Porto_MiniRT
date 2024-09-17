@@ -109,7 +109,7 @@ void	move_camera(t_minirt *win, int key)
 	printf("to: %f %f %f\n", camera->direct_center.x, camera->direct_center.y, camera->direct_center.z);
 	printf("from: %f %f %f\n", camera->center.x, camera->center.y, camera->center.z);
 	win->camera.trans = view_transformation(&win->camera.center, \
-		&win->camera.direct_center, &(t_vector){0, 1, 0, 0});
+		&win->camera.direct_center, &camera->up);
 	clean_matrix(NULL, win->camera.inver, 0);
 	win->camera.inver = mtx_inverse(win, win->camera.trans);
 }

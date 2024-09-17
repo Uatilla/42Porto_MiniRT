@@ -245,6 +245,7 @@ typedef	struct s_camera
 	t_matrix	*inver;
 	t_point		center;
 	t_point		direct_center;
+	t_vector	up;
 	int			hsize;
 	int			vsize;
 	float		half_width;
@@ -390,6 +391,7 @@ void		fill_shape(t_sphere *sp, enum e_id type, char **line, float amb_ratio);
 void		set_materials(t_shape *sp, t_material *m, char **line, enum e_id type);
 //void		set_materials(t_material *obj, t_material *m, char **line, enum e_id type);
 void		scale_obj(t_shape *sp, enum e_id type, char **line);
+float	find_angle(t_point	reference, t_point p);
 
 //parse_settings_utils.c
 void		parse_line(t_minirt *mrt, char **line);
