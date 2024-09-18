@@ -6,13 +6,11 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 20:37:04 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/10 21:49:38 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/09/13 19:39:16 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../includes/minirt.h"
-
 
 // sets the t values for the ray cylinder intersections
 // returns 0 if no intersections
@@ -48,10 +46,10 @@ int8_t	ray_cylinder_intersect(t_ray *ray, float *t, t_shape *obj)
 		swap(t);
 	count[0] = check_cy_range(ray, t[0], obj);
 	count[1] = check_cy_range(ray, t[1], obj);
-	return (cy_intercections_count(count, t));
+	return (intercections_count(count, t));
 }
 
-int8_t cy_intercections_count(bool *count, float *t)
+int8_t intercections_count(bool *count, float *t)
 {
 	if (count[0] && count[1])
 	{
@@ -73,40 +71,6 @@ int8_t cy_intercections_count(bool *count, float *t)
 		return (1);
 	}
 	return (0);
-}
-
-bool	check_cy_range(t_ray *ray, float t, t_shape *obj)
-{
-	float	y;
-	float	cap_t;
-
-	y = ray->origin.y + (ray->direction.y * t);
-	if (obj->material.min < y && y < obj->material.max)
-		return (true);
-	return (false);
-}
-
-bool	check_cap(t_ray *ray, float t)
-{
-	float	x;
-	float	z;
-
-	x = ray->origin.x + (t * ray->direction.x);
-	z = ray->origin.z + (t * ray->direction.z);
-	return (((x * x) + (z * z)) <= 1);
-}
-
-int8_t	ray_cy_cap_inter(t_ray *ray, float *t, t_shape *obj)
-{
-	bool	count[2];
-
-	if (obj->material.closed == false || fabs(ray->direction.y) < EPSILON)
-		return (0);
-	t[0] = (obj->material.min - ray->origin.y) / ray->direction.y;
-	t[1] = (obj->material.max - ray->origin.y) / ray->direction.y;
-	count[0] = check_cap(ray, t[0]);
-	count[1] = check_cap(ray, t[1]);
-	return (cy_intercections_count(count, t));
 }
 
 void	swap(float *t)

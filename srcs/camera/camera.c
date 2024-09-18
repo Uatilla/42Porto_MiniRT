@@ -6,12 +6,16 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 22:34:32 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/08/22 15:24:15 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/09/13 17:20:18 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
+/*
+*	This function returns the ray, set from the camera origim
+*	throught each given pixel
+*/
 t_ray	ray_for_pixel(t_camera *camera, size_t px, size_t py)
 {
 	t_ray	ray;

@@ -6,7 +6,7 @@
 #    By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/30 20:21:44 by uviana-a          #+#    #+#              #
-#    Updated: 2024/08/29 17:00:51 by Jburlama         ###   ########.fr        #
+#    Updated: 2024/09/13 19:38:06 by Jburlama         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,9 +34,9 @@ OBJS_DIR	=	objs
 LIBFT_DIR	=	./libraries/libft
 MLX_DIR		=	./libraries/minilibx-linux
 INC			=	includes
-SUB_DIR		=	tuples input exit mlx ray canvas sphere window objects light \
-				matrix matrix_transformations cylinder view camera render plane\
-				patterns	
+SUB_DIR		=	tuples input exit mlx ray canvas window objects light cone\
+				matrix matrix_transformations view camera render \
+				patterns normal computations intersections
 ALL_OBJS_DIR	= $(foreach dir, $(SUB_DIR), $(addprefix $(OBJS_DIR)/, $(dir)))
 
 # Flags
@@ -49,10 +49,11 @@ SRCS		=	main.c \
 				input/input_checker.c input/input_checker_utils.c input/input_chk_render_setup.c input/input_chk_scene_objs.c\
 				objects/parse_objs.c objects/parse_render_settings.c objects/parse_settings_utils.c\
 				light/light.c light/light_utils.c\
-				ray/ray.c ray/intersections.c ray/sort_intersections.c \
+				ray/ray.c \
+				intersections/intersections.c intersections/intersections_utils.c \
+				intersections/sphere.c intersections/plane.c intersections/cylinder.c \
+				intersections/cylinder_cap.c intersections/cone.c\
 				canvas/map.c \
-				sphere/sphere.c \
-				cylinder/cylinder.c \
 				exit/exit_cleaner.c exit/clean_world.c \
 				mlx/mlx.c mlx/handle_hooks.c mlx/move_objs.c mlx/rotate_objs.c mlx/event_utils.c\
 				matrix/matrix_validations.c matrix/matrix_operations.c matrix/matrix_modifications.c matrix/matrix_mods_utils.c\
@@ -61,9 +62,9 @@ SRCS		=	main.c \
 				view/view_transformation.c \
 				camera/camera.c	\
 				render/render.c \
-				plane/plane.c \
-				patterns/patterns.c
-
+				patterns/patterns.c\
+				normal/normal.c\
+				computations/computations.c
 
 OBJS		=	$(SRCS:%.c=$(OBJS_DIR)/%.o)
 LIBFT		=	$(LIBFT_DIR)/libft.a

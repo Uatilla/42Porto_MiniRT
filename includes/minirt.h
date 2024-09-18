@@ -6,7 +6,7 @@
 /*   By: uviana-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 20:17:41 by uviana-a          #+#    #+#             */
-/*   Updated: 2024/08/29 17:10:29 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/09/13 19:38:54 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ typedef struct s_matrix
 
 typedef struct s_xs
 {
-	int	count;
+	int		count;
 	float	*arr;
 }	t_xs;
 
@@ -172,6 +172,7 @@ typedef	struct s_material
 	float		min;
 	float		max;
 	bool		closed;
+	bool		is_bump;
 }	t_material;
 
 typedef	struct s_shape
@@ -199,17 +200,17 @@ typedef	struct	s_intersections
 	float					hit;
 	t_shape					*obj;
 	struct s_intersections	*next;
-	int8_t					count;
 }	t_intersections;
 
 typedef	struct s_comps
 {
 	t_shape 	*obj;
 	t_point		point;
+	t_point		over_point;
 	t_vector	eyev;
 	t_vector	normalv;
 	t_vector	lightv;
-	t_vector   	reflect;
+	t_vector   	reflectv;
 	float		t;
 	bool		inside;
 	bool		is_shadown;
@@ -271,13 +272,12 @@ typedef struct s_minirt
 {
 	t_canvas		canvas;
 	t_camera		camera;
-	t_ray			ray;
-	t_xs			xs;
 	t_world			world;
 	t_intersections	*inter;
 	t_intersections	*first_hit;
 	t_tuple			*tuple;	
 	int				fd;
+	bool			has_color;
 }		t_minirt;
 
 // used in view_transformation func
@@ -305,7 +305,6 @@ t_tuple		creating_tuple(float x, float y, float z, float w);
 t_tuple		creating_point(float x, float y, float z);
 t_tuple		creating_vector(float x, float y, float z);
 t_tuple		creating_color(float r, float g, float b);
-
 
 //chk_tuples.typ.c
 bool		compare_float(float a, float b);
@@ -346,23 +345,32 @@ t_ray		ray_for_pixel(t_camera *camera, size_t px, size_t py);
 //render.c
 void		render(t_minirt *data);
 
-//light
-//light.c
-void		color_at(t_minirt *data, int x, int y);
-void		point_light(t_point *pos, t_color *intensity, t_world *world);
+// normal
+// normal.c
 t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data);
 t_vector	local_normal_at(t_shape *obj, t_point *local_point);
 t_vector	normal_at_cy(t_point *point, t_shape *obj);
+t_vector	normal_at_cone(t_point *point, t_shape *obj);
+
+//computations
+//computations.c
+t_comps		prepare_computations(t_intersections *i, t_ray *ray, t_minirt *data);
+bool		is_shadowed(t_world *w, t_light *light, t_point *p);
+t_color		reflected_color(t_comps *comps, t_minirt *data, int8_t remaining);
+
+//light
+//light.c
+t_color		color_at(t_minirt *data, t_ray *ray, int8_t remainer);
+void		point_light(t_point *pos, t_color *intensity, t_world *world);
 t_vector	reflect(t_vector *in, t_vector *normal);
 t_color		lighting(t_comps *comps, t_light *light);
 
 // light_utils.c
-t_comps		prepare_computations(t_intersections *i, t_ray *ray, t_minirt *data);
 t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
 void		light_is_behind_obj(t_color *diffuse, t_color *specular);
 t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
-bool		is_shadowed(t_world *w, t_point *p);
-t_color		shade_hit(t_comps *comps, t_light *light, t_minirt *data);
+t_color		shade_hit(t_comps *comps, t_world *world, t_minirt *data, int8_t remainer);
+void		bump(t_phong *phong, t_shape *obj);
 
 // patterns
 // patterns.c
@@ -398,35 +406,40 @@ void		parse_light(t_minirt *mrt, char **line);
 void		set_preset(t_material *m, char *preset);
 t_material	parse_material(char **line, enum e_id type);
 
-
 //ray
 //ray.c
 t_tuple		position(t_ray *ray, float t);
 t_ray		ray_trasform(t_ray *ray, t_matrix *mtx);
 
-//sphere
+// intersections
+// intersections.c
+void	ray_intersections(t_minirt *data, t_shape *obj, t_ray *trans_ray, t_ray *ray);
+void	intersections(t_minirt *data, t_ray *ray);
+
+// intersections_utils.c
+void	first_hit(t_minirt *data);
+void	first_inter(t_minirt *data, float *t, t_shape *obj, t_ray *ray);
+void	append_inter(t_minirt *data, float *t, t_shape *obj, t_ray *ray);
+void	add_intersection(t_minirt *data, float *t, t_shape *obj, t_ray *ray);
+
 //sphere.c
 int8_t		ray_sphere_intersect(t_ray *ray, float *t);
 
-//plane
 //plane.c
 int8_t		ray_plane_intersect(t_ray *ray, float *t);
 
-//cylinder
 //cylinder.c
-int8_t		ray_cylinder_intersect(t_ray *ray, float *t, t_shape *obj);
-int8_t		cy_intercections_count(bool *count, float *t);
-bool		check_cy_range(t_ray *ray, float t, t_shape *obj);
-int8_t		ray_cy_cap_inter(t_ray *ray, float *t, t_shape *obj);
-bool		check_cap(t_ray *ray, float t);
-void		swap(float *t);
+int8_t	ray_cylinder_intersect(t_ray *ray, float *t, t_shape *obj);
+int8_t	intercections_count(bool *count, float *t);
+void	swap(float *t);
 
-//intersections.c
-void		ray_intersections(t_minirt *data, t_shape *obj, t_ray *trans_ray);
-void		check_intersections(t_minirt *data);
-void		first_hit(t_minirt *data);
-void   		first_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
-void   		append_inter(t_minirt *data, int8_t point, float *t, t_sphere *obj);
+//cylinder_cap.c
+bool	check_cy_range(t_ray *ray, float t, t_shape *obj);
+int8_t	ray_cap_inter(t_ray *ray, float *t, t_shape *obj);
+bool	check_cap(t_ray *ray, float t, t_shape *obj, int8_t order);
+
+// cone.c
+int8_t	ray_cone_intersect(t_ray *ray, float *t, t_shape *obj);
 
 //sort_intersections.c
 void		sort_intersections(t_xs	*xs, t_intersections *inter);
