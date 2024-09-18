@@ -106,7 +106,7 @@ void	select_scene_elemt(t_minirt *win, int key_pressed)
 	if (key_on_scope(key_pressed) && win->world.scene_elem != NONE)
 		disp_basic_instruc(win);
 	if (win->world.scene_elem == NONE)
-		disp_nothing_selec;
+		disp_nothing_selec();
 	if (!key_on_scope(key_pressed) && win->world.scene_elem != NONE)
 	{
 		disp_advanc_instruc(win);
