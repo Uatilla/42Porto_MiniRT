@@ -168,9 +168,9 @@ void	set_color(t_color *obj_color, char **line,
 	}
 	else if (color_type == 'S')
 	{
-		if ((type == SP || type == PL) && count_words(line) > 7)
+		if ((type == SP || type == PL) && count_words(line) > 6)
 			fill_tuple(obj_color, line[5], 999999);
-		else if ((type == CY || type == CONE) && count_words(line) > 9)
+		else if ((type == CY || type == CONE) && count_words(line) > 8)
 			fill_tuple(obj_color, line[7], 999999);
 	}
 	obj_color->r = obj_color->r / 255;
@@ -235,7 +235,7 @@ void	set_materials(t_shape *sp, t_material *m,
 	
 	if (type == CY || type == CONE)
 		set_cyl_specs(&sp->center, obj_mat, line);
-	if (((type == PL || type == SP) && count_words(line) > 7)
-		|| ((type == CY || type == CONE) && count_words(line) > 9))
+	if (((type == PL || type == SP) && count_words(line) > 6)
+		|| ((type == CY || type == CONE) && count_words(line) > 8))
 		attribute_pattern(type, obj_mat, line);
 }

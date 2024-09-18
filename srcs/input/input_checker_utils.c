@@ -12,16 +12,6 @@
 
 #include "../../includes/minirt.h"
 
-void	free_split(char **line)
-{
-	int	i;
-
-	i = -1;
-	while (line[++i])
-		free(line[i]);
-	free(line);
-}
-
 void	check_char(char *val, t_checkstx *chk_stx)
 {
 	int	i;

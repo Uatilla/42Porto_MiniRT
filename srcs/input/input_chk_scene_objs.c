@@ -12,39 +12,6 @@
 
 #include "../../includes/minirt.h"
 
-/// @brief Check if there is the preset indicated is a valid one.
-/// @param str Preset string from the input.
-/// @param chk_stx Temp structure to track syntax errors.
-void	check_preset(char *str, t_checkstx *chk_stx)
-{
-	if (!ft_strcmp(str, "MAT") || !ft_strcmp(str, "MTL")
-		|| !ft_strcmp(str, "SAT") || !ft_strcmp(str, "MIR"))
-		;
-	else
-		chk_stx->count_preset_err++;
-}
-
-void	check_pattern(char **line, int n_elem, t_checkstx *chk_stx)
-{
-	check_elemnt(line, n_elem, chk_stx, (float []){0, 255.0});
-	if (line[++n_elem] && (!ft_strcmp(line[n_elem], "PC")
-			|| !ft_strcmp(line[n_elem], "GR") || !ft_strcmp(line[n_elem], "RNG")
-			|| !ft_strcmp(line[n_elem], "CHK")))
-		;
-	else if (!ft_strcmp(line[n_elem], "DEFAULT"))
-		;
-	else
-		chk_stx->count_pattern_err++;
-}
-
-void	check_bump(char **line, int n_elem, t_checkstx *chk_stx)
-{
-	if (!ft_strcmp(line[n_elem], "BUMP"))
-		;
-	else
-		chk_stx->count_err_bump++;
-}
-
 /// @brief Check the syntax of Sphere Element.
 /// @param line Elements inside sphere line in the Scene.
 /// @param chk_stx Temp structure to track syntax errors.
@@ -64,28 +31,10 @@ void	input_chk_sphere(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 			check_negative(line[n_elem], chk_stx);
 		else if (n_elem == 3)
 			check_elemnt(line, n_elem, chk_stx, (float []){0, 255.0});
-		
 		else if (n_elem == 4)
-			check_preset(line[n_elem], chk_stx);
-		else if (n_elem == 5)
-		{
-			if (line[n_elem])
-			{
-				limit = 7;
-				check_pattern(line, n_elem, chk_stx);
-			}
-		}
-		else if (n_elem == 7)
-		{
-			if (line[n_elem])
-			{
-				limit = 8;
-				check_bump(line, n_elem, chk_stx);
-			}
-
-		}
+			break ;
 	}
-	printf("Final Limit [%d] N_elem[%d]\n", limit, n_elem);
+	limit = chk_optional_input(line, chk_stx, --n_elem, limit);
 	if (n_elem > limit)
 		chk_stx->count_err_stx++;
 }
@@ -110,24 +59,9 @@ void	input_chk_plane(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 		else if (n_elem == 3)
 			check_elemnt(line, n_elem, chk_stx, (float []){0, 255.0});
 		else if (n_elem == 4)
-			check_preset(line[n_elem], chk_stx);
-		else if (n_elem == 5)
-		{
-			if (line[n_elem])
-			{
-				limit = 7;
-				check_pattern(line, n_elem, chk_stx);
-			}
-		}
-		else if (n_elem == 7)
-		{
-			if (line[n_elem])
-			{
-				limit = 8;
-				check_bump(line, n_elem, chk_stx);
-			}
-		}
+			break ;
 	}
+	limit = chk_optional_input(line, chk_stx, --n_elem, limit);
 	if (n_elem > limit)
 		chk_stx->count_err_stx++;
 }
@@ -137,14 +71,12 @@ void	input_chk_plane(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 /// @param chk_stx Temp structure to track syntax errors.
 void	input_chk_cyl_con(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 {
-	char	**lin;
 	int		n_elem;
 	int		limit;
 
 	(void)mrt;
 	n_elem = -1;
 	limit = 7;
-	lin = line;
 	while (line[++n_elem])
 	{
 		if (n_elem == 1)
@@ -158,24 +90,9 @@ void	input_chk_cyl_con(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 		else if (n_elem == 5)
 			check_elemnt(line, n_elem, chk_stx, (float []){0, 255.0});
 		else if (n_elem == 6)
-			check_preset(line[n_elem], chk_stx);
-		else if (n_elem == 7)
-		{
-			if (line[n_elem])
-			{
-				limit = 9;
-				check_pattern(line, n_elem, chk_stx);
-			}
-		}
-		else if (n_elem == 9)
-		{
-			if (line[n_elem])
-			{
-				limit = 10;
-				check_bump(line, n_elem, chk_stx);
-			}
-		}
+			break ;
 	}
+	limit = chk_optional_input(line, chk_stx, --n_elem, limit);
 	if (n_elem > limit)
 		chk_stx->count_err_stx++;
 }

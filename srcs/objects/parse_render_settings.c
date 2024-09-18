@@ -102,24 +102,24 @@ t_material	parse_material(char **line, enum e_id type)
 	t_material	m;
 	char		*preset;
 
-	m.is_bump = false;
 	ft_memset(&m, 0, sizeof(t_material));
+	m.is_bump = false;
 	if (type == SP || type == PL)
 	{
-		if (line[4])
+		if (count_words(line) > 4)
 			preset = line[4];
 		else
 			preset = "MAT";
-		if (line[7])
+		if (count_words(line) > 7)
 			m.is_bump = true;
 	}
 	else if (type == CY || type == CONE)
 	{
-		if (line[6])
+		if (count_words(line) > 6)
 			preset = line[6];
 		else
 			preset = "MAT";
-		if (line[9])
+		if (count_words(line) > 9)
 			m.is_bump = true;
 	}
 	set_preset(&m, preset);

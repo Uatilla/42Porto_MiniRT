@@ -391,6 +391,7 @@ void		set_materials(t_shape *sp, t_material *m, char **line, enum e_id type);
 //void		set_materials(t_material *obj, t_material *m, char **line, enum e_id type);
 void		scale_obj(t_shape *sp, enum e_id type, char **line);
 float	find_angle(t_point	reference, t_point p);
+int	count_words(char **line);
 
 //parse_settings_utils.c
 void		parse_line(t_minirt *mrt, char **line);
@@ -458,7 +459,6 @@ t_checkstx	chk_scene_objs(t_minirt *data, int file);
 void		check_negative(char *dimension, t_checkstx *chk_stx);
 void		check_elemnt(char **line, int elemnt_str, t_checkstx *chk_stx, float *range_limts);
 void		check_range(char *val, t_checkstx *chk_stx, float *range_limts);
-void		free_split(char **line);
 void		check_dup(char *obj_type, t_checkstx *chk_stx);
 
 //input_chk_render_setup.c
@@ -470,6 +470,13 @@ void		input_chk_light(t_minirt *mrt, char **line, t_checkstx *chk_stx);
 void		input_chk_cyl_con(t_minirt *mrt, char **line, t_checkstx *chk_stx);
 void		input_chk_sphere(t_minirt *mrt, char **line, t_checkstx *chk_stx);
 void		input_chk_plane(t_minirt *mrt, char **line, t_checkstx *chk_stx);
+
+//input_chk_opt_features.c 
+void		check_preset(char *str, t_checkstx *chk_stx);
+void		check_pattern(char **line, int n_elem, t_checkstx *chk_stx);
+void		check_bump(char **line, int n_elem, t_checkstx *chk_stx);
+int			fst_opt_pos(char **line);
+int			chk_optional_input(char **line, t_checkstx *chk_stx, int n_elem, int limit);
 
 //Exit
 //exit_cleaner.c
@@ -496,12 +503,24 @@ void		select_obj(t_minirt *win);
 void		move_obj(t_world *world, int key, int obj_selected);
 void		execute_move(t_shape *obj, int key);
 
+//move_camera.c
+void		move_cam_x(t_camera *camera, int key);
+void		move_cam_y(t_camera *camera, int key);
+void		move_cam_z(t_camera *camera, int key);
+void		move_camera(t_minirt *win, int key);
+
 //rotate_objs.c
 void		execute_rotation(t_shape *obj, int key);
 void		rotate_obj_running(t_world *world, int key, int obj_selected);
 void		rotate_camera(t_minirt *win, int key);
 void		rotate_win(t_minirt *win, int key);
 void		exec_rotation(t_shape *sp);
+
+//rotate_camera.c
+void		rot_cam_z(t_matrix *rotation, t_camera *camera, int key);
+void		rot_cam_y(t_matrix *rotation, t_camera *camera, int key);
+void		rot_cam_x(t_matrix *rotation, t_camera *camera, int key);
+void		rotate_camera(t_minirt *win, int key);
 
 //event_utils.c
 void		redo_render(t_minirt *win);

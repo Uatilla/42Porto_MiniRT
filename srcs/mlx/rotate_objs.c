@@ -59,58 +59,6 @@ void	rotate_obj_running(t_world *world, int key, int obj_selected)
 	}
 }
 
-void	rotate_camera(t_minirt *win, int key)
-{
-	t_matrix	*rotation;
-	t_camera	*camera;
-	t_point		angle;
-
-	camera = &win->camera;
-	rotation = mtx_create(NULL, 4, 4);
-	fill_idnty_mtx(rotation);
-	if (key == KEY_Q)
-	{
-		mtx_rotation_z(rotation, PI / 12);
-		camera->up = mtx_mult_tuple(rotation, &camera->up);
-		camera->direct_center = mtx_mult_tuple(rotation, &camera->direct_center);
-	}
-	else if (key == KEY_E)
-	{
-		mtx_rotation_z(rotation, -PI / 12);
-		camera->up = mtx_mult_tuple(rotation, &camera->up);
-		camera->direct_center = mtx_mult_tuple(rotation, &camera->direct_center);
-	}
-	else if (key == KEY_D)
-	{
-		mtx_rotation_y(rotation, PI / 12);
-		camera->center = mtx_mult_tuple(rotation, &camera->center);
-	}
-	else if (key == KEY_A)
-	{
-		mtx_rotation_y(rotation, -PI / 12);
-		
-		camera->center = mtx_mult_tuple(rotation, &camera->center);
-	}
-	if (key == KEY_S)
-	{
-		mtx_rotation_x(rotation, -PI / 12);
-		camera->up = mtx_mult_tuple(rotation, &camera->up);
-		win->camera.center = mtx_mult_tuple(rotation, &win->camera.center);
-	}
-	else if (key == KEY_W)
-	{
-		mtx_rotation_x(rotation, PI / 12);
-		camera->up = mtx_mult_tuple(rotation, &camera->up);
-		win->camera.center = mtx_mult_tuple(rotation, &win->camera.center);
-	}
-	clean_matrix(win, win->camera.trans, 0);
-	win->camera.trans = view_transformation(&win->camera.center, \
-		&win->camera.direct_center, &camera->up);
-	clean_matrix(win, rotation, 0);
-	clean_matrix(NULL, win->camera.inver, 0);
-	win->camera.inver = mtx_inverse(win, win->camera.trans);
-}
-
 void	rotate_win(t_minirt *win, int key)
 {
 	(void)win;

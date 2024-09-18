@@ -150,6 +150,8 @@ char	*ft_strtrim(char const *s1, char const *set);
 //**ft_split(): Returns a pointer to an array of strings that 
 //are obtained by splitting the string s using the character c as a delimiter.
 char	**ft_split(char const *s, char c);
+
+void	free_split(char **line);
 //*ft_strmapi(): Applies the function f to each character of 
 //the string s to create a new string resulting from 
 //successive applications of f.

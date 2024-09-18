@@ -35,6 +35,7 @@ void	chk_type_objs(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 	}
 	free_split(line);
 }
+
 /// @brief Start verifying the Scene syntax.
 /// @param data Main program structure.
 /// @param file Scene file.
@@ -56,15 +57,11 @@ t_checkstx	chk_scene_objs(t_minirt *data, int file)
 		free(line);
 		line_cleaned = ft_split(line_trimmed, ' ');
 		free(line_trimmed);
-		
-		//printf("%s\n", line_cleaned[0]);
 		check_dup(line_cleaned[0], &chk_stx);
 		chk_type_objs(data, line_cleaned, &chk_stx);
-		//printf("%d\n", chk_stx.count_err_stx);
 		if (chk_stx.count_err_stx > 0)
-			break;
+			break ;
 	}
-	
 	return (chk_stx);
 }
 
@@ -89,6 +86,25 @@ bool	check_extension(char *str, char *ext)
 	}
 }
 
+void	display_errors(t_minirt *mrt, t_checkstx *chk_stx)
+{
+	if (chk_stx->count_a > 1 || chk_stx->count_c > 1)
+		ft_error(mrt, "ERROR: Duplicated elements (A or C) found.\n", 1);
+	if (chk_stx->count_err_stx > 0)
+		ft_error(mrt, "ERROR: Invalid scene syntax.\n", 1);
+	if (chk_stx->count_preset_err > 0)
+		ft_error(mrt, "ERROR: Invalid preset.\n\
+		[OPTIONAL] Use one valid or keep it blank:\n\
+		MATTE 'MAT', SATIN 'SAT',\n\
+		METALLIC 'MTL' or MIRROR 'MIR'.\n", 1);
+	if (chk_stx->count_pattern_err > 0)
+		ft_error(mrt, "ERROR: Check pattern.\n\
+		[OPTIONAL] Use one valid or keep it as 'DEFAULT'\n\
+		'PC', 'GR', 'RNG' or 'CHK'.\n", 1);
+	if (chk_stx->count_err_bump > 0)
+		ft_error(mrt, "ERROR: Check if Bumpmaps is 'BUMP'.\n", 1);
+}
+
 /// @brief Verify scene file if its available or has syntax errors.
 /// @param mrt Main structure.
 /// @param argc Number os args.
@@ -101,7 +117,7 @@ void	chk_input(t_minirt *mrt, int argc, char *file)
 	if (argc != 2)
 	{
 		ft_error(NULL, "ERROR: Input invalid!\n\
-			Try: ./minirt <scene>.rt\n", 0);
+		Try: ./minirt <scene>.rt\n", 0);
 		clear_exit(NULL, 1);
 	}
 	if (!check_extension(file, ".rt"))
@@ -114,26 +130,11 @@ void	chk_input(t_minirt *mrt, int argc, char *file)
 	if (fd == -1)
 	{
 		ft_error(NULL, "ERROR: Failed to open the file.\
-				Try another one.\n", 0);
+		Try another one.\n", 0);
 		clear_exit(NULL, 1);
 	}
-	
 	chk_stx = chk_scene_objs(mrt, fd);
-
-
-
-	if (chk_stx.count_a > 1 || chk_stx.count_c > 1)
-		ft_error(mrt, "ERROR: Duplicated elements (A or C) found.\n", 1);
-	if (chk_stx.count_err_stx > 0)
-		ft_error(mrt, "ERROR: Invalid scene syntax.\n", 1);
-	if (chk_stx.count_preset_err > 0)
-		ft_error(mrt, "ERROR: Invalid preset.\n\
-				[OPTIONAL] Use one valid or keep it blank\n\
-				MATTE 'MAT', SATIN 'SAT', METALLIC 'MTL' or MIRROR 'MTL'.\n", 1);
-	if (chk_stx.count_pattern_err > 0)
-		ft_error(mrt, "ERROR: Check pattern 'PC', 'GR', 'RNG' or 'CHK'>.\n", 1);
-	if (chk_stx.count_err_bump > 0)
-		ft_error(mrt, "ERROR: Check if Bumpmaps is 'BUMP'.\n", 1);
 	close (fd);
+	display_errors(mrt, &chk_stx);
 	printf("INPUT\t\t[OK]\n");
 }

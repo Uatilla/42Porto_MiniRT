@@ -47,6 +47,7 @@ MLXFLAGS	=	-lmlx -lXext -lX11 -lm
 SRCS		=	main.c \
 				tuples/chk_tuples_typ.c tuples/creating_tuples.c tuples/operations_tuples.c tuples/basic_operations_tuples.c\
 				input/input_checker.c input/input_checker_utils.c input/input_chk_render_setup.c input/input_chk_scene_objs.c\
+				input/input_chk_opt_features.c\
 				objects/parse_objs.c objects/parse_render_settings.c objects/parse_settings_utils.c\
 				light/light.c light/light_utils.c\
 				ray/ray.c \
@@ -55,7 +56,8 @@ SRCS		=	main.c \
 				intersections/cylinder_cap.c intersections/cone.c\
 				canvas/map.c \
 				exit/exit_cleaner.c exit/clean_world.c \
-				mlx/mlx.c mlx/handle_hooks.c mlx/move_objs.c mlx/rotate_objs.c mlx/event_utils.c\
+				mlx/mlx.c mlx/handle_hooks.c mlx/move_objs.c mlx/rotate_objs.c mlx/event_utils.c mlx/rotate_camera.c\
+				mlx/move_camera.c\
 				matrix/matrix_validations.c matrix/matrix_operations.c matrix/matrix_modifications.c matrix/matrix_mods_utils.c\
 				matrix_transformations/matrix_transformations.c \
 				matrix/mtx_temp.c \

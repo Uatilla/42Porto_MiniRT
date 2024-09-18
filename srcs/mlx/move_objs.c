@@ -67,51 +67,6 @@ void	move_light(t_world *world, int key)
 		world->light->position.z = world->light->position.z - 1;
 	else if (key == KEY_MINUS)
 		world->light->position.z = world->light->position.z + 1;
-	//point_light(&world->light->position, &world->light->intensity, world);
-}
-
-void	move_camera(t_minirt *win, int key)
-{
-	t_camera	*camera;
-
-	camera = &win->camera;
-	if (key == KEY_LEFT)
-	{
-		camera->center.x = camera->center.x - 1;
-		camera->direct_center.x = camera->direct_center.x - 1;
-	}
-	else if (key == KEY_RIGHT)
-	{
-		camera->center.x = camera->center.x + 1;
-		camera->direct_center.x = camera->direct_center.x + 1;
-	}
-	else if (key == KEY_DOWN)
-	{
-		camera->center.y = camera->center.y - 1;
-		camera->direct_center.y = camera->direct_center.y - 1;
-	}
-	else if (key == KEY_UP)
-	{
-		camera->center.y = camera->center.y + 1;
-		camera->direct_center.y = camera->direct_center.y + 1;
-	}
-	else if (key == KEY_PLUS)
-	{
-		camera->center.z = camera->center.z + 1;
-		camera->direct_center.z = camera->direct_center.z + 1;
-	}
-	else if (key == KEY_MINUS)
-	{
-		camera->center.z = camera->center.z - 1;
-		camera->direct_center.z = camera->direct_center.z - 1;
-	}
-	clean_matrix(NULL, win->camera.trans, 0);
-	printf("to: %f %f %f\n", camera->direct_center.x, camera->direct_center.y, camera->direct_center.z);
-	printf("from: %f %f %f\n", camera->center.x, camera->center.y, camera->center.z);
-	win->camera.trans = view_transformation(&win->camera.center, \
-		&win->camera.direct_center, &camera->up);
-	clean_matrix(NULL, win->camera.inver, 0);
-	win->camera.inver = mtx_inverse(win, win->camera.trans);
 }
 
 /// @brief Move the obj and sets the mlx to display the new image.

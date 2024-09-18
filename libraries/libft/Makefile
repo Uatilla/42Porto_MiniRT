@@ -28,7 +28,7 @@ SRCS =  ft_strtrim.c     ft_atoi.c         ft_isprint.c    ft_strlen.c\
         ft_printf.c      ft_printf_func.c  ft_lstnew.c       ft_lstsize.c\
         ft_lstlast.c     ft_lstiter.c     ft_lstdelone.c    ft_lstclear.c\
         ft_lstmap.c      ft_lstadd_front.c ft_lstadd_back.c     ft_iswhitespace.c ft_strcmp.c ft_isnumber.c ft_strtrim_mod.c\
-        ft_replace.c     ft_atof.c
+        ft_replace.c     ft_atof.c              free_split.c
 
 
 SRCS_O	:= ${SRCS:.c=.o}
