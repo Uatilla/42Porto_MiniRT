@@ -579,4 +579,7 @@ void		mtx_rotation_z(t_matrix *mtx, float rot_deg);
 void		mtx_fill(t_matrix *mtx);
 void		mtx_print(t_matrix *mtx);
 //FUNCOES TEMPORARIAS APENAS PARA TESTE!!!!!^^^^^^^^^^^
+
+
+void	disp_nothing_selec(void);
 #endif
