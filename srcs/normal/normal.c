@@ -70,9 +70,11 @@ t_vector	normal_at_cone(t_point *point, t_shape *obj)
 	t_vector	normal;
 
 	dist = (point->x * point->x) + (point->z * point->z);
-	if (dist < obj->material.max * obj->material.max && point->y >= obj->material.max - EPSILON)
+	if (dist < obj->material.max * obj->material.max \
+		&& point->y >= obj->material.max - EPSILON)
 		return ((t_vector){0, 1, 0, 0});
-	else if (dist < obj->material.min * obj->material.min && point->y <= obj->material.min + EPSILON)
+	else if (dist < obj->material.min * obj->material.min \
+		&& point->y <= obj->material.min + EPSILON)
 		return ((t_vector){0, -1, 0, 0});
 	y = sqrtf(dist);
 	if (y > EPSILON)

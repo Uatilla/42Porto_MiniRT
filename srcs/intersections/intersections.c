@@ -38,7 +38,8 @@ void	intersections(t_minirt *data, t_ray *ray)
 *	if the ray hits the obj, will allocate a intersection struct with the
 *	intersect points and the object propeties and push it to the top of the stack
 */
-void	ray_intersections(t_minirt *data, t_shape *obj, t_ray *trans_ray, t_ray *ray)
+void	ray_intersections(t_minirt *data, t_shape *obj, t_ray *trans_ray, \
+		t_ray *ray)
 {
 	float		t[2];	
 	int8_t		intersection_points;

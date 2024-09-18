@@ -49,7 +49,7 @@ int8_t	ray_cylinder_intersect(t_ray *ray, float *t, t_shape *obj)
 	return (intercections_count(count, t));
 }
 
-int8_t intercections_count(bool *count, float *t)
+int8_t	intercections_count(bool *count, float *t)
 {
 	if (count[0] && count[1])
 	{

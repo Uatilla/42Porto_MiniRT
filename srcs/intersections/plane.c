@@ -12,7 +12,7 @@
 
 #include "../../includes/minirt.h"
 
-int8_t ray_plane_intersect(t_ray *ray, float *t)
+int8_t	ray_plane_intersect(t_ray *ray, float *t)
 {
 	if (fabs(ray->direction.y) < EPSILON)
 		return (0);

@@ -35,9 +35,11 @@ bool	check_cap(t_ray *ray, float t, t_shape *obj, int8_t	order)
 	else if (obj->type == CONE)
 	{
 		if (order == 1)
-			return (((x * x) + (z * z)) <= fabs(obj->material.min * obj->material.min));
+			return (((x * x) + (z * z)) <= fabs(obj->material.min \
+				* obj->material.min));
 		else if (order == 2)
-			return (((x * x) + (z * z)) <= fabs(obj->material.max * obj->material.max));
+			return (((x * x) + (z * z)) <= fabs(obj->material.max \
+				* obj->material.max));
 	}
 	return (false);
 }

@@ -15,7 +15,7 @@
 // sets the pattern for the object
 t_pattern	stripe_pattern(t_color *a, t_color *b, enum e_p type)
 {
-	t_pattern stripe;
+	t_pattern	stripe;
 
 	stripe.trans = mtx_create(NULL, 4, 4);
 	fill_idnty_mtx(stripe.trans);
@@ -69,7 +69,7 @@ t_color	ring_patt(t_pattern *pattern, t_point *point)
 }
 
 // checker pattern
-t_color checker_patt(t_pattern *pattern, t_point *point)
+t_color	checker_patt(t_pattern *pattern, t_point *point)
 {
 	t_color	c;
 
@@ -84,7 +84,7 @@ t_color checker_patt(t_pattern *pattern, t_point *point)
 t_color	pattern_at(t_pattern *p, t_point *point, t_shape *obj, enum e_p type)
 {
 	t_point	object_point;
-	t_point patterns_point;
+	t_point	patterns_point;
 
 	object_point = mtx_mult_tuple(obj->mtx_inver, point);
 	patterns_point = mtx_mult_tuple(p->inver, &object_point);
@@ -104,10 +104,9 @@ t_color	pattern_at(t_pattern *p, t_point *point, t_shape *obj, enum e_p type)
 // sets the collor of the obj at a given point if te obj has a pattern
 void	set_pattern(t_intersections *inter, t_point *point)
 {
-		if (inter->obj->material.pattern.has)
-		{
-			inter->obj->material.color =
-			pattern_at(&inter->obj->material.pattern,
-		   	point, inter->obj, inter->obj->material.pattern.type);
-		}
+	if (inter->obj->material.pattern.has)
+	{
+		inter->obj->material.color = pattern_at(&inter->obj->material.pattern, \
+			point, inter->obj, inter->obj->material.pattern.type);
+	}
 }

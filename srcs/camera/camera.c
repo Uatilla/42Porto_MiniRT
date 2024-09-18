@@ -19,7 +19,7 @@
 t_ray	ray_for_pixel(t_camera *camera, size_t px, size_t py)
 {
 	t_ray	ray;
-	t_point pixel;
+	t_point	pixel;
 	t_rfp	rpf;
 
 	rpf.xoffset = (px + 0.5) * camera->pixel_size;
@@ -33,7 +33,7 @@ t_ray	ray_for_pixel(t_camera *camera, size_t px, size_t py)
 	return (ray);
 }
 
-t_camera	camera_construct(size_t hsize, size_t vsize, float	fov)
+t_camera	camera_construct(size_t hsize, size_t vsize, float fov)
 {
 	t_camera	camera;
 	float		half_view;

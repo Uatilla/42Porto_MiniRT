@@ -94,7 +94,7 @@ t_color	lighting(t_comps *comps, t_light *light)
 	else
 	{
 		phong.diffuse = mult_tuple_scalar(&color,
-							comps->obj->material.diffuse * light_normal_dot);
+				comps->obj->material.diffuse * light_normal_dot);
 		bump(&phong, comps->obj);
 		comps->reflectv = negating_tuple(&comps->lightv);
 		comps->reflectv = reflect(&comps->reflectv, &comps->normalv);

@@ -51,7 +51,8 @@ t_color	specular(t_material *material, t_light *light, float refl_dot_eye)
 *	Then will add the reflectecd color with object surface color
 *
 */
-t_color	shade_hit(t_comps *comps, t_world *world, t_minirt *data, int8_t remainer)
+t_color	shade_hit(t_comps *comps, t_world *world, t_minirt *data, \
+	int8_t remainer)
 {
 	t_color	surface;
 	t_color	reflected;
@@ -64,7 +65,8 @@ t_color	shade_hit(t_comps *comps, t_world *world, t_minirt *data, int8_t remaine
 	light_ptr = world->light;
 	while (light_ptr)
 	{
-		comps->is_shadown = is_shadowed(&data->world, light_ptr, &comps->over_point);
+		comps->is_shadown = is_shadowed(&data->world, light_ptr, \
+				&comps->over_point);
 		phong = lighting(comps, light_ptr);
 		surface = sum_tuples(&surface, &phong);
 		light_ptr = light_ptr->next;

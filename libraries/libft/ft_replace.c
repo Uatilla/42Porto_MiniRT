@@ -21,4 +21,3 @@ void	ft_replace(char *str, char old, char new)
 		str++;
 	}
 }
-
