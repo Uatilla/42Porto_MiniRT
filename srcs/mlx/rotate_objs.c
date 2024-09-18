@@ -118,5 +118,10 @@ void	rotate_win(t_minirt *win, int key)
 		rotate_obj_running(&win->world, key, win->world.obj_selected);
 	else if (win->world.scene_elem == CAMERA)
 		rotate_camera(win, key);
+	else if (win->world.scene_elem == LIGHT)
+	{
+		printf("\tERROR: Lights can't rotate.\n");
+		return ;
+	}
 	redo_render(win);
 }

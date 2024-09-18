@@ -65,7 +65,15 @@ void	set_preset(t_material *m, char *preset)
 		m->diffuse = 0.7;
 		m->shininess = 10;
 		m->specular = 0.1;
-		m->reflective = 0;
+		m->reflective = 0.1;
+	}
+	else if (!ft_strcmp("SAT", preset))
+	{
+		m->ambient = 0.25;
+		m->diffuse = 0.5;
+		m->shininess = 50;
+		m->specular = 0.5;
+		m->reflective = 0.5;
 	}
 	else if (!ft_strcmp("MTL", preset))
 	{
@@ -75,13 +83,13 @@ void	set_preset(t_material *m, char *preset)
 		m->specular = 0.9;
 		m->reflective = 0.7;
 	}
-	else if (!ft_strcmp("SAT", preset))
+	else if (!ft_strcmp("MIR", preset))
 	{
-		m->ambient = 0.25;
-		m->diffuse = 0.5;
-		m->shininess = 50;
-		m->specular = 0.5;
-		m->reflective = 0.5;
+		m->ambient = 0.1;
+   		m->diffuse = 0.3;
+    	m->shininess = 200;
+    	m->specular = 0.9;
+    	m->reflective = 1.0;
 	}
 }
 
@@ -94,20 +102,25 @@ t_material	parse_material(char **line, enum e_id type)
 	t_material	m;
 	char		*preset;
 
+	m.is_bump = false;
 	ft_memset(&m, 0, sizeof(t_material));
 	if (type == SP || type == PL)
 	{
 		if (line[4])
 			preset = line[4];
 		else
-			preset = "MTL";
+			preset = "MAT";
+		if (line[7])
+			m.is_bump = true;
 	}
 	else if (type == CY || type == CONE)
 	{
 		if (line[6])
 			preset = line[6];
 		else
-			preset = "MTL";
+			preset = "MAT";
+		if (line[9])
+			m.is_bump = true;
 	}
 	set_preset(&m, preset);
 	return (m);

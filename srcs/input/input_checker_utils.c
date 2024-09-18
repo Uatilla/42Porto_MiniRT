@@ -100,12 +100,5 @@ void	check_dup(char *obj_type, t_checkstx *chk_stx)
 			chk_stx->count_a++;
 		else if (!ft_strcmp(obj_type, "C"))
 			chk_stx->count_c++;
-		else if (!ft_strcmp(obj_type, "L"))
-			chk_stx->count_l++;
-		else if (!ft_strcmp(obj_type, "sp")
-			|| !ft_strcmp(obj_type, "pl")
-			|| !ft_strcmp(obj_type, "cy")
-			|| !ft_strcmp(obj_type, "cn"))
-			chk_stx->count_objs++;
 	}
 }

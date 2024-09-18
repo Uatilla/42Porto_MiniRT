@@ -51,6 +51,7 @@ void	select_scene_elemt(t_minirt *win, int key_pressed)
 			win->world.scene_elem = OBJECT;
 			printf("\n\tObjects selected.\n");
 			printf("\t\tHit TAB to change the object selected.\n");
+			printf("\t\tRemove selection: Home (select all objects).\n");
 		}
 		else if (key_pressed == KEY_HOME)
 		{
@@ -59,9 +60,9 @@ void	select_scene_elemt(t_minirt *win, int key_pressed)
 		}
 		if (win->world.scene_elem != NONE)
 		{
-			printf("\t\tRemove selection: Home (select all objects).\n");
 			printf("\t\tMoves: 'up', 'down', 'left', 'right', '+' or '-'.\n");
-			printf("\t\tRotation: 'w' 'a' 's' 'd' 'q' 'e'.\n");
+			if (win->world.scene_elem != LIGHT)
+				printf("\t\tRotation: 'w' 'a' 's' 'd' 'q' 'e'.\n");
 		}
 	}
 	else if (win->world.scene_elem == NONE)
@@ -76,13 +77,19 @@ void	select_scene_elemt(t_minirt *win, int key_pressed)
 		&& key_pressed != KEY_S && key_pressed != KEY_D
 		&& key_pressed != KEY_E && key_pressed != KEY_Q)
 	{
+		printf("\n ERROR: COMMAND INVALID!");
 		printf("\n\tPlease select an element to move/rotate:\n");
 		printf("\t\tUse: 'c' - Camera | 'l' - Light | 'o' - Objects\n");
 		printf("\t\tOR,\n");
 		printf("\t\tapply modifications on the object already selected:\n\n");
 		printf("\t\tMoves: 'up', 'down', 'left', 'right', '+' or '-'\n");
-		printf("\t\tRotation: 'w' 'a' 's' 'd' 'q' 'e'\n");
-		printf("\t\tRemove selection: Home (select all objects)\n");
+		if (win->world.scene_elem != LIGHT)
+				printf("\t\tRotation: 'w' 'a' 's' 'd' 'q' 'e'.\n");
+		if (win->world.scene_elem == OBJECT)
+		{
+			printf("\t\tHit TAB to change the object selected.\n");
+			printf("\t\tRemove selection: Home (select all objects)\n");
+		}
 	}
 }
 

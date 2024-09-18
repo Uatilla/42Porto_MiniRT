@@ -86,10 +86,9 @@ typedef struct s_checkstx
 {
 	int		count_a;
 	int		count_c;
-	int		count_l;
 	int		count_objs;
 	int		count_err_stx;
-	int		count_err_order;
+	int		count_err_bump;
 	int		count_preset_err;
 	int		count_pattern_err;
 }	t_checkstx;

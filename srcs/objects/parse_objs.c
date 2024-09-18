@@ -168,9 +168,9 @@ void	set_color(t_color *obj_color, char **line,
 	}
 	else if (color_type == 'S')
 	{
-		if ((type == SP || type == PL) && count_words(line) == 7)
+		if ((type == SP || type == PL) && count_words(line) > 7)
 			fill_tuple(obj_color, line[5], 999999);
-		else if ((type == CY || type == CONE) && count_words(line) == 9)
+		else if ((type == CY || type == CONE) && count_words(line) > 9)
 			fill_tuple(obj_color, line[7], 999999);
 	}
 	obj_color->r = obj_color->r / 255;
@@ -206,6 +206,8 @@ void	attribute_pattern(enum e_id type, t_material *obj_mat, char **line)
 		patt_type = RNG;
 	else if (!ft_strcmp(pattern, "CHK"))
 		patt_type = CHK;
+	else if (!ft_strcmp(pattern, "DEFAULT"))
+		return ;
 	obj_mat->pattern = stripe_pattern(&obj_mat->color,
 			&obj_mat->color_sec, patt_type);
 	obj_mat->pattern.inver = mtx_inverse(NULL, obj_mat->pattern.trans);
@@ -229,11 +231,11 @@ void	set_materials(t_shape *sp, t_material *m,
 	obj_mat->shininess = m->shininess;
 	obj_mat->reflective = m->reflective;
 	obj_mat->pattern.has = false;
-	obj_mat->is_bump = false; //This will change in accordance to the input.
+	obj_mat->is_bump = m->is_bump; //This will change in accordance to the input.
 	
 	if (type == CY || type == CONE)
 		set_cyl_specs(&sp->center, obj_mat, line);
-	if (((type == PL || type == SP) && count_words(line) == 7)
-		|| ((type == CY || type == CONE) && count_words(line) == 9))
+	if (((type == PL || type == SP) && count_words(line) > 7)
+		|| ((type == CY || type == CONE) && count_words(line) > 9))
 		attribute_pattern(type, obj_mat, line);
 }

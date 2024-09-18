@@ -35,14 +35,6 @@ void	chk_type_objs(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 	}
 	free_split(line);
 }
-
-void	check_order(t_checkstx *chk_stx)
-{
-	if (chk_stx->count_a == 0
-		&& (chk_stx->count_l != 0 || chk_stx->count_objs != 0))
-		chk_stx->count_err_order++;
-}
-
 /// @brief Start verifying the Scene syntax.
 /// @param data Main program structure.
 /// @param file Scene file.
@@ -51,9 +43,9 @@ t_checkstx	chk_scene_objs(t_minirt *data, int file)
 	char		*line;
 	char		*line_trimmed;
 	char		**line_cleaned;
-	t_checkstx	chk_sintax;
+	t_checkstx	chk_stx;
 
-	ft_memset(&chk_sintax, 0, sizeof(t_checkstx));
+	ft_memset(&chk_stx, 0, sizeof(t_checkstx));
 	while (1)
 	{
 		line = get_next_line(file);
@@ -64,11 +56,16 @@ t_checkstx	chk_scene_objs(t_minirt *data, int file)
 		free(line);
 		line_cleaned = ft_split(line_trimmed, ' ');
 		free(line_trimmed);
-		check_dup(line_cleaned[0], &chk_sintax);
-		check_order(&chk_sintax);
-		chk_type_objs(data, line_cleaned, &chk_sintax);
+		
+		//printf("%s\n", line_cleaned[0]);
+		check_dup(line_cleaned[0], &chk_stx);
+		chk_type_objs(data, line_cleaned, &chk_stx);
+		//printf("%d\n", chk_stx.count_err_stx);
+		if (chk_stx.count_err_stx > 0)
+			break;
 	}
-	return (chk_sintax);
+	
+	return (chk_stx);
 }
 
 bool	check_extension(char *str, char *ext)
@@ -120,22 +117,23 @@ void	chk_input(t_minirt *mrt, int argc, char *file)
 				Try another one.\n", 0);
 		clear_exit(NULL, 1);
 	}
+	
 	chk_stx = chk_scene_objs(mrt, fd);
-	if (chk_stx.count_a > 1 || chk_stx.count_l > 1
-		|| chk_stx.count_c > 1)
-		ft_error(mrt, "ERROR: Duplicated elements (A, C or L) found.\n", 1);
+
+
+
+	if (chk_stx.count_a > 1 || chk_stx.count_c > 1)
+		ft_error(mrt, "ERROR: Duplicated elements (A or C) found.\n", 1);
 	if (chk_stx.count_err_stx > 0)
 		ft_error(mrt, "ERROR: Invalid scene syntax.\n", 1);
 	if (chk_stx.count_preset_err > 0)
 		ft_error(mrt, "ERROR: Invalid preset.\n\
 				[OPTIONAL] Use one valid or keep it blank\n\
-				METALLIC 'MTL', MATTE 'MAT' or SATIN 'SAT'\n", 1);
-	if (chk_stx.count_err_order > 0)
-		ft_error(mrt, "ERROR: Invalid input order.\n\
-			Ambient 'A' must be before:\n\
-			Light 'L' or Objects 'cy' 'pl' 'sp' 'cn'.\n", 1);
+				MATTE 'MAT', SATIN 'SAT', METALLIC 'MTL' or MIRROR 'MTL'.\n", 1);
 	if (chk_stx.count_pattern_err > 0)
 		ft_error(mrt, "ERROR: Check pattern 'PC', 'GR', 'RNG' or 'CHK'>.\n", 1);
+	if (chk_stx.count_err_bump > 0)
+		ft_error(mrt, "ERROR: Check if Bumpmaps is 'BUMP'.\n", 1);
 	close (fd);
 	printf("INPUT\t\t[OK]\n");
 }
