@@ -3,6 +3,12 @@
         "mlx.h": "c",
         "libft.h": "c",
         "minirt.h": "c",
-        "cstdlib": "c"
+        "cstdlib": "c",
+        "array": "c",
+        "compare": "c",
+        "functional": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c"
     }
 }

@@ -68,9 +68,6 @@ void	rotate_camera(t_minirt *win, int key)
 	camera = &win->camera;
 	rotation = mtx_create(NULL, 4, 4);
 	fill_idnty_mtx(rotation);
-	//mtx_translation(camera->trans, &(t_point){0, 0, 0, 1}); //Mova para o centro
-
-	//Rotacione
 	if (key == KEY_Q)
 	{
 		mtx_rotation_z(rotation, PI / 12);
@@ -106,21 +103,10 @@ void	rotate_camera(t_minirt *win, int key)
 		camera->up = mtx_mult_tuple(rotation, &camera->up);
 		win->camera.center = mtx_mult_tuple(rotation, &win->camera.center);
 	}
-
-	//printf("OLD FROM: %f %f %f\n", camera->center.x, camera->center.y, camera->center.z);
-	
-	//camera->center = mtx_mult_tuple(rotation, &camera->center);
-	//printf("NEW FROM: %f %f %f\n", camera->center.x, camera->center.y, camera->center.z);
-	
-	//win->camera.trans = mtx_multiply(NULL, rotation, win->camera.trans);
-	
-	
-
+	clean_matrix(win, win->camera.trans, 0);
 	win->camera.trans = view_transformation(&win->camera.center, \
 		&win->camera.direct_center, &camera->up);
-	//Volte para a posic;'ao anterior
-	//mtx_translation(camera->trans, &camera->center);
-
+	clean_matrix(win, rotation, 0);
 	clean_matrix(NULL, win->camera.inver, 0);
 	win->camera.inver = mtx_inverse(win, win->camera.trans);
 }
