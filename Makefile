@@ -49,6 +49,7 @@ SRCS		=	main.c \
 				input/input_checker.c input/input_checker_utils.c input/input_chk_render_setup.c input/input_chk_scene_objs.c\
 				input/input_chk_opt_features.c\
 				objects/parse_objs.c objects/parse_render_settings.c objects/parse_settings_utils.c\
+				objects/parse_rotation.c objects/parse_material.c objects/parse_colors.c\
 				light/light.c light/light_utils.c\
 				ray/ray.c \
 				intersections/intersections.c intersections/intersections_utils.c \
@@ -57,7 +58,7 @@ SRCS		=	main.c \
 				canvas/map.c \
 				exit/exit_cleaner.c exit/clean_world.c \
 				mlx/mlx.c mlx/handle_hooks.c mlx/move_objs.c mlx/rotate_objs.c mlx/event_utils.c mlx/rotate_camera.c\
-				mlx/move_camera.c\
+				mlx/move_camera.c mlx/select_elements.c\
 				matrix/matrix_validations.c matrix/matrix_operations.c matrix/matrix_modifications.c matrix/matrix_mods_utils.c\
 				matrix_transformations/matrix_transformations.c \
 				matrix/mtx_temp.c \

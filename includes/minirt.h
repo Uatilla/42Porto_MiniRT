@@ -54,32 +54,29 @@ enum e_sc
 
 //MACRO
 # define EPSILON 0.00001
-# define ZERO_TUPLE (t_tuple){0, 0, 0, 0}
 # define WIDTH 1000
 # define HEIGTH 500
 # define PI 3.14159
 
-#define KEY_ESC        65307
-#define KEY_A          97
-#define KEY_C          99
-#define KEY_D          100
-#define KEY_E			101
-#define KEY_L          108
-#define KEY_O			111
-#define KEY_Q			113
-#define KEY_S          115
-#define KEY_W          119
-#define KEY_LEFT       65361
-#define KEY_RIGHT      65363
-#define KEY_DOWN       65364
-#define KEY_UP         65362
-#define KEY_TAB			65289
-#define KEY_PLUS       65451
-#define KEY_MINUS      65453
-#define KEY_HOME       65360
-#define	KEY_BACK		65288
-
-
+# define KEY_ESC        65307
+# define KEY_A          97
+# define KEY_C          99
+# define KEY_D          100
+# define KEY_E			101
+# define KEY_L          108
+# define KEY_O			111
+# define KEY_Q			113
+# define KEY_S          115
+# define KEY_W          119
+# define KEY_LEFT       65361
+# define KEY_RIGHT      65363
+# define KEY_DOWN       65364
+# define KEY_UP         65362
+# define KEY_TAB		65289
+# define KEY_PLUS       65451
+# define KEY_MINUS      65453
+# define KEY_HOME       65360
+# define KEY_BACK		65288
 
 //STRUCTURES
 typedef struct s_checkstx
@@ -127,7 +124,7 @@ typedef struct s_tuple
 typedef t_tuple	t_point;
 typedef t_tuple	t_vector;
 typedef t_tuple	t_color;
-typedef t_tuple t_angle;
+typedef t_tuple	t_angle;
 
 typedef struct s_matrix
 {
@@ -153,12 +150,12 @@ typedef struct s_pattern
 	t_matrix	*trans;
 	t_matrix	*inver;
 	t_color		a;
-	t_color 	b;
+	t_color		b;
 	enum e_p	type;
 	bool		has;
 }	t_pattern;
 
-typedef	struct s_material
+typedef struct s_material
 {
 	t_pattern	pattern;
 	t_color		color;
@@ -166,7 +163,7 @@ typedef	struct s_material
 	float		ambient;
 	float		diffuse;
 	float		specular;
-	float	 	shininess;
+	float		shininess;
 	float		reflective;
 	float		min;
 	float		max;
@@ -174,7 +171,7 @@ typedef	struct s_material
 	bool		is_bump;
 }	t_material;
 
-typedef	struct s_shape
+typedef struct s_shape
 {
 	t_material			material;
 	t_ray				trans_ray;
@@ -188,12 +185,12 @@ typedef	struct s_shape
 	void				*next;
 }	t_shape;
 
-typedef	t_shape t_sphere;
-typedef	t_shape t_plane;
-typedef t_shape t_cyl;
+typedef t_shape	t_sphere;
+typedef t_shape	t_plane;
+typedef t_shape	t_cyl;
 
-typedef	struct	s_intersections
-{ 
+typedef struct s_intersections
+{
 	t_point					point;
 	float					t[2];
 	float					hit;
@@ -201,24 +198,24 @@ typedef	struct	s_intersections
 	struct s_intersections	*next;
 }	t_intersections;
 
-typedef	struct s_comps
+typedef struct s_comps
 {
-	t_shape 	*obj;
+	t_shape		*obj;
 	t_point		point;
 	t_point		over_point;
 	t_vector	eyev;
 	t_vector	normalv;
 	t_vector	lightv;
-	t_vector   	reflectv;
+	t_vector	reflectv;
 	float		t;
 	bool		inside;
 	bool		is_shadown;
 }	t_comps;
 
-typedef	struct s_light
+typedef struct s_light
 {
-	t_point	   		position;
-	t_color	   		intensity;
+	t_point			position;
+	t_color			intensity;
 	struct s_light	*next;
 }	t_light;
 
@@ -226,10 +223,10 @@ typedef struct s_phong
 {
 	t_color			ambient;
 	t_color			diffuse;
-	t_color 		spec;
-} t_phong;
+	t_color			spec;
+}	t_phong;
 
-typedef	struct s_cylinder
+typedef struct s_cylinder
 {
 	t_vector			dir;
 	enum e_id			type;
@@ -238,7 +235,7 @@ typedef	struct s_cylinder
 	bool				closed;
 }	t_cylinder;
 
-typedef	struct s_camera
+typedef struct s_camera
 {
 	t_matrix	*trans;
 	t_matrix	*inver;
@@ -251,11 +248,10 @@ typedef	struct s_camera
 	float		half_height;
 	float		pixel_size;
 	float		fov;
-
 }	t_camera;
 
 // needs to call ft_memset
-typedef	struct	s_world
+typedef struct s_world
 {
 	t_shape		*objs;
 	t_light		*light;
@@ -265,7 +261,6 @@ typedef	struct	s_world
 	int			n_objs;
 	int			obj_selected;
 }	t_world;
-
 
 typedef struct s_minirt
 {
@@ -279,8 +274,7 @@ typedef struct s_minirt
 	bool			has_color;
 }		t_minirt;
 
-// used in view_transformation func
-typedef struct	s_view
+typedef struct s_view
 {
 	t_vector	forward;
 	t_vector	upn;
@@ -323,8 +317,8 @@ t_tuple		sum_tuples(t_tuple *a, t_tuple *b);
 t_tuple		subtrac_tuples(t_tuple *a, t_tuple *b);
 t_tuple		negating_tuple(t_tuple *a);
 t_tuple		mult_tuple_scalar(t_tuple *a, float sc);
-float  		dot_product(t_tuple *a, t_tuple *b);
-float  		magnitude(t_tuple *a);
+float		dot_product(t_tuple *a, t_tuple *b);
+float		magnitude(t_tuple *a);
 t_tuple		normalize(t_tuple *a);
 t_tuple		cross_product(t_tuple *a, t_tuple *b);
 t_tuple		div_tuple_scalar(t_tuple *a, float sc);
@@ -337,7 +331,7 @@ t_matrix	*view_orientation(t_vector *left, t_vector *up, t_vector *forward);
 
 //camera
 //camera.c
-t_camera	camera_construct(size_t hsize, size_t vsize, float	fov);
+t_camera	camera_construct(size_t hsize, size_t vsize, float fov);
 t_ray		ray_for_pixel(t_camera *camera, size_t px, size_t py);
 
 //render
@@ -353,7 +347,8 @@ t_vector	normal_at_cone(t_point *point, t_shape *obj);
 
 //computations
 //computations.c
-t_comps		prepare_computations(t_intersections *i, t_ray *ray, t_minirt *data);
+t_comps		prepare_computations(t_intersections *i, t_ray *ray, \
+			t_minirt *data);
 bool		is_shadowed(t_world *w, t_light *light, t_point *p);
 t_color		reflected_color(t_comps *comps, t_minirt *data, int8_t remaining);
 
@@ -368,7 +363,8 @@ t_color		lighting(t_comps *comps, t_light *light);
 t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
 void		light_is_behind_obj(t_color *diffuse, t_color *specular);
 t_color		specular(t_material *material, t_light *light, float refl_dot_eye);
-t_color		shade_hit(t_comps *comps, t_world *world, t_minirt *data, int8_t remainer);
+t_color		shade_hit(t_comps *comps, t_world *world, t_minirt *data, \
+			int8_t remainer);
 void		bump(t_phong *phong, t_shape *obj);
 
 // patterns
@@ -379,19 +375,25 @@ t_color		stripe_at(t_pattern *patterns, t_point *point);
 t_color		gradient(t_pattern *pattern, t_point *point);
 t_color		ring_patt(t_pattern *pattern, t_point *point);
 t_color		checker_patt(t_pattern *pattern, t_point *point);
-t_color		pattern_at(t_pattern *p, t_point *point, t_shape *obj, enum e_p type);
+t_color		pattern_at(t_pattern *p, t_point *point, t_shape *obj, \
+			enum e_p type);
 void		set_pattern(t_intersections *inter, t_point *point);
 
 //objects
 //parse_objs.c
 void		parse_shape(t_minirt *mrt, enum e_id type, char **line);
-void		parse_objects(enum e_id type, t_minirt *data, int file, t_material *m);
-void		fill_shape(t_sphere *sp, enum e_id type, char **line, float amb_ratio);
-void		set_materials(t_shape *sp, t_material *m, char **line, enum e_id type);
-//void		set_materials(t_material *obj, t_material *m, char **line, enum e_id type);
+void		parse_objects(enum e_id type, t_minirt *data, int file, \
+			t_material *m);
+void		fill_shape(t_sphere *sp, enum e_id type, char **line, \
+			float amb_ratio);
+void		set_cyl_specs(t_point *center, t_material *obj, char **line);
 void		scale_obj(t_shape *sp, enum e_id type, char **line);
-float	find_angle(t_point	reference, t_point p);
-int	count_words(char **line);
+int			count_words(char **line);
+
+//parse_rotation.c
+float		find_angle(t_point	reference, t_point p);
+void		exec_rotation(t_shape *sp);
+void		rotate_obj(t_shape *sp, enum e_id type, char **line);
 
 //parse_settings_utils.c
 void		parse_line(t_minirt *mrt, char **line);
@@ -404,7 +406,17 @@ void		parse_ambient(t_minirt *mrt, char **line);
 void		parse_camera(t_minirt *mrt, char **line);
 void		parse_light(t_minirt *mrt, char **line);
 void		set_preset(t_material *m, char *preset);
+
+//parse_material.c
 t_material	parse_material(char **line, enum e_id type);
+void		set_preset(t_material *m, char *preset);
+void		set_materials(t_shape *sp, t_material *m, \
+			char **line, enum e_id type);
+
+//parse_colors.c
+void		set_color(t_color *obj_color, char **line, enum e_id type, \
+			char color_type);
+void		attribute_pattern(enum e_id type, t_material *obj_mat, char **line);
 
 //ray
 //ray.c
@@ -413,14 +425,16 @@ t_ray		ray_trasform(t_ray *ray, t_matrix *mtx);
 
 // intersections
 // intersections.c
-void	ray_intersections(t_minirt *data, t_shape *obj, t_ray *trans_ray, t_ray *ray);
-void	intersections(t_minirt *data, t_ray *ray);
+void		ray_intersections(t_minirt *data, t_shape *obj, \
+			t_ray *trans_ray, t_ray *ray);
+void		intersections(t_minirt *data, t_ray *ray);
 
 // intersections_utils.c
-void	first_hit(t_minirt *data);
-void	first_inter(t_minirt *data, float *t, t_shape *obj, t_ray *ray);
-void	append_inter(t_minirt *data, float *t, t_shape *obj, t_ray *ray);
-void	add_intersection(t_minirt *data, float *t, t_shape *obj, t_ray *ray);
+void		first_hit(t_minirt *data);
+void		first_inter(t_minirt *data, float *t, t_shape *obj, t_ray *ray);
+void		append_inter(t_minirt *data, float *t, t_shape *obj, t_ray *ray);
+void		add_intersection(t_minirt *data, float *t, t_shape *obj, \
+			t_ray *ray);
 
 //sphere.c
 int8_t		ray_sphere_intersect(t_ray *ray, float *t);
@@ -429,17 +443,17 @@ int8_t		ray_sphere_intersect(t_ray *ray, float *t);
 int8_t		ray_plane_intersect(t_ray *ray, float *t);
 
 //cylinder.c
-int8_t	ray_cylinder_intersect(t_ray *ray, float *t, t_shape *obj);
-int8_t	intercections_count(bool *count, float *t);
-void	swap(float *t);
+int8_t		ray_cylinder_intersect(t_ray *ray, float *t, t_shape *obj);
+int8_t		intercections_count(bool *count, float *t);
+void		swap(float *t);
 
 //cylinder_cap.c
-bool	check_cy_range(t_ray *ray, float t, t_shape *obj);
-int8_t	ray_cap_inter(t_ray *ray, float *t, t_shape *obj);
-bool	check_cap(t_ray *ray, float t, t_shape *obj, int8_t order);
+bool		check_cy_range(t_ray *ray, float t, t_shape *obj);
+int8_t		ray_cap_inter(t_ray *ray, float *t, t_shape *obj);
+bool		check_cap(t_ray *ray, float t, t_shape *obj, int8_t order);
 
 // cone.c
-int8_t	ray_cone_intersect(t_ray *ray, float *t, t_shape *obj);
+int8_t		ray_cone_intersect(t_ray *ray, float *t, t_shape *obj);
 
 //sort_intersections.c
 void		sort_intersections(t_xs	*xs, t_intersections *inter);
@@ -457,7 +471,8 @@ t_checkstx	chk_scene_objs(t_minirt *data, int file);
 
 //input_checker_utils.c
 void		check_negative(char *dimension, t_checkstx *chk_stx);
-void		check_elemnt(char **line, int elemnt_str, t_checkstx *chk_stx, float *range_limts);
+void		check_elemnt(char **line, int elemnt_str, t_checkstx *chk_stx, \
+			float *range_limts);
 void		check_range(char *val, t_checkstx *chk_stx, float *range_limts);
 void		check_dup(char *obj_type, t_checkstx *chk_stx);
 
@@ -476,7 +491,8 @@ void		check_preset(char *str, t_checkstx *chk_stx);
 void		check_pattern(char **line, int n_elem, t_checkstx *chk_stx);
 void		check_bump(char **line, int n_elem, t_checkstx *chk_stx);
 int			fst_opt_pos(char **line);
-int			chk_optional_input(char **line, t_checkstx *chk_stx, int n_elem, int limit);
+int			chk_optional_input(char **line, t_checkstx *chk_stx, \
+			int n_elem, int limit);
 
 //Exit
 //exit_cleaner.c
@@ -525,12 +541,21 @@ void		rotate_camera(t_minirt *win, int key);
 //event_utils.c
 void		redo_render(t_minirt *win);
 void		select_obj(t_minirt *win);
+bool		key_on_scope(int key_pressed);
+bool		key_on_movement(int key_pressed);
 
 //handle_hooks.c
 void		manage_interface(t_minirt *data);
 int			handle_press_key(int key_pressed, void *param);
 int			handle_release_key(int key_pressed, t_minirt *data);
 int			close_window(t_minirt *win);
+
+//select_elements.c
+void		disp_nothing_selec(void);
+void		disp_basic_instruc(t_minirt *win);
+void		execute_selection(t_minirt *win, int key_pressed);
+void		disp_advanc_instruc(t_minirt *win);
+void		select_scene_elemt(t_minirt *win, int key_pressed);
 
 //Matrix
 //matrix_validations.c
@@ -556,10 +581,9 @@ t_matrix	*submatrix(t_minirt *mrt, t_matrix *mtx, int excl_row,
 				int excl_col);
 
 //matrix_transformations.c
-void	mtx_rotation_x(t_matrix *mtx, float rot_deg);
-void	mtx_rotation_y(t_matrix *mtx, float rot_deg);
-void	mtx_rotation_z(t_matrix *mtx, float rot_deg);
-
+void		mtx_rotation_x(t_matrix *mtx, float rot_deg);
+void		mtx_rotation_y(t_matrix *mtx, float rot_deg);
+void		mtx_rotation_z(t_matrix *mtx, float rot_deg);
 
 //matrix_mods_utils.c
 void		mtx_translation(t_matrix *mtx, t_tuple *tup_transl);
@@ -580,6 +604,4 @@ void		mtx_fill(t_matrix *mtx);
 void		mtx_print(t_matrix *mtx);
 //FUNCOES TEMPORARIAS APENAS PARA TESTE!!!!!^^^^^^^^^^^
 
-
-void	disp_nothing_selec(void);
 #endif

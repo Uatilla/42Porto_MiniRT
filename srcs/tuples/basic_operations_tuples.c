@@ -49,7 +49,7 @@ t_tuple	subtrac_tuples(t_tuple *a, t_tuple *b)
 	/// @return Tuple negated.
 t_tuple	negating_tuple(t_tuple *a)
 {
-	return (subtrac_tuples(&ZERO_TUPLE, a));
+	return (subtrac_tuples(&(t_tuple){0, 0, 0, 0}, a));
 }
 
 	/// @brief Find the intersection (scalar value) in a vector.

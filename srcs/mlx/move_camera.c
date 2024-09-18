@@ -54,6 +54,9 @@ void	move_cam_z(t_camera *camera, int key)
 	}
 }
 
+/// @brief Move the camera.
+/// @param win Main structure of the program.
+/// @param key Key pressed by the user.
 void	move_camera(t_minirt *win, int key)
 {
 	t_camera	*camera;
