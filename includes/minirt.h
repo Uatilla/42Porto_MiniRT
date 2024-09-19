@@ -55,7 +55,7 @@ enum e_sc
 //MACRO
 # define EPSILON 0.00001
 # define WIDTH 1000
-# define HEIGTH 500
+# define HEIGTH 250
 # define PI 3.14159
 
 # define KEY_ESC        65307
