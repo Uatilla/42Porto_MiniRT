@@ -19,8 +19,10 @@ int	close_window(t_minirt *win)
 {
 	if (win)
 	{
-		clean_matrix(win, win->camera.trans, 0);
-		clean_matrix(win, win->camera.inver, 0);
+		if (win->camera.trans)
+			clean_matrix(win, win->camera.trans, 0);
+		if (win->camera.inver)
+			clean_matrix(win, win->camera.inver, 0);
 		mlx_destroy_image(win->canvas.mlx, win->canvas.img);
 		mlx_destroy_window(win->canvas.mlx, win->canvas.win);
 		mlx_destroy_display(win->canvas.mlx);

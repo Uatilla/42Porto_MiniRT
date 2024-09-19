@@ -76,7 +76,7 @@ t_vector	reflect(t_vector *in, t_vector *normal)
 *	does the phong reflection algorithm, returns the final collor
 *	acording to the relation with the light reflection and the camera
 */
-t_color	lighting(t_comps *comps, t_light *light)
+t_color	lighting(t_comps *comps, t_light *light, t_world *world)
 {
 	t_color			color;
 	t_phong			phong;
@@ -84,7 +84,7 @@ t_color	lighting(t_comps *comps, t_light *light)
 	float			ref_dot_eye;
 	float			factor;
 
-	color = color_multiply(&comps->obj->material.color, &light->intensity);
+	color = color_multiply(&comps->obj->material.color, &world->ambient_light);
 	comps->lightv = subtrac_tuples(&light->position, &comps->point);
 	comps->lightv = normalize(&comps->lightv);
 	phong.ambient = mult_tuple_scalar(&color, comps->obj->material.ambient);
@@ -93,6 +93,7 @@ t_color	lighting(t_comps *comps, t_light *light)
 		light_is_behind_obj(&phong.diffuse, &phong.spec);
 	else
 	{
+		color = color_multiply(&color, &light->intensity);
 		phong.diffuse = mult_tuple_scalar(&color,
 				comps->obj->material.diffuse * light_normal_dot);
 		bump(&phong, comps->obj);

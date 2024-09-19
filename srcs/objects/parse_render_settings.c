@@ -76,5 +76,8 @@ void	parse_camera(t_minirt *mrt, char **line)
 void	parse_ambient(t_minirt *mrt, char **line)
 {
 	mrt->world.ambient_light = get_tuple(line[2], 999999);
+	mrt->world.ambient_light.r = mrt->world.ambient_light.r / 255;
+	mrt->world.ambient_light.g = mrt->world.ambient_light.g / 255;
+	mrt->world.ambient_light.b = mrt->world.ambient_light.b / 255;
 	mrt->world.ambient_ratio = ft_atof(line[1]);
 }
