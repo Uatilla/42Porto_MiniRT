@@ -58,13 +58,52 @@ void	exec_rotation(t_shape *sp)
 /// @param line Line of the input to check the normalized vector.
 void	rotate_obj(t_shape *sp, enum e_id type, char **line)
 {
-	t_point	norm_vect;
+	t_vector	orient;
 
 	(void)type;
-	norm_vect = get_tuple(line[2], 1);
-	sp->angle.x = find_angle((t_point){1, 0, 0, 1}, norm_vect);
-	sp->angle.y = find_angle((t_point){0, 1, 0, 1}, norm_vect);
-	sp->angle.z = find_angle((t_point){0, 0, 1, 1}, norm_vect);
+	orient = get_tuple(line[2], 1);
+	sp->angle.x = find_angle((t_point){1, 0, 0, 1}, orient);
+	sp->angle.y = find_angle((t_point){0, 1, 0, 1}, orient);
+	sp->angle.z = find_angle((t_point){0, 0, 1, 1}, orient);
 	sp->angle.w = 2;
-	exec_rotation(sp);
+
+	//printf("%f %f %f\n", norm_vect.x, norm_vect.y, norm_vect.z);
+
+	t_matrix	*rotation;
+	t_matrix	*cy_rot_y;
+	t_matrix	*cy_rot_z;
+
+
+	rotation = mtx_create(NULL, 4, 4);
+	fill_idnty_mtx(rotation);
+	
+	if (orient.x)
+		mtx_rotation_z(rotation, orient.x * M_PI / 2);
+	if (orient.y)
+	{
+		cy_rot_y = mtx_create(NULL, 4, 4);
+		fill_idnty_mtx(cy_rot_y);
+		mtx_rotation_y(cy_rot_y, orient.y * M_PI / 2 );
+		if (orient.x)
+			rotation = mtx_multiply(NULL, rotation, cy_rot_y);
+		else
+			rotation = cy_rot_y;
+	}
+	if (orient.z)
+	{
+		cy_rot_z = mtx_create(NULL, 4, 4);
+		fill_idnty_mtx(cy_rot_z);
+		mtx_rotation_x(cy_rot_z, orient.z * M_PI / 2);
+		if (orient.x || orient.y)
+			rotation = mtx_multiply(NULL, rotation, cy_rot_z);
+		else
+			rotation = cy_rot_z;
+	}
+	
+	
+	sp->mtx_trans = mtx_multiply(NULL, sp->mtx_trans, rotation);
+
+
+
+	//exec_rotation(sp);
 }
