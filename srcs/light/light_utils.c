@@ -67,7 +67,7 @@ t_color	shade_hit(t_comps *comps, t_world *world, t_minirt *data, \
 	{
 		comps->is_shadown = is_shadowed(&data->world, light_ptr, \
 				&comps->over_point);
-		phong = lighting(comps, light_ptr);
+		phong = lighting(comps, light_ptr, world);
 		surface = sum_tuples(&surface, &phong);
 		light_ptr = light_ptr->next;
 	}

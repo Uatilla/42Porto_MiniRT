@@ -35,82 +35,36 @@ void	parse_light(t_minirt *mrt, char **line)
 /// @param line Scene line from the file.
 void	parse_camera(t_minirt *mrt, char **line)
 {
-	t_vector	norm_vect;
-	t_angle		angle;
-
-	t_vector up;
-	t_vector orient;
-	
-	orient = get_tuple(line[2], 0);
-	printf("UP BEFORe %f %f %f\n", up.x, up.y, up.z);
-	/*neg_up = negating_tuple(&up);
-	printf("NEG UP %f %f %f\n", neg_up.x, neg_up.y, neg_up.z);*/
-
-	
-	
-
-
-	
-	//	up = cross_product(&up,&neg_up);
-
-
-
-
-
-
-
-	t_matrix	*cy_rot_x;
-	t_matrix	*cy_rot_y;
-	t_matrix	*cy_rot_z;
-	t_matrix	*trans;
-
-	trans = mtx_create(NULL, 4, 4);
-	fill_idnty_mtx(trans);
-
-
-	angle.x = find_angle((t_point){1, 0, 0, 1}, orient);
-	angle.y = find_angle((t_point){0, 1, 0, 1}, orient);
-	angle.z = find_angle((t_point){0, 0, 1, 1}, orient);
-	angle.w = 2;
-	printf("X %f Y %f Z%f \n",angle.x, angle.y, angle.z);
-	printf("X %f Y %f Z%f \n", (angle.x * 180)/PI, (angle.y * 180)/PI, (angle.z * 180)/PI);
-
-
-	cy_rot_x = mtx_create(NULL, 4, 4);
-	fill_idnty_mtx(cy_rot_x);
-	mtx_rotation_x(cy_rot_x, angle.x);
-	up = mtx_mult_tuple(cy_rot_x, &orient);
-	
-
-	cy_rot_y = mtx_create(NULL, 4, 4);
-	fill_idnty_mtx(cy_rot_y);
-	mtx_rotation_y(cy_rot_y, angle.y);
-	up = mtx_mult_tuple(cy_rot_y, &up);
-
-
-	cy_rot_z = mtx_create(NULL, 4, 4);
-	fill_idnty_mtx(cy_rot_z);
-	mtx_rotation_z(cy_rot_z, angle.z);
-	up = mtx_mult_tuple(cy_rot_z, &up);
-
-	printf("UP AFTER %f %f %f\n", up.x, up.y, up.z);
-
-
+	t_vector 	to;
+	t_vector	up_ref;
+	t_vector	tmp_up;
+	t_vector	orientation;
+	float		dot_ref;
 
 	mrt->camera = camera_construct(WIDTH, HEIGTH,
 			degree_to_rad(ft_atof(line[3])));
 	mrt->camera.center = get_tuple(line[1], 1);
 
+	orientation = get_tuple(line[2], 0);
+	orientation = normalize(&orientation);
+	printf("orientation: %f %f %f\n", orientation.x, orientation.y, orientation.z);
 
-	mrt->camera.direct_center = sum_tuples(&mrt->camera.center, &orient);
+	to = mult_tuple_scalar(&orientation, 10);
+	to = sum_tuples(&mrt->camera.center, &to);
 
+	printf("to: %f %f %f\n", to.x, to.y, to.z);
 
-	mrt->camera.up = normalize(&up);
+	up_ref = (t_vector){0, 1, 0, 0};
+	dot_ref = dot_product(&up_ref, &orientation);
+	if (dot_ref == 1 || dot_ref == -1)
+		up_ref = (t_vector){0, 0, 1, 0};
 
+	tmp_up = cross_product(&orientation, &up_ref);
+	mrt->camera.up = cross_product(&tmp_up, &orientation);
+	
+	printf("up_ref: %f %f %f\n", up_ref.x, up_ref.y, up_ref.z);
 
- 
-	//mrt->camera.direct_center = (t_point){0, 0, 0, 1};//To
-	mrt->camera.up = get_tuple(line[2], 0);
+	mrt->camera.direct_center = to;
 	mrt->camera.trans = view_transformation(&mrt->camera.center,
 			&mrt->camera.direct_center, &mrt->camera.up);
 	mrt->camera.inver = mtx_inverse(mrt, mrt->camera.trans);
@@ -122,5 +76,8 @@ void	parse_camera(t_minirt *mrt, char **line)
 void	parse_ambient(t_minirt *mrt, char **line)
 {
 	mrt->world.ambient_light = get_tuple(line[2], 999999);
+	mrt->world.ambient_light.r = mrt->world.ambient_light.r / 255;
+	mrt->world.ambient_light.g = mrt->world.ambient_light.g / 255;
+	mrt->world.ambient_light.b = mrt->world.ambient_light.b / 255;
 	mrt->world.ambient_ratio = ft_atof(line[1]);
 }

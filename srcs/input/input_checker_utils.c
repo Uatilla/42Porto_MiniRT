@@ -16,19 +16,27 @@ void	check_char(char *val, t_checkstx *chk_stx)
 {
 	int	i;
 	int	count_dot;
+	int	count_minus;
+	int	count_plus;
 
 	i = -1;
 	count_dot = 0;
+	count_minus = 0;
+	count_plus = 0;
 	while (val[++i])
 	{
 		if (val[i] < '0' || val[i] > '9')
 		{
 			if (val[i] == '.')
 				count_dot++;
+			else if (val[i] == '-')
+				count_minus++;
+			else if(val[i] == '+')
+				count_plus++;
 			else
 				chk_stx->count_err_stx++;
 		}
-		if (count_dot > 1)
+		if (count_dot > 1 || count_minus > 1 || count_plus > 1)
 			chk_stx->count_err_stx++;
 	}
 }

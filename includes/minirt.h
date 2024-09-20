@@ -357,7 +357,7 @@ t_color		reflected_color(t_comps *comps, t_minirt *data, int8_t remaining);
 t_color		color_at(t_minirt *data, t_ray *ray, int8_t remainer);
 void		point_light(t_point *pos, t_color *intensity, t_world *world);
 t_vector	reflect(t_vector *in, t_vector *normal);
-t_color		lighting(t_comps *comps, t_light *light);
+t_color		lighting(t_comps *comps, t_light *light, t_world *world);
 
 // light_utils.c
 t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
