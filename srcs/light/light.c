@@ -72,6 +72,7 @@ t_vector	reflect(t_vector *in, t_vector *normal)
 	return (vect);
 }
 
+
 /*
 *	does the phong reflection algorithm, returns the final collor
 *	acording to the relation with the light reflection and the camera
@@ -81,8 +82,6 @@ t_color	lighting(t_comps *comps, t_light *light, t_world *world)
 	t_color			color;
 	t_phong			phong;
 	float			light_normal_dot;
-	float			ref_dot_eye;
-	float			factor;
 
 	color = color_multiply(&comps->obj->material.color, &world->ambient_light);
 	comps->lightv = subtrac_tuples(&light->position, &comps->point);
@@ -99,11 +98,18 @@ t_color	lighting(t_comps *comps, t_light *light, t_world *world)
 		bump(&phong, comps->obj);
 		comps->reflectv = negating_tuple(&comps->lightv);
 		comps->reflectv = reflect(&comps->reflectv, &comps->normalv);
-		ref_dot_eye = dot_product(&comps->reflectv, &comps->eyev);
-		if (ref_dot_eye <= 0)
-			phong.spec = (t_color){0, 0, 0, 999999};
-		else
-			phong.spec = specular(&comps->obj->material, light, ref_dot_eye);
+		get_specular(comps, light, &phong);
 	}
 	return (add_color3(&phong.ambient, &phong.diffuse, &phong.spec));
+}
+
+void	get_specular(t_comps *comps, t_light *light, t_phong *phong)
+{
+	float			ref_dot_eye;
+
+	ref_dot_eye = dot_product(&comps->reflectv, &comps->eyev);
+	if (ref_dot_eye <= 0)
+		phong->spec = (t_color){0, 0, 0, 999999};
+	else
+		phong->spec = specular(&comps->obj->material, light, ref_dot_eye);
 }

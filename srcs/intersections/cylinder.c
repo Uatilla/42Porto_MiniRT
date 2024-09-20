@@ -30,13 +30,14 @@ int8_t	ray_cylinder_intersect(t_ray *ray, float *t, t_shape *obj)
 	float	discriminant;
 	bool	count[2];
 
-	a = (ray->direction.x * ray->direction.x) +
-		(ray->direction.z * ray->direction.z);
+	a = (ray->direction.x * ray->direction.x) + (ray->direction.z
+			* ray->direction.z);
 	if (fabs(a) < EPSILON)
 		return (0);
-	b = (2 * ray->origin.x * ray->direction.x) +
-		(2 * ray->origin.z * ray->direction.z);
-	c = (ray->origin.x * ray->origin.x) + (ray->origin.z * ray->origin.z) - 1;
+	b = (2 * ray->origin.x * ray->direction.x) + (2 * ray->origin.z
+			* ray->direction.z);
+	c = (ray->origin.x * ray->origin.x) + (ray->origin.z
+			* ray->origin.z) - 1;
 	discriminant = (b * b) - 4 * a * c;
 	if (discriminant < 0)
 		return (0);

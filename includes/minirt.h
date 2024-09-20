@@ -194,10 +194,10 @@ typedef t_shape	t_cyl;
 typedef struct s_intersections
 {
 	t_point					point;
-	float					t[2];
-	float					hit;
 	t_shape					*obj;
 	struct s_intersections	*next;
+	float					t[2];
+	float					hit;
 }	t_intersections;
 
 typedef struct s_comps
@@ -360,6 +360,7 @@ t_color		color_at(t_minirt *data, t_ray *ray, int8_t remainer);
 void		point_light(t_point *pos, t_color *intensity, t_world *world);
 t_vector	reflect(t_vector *in, t_vector *normal);
 t_color		lighting(t_comps *comps, t_light *light, t_world *world);
+void		get_specular(t_comps *comps, t_light *light, t_phong *phong);
 
 // light_utils.c
 t_color		add_color3(t_color *ambient, t_color *diffuse, t_color *specular);
@@ -375,7 +376,6 @@ t_pattern	stripe_pattern(t_color *a, t_color *b, enum e_p type);
 t_color		point_color(t_point *point);
 t_color		stripe_at(t_pattern *patterns, t_point *point);
 t_color		gradient(t_pattern *pattern, t_point *point);
-
 
 //patterns_utils.c
 t_color		ring_patt(t_pattern *pattern, t_point *point);
@@ -459,6 +459,8 @@ bool		check_cap(t_ray *ray, float t, t_shape *obj, int8_t order);
 
 // cone.c
 int8_t		ray_cone_intersect(t_ray *ray, float *t, t_shape *obj);
+int8_t		get_to_cone_inters_1(float *t, int b, int c);
+void		ray_to_cone_inters_2(float *t, int b, int a, float discriminant);
 
 //sort_intersections.c
 void		sort_intersections(t_xs	*xs, t_intersections *inter);
