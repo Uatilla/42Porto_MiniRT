@@ -38,6 +38,7 @@ void	input_chk_ambient(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 void	input_chk_camera(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 {
 	int	n_elem;
+	t_vector	orientation;
 
 	(void)mrt;
 	n_elem = -1;
@@ -46,7 +47,16 @@ void	input_chk_camera(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 		if (n_elem == 1)
 			check_elemnt(line, n_elem, chk_stx, NULL);
 		else if (n_elem == 2)
-			check_elemnt(line, n_elem, chk_stx, (float []){-1.0, 1.0});
+		{
+			if (line[n_elem])
+			{
+				check_elemnt(line, n_elem, chk_stx, (float []){-1.0, 1.0});
+				orientation = get_tuple(line[n_elem], 0);
+				if (orientation.x == 0 && orientation.y == 0 && orientation.z == 0)
+					chk_stx->count_err_orien_cam++;
+			}
+
+		}
 		else if (n_elem == 3)
 			check_range(line[n_elem], chk_stx, (float []){0.0, 180.0});
 	}

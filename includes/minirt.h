@@ -86,8 +86,10 @@ typedef struct s_checkstx
 	int		count_objs;
 	int		count_err_stx;
 	int		count_err_bump;
+	int		count_err_init;
 	int		count_preset_err;
 	int		count_pattern_err;
+	int		count_err_orien_cam; 
 }	t_checkstx;
 
 typedef struct s_canvas

@@ -36,6 +36,16 @@ void	chk_type_objs(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 	free_split(line);
 }
 
+void	check_initials(char *obj_type, t_checkstx *chk_stx)
+{
+	if (obj_type)
+	{
+		if (!ft_strcmp("a", obj_type) || !ft_strcmp("c", obj_type)
+			|| !ft_strcmp("l", obj_type))
+			chk_stx->count_err_init++;
+	}
+}
+
 /// @brief Start verifying the Scene syntax.
 /// @param data Main program structure.
 /// @param file Scene file.
@@ -58,6 +68,7 @@ t_checkstx	chk_scene_objs(t_minirt *data, int file)
 		line_cleaned = ft_split(line_trimmed, ' ');
 		free(line_trimmed);
 		check_dup(line_cleaned[0], &chk_stx);
+		check_initials(line_cleaned[0], &chk_stx);
 		chk_type_objs(data, line_cleaned, &chk_stx);
 		if (chk_stx.count_err_stx > 0)
 			break ;
@@ -103,6 +114,11 @@ void	display_errors(t_minirt *mrt, t_checkstx *chk_stx)
 		'PC', 'GR', 'RNG' or 'CHK'.\n", 1);
 	if (chk_stx->count_err_bump > 0)
 		ft_error(mrt, "ERROR: Check if Bumpmaps is 'BUMP'.\n", 1);
+	if (chk_stx->count_err_init > 0)
+		ft_error(mrt, "ERROR: A, C or L must be UPPERCASE\n", 1);
+	if (chk_stx->count_err_orien_cam > 0)
+		ft_error(mrt, "ERROR: Camera must have an orientation\n\
+			(0, 0, 0) is not allowed.\n", 1);
 }
 
 /// @brief Verify scene file if its available or has syntax errors.

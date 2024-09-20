@@ -31,7 +31,7 @@ int8_t	ray_sphere_intersect(t_ray *ray, float *t)
 		return (0);
 	sphere_to_ray = subtrac_tuples(&ray->origin, &(t_point){0, 0, 0, 1});
 	a = dot_product(&ray->direction, &ray->direction);
-	b = 2 * dot_product(&ray->direction, &sphere_to_ray);
+	b = 2 * dot_product(&ray->direction, &ray->origin);
 	c = dot_product(&sphere_to_ray, &sphere_to_ray) - 1;
  	discriminant = (b * b) - 4 * a * c;
 	if (discriminant < 0)
