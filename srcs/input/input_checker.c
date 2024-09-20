@@ -36,16 +36,6 @@ void	chk_type_objs(t_minirt *mrt, char **line, t_checkstx *chk_stx)
 	free_split(line);
 }
 
-void	check_initials(char *obj_type, t_checkstx *chk_stx)
-{
-	if (obj_type)
-	{
-		if (!ft_strcmp("a", obj_type) || !ft_strcmp("c", obj_type)
-			|| !ft_strcmp("l", obj_type))
-			chk_stx->count_err_init++;
-	}
-}
-
 /// @brief Start verifying the Scene syntax.
 /// @param data Main program structure.
 /// @param file Scene file.

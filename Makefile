@@ -65,7 +65,7 @@ SRCS		=	main.c \
 				view/view_transformation.c \
 				camera/camera.c	\
 				render/render.c \
-				patterns/patterns.c\
+				patterns/patterns.c patterns/patterns_utils.c\
 				normal/normal.c\
 				computations/computations.c
 

@@ -89,7 +89,7 @@ typedef struct s_checkstx
 	int		count_err_init;
 	int		count_preset_err;
 	int		count_pattern_err;
-	int		count_err_orien_cam; 
+	int		count_err_orien_cam;
 }	t_checkstx;
 
 typedef struct s_canvas
@@ -375,6 +375,9 @@ t_pattern	stripe_pattern(t_color *a, t_color *b, enum e_p type);
 t_color		point_color(t_point *point);
 t_color		stripe_at(t_pattern *patterns, t_point *point);
 t_color		gradient(t_pattern *pattern, t_point *point);
+
+
+//patterns_utils.c
 t_color		ring_patt(t_pattern *pattern, t_point *point);
 t_color		checker_patt(t_pattern *pattern, t_point *point);
 t_color		pattern_at(t_pattern *p, t_point *point, t_shape *obj, \
@@ -482,6 +485,7 @@ void		check_dup(char *obj_type, t_checkstx *chk_stx);
 void		input_chk_ambient(t_minirt *mrt, char **line, t_checkstx *chk_stx);
 void		input_chk_camera(t_minirt *mrt, char **line, t_checkstx *chk_stx);
 void		input_chk_light(t_minirt *mrt, char **line, t_checkstx *chk_stx);
+void		check_initials(char *obj_type, t_checkstx *chk_stx);
 
 //input_chk_scene_objs.c
 void		input_chk_cyl_con(t_minirt *mrt, char **line, t_checkstx *chk_stx);

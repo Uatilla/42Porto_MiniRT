@@ -31,7 +31,7 @@ void	check_char(char *val, t_checkstx *chk_stx)
 				count_dot++;
 			else if (val[i] == '-')
 				count_minus++;
-			else if(val[i] == '+')
+			else if (val[i] == '+')
 				count_plus++;
 			else
 				chk_stx->count_err_stx++;

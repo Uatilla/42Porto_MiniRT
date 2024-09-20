@@ -12,44 +12,38 @@
 
 #include "../../includes/minirt.h"
 
-/// @brief Find the right angle to rotate in each axis.
-/// @param reference Normalized vector reference for each axis.
-/// @param p Normalized vector from the input.
-/// @return The angle found for that axis.
-float	find_angle(t_point	reference, t_point p)
+t_matrix	*execute_rot_z(t_vector *orient, t_matrix *rotation)
 {
-	float	dot_p;
-	float	mag_ref;
-	float	mag_p;
+	t_matrix	*rot_z;
 
-	dot_p = (reference.x * p.x) + (reference.y * p.y) + (reference.z * p.z);
-	mag_ref = sqrtf((reference.x * reference.x) + (reference.y * reference.y)
-			+ (reference.z * reference.z));
-	mag_p = sqrtf((p.x * p.x) + (p.y * p.y) + (p.z * p.z));
-	return (acos(dot_p / (mag_ref * mag_p)));
+	rot_z = mtx_create(NULL, 4, 4);
+	fill_idnty_mtx(rot_z);
+	mtx_rotation_x(rot_z, orient->z * M_PI / 2);
+	if (orient->x || orient->y)
+		rotation = mtx_multiply(NULL, rotation, rot_z);
+	else
+	{
+		clean_matrix(NULL, rotation, 0);
+		rotation = rot_z;
+	}
+	return (rotation);
 }
 
-/// @brief Effectively execute the rotation of the object.
-/// @param sp Shape to be rotated.
-void	exec_rotation(t_shape *sp)
+t_matrix	*execute_rot_y(t_vector *orient, t_matrix *rotation)
 {
-	t_matrix	*cy_rot_x;
-	t_matrix	*cy_rot_y;
-	t_matrix	*cy_rot_z;
+	t_matrix	*rot_y;
 
-	cy_rot_x = mtx_create(NULL, 4, 4);
-	fill_idnty_mtx(cy_rot_x);
-	mtx_rotation_x(cy_rot_x, PI / 4);
-	mtx_rotation_x(cy_rot_x, sp->angle.x);
-	sp->mtx_trans = mtx_multiply(NULL, cy_rot_x, sp->mtx_trans);
-	cy_rot_y = mtx_create(NULL, 4, 4);
-	fill_idnty_mtx(cy_rot_y);
-	mtx_rotation_y(cy_rot_y, sp->angle.y);
-	sp->mtx_trans = mtx_multiply(NULL, cy_rot_y, sp->mtx_trans);
-	cy_rot_z = mtx_create(NULL, 4, 4);
-	fill_idnty_mtx(cy_rot_z);
-	mtx_rotation_z(cy_rot_z, sp->angle.z);
-	sp->mtx_trans = mtx_multiply(NULL, cy_rot_z, sp->mtx_trans);
+	rot_y = mtx_create(NULL, 4, 4);
+	fill_idnty_mtx(rot_y);
+	mtx_rotation_y(rot_y, orient->y * M_PI / 2);
+	if (orient->x)
+		rotation = mtx_multiply(NULL, rotation, rot_y);
+	else
+	{
+		clean_matrix(NULL, rotation, 0);
+		rotation = rot_y;
+	}
+	return (rotation);
 }
 
 /// @brief Rotate each object if (PL or CY).
@@ -59,51 +53,17 @@ void	exec_rotation(t_shape *sp)
 void	rotate_obj(t_shape *sp, enum e_id type, char **line)
 {
 	t_vector	orient;
+	t_matrix	*rotation;
 
 	(void)type;
 	orient = get_tuple(line[2], 1);
-	sp->angle.x = find_angle((t_point){1, 0, 0, 1}, orient);
-	sp->angle.y = find_angle((t_point){0, 1, 0, 1}, orient);
-	sp->angle.z = find_angle((t_point){0, 0, 1, 1}, orient);
-	sp->angle.w = 2;
-
-	//printf("%f %f %f\n", norm_vect.x, norm_vect.y, norm_vect.z);
-
-	t_matrix	*rotation;
-	t_matrix	*cy_rot_y;
-	t_matrix	*cy_rot_z;
-
-
 	rotation = mtx_create(NULL, 4, 4);
 	fill_idnty_mtx(rotation);
-	
 	if (orient.x)
 		mtx_rotation_z(rotation, orient.x * M_PI / 2);
 	if (orient.y)
-	{
-		cy_rot_y = mtx_create(NULL, 4, 4);
-		fill_idnty_mtx(cy_rot_y);
-		mtx_rotation_y(cy_rot_y, orient.y * M_PI / 2 );
-		if (orient.x)
-			rotation = mtx_multiply(NULL, rotation, cy_rot_y);
-		else
-			rotation = cy_rot_y;
-	}
+		rotation = execute_rot_y(&orient, rotation);
 	if (orient.z)
-	{
-		cy_rot_z = mtx_create(NULL, 4, 4);
-		fill_idnty_mtx(cy_rot_z);
-		mtx_rotation_x(cy_rot_z, orient.z * M_PI / 2);
-		if (orient.x || orient.y)
-			rotation = mtx_multiply(NULL, rotation, cy_rot_z);
-		else
-			rotation = cy_rot_z;
-	}
-	
-	
+		rotation = execute_rot_z(&orient, rotation);
 	sp->mtx_trans = mtx_multiply(NULL, sp->mtx_trans, rotation);
-
-
-
-	//exec_rotation(sp);
 }

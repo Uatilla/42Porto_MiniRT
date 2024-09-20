@@ -35,7 +35,7 @@ void	parse_light(t_minirt *mrt, char **line)
 /// @param line Scene line from the file.
 void	parse_camera(t_minirt *mrt, char **line)
 {
-	t_vector 	to;
+	t_vector	to;
 	t_vector	up_ref;
 	t_vector	tmp_up;
 	t_vector	orientation;
@@ -44,26 +44,16 @@ void	parse_camera(t_minirt *mrt, char **line)
 	mrt->camera = camera_construct(WIDTH, HEIGTH,
 			degree_to_rad(ft_atof(line[3])));
 	mrt->camera.center = get_tuple(line[1], 1);
-
 	orientation = get_tuple(line[2], 0);
 	orientation = normalize(&orientation);
-	printf("orientation: %f %f %f\n", orientation.x, orientation.y, orientation.z);
-
 	to = mult_tuple_scalar(&orientation, 10);
 	to = sum_tuples(&mrt->camera.center, &to);
-
-	printf("to: %f %f %f\n", to.x, to.y, to.z);
-
 	up_ref = (t_vector){0, 1, 0, 0};
 	dot_ref = dot_product(&up_ref, &orientation);
 	if (dot_ref == 1 || dot_ref == -1)
 		up_ref = (t_vector){0, 0, 1, 0};
-
 	tmp_up = cross_product(&orientation, &up_ref);
 	mrt->camera.up = cross_product(&tmp_up, &orientation);
-	
-	printf("up_ref: %f %f %f\n", up_ref.x, up_ref.y, up_ref.z);
-
 	mrt->camera.direct_center = to;
 	mrt->camera.trans = view_transformation(&mrt->camera.center,
 			&mrt->camera.direct_center, &mrt->camera.up);
