@@ -39,7 +39,7 @@ t_matrix	*mtx_inverse(t_minirt *mrt, t_matrix *mtx)
 	int			col;
 
 	determ = determinant(mrt, mtx);
-	if (compare_float(determ, 0))
+	if (determ == 0)
 		return (NULL);
 	mtx_res = mtx_create(mrt, mtx->rows, mtx->cols);
 	if (!mtx_res)
