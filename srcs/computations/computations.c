@@ -34,7 +34,7 @@ t_comps	prepare_computations(t_intersections *i, t_ray *ray, t_minirt *data)
 	else
 		comps.inside = false;
 	if (comps.obj->type == CONE)
-		comps.over_point = mult_tuple_scalar(&comps.normalv, EPSILON * 650000);
+		comps.over_point = mult_tuple_scalar(&comps.normalv, EPSILON * 600000);
 	else
 		comps.over_point = mult_tuple_scalar(&comps.normalv, EPSILON * 400);
 	comps.over_point = sum_tuples(&comps.point, &comps.over_point);
