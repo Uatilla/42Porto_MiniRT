@@ -459,8 +459,7 @@ bool		check_cap(t_ray *ray, float t, t_shape *obj, int8_t order);
 
 // cone.c
 int8_t		ray_cone_intersect(t_ray *ray, float *t, t_shape *obj);
-int8_t		get_to_cone_inters_1(float *t, int b, int c);
-void		ray_to_cone_inters_2(float *t, int b, int a, float discriminant);
+void		set_cone_intersect(float *a, float *b, float *c, t_ray *ray);
 
 //sort_intersections.c
 void		sort_intersections(t_xs	*xs, t_intersections *inter);
