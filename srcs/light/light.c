@@ -72,7 +72,6 @@ t_vector	reflect(t_vector *in, t_vector *normal)
 	return (vect);
 }
 
-
 /*
 *	does the phong reflection algorithm, returns the final collor
 *	acording to the relation with the light reflection and the camera

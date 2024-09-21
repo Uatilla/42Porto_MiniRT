@@ -98,6 +98,7 @@ $(LIBFT):
 
 $(MLX_DIR):
 	@git clone --depth=1 https://github.com/42Paris/minilibx-linux.git 
+	@rm -rf libraries/minilibx-linux/.git
 	@make -sC minilibx-linux 2> /dev/null
 	@mv minilibx-linux libraries/
 
