@@ -16,7 +16,7 @@ We decided to put the credits at the beginning of the readme because this projec
 # Tuples
 
 - A tuple is just an ordered list of things, like numbers.
-- For this project we used two types of tuples:
+- For this project, we used two types of tuples:
 	- points and vector
 
 - the way we can tell if a tuple (x, y, z) is a point or a vector, we introduce a new component w;
@@ -48,11 +48,11 @@ t_tuple	creating_tuple(float x, float y, float z, float w)
 ```
 # Operations
 
-Now that we have or tuples, we need to be able to make operations with them.
+Now that we have tuples, we need to be able to make operations with them.
 
 ## Adding
 
-- Lets say you start from a point (3, -2, 5, 1) and you want to know where will you be if you follow a vector (-2, 3, 1, 0) from that point, you can add those tuples together, and the result will be a new point.
+- Let's say you start from a point (3, -2, 5, 1) and you want to know where you will be if you follow a vector (-2, 3, 1, 0) from that point, you can add those tuples together, and the result will be a new point.
 
 ``` c
 t_tuple	sum_tuples(t_tuple *a, t_tuple *b)
@@ -72,12 +72,12 @@ t_tuple	sum_tuples(t_tuple *a, t_tuple *b)
 - You can find the vector that goes from one point to another by subtracting them.
 - for example:
 - *point(3, 2, 1, 1) - point(5, 6, 7, 1) = vector(-2, -4, -6, 0).*
-- notice that the w component cancel each other out, resulting in a vector;
+- notice that the w components cancel each other out, resulting in a vector;
 
 - Similarly, you can subtract a vector (w of 0) from a point (w of 1) and get another tuple with a w of 1, a point. Conceptually, this is just moving backward by the given vector.
 - *point(3, 2, 1, 1) - vector(5, 6, 7, 0) = vector(-2, -4, -6, 0)*
 
-- Lastly, subtracting two vectors gives us a another vector, representing the change in direction between the two.
+- Lastly, subtracting two vectors gives us another vector, representing the change in direction between the two.
 - *vector(3, 2, 1, 0) - vector(5, 6, 7, 0) = vector(-2, -4, -6, 0).*
 
 ```c
@@ -108,7 +108,7 @@ t_tuple	negating_tuple(t_tuple *a)
 
 - Now let’s say you have some vector and you want to know what point lies 3.5 times farther in that direction.
 - Multiplying the vector by 3.5 does just what you need. The 3.5 here is a scalar value because multiplying by it scales the vector (changes its length uniformly).
-- To do it, you multiply each component of the tuple by the scalar.
+- To do it, you multiply each tuple component by the scalar.
 - *tuple(1, -2, 3, -4) * 3.5 = (3.5, -7, 10.5, -14).*
 
 - The same works for division
@@ -147,7 +147,8 @@ t_tuple	div_tuple_scalar(t_tuple *a, float sc)
 - The distance represented by a vector is called its magnitude, or length.
 - We can use the Pythagorean Theorem  to find the magnitude.
 
-	![[Screenshot from 2024-09-18 18-09-38.png]]
+![Screenshot from 2024-09-18 18-09-38](https://github.com/user-attachments/assets/0f99335f-3d1c-4ba5-811f-f42972102097)
+
 
 ```c
 float	magnitude(t_tuple *a)
