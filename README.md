@@ -15,7 +15,7 @@ the miniRT is our first ray tracer coded in C, normed and humble but functional.
 
 If you want to run the project yourself:
 	- First clone this git repository to your machine.
-	- Enter the repo and run ```bash make ```
+	- Enter the repo and run ``` make ```
 	- The first time will download set up the minilibx
 	- Run ./minirt <scene>.rt
 
