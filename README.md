@@ -4,9 +4,16 @@ Jhonas Leal - https://github.com/Jburlama
 
 Uatilla  Almeida - https://github.com/Uatilla
 
+# miniRT
+
+Is a 42-school project about implementing a raytracing alogorithm in c.
+The main goal of the project is to proaf that we can implement any matematics or physics formula whitout beeing a matematition.
+
+the miniRT is out first ray tracer coded in C, normed and humble but functionnal.
+
 # Credits
 
-We decided to put the credits at the beginning of the readme because this project would not be possible without the book:
+This project would not be possible without the guidelines of the book:
 
 **The Ray Tracer Challenger - by Jamis Buck**
 
