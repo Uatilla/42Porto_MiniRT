@@ -10,7 +10,9 @@ Is a 42-school project about implementing a raytracing algorithm in c.
 The main goal of the project is to prove that we can implement any mathematics or physics formula without being a mathematician.
 
 the miniRT is our first ray tracer coded in C, normed and humble but functional.
+
 https://cdn.intra.42.fr/pdf/pdf/113053/en.subject.pdf
+
 # Usage
 
 If you want to run the project yourself:
