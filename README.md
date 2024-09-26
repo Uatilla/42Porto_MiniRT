@@ -969,3 +969,52 @@ bool	check_cap(t_ray *ray, float t, t_shape *obj, int8_t	order)
 	return (false);
 }
 ```
+
+# Shapes
+
+- All shapes will be represented by the t_shape struct, which will be put into a linked list.
+
+```c
+typedef struct s_shape
+{
+	t_material			material;
+	t_ray				trans_ray;
+	t_matrix			*mtx_trans;
+	t_matrix			*mtx_inver;
+	t_point				center;
+	t_angle				angle;
+	enum e_id			type;
+	float				amb_ratio;
+	int					id;
+	void				*next;
+}	t_shape;
+
+typedef t_shape	t_sphere;
+typedef t_shape	t_plane;
+typedef t_shape	t_cyl;
+typedef	t_shape	t_cone;
+```
+
+- They will all have in common:
+	- a material:
+ ```c
+typedef struct s_material
+{
+	t_pattern	pattern;
+	t_color		color;
+	t_color		color_sec;
+	float		ambient;
+	float		diffuse;
+	float		specular;
+	float		shininess;
+	float		reflective;
+	float		min;
+	float		max;
+	bool		closed;
+	bool		is_bump;
+}	t_material;
+```
+	- The min, max, and closed values will be only used by the cone and cylinder.
+
+- a transformation matrix, which will be set as the identity matrix, if the object doesn't have a transformation, and the inverse of that matrix.
+- The transformed ray. The ray that multiplied by the inverse of the object transformation matrix.
