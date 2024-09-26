@@ -1112,7 +1112,34 @@ typedef t_tuple	t_color;
 
 - We used union to make the code more readable, and more distinguishable when we are working with r,g,b colors or x,y,z coordinates.
 
+# Point light
 
+- Every call to point light will add a new light source to the world and will put it on a list of lights.
+
+```c
+void	point_light(t_point *pos, t_color *intensity, t_world *world)
+{
+	t_light	*light;
+
+	if (world->light == NULL)
+	{
+		world->light = ft_calloc(sizeof(*world->light), 1);
+		if (world->light == NULL)
+			exit (errno);
+		world->light->position = *pos;
+		world->light->intensity = *intensity;
+		world->light->next = NULL;
+		return ;
+	}
+	light = ft_calloc(sizeof(*light), 1);
+	if (light == NULL)
+		exit(errno);
+	light->position = *pos;
+	light->intensity = *intensity;
+	light->next = world->light;
+	world->light = light;
+}
+```
 
 # Light and Shading
 
@@ -1295,3 +1322,175 @@ void	get_specular(t_comps *comps, t_light *light, t_phong *phong)
 		phong->spec = specular(&comps->obj->material, light, ref_dot_eye);
 }
 ```
+
+
+# Shadows
+
+- If the point is in shadow, in the lightning function, we will ignore the specular and diffuse values and use only the ambient to color the point.
+- We will cast a shadow ray, going through the point of intersection to the light source, and if that ray intersects an object, then that point is on shadow.
+
+```c
+bool	is_shadowed(t_world *w, t_light *light, t_point *p)
+{
+	t_minirt	data;
+	t_vector	v;
+	float		distance;
+	t_ray		ray;
+
+	ft_memset(&data, 0, sizeof(data));
+	data.world = *w;
+	v = subtrac_tuples(&light->position, p);
+	distance = magnitude(&v);
+	ray.direction = normalize(&v);
+	ray.origin = *p;
+	intersections(&data, &ray);
+	if (data.first_hit && distance > data.first_hit->hit)
+	{
+		clear_ray_inter(&data);
+		return (true);
+	}
+	clear_ray_inter(&data);
+	return (false);
+}
+```
+
+1. We Measure the distance from point to the light source by subtracting point from the light position and taking the magnitude of the resulting vector. Call this distance.
+
+2. We Create a ray from point toward the light source by normalizing the vector from step 1.
+
+3. We intersect the world with that ray.
+
+4. We check to see if there was a hit, and if so, whether t is less than distance. If so, the hit lies between the point and the light source, and the point is in shadow.
+
+
+
+
+# Camera
+
+- The camera will represent our eye.
+- The camera will have a transformation matrix, that will pretty much orientate the world relative to our eye.
+
+# View transformation
+
+- The view_transformation function will return the camera transformation matrix and take 3 parameters.
+	- **From:** The point of origin of the camera.
+	- **To:** To were the camera is pointing to.
+	- **Up:** The vector indicating which direction is up.
+
+```c
+typedef struct s_view
+{
+	t_vector	forward;
+	t_vector	upn;
+	t_vector	left;
+	t_vector	true_uper;
+}	t_view;
+```
+
+```c
+t_matrix	*view_transformation(t_point *from, t_point *to, t_vector *up)
+{
+	t_view		view;
+	t_matrix	*orientation;
+	t_matrix	*trans;
+	t_matrix	*ret;
+
+	view.forward = subtrac_tuples(to, from);
+	view.forward = normalize(&view.forward);
+	view.upn = normalize(up);
+	view.left = cross_product(&view.forward, &view.upn);
+	view.true_uper = cross_product(&view.left, &view.forward);
+	orientation = view_orientation(&view.left, &view.true_uper, &view.forward);
+	trans = mtx_create(NULL, 4, 4);
+	fill_idnty_mtx(trans);
+	mtx_translation(trans, &(t_point){-from->x, -from->y, -from->z, 1});
+	ret = mtx_multiply(NULL, orientation, trans);
+	return (ret);
+}
+```
+
+```c
+t_matrix	*view_orientation(t_vector *left, t_vector *up, t_vector *forward)
+{
+	t_matrix	*orientation;
+
+	orientation = mtx_create(NULL, 4, 4);
+	orientation->mtx[0][0] = left->x;
+	orientation->mtx[0][1] = left->y;
+	orientation->mtx[0][2] = left->z;
+	orientation->mtx[1][0] = up->x;
+	orientation->mtx[1][1] = up->y;
+	orientation->mtx[1][2] = up->z;
+	orientation->mtx[2][0] = -forward->x;
+	orientation->mtx[2][1] = -forward->y;
+	orientation->mtx[2][2] = -forward->z;
+	orientation->mtx[3][3] = 1;
+	return (orientation);
+}
+```
+
+1. We compute the forward vector by subtracting from, from to, and normalizing the result.
+
+2. We compute the left vector by taking the cross product of forward and the normalized up vector.
+
+3. We compute the true_up vector by taking the cross product of left and forward. This allows the original up vector to be only approximately up, which makes framing scenes a lot easier.
+
+4. With these left, true_up, and forward vectors, we can now construct a matrix that represents the orientation transformation:
+
+	![[Pasted image 20240926174653.png]]
+
+5. The last step is to append a translation to that transformation to move the scene into place before orienting it. Multiplying orientation by translation(-from.x, -from.y, -from.z).
+
+
+# Constructing the camera
+
+```c
+typedef struct s_camera
+{
+	t_matrix	*trans;
+	t_matrix	*inver;
+	t_point		center;
+	t_point		direct_center;
+	t_vector	up;
+	int			hsize;
+	int			vsize;
+	float		half_width;
+	float		half_height;
+	float		pixel_size;
+	float		fov;
+}	t_camera;
+```
+
+- The camera is defined by the following four attributes:
+	- **hsize:** is the horizontal size (in pixels) of the canvas that the picture will be rendered to.
+	- **vsize:** is the canvas’s vertical size (in pixels). 
+	- **field_of_view (fov):** is an angle that describes how much the camera can see.
+	- **transform (trans):** is a matrix describing how the world should be oriented relative to the camera. We achieve this with view transformation.
+
+```c
+t_camera	camera_construct(size_t hsize, size_t vsize, float fov)
+{
+	t_camera	camera;
+	float		half_view;
+	float		aspect;
+
+	camera.hsize = hsize;
+	camera.vsize = vsize;
+	camera.fov = fov;
+	half_view = tan(fov / 2);
+	aspect = (float)hsize / (float)vsize;
+	if (aspect >= 1)
+	{
+		camera.half_width = half_view;
+		camera.half_height = half_view / aspect;
+	}
+	else
+	{
+		camera.half_width = half_view * aspect;
+		camera.half_height = half_view;
+	}
+	camera.pixel_size = (camera.half_width * 2) / hsize;
+	return (camera);
+```
+
+
