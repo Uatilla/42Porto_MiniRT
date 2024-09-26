@@ -525,7 +525,7 @@ t_matrix	*mtx_inverse(t_minirt *mrt, t_matrix *mtx)
 }
 ```
 
-- ==Calculating the inverse of a matrix is very computationally intense, is more efficient to do it before the render==.
+- Calculating the inverse of a matrix is very computationally intense, is more efficient to do it before the render.
 
 # Matrices Transformations
 
