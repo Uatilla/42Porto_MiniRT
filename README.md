@@ -1,3 +1,7 @@
+# Credits
+
+We decided to put the credits at the beginning of the readme because this project would not be possible without the book *The Ray Tracer Challenger - by Jamis Buck*
+
 # Tuples
 
 - A tuple is just an ordered list of things, like numbers.
