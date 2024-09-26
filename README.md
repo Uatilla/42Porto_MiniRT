@@ -11,6 +11,14 @@ The main goal of the project is to prove that we can implement any mathematics o
 
 the miniRT is our first ray tracer coded in C, normed and humble but functional.
 
+# Usage
+
+If you want to run the project yourself:
+	- First clone this git repository to your machine.
+	- Enter the repo and run ```bash make ```
+	- The first time will download set up the minilibx
+	- Run ./minirt <scene>.rt
+
 # Credits
 
 This project would not be possible without the guidelines of the book:
