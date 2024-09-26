@@ -293,7 +293,8 @@ t_matrix	*mtx_multiply(t_minirt *mrt, t_matrix *mtx_a, t_matrix *mtx_b)
 - We are also able to multiply matrices with tuples to produce another tuple.
 - We treat the tuple as a 1 column and 4 row matrix.
 
-![Screenshot from 2024-09-19 17-45-20](https://github.com/user-attachments/assets/9801f9d7-ac0b-4d2f-a9c9-e1b3d5c58030)
+
+![Screenshot from 2024-09-19 17-50-37](https://github.com/user-attachments/assets/f0687a75-df3b-4c1f-ac66-86f0e42266a9)
 
 	
 	
