@@ -10,8 +10,7 @@ We decided to put the credits at the beginning of the readme because this projec
 
 **The Ray Tracer Challenger - by Jamis Buck**
 
-
-| [Jamis Buck - The Ray Tracer Challenge](https://github.com/user-attachments/files/16740679/Jamis.Buck.-.The.Ray.Tracer.Challenge-Pragmatic.Bookshelf.2019.pdf) | `PDF`|
+ [Jamis Buck - The Ray Tracer Challenge](https://github.com/user-attachments/files/16740679/Jamis.Buck.-.The.Ray.Tracer.Challenge-Pragmatic.Bookshelf.2019.pdf) | `PDF`
 
 # Tuples
 
