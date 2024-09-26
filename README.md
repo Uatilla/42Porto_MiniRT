@@ -201,7 +201,7 @@ float	dot_product(t_tuple *a, t_tuple *b)
 ## Cross Product
 
 - The cross product is another vector operation, but unlike the dot product, it returns another vector instead of a scalar
-- For the cross product the order of operands matters, because if you change the order you change the direction of the vector
+- For the cross product the order of operands matters because if you change the order you change the direction of the vector
 
 ```c
 t_tuple	cross_product(t_tuple *a, t_tuple *b)
@@ -213,4 +213,6 @@ t_tuple	cross_product(t_tuple *a, t_tuple *b)
 ```
 
 - This returns a new vector that is perpendicular to both of the original vectors. 
-	![[Screenshot from 2024-09-18 20-53-25.png]]
+
+![Screenshot from 2024-09-18 20-53-25](https://github.com/user-attachments/assets/85f29c11-ebf4-46b2-84e6-bb373d9b2c5f)
+
