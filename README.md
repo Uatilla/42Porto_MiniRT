@@ -453,10 +453,12 @@ float	cofactor(t_minirt *mrt, t_matrix *mtx, int row, int col)
 
 	
 - To find the determinant, look at any one of the rows or columns. It doesn’t matter which, so let’s just choose the first row.
+
 ![Screenshot from 2024-09-19 18-56-18](https://github.com/user-attachments/assets/518373f3-fcdd-4b01-827d-a48bff4b9f30)
 
 	
 - Then, for each of those elements, you’ll multiply the element by its cofactor, and add the products together.
+
 ![Screenshot from 2024-09-19 18-56-42](https://github.com/user-attachments/assets/636d7763-4e42-43fd-bede-e3492365c17c)
 
 
