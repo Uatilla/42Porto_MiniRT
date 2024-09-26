@@ -33,9 +33,11 @@ This project would not be possible without the guidelines of the book:
 
 # Overview
  - This project uses the minilibx-linux, a API written in c by 42 students, to interact with the X11 window system.
+
 	https://github.com/42Paris/minilibx-linux
 
 - The project follows the norminett's norms
+
  	 https://github.com/42School/norminette
 
 - Will only run on linux
