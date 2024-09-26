@@ -10,6 +10,8 @@ We decided to put the credits at the beginning of the readme because this projec
 
 **The Ray Tracer Challenger - by Jamis Buck**
 
+
+
 # Tuples
 
 - A tuple is just an ordered list of things, like numbers.
