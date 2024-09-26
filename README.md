@@ -1,3 +1,7 @@
+This project was done by:
+Jhonas Leal - https://github.com/Jburlama
+Uatilla  Almeida - https://github.com/Uatilla
+
 # Credits
 
 We decided to put the credits at the beginning of the readme because this project would not be possible without the book **The Ray Tracer Challenger - by Jamis Buck**
