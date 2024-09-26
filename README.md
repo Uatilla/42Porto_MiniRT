@@ -293,7 +293,6 @@ t_matrix	*mtx_multiply(t_minirt *mrt, t_matrix *mtx_a, t_matrix *mtx_b)
 - We are also able to multiply matrices with tuples to produce another tuple.
 - We treat the tuple as a 1 column and 4 row matrix.
 
-
 ![Screenshot from 2024-09-19 17-50-37](https://github.com/user-attachments/assets/f0687a75-df3b-4c1f-ac66-86f0e42266a9)
 
 	
@@ -533,7 +532,7 @@ t_matrix	*mtx_inverse(t_minirt *mrt, t_matrix *mtx)
 ## Translation
 
 - Translation is a transformation that moves a point by adding to it.
-- 
+ 
 ![Screenshot from 2024-09-20 16-53-51](https://github.com/user-attachments/assets/1bb0b7ba-47a5-4a26-86f7-e46bf321ed92)
 
 
@@ -551,7 +550,7 @@ void	mtx_translation(t_matrix *mtx, t_tuple *tup_transl)
 ```
 ## Scaling
 - scaling is a transformation that moves a point by multiplication.
-- 
+ 
 	![Screenshot from 2024-09-20 16-57-55](https://github.com/user-attachments/assets/4c8d299c-732e-4431-bee8-dce308621e8d)
 
 
