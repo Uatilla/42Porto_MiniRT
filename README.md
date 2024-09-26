@@ -6,10 +6,10 @@ Uatilla  Almeida - https://github.com/Uatilla
 
 # miniRT
 
-Is a 42-school project about implementing a raytracing alogorithm in c.
-The main goal of the project is to proaf that we can implement any matematics or physics formula whitout beeing a matematition.
+Is a 42-school project about implementing a raytracing algorithm in c.
+The main goal of the project is to prove that we can implement any mathematics or physics formula without being a mathematician.
 
-the miniRT is out first ray tracer coded in C, normed and humble but functionnal.
+the miniRT is our first ray tracer coded in C, normed and humble but functional.
 
 # Credits
 
