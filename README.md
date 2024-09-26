@@ -448,6 +448,7 @@ float	cofactor(t_minirt *mrt, t_matrix *mtx, int row, int col)
 ### Determinants of Larger Matrices
 
 - Finding the determinant of matrices larger than 2x2 works recursively.
+
 ![Screenshot from 2024-09-19 18-55-56](https://github.com/user-attachments/assets/0975132d-1c0b-4d92-912f-2f5c68526aeb)
 
 	
