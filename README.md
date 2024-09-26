@@ -523,7 +523,7 @@ t_matrix	*mtx_inverse(t_minirt *mrt, t_matrix *mtx)
 }
 ```
 
-- ==Calculating the inverse of a matrix is very computationally intense, is more efficient to do it before the render.
+- ==Calculating the inverse of a matrix is very computationally intense, is more efficient to do it before the render==.
 
 # Matrices Transformations
 
@@ -1493,4 +1493,181 @@ t_camera	camera_construct(size_t hsize, size_t vsize, float fov)
 	return (camera);
 ```
 
+# Ray for pixel
 
+- The ray_for_pixel() function computes the world coordinates at the center of the given pixel, and then constructs a ray that passes through that point.
+- It takes as a parameter the camera, px (the x position of the pixel), and py (the y position of the pixel).
+
+```c
+t_ray	ray_for_pixel(t_camera *camera, size_t px, size_t py)
+{
+	t_ray	ray;
+	t_point	pixel;
+	t_rfp	rpf;
+
+	rpf.xoffset = (px + 0.5) * camera->pixel_size;
+	rpf.yoffset = (py + 0.5) * camera->pixel_size;
+	rpf.w_x = camera->half_width - rpf.xoffset;
+	rpf.w_y = camera->half_height - rpf.yoffset;
+	pixel = mtx_mult_tuple(camera->inver, &(t_point){rpf.w_x, rpf.w_y, -1, 1});
+	ray.origin = mtx_mult_tuple(camera->inver, &(t_point){0, 0, 0, 1});
+	ray.direction = subtrac_tuples(&pixel, &ray.origin);
+	ray.direction = normalize(&ray.direction);
+	return (ray);
+}
+```
+
+# Render
+
+- The render function will iterate, through the pixels of the scream.
+- With the help of the functions ray_for_pixel(), and color_at(), will create the ray, and then compute the color of that pixel.
+- Then write the pixel in the window using the minilibx API.
+
+```c
+void	render(t_minirt *data)
+{
+	t_color		color;
+	t_ray		ray;
+	int			x;
+	int			y;
+
+	y = -1;
+	while (++y < data->camera.vsize - 1)
+	{
+		x = -1;
+		while (++x < data->camera.hsize - 1)
+		{
+			ray = ray_for_pixel(&data->camera, x, y);
+			color = color_at(data, &ray, 5);
+			write_pixel(&data->canvas, x, y, &color);
+		}
+	}
+	printf("RENDER\t\t[OK]\n");
+	manage_interface(data);
+}
+```
+
+# Reflection
+
+- The reflection works by spawning an additional ray at the point of intersection and recursively following it to determine the color at that point.
+
+```c
+t_color	reflected_color(t_comps *comps, t_minirt *data, int8_t remaining)
+{
+	t_color	color;
+	t_ray	reflected_ray;
+
+	if (comps->obj->material.reflective == 0 || remaining == 0)
+		return ((t_color){0, 0, 0, 999999});
+	reflected_ray.origin = comps->over_point;
+	reflected_ray.direction = comps->reflectv;
+	color = color_at(data, &reflected_ray, remaining - 1);
+	color = mult_tuple_scalar(&color, comps->obj->material.reflective);
+	return (color);
+}
+```
+
+- The remaining parameter, is do that we don't have an infinity recursion if we have two reflective objects pointing at each other.
+- the reflective attribute in the object material, will determine how reflective is the object, being 0 non-reflective and 1 a perfect mirror.
+- We'll add the color returning from this function to the color of the object intersected, to have the final color.
+
+
+# patterns
+
+- If the object has a pattern, will change the default color of the object according to the point, and the pattern the object has.
+
+- The possible patterns the objects can have are:
+	- STR, stripe pattern;
+	- PC, point color;
+	- GR, gradient;
+	- RNG, ring;
+	- CHK, checkers.
+
+```c
+enum e_p
+{
+	STR = 0,
+	PC = 1,
+	GR = 2,
+	RNG = 3,
+	CHK = 4,
+};
+```
+
+```c
+void	set_pattern(t_intersections *inter, t_point *point)
+{
+	if (inter->obj->material.pattern.has)
+	{
+		inter->obj->material.color = pattern_at(&inter->obj->material.pattern, \
+			point, inter->obj, inter->obj->material.pattern.type);
+	}
+}
+```
+
+## Stripe pattern
+
+- As the x coordinate changes, the pattern alternates between the two colors.
+```c
+t_color	stripe_at(t_pattern *patterns, t_point *point)
+{
+	t_color	c;
+
+	if ((int)point->x % 2 == 0)
+		c = patterns->a;
+	else
+		c = patterns->b;
+	return (c);
+}
+```
+
+## Gradient pattern
+
+- A gradient pattern is like stripes, but instead of discrete steps from one color to the next, the function returns a blend of the two colors, linearly interpolating from one to the other as the x coordinate changes.
+
+```c
+t_color	gradient(t_pattern *pattern, t_point *point)
+{
+	t_color	distance;
+	float	fraction;
+	t_color	ret;
+
+	distance = subtrac_tuples(&pattern->a, &pattern->b);
+	fraction = point->x - floor(point->x);
+	ret = mult_tuple_scalar(&distance, fraction);
+	return (sum_tuples(&pattern->a, &ret));
+}
+```
+
+## Ring pattern
+
+- A ring pattern depends on two dimensions, x, and z, to decide which color to return. It works similarly to stripes, but instead of testing the distance of the point in just x, it tests the distance of the point in both x and z.
+
+```c
+t_color	ring_patt(t_pattern *pattern, t_point *point)
+{
+	t_color	c;
+
+	if ((int)sqrtf((point->x * point->x) + (point->z * point->z)) % 2 == 0)
+		c = pattern->a;
+	else
+		c = pattern->b;
+	return (c);
+}
+```
+
+## Checkers pattern
+
+- The function of this pattern is very much like that of stripes, but instead of relying on a single dimension, it relies on the sum of all three dimensions, x, y, and z.
+```c
+t_color	checker_patt(t_pattern *pattern, t_point *point)
+{
+	t_color	c;
+
+	if ((int)(floor(point->x) + floor(point->y) + floor(point->z)) % 2 == 0)
+		c = pattern->a;
+	else
+		c = pattern->b;
+	return (c);
+}
+```
