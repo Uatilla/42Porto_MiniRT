@@ -749,3 +749,223 @@ int8_t	ray_sphere_intersect(t_ray *ray, float *t)
 	return (2);
 }
 ```
+# Plane
+
+- A plane is a perfectly flat surface that extends infinitely in two dimensions, in our case, the plane will extend in both x and z dimensions, passing through the origin. Using the transformation matrix will be able to rotate and translate the plane in any orientation we like.
+
+- The normal vector is the same in every point of the plane, (0,1,0).
+
+- If the ray is parallel to the plane there will be no intersections.
+- Also no intersection if the ray is coplanar with the plane, which is to say that the ray’s origin is on the plane, and the ray’s direction is parallel to the plane.
+
+```c
+int8_t	ray_plane_intersect(t_ray *ray, float *t)
+{
+	if (fabs(ray->direction.y) < EPSILON)
+		return (0);
+	t[0] = -ray->origin.y / ray->direction.y;
+	t[1] = -ray->origin.y / ray->direction.y;
+	return (1);
+}
+```
+
+# Cylinder
+
+- At first, we assume the cylinder goes extends infinitely in the y direction, and have a radius of 1.
+
+- We can check if the ray intersects the cylinder by joining the Ray formula $(O + Dt)$ with the circle formula $(x^2 + z^2 = 1)$;
+
+- $(Ox + Dxt)^2 + (Oz + Dzt)^2 = 1$
+- $Ox^2 + 2OxDxt + Dxt^2 + Oz^2 + 2OzDzt + Dzt^2 = 1$
+- $Dxt^2 + Dzt^2 + 2OxDxt + 2OzDzt + Ox^2 + Oz^2 = 1$
+- $t^2(Dx^2 + Dz^2) + t(OxDxt + OzDzt) + Ox^2 + Oz^2 - 1 = 0$
+
+- Again just like the circle we can use the quadratic equation to solve in function of t:
+	- $a = Dx^2 + Dz^2$
+	- $b = 2OxDxt + 2OzDzt$
+	- $c = Ox^2 + Oz^2 - 1$
+
+```c
+int8_t	ray_cylinder_intersect(t_ray *ray, float *t, t_shape *obj)
+{
+	float	a;
+	float	b;
+	float	c;
+	float	discriminant;
+	bool	count[2];
+
+	a = (ray->direction.x * ray->direction.x) + (ray->direction.z
+			* ray->direction.z);
+	if (fabs(a) < EPSILON)
+		return (0);
+	b = (2 * ray->origin.x * ray->direction.x) + (2 * ray->origin.z
+			* ray->direction.z);
+	c = (ray->origin.x * ray->origin.x) + (ray->origin.z
+			* ray->origin.z) - 1;
+	discriminant = (b * b) - 4 * a * c;
+	if (discriminant < 0)
+		return (0);
+	t[0] = (-b - sqrt(discriminant)) / (2 * a);
+	t[1] = (-b + sqrt(discriminant)) / (2 * a);
+	if (t[0] > t[1])
+		swap(t);
+	count[0] = check_cy_range(ray, t[0], obj);
+	count[1] = check_cy_range(ray, t[1], obj);
+	return (intercections_count(count, t));
+}
+```
+
+- before checking the intersections we cap the cylinder in a range, set in the object materials
+- Then in the check_cy_range we check if the intersection point is between that range
+
+```c
+bool	check_cy_range(t_ray *ray, float t, t_shape *obj)
+{
+	float	y;
+	float	cap_t;
+
+	y = ray->origin.y + (ray->direction.y * t);
+	if (obj->material.min < y && y < obj->material.max)
+		return (true);
+	return (false);
+}
+```
+
+- The intersections_count, will return how many points the ray hits.
+
+```c
+int8_t	intercections_count(bool *count, float *t)
+{
+	if (count[0] && count[1])
+	{
+		if (t[0] == t[1])
+			return (1);
+		else
+			return (2);
+	}
+	else if (!count[0] && !count[1])
+		return (0);
+	else if (count[0])
+	{
+		t[1] = t[0];
+		return (1);
+	}
+	else if (count[1])
+	{
+		t[0] = t[1];
+		return (1);
+	}
+	return (0);
+}
+```
+
+## Caped cylinders
+
+- For the top and bottom of the cylinder we treated them like another object, planes. All we need to check is if it's within the y set in the t_material, and if it's within the radius of the circle.
+
+```c
+int8_t	ray_cap_inter(t_ray *ray, float *t, t_shape *obj)
+{
+	bool	count[2];
+
+	if (obj->material.closed == false || fabs(ray->direction.y) < EPSILON)
+		return (0);
+	t[0] = (obj->material.min - ray->origin.y) / ray->direction.y;
+	t[1] = (obj->material.max - ray->origin.y) / ray->direction.y;
+	count[0] = check_cap(ray, t[0], obj, 1);
+	count[1] = check_cap(ray, t[1], obj, 2);
+	return (intercections_count(count, t));
+}
+
+bool	check_cap(t_ray *ray, float t, t_shape *obj, int8_t	order)
+{
+	float	x;
+	float	z;
+
+	x = ray->origin.x + (t * ray->direction.x);
+	z = ray->origin.z + (t * ray->direction.z);
+	return (((x * x) + (z * z)) <= 1);
+}
+```
+
+# Cone
+- The cone works just like the cylinder but the a, b, and c  are computed differently:
+	- $a = d2x − d2y + d2z$
+	- $b = 2ox dx − 2oy dy + 2oz dz$
+	- $c = o2x − o2y + o2z$
+
+```c
+int8_t	ray_cone_intersect(t_ray *ray, float *t, t_shape *obj)
+{
+	float	a;
+	float	b;
+	float	c;
+	float	discriminant;
+	bool	count[2];
+
+	set_cone_intersect(&a, &b, &c, ray);
+	if (a == 0 && b == 0)
+		return (0);
+	if (a == 0)
+	{
+		t[0] = -c / 2 * b;
+		t[1] = -c / 2 * b;
+		return (1);
+	}
+	discriminant = (b * b) - 4 * a * c;
+	if (discriminant < 0)
+		return (0);
+	t[0] = (-b - sqrt(discriminant)) / (2 * a);
+	t[1] = (-b + sqrt(discriminant)) / (2 * a);
+	if (t[0] > t[1])
+		swap(t);
+	count[0] = check_cy_range(ray, t[0], obj);
+	count[1] = check_cy_range(ray, t[1], obj);
+	return (intercections_count(count, t));
+}
+
+void	set_cone_intersect(float *a, float *b, float *c, t_ray *ray)
+{
+	*a = (ray->direction.x * ray->direction.x) - (ray->direction.y
+			* ray->direction.y) + (ray->direction.z * ray->direction.z);
+	*b = (2 * ray->origin.x * ray->direction.x) - (2 * ray->origin.y
+			* ray->direction.y) + (2 * ray->origin.z * ray->direction.z);
+	*c = (ray->origin.x * ray->origin.x) - (ray->origin.y
+			* ray->origin.y) + (ray->origin.z * ray->origin.z);
+}
+```
+
+- This algorithm will check for intersections on a double-napped cone.
+- If both a and b are 0, then the ray misses the cone.
+- When a is 0 and b isn't the ray is parallel to one of the cone halves.
+
+
+![Screenshot from 2024-09-26 21-15-37](https://github.com/user-attachments/assets/c7ebc88e-980f-4abc-8c51-49a0774c2a75)
+
+ 
+- This still means that the ray will intersect the other half, so we use the following formula to find the single point of intersection:
+	- $t = -c / 2 * b$
+
+- To check the cap for the cone we use the same logic as the cylinder, but the radius of the circle is not the same everywhere, and will change along the y coordinates.
+```c
+bool	check_cap(t_ray *ray, float t, t_shape *obj, int8_t	order)
+{
+	float	x;
+	float	z;
+
+	x = ray->origin.x + (t * ray->direction.x);
+	z = ray->origin.z + (t * ray->direction.z);
+	if (obj->type == CY)
+		return (((x * x) + (z * z)) <= 1);
+	else if (obj->type == CONE)
+	{
+		if (order == 1)
+			return (((x * x) + (z * z)) <= fabs(obj->material.min \
+				* obj->material.min));
+		else if (order == 2)
+			return (((x * x) + (z * z)) <= fabs(obj->material.max \
+				* obj->material.max));
+	}
+	return (false);
+}
+```
