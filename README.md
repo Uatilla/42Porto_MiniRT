@@ -1,3 +1,5 @@
+# Tuples
+
 - A tuple is just an ordered list of things, like numbers.
 - For this project we used two types of tuples:
 	- points and vector
