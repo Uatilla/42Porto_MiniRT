@@ -1018,3 +1018,280 @@ typedef struct s_material
 
 - a transformation matrix, which will be set as the identity matrix, if the object doesn't have a transformation, and the inverse of that matrix.
 - The transformed ray. The ray that multiplied by the inverse of the object transformation matrix.
+
+# Tracking Intersections
+
+- Every time a ray hits an object will add then to a list of intersections
+
+```c
+typedef struct s_intersections
+{
+	t_point					point;
+	float					t[2];
+	float					hit;
+	t_shape					*obj;
+	struct s_intersections	*next;
+}	t_intersections;
+```
+
+- after check if the ray intersects with all the objects, we keep a reference to the intersection with the smallest positive hit value, being that the first point the ray hits in a object.
+
+- The intersection's node keeps track of:
+	- the t values the ray hits, if the ray only hits one point, t[0] will be equal to t[1];
+	- the t value the ray hit first in hit;
+	- the point of intersection;
+	- a pointer to the object the ray intersects;
+
+
+# Transforming Rays
+
+- You can notice that the calculations for the ray intersections will always assume that the object is in the center of the world, point(0,0,0), and with radii of 1 in the case of the sphere.
+- The way we move objects is not by moving the object itself but the ray.
+- before we check the intersections, we first transform the ray by multiplying it by the object's inverse matrix.
+- This will give us the correct location of the points of the objects.
+
+```c
+t_ray	ray_trasform(t_ray *ray, t_matrix *mtx)
+{
+	t_ray		new_ray;
+
+	new_ray.origin = mtx_mult_tuple(mtx, &ray->origin);
+	new_ray.direction = mtx_mult_tuple(mtx, &ray->direction);
+	return (new_ray);
+}
+```
+
+```c
+void	intersections(t_minirt *data, t_ray *ray)
+{
+	t_shape	*obj;
+
+	obj = data->world.objs;
+	while (obj)
+	{
+		obj->trans_ray = ray_trasform(ray, obj->mtx_inver);
+		ray_intersections(data, obj, &obj->trans_ray, ray);
+		obj = obj->next;
+	}
+	first_hit(data);
+}
+```
+
+# Representing Colors
+
+We use the rgb representation to determine the color of the pixel.
+
+- Each value will range from [0-1] being 0, completely absent of that color, and 1 the full value of that color.
+- We will represent color as a tuple, and we will also need to be able to do tuple operations with them.
+
+```c
+typedef struct s_tuple
+{
+	union
+	{
+		struct
+		{
+			float	x;
+			float	y;
+			float	z;
+			float	w;
+		};
+		struct
+		{
+			float	r;
+			float	g;
+			float	b;
+		};
+	};
+}	t_tuple;
+
+typedef t_tuple	t_point;
+typedef t_tuple	t_vector;
+typedef t_tuple	t_color;
+```
+
+- We used union to make the code more readable, and more distinguishable when we are working with r,g,b colors or x,y,z coordinates.
+
+
+
+# Light and Shading
+
+- To simulate the reflection of light on a surface, we'll implement the Phong algorithm.
+
+- For the algorithm, we need 4 vectors.
+
+	- The eye vector. P (Points from the point of intersection), to the origin of the ray.
+		- To find E, we negate the ray’s direction vector, turning it around to point back at its origin.
+		
+	- The light vector. Pointing from P to the origin of the light source.
+		 - To find L, we subtract P from the position of the light source, giving us the vector pointing toward the light.
+
+	- The surface normal, a vector that is perpendicular to the surface at P.
+
+	- The reflection vector, pointing in the direction that incoming light would bounce, or reflect.
+
+# Normal
+
+- First, we need to undo the transformations of the point, making it easier to calculate the normal.
+- We achieve that by multiplying the point by the object inverse matrix.
+
+
+![normal_at1](https://github.com/user-attachments/assets/7edb98d6-245a-4866-802c-acb912e95182)
+
+
+- The reason we use the inverse matrix, instead of the object transformation matrix, is because the transformation matrix wont preserve the correct y component, changing the size of the vector.
+- So we multiply the normal by the inverse transpose matrix instead.
+
+```c
+t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data)
+{
+	t_point		local_point;
+	t_vector	local_normal;
+	t_vector	world_normal;
+	t_matrix	*transpose;
+
+	local_point = mtx_mult_tuple(obj->mtx_inver, point);
+	local_normal = local_normal_at(obj, &local_point);
+	transpose = mtx_transpose(data, obj->mtx_inver);
+	world_normal = mtx_mult_tuple(transpose, &local_normal);
+	world_normal.w = 0;
+	clean_matrix(data, transpose, 0);
+	return (normalize(&world_normal));
+```
+
+## Normal_local_at
+
+- after undoing the transformations of the point, we will calculate the normal for each object.
+
+### Sphere
+- We subtract the point by the center, giving us the normalized normal of the tangent plane of that point.
+
+
+	![Screenshot from 2024-08-07 13-02-26](https://github.com/user-attachments/assets/c22932ba-d184-471b-b88e-66f377094c87)
+
+	
+```c
+if (obj->tturn ((t_vector){0, 1, 0, 0});
+	else if (dist < 1 && point->y <= obj->material.min + EPSILON)
+		return ((t_vector){0, -1, 0, 0});
+	return ((t_vector){point->x, 0, point->z, 0});
+}
+
+```
+### Plane
+- the local normal at a plane is always perpendicular to the y axis.
+```c
+	else if (obj->type == PL)
+		local_normal = (t_vector){0, 1, 0, 0};
+```
+
+### Cone
+- The cone is similar to the cylinder but we need to find the y component of the vector.
+
+ 	![Screenshot from 2024-09-25 17-03-30](https://github.com/user-attachments/assets/d75ca7bb-8236-458d-afc8-ed8702922a12)
+
+	
+```c
+t_vector	normal_at_cone(t_point *point, t_shape *obj)
+{
+	float		dist;
+	float		y;
+	t_vector	normal;
+
+	dist = (point->x * point->x) + (point->z * point->z);
+	if (dist < obj->material.max * obj->material.max \
+		&& point->y >= obj->material.max - EPSILON)
+		return ((t_vector){0, 1, 0, 0});
+	else if (dist < obj->material.min * obj->material.min \
+		&& point->y <= obj->material.min + EPSILON)
+		return ((t_vector){0, -1, 0, 0});
+	y = sqrtf(dist);
+	if (y > EPSILON)
+		y = -y;
+	normal = (t_vector){point->x, y, point->z, 0};
+	return (normal);
+}
+```
+
+## reflection vector
+
+- This is the reflected vector around the normal.
+- the vector coming in will have the same angle as the vector going out.
+
+```c
+t_vector	reflect(t_vector *in, t_vector *normal)
+{
+	t_tuple		vect;
+
+	vect = mult_tuple_scalar(normal, 2);
+	vect = mult_tuple_scalar(&vect, dot_product(in, normal));
+	vect = subtrac_tuples(in, &vect);
+	return (vect);
+}
+```
+
+
+# The Phong Reflection Model
+
+- To simulate the reflection of light we implement the Phong reflection model.
+- This algorithm simulates the interaction between 3 types of lights.
+	- **Ambient:** Is the background lightning, this value will be a constant.
+	- **Diffuse:** Is the light reflected from the material surface, this only depends on the angle between the light source and the surface normal.
+	- **Specular:** Is the reflection of the light source itself, the bright spot on a curved surface, It depends only on the angle between the reflection vector and the eye vector and is controlled by a parameter that we call shininess. The higher the shininess, the smaller and tighter the specular highlight.
+	
+	![Screenshot from 2024-09-25 17-46-31](https://github.com/user-attachments/assets/a7afbe86-88c5-4aca-9feb-4a9f4092f3a7)
+
+
+```c
+typedef struct s_phong
+{
+	t_color			ambient;
+	t_color			diffuse;
+	t_color			spec;
+}	t_phong;
+```
+
+```c
+t_color	lighting(t_comps *comps, t_light *light, t_world *world)
+{
+	t_color			color;
+	t_phong			phong;
+	float			light_normal_dot;
+
+	color = color_multiply(&comps->obj->material.color, &world->ambient_light);
+	comps->lightv = subtrac_tuples(&light->position, &comps->point);
+	comps->lightv = normalize(&comps->lightv);
+	phong.ambient = mult_tuple_scalar(&color, comps->obj->material.ambient);
+	light_normal_dot = dot_product(&comps->lightv, &comps->normalv);
+	if (light_normal_dot < 0 || comps->is_shadown)
+		light_is_behind_obj(&phong.diffuse, &phong.spec);
+	else
+	{
+		color = color_multiply(&color, &light->intensity);
+		phong.diffuse = mult_tuple_scalar(&color,
+				comps->obj->material.diffuse * light_normal_dot);
+		bump(&phong, comps->obj);
+		comps->reflectv = negating_tuple(&comps->lightv);
+		comps->reflectv = reflect(&comps->reflectv, &comps->normalv);
+		get_specular(comps, light, &phong);
+	}
+	return (add_color3(&phong.ambient, &phong.diffuse, &phong.spec));
+}
+
+void	light_is_behind_obj(t_color *diffuse, t_color *specular)
+{
+	*diffuse = (t_color){0, 0, 0, 999999};
+	*specular = (t_color){0, 0, 0, 999999};
+}
+
+void	get_specular(t_comps *comps, t_light *light, t_phong *phong)
+{
+	float			ref_dot_eye;
+
+	ref_dot_eye = dot_product(&comps->reflectv, &comps->eyev);
+	if (ref_dot_eye <= 0)
+		phong->spec = (t_color){0, 0, 0, 999999};
+	else
+		phong->spec = specular(&comps->obj->material, light, ref_dot_eye);
+}
+```
