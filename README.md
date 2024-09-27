@@ -1247,11 +1247,8 @@ t_vector	normal_at(t_shape *obj, t_point *point, t_minirt *data)
 
 	
 ```c
-if (obj->tturn ((t_vector){0, 1, 0, 0});
-	else if (dist < 1 && point->y <= obj->material.min + EPSILON)
-		return ((t_vector){0, -1, 0, 0});
-	return ((t_vector){point->x, 0, point->z, 0});
-}
+	if (obj->type == SP)
+		local_normal = subtrac_tuples(local_point, &(t_point){0, 0, 0, 1});
 
 ```
 ### Plane
