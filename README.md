@@ -1621,7 +1621,7 @@ t_color	reflected_color(t_comps *comps, t_minirt *data, int8_t remaining)
 - We'll add the color returning from this function to the color of the object intersected, to have the final color.
 
 
-# patterns
+# Patterns
 
 - If the object has a pattern, will change the default color of the object according to the point, and the pattern the object has.
 
@@ -1720,3 +1720,94 @@ t_color	checker_patt(t_pattern *pattern, t_point *point)
 	return (c);
 }
 ```
+# Event Handling
+## Movements and Rotation
+- As explained on **Matrices Transformations**, every element on the screen has two structures one called **transformation** and another called **inverse** these two matrices has the function to deal with  modifications on how the scene element is displayed on the screen. Every time the program catches a movement or rotation event, it updates these elements to express the behavior desired by the user:
+- Here you can see the possible movements/rotation for each element:
+  
+  ![Untitled(3)](https://github.com/user-attachments/assets/1b0c933a-844b-4fc7-8247-3718f7d99b51)
+  
+- Element type selection:
+  
+  ![image](https://github.com/user-attachments/assets/e1e5813c-ec26-4b62-aaf4-c956c01a7e6d)
+
+  
+- Remember once you hit 'o' all objects were selected, then you can use tab to change between the objects on the screen or click on home to remove the element type selection:
+  
+  ![image](https://github.com/user-attachments/assets/0601d63c-c66e-486d-8726-930873bb3612)
+
+**The effects of modidifications on scene elements are:**
+
+Center of the image:
+
+![image](https://github.com/user-attachments/assets/835310bb-cd54-4e1d-86d5-f59ef64d71ba)
+
+Move to the right (using 'c' to select the camera, using right key to move the camera):
+
+![image](https://github.com/user-attachments/assets/506e7685-9c4e-4f0a-9bdc-35400197ac89)
+
+Rotating the camera to the left on its own position (not necessary to hit 'c' again, once the camera was already selected, using 'q' key to rotate counter clockwork).
+
+![image](https://github.com/user-attachments/assets/dc884e02-27c6-48dd-9719-09988b0d54ce)
+
+Bringing only the yellow sphere to the camera (using 'o' to select the objects (all objects were selected), hitting 'tab' to select only the sphere and '+' to zoom the sphere).
+
+![image](https://github.com/user-attachments/assets/d26e8f88-92aa-48bb-8784-bfc00fe85f33)
+
+Moving the light to the left side (using 'l' to select the light and then left arrow to move it to the left).
+
+![image](https://github.com/user-attachments/assets/600545d5-23f7-4ddb-87c1-9f00677d0485)
+
+### Try it by yourself!
+
+![image](https://github.com/user-attachments/assets/f567a756-da1c-4cb7-b399-d963b8ec70e0)
+
+## Contributing
+
+Contributions to the project are welcome! If you have any ideas, improvements, or bug fixes, please submit them as issues or pull requests to this repository.
+
+<div align="center">
+  <h1><b>Welcome to my new brave world!</b></h1> 
+  <h2><b>00100010 01000010 01100101 00100000 01110111 01100001 01110100 01100101 01110010 00100000 01101101 01111001 00100000 01100110 01110010 01101001 01100101 01101110 01100100 00100010 00100000 01000010 01110010 01110101 01100011 01100101 00100000 01001100 01100101 01100101</b></h2>
+</div>
+
+<!---
+SMALL ICONS
+--->
+<div style="text-align: center;">
+  <a href='https://www.linkedin.com/in/uatilla' target="_blank" style="display: inline-block; margin: 0 10px;">
+    <img alt='Linkedin' src='https://img.shields.io/badge/LinkedIn-100000?style=flat&logo=Linkedin&logoColor=white&labelColor=0A66C2&color=0A66C2'/>
+  </a>
+  <a href='https://profile.intra.42.fr/users/uviana-a' target="_blank" style="display: inline-block; margin: 0 10px;">
+    <img alt='42' src='https://img.shields.io/badge/Porto-100000?style=flat&logo=42&logoColor=white&labelColor=000000&color=000000'/>
+  </a>
+  <img src="https://komarev.com/ghpvc/?username=uatilla&label=Profile%20views&color=0e75b6&style=flat" alt="uatilla" style="display: inline-block; margin: 0 10px;" />
+</div>
+
+
+## About me
+
+- 👋 I'm `Uatilla Viana Almeida`.
+- 🌱 I'm currently studying Common Core at [**42 Porto**](https://www.42porto.com) after successfully completing the Piscine.
+- 👀 I'm interested in `Bitcoin`, `Games` and `Sports` of all kinds.
+- 🚀 Additionally, I have an interest in `AI`, `Python`, `Data Analysis` and `Project Management`.
+- 📫 You can reach me on [**LinkedIn**](https://www.linkedin.com/in/uatilla/).
+- 🤔 Feeling amazing about how AI can help our society.
+
+<div align="center">
+
+## Skills
+<p align="left">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=c,python,git,github,bash,linux,vim,vscode,sketchup,sql" />
+  </a>
+</p>
+
+<p><img align="left" src="https://github-readme-stats.vercel.app/api/top-langs?username=uatilla&show_icons=true&locale=en&layout=compact" alt="uatilla" /></p>
+
+<p>&nbsp;<img align="left" src="https://github-readme-stats.vercel.app/api?username=uatilla&show_icons=true&locale=en" alt="uatilla" /></p>
+
+<p><img align="left" src="https://github-readme-streak-stats.herokuapp.com/?user=uatilla&" alt="uatilla" /></p>
+
+
+
