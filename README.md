@@ -5,15 +5,18 @@ Jhonas Leal - https://github.com/Jburlama
 Uatilla  Almeida - https://github.com/Uatilla
 
 # miniRT
+**My first RayTracer with miniLibX** the last C project from 42 Common Core Program. The main goal of this project is about implementing a [**raytracing algorithm**](https://en.wikipedia.org/wiki/Ray_tracing_(graphics)). We must implement scene aspects as ambient lightining, camera, light, and objects (sphere, plane, cylinder, and cone (bonus only)).
+Besides these elements, we must apply moviments and rotations into the each element of the scene.
+For more detailed information, look at the [**subject of this project**](https://cdn.intra.42.fr/pdf/pdf/113053/en.subject.pdf).
 
-Is a 42-school project about implementing a raytracing algorithm in c.
-The main goal of the project is to prove that we can implement any mathematics or physics formula without being a mathematician.
+One of our learnings after building this project is that **everyone can apply mathematics or physics without being a mathematician or physician.**
 
-the miniRT is our first ray tracer coded in C, normed and humble but functional.
+## How to use it
 
-https://cdn.intra.42.fr/pdf/pdf/113053/en.subject.pdf
+### Getting Started
+FLOW CHART HERE
 
-# Usage
+## Usage
 
 If you want to run the project yourself:
 
@@ -32,20 +35,27 @@ This project would not be possible without the guidelines of the book:
 **The Ray Tracer Challenger - by Jamis Buck**
 
  [Jamis Buck - The Ray Tracer Challenge](https://github.com/user-attachments/files/16740679/Jamis.Buck.-.The.Ray.Tracer.Challenge-Pragmatic.Bookshelf.2019.pdf) | `PDF`
+ 
+ We strongly recommend to anyone who wants to build this project from scratch, that deep dive on the reading of this book to understand the concepts, there is a lot of valuable information there.
 
-# Overview
+
+
+## Rules
+
+**Norminette:**
+
+The Norminette is a tool provided by 42 Network to check whether the source code complies with the school's norm. The rules include the prohibition of ‘for’ loops, a limit of 25 lines, and no more than 4 parameters in each function, among other specifications.
+
+Here is a [link](https://42.nauman.cc/2023/06/01/getting-started-norminette/) to more details about what is evaluated by the Norminette tool.
+
+
+**MiniLibX:**
  - This project uses the minilibx-linux, a API written in c by 42 students, to interact with the X11 window system.
 
 	https://github.com/42Paris/minilibx-linux
 
-- The project follows the norminett's norms
-
- 	 https://github.com/42School/norminette
-
-- Will only run on linux
-
 # Technical overview
-# Tuples
+## Tuples
 
 - A tuple is just an ordered list of things, like numbers.
 - For this project, we used two types of tuples:
@@ -78,7 +88,7 @@ t_tuple	creating_tuple(float x, float y, float z, float w)
 	return (ret);
 }
 ```
-# Operations
+## Operations
 
 Now that we have tuples, we need to be able to make operations with them.
 
