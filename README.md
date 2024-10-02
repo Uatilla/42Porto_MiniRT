@@ -33,16 +33,46 @@ If you want to run the project yourself:
  
 	- Run ./minirt <scene>.rt
 
-# Credits
+## Movements and Rotation
+- As will be explained on **Matrices Transformations**, every element on the screen has two structures one called **transformation** and another called **inverse** these two matrices has the function to deal with  modifications on how the scene element is displayed on the screen. Every time the program catches a movement or rotation event, it updates these elements to express the behavior desired by the user:
+- Here you can see the possible movements/rotation for each element:
+  
+  ![Untitled(3)](https://github.com/user-attachments/assets/1b0c933a-844b-4fc7-8247-3718f7d99b51)
+  
+- Element type selection:
+  
+  ![image](https://github.com/user-attachments/assets/e1e5813c-ec26-4b62-aaf4-c956c01a7e6d)
 
-This project would not be possible without the guidelines of the book:
+  
+- Remember once you hit 'o' all objects were selected, then you can use tab to change between the objects on the screen or click on home to remove the element type selection:
+  
+  ![image](https://github.com/user-attachments/assets/0601d63c-c66e-486d-8726-930873bb3612)
 
-**The Ray Tracer Challenger - by Jamis Buck**
+**The effects of modidifications on scene elements are:**
 
- [Jamis Buck - The Ray Tracer Challenge](https://github.com/user-attachments/files/16740679/Jamis.Buck.-.The.Ray.Tracer.Challenge-Pragmatic.Bookshelf.2019.pdf) | `PDF`
- 
- We strongly recommend to anyone who wants to build this project from scratch, that deep dive on the reading of this book to understand the concepts, there is a lot of valuable information there.
+Center of the image:
 
+![image](https://github.com/user-attachments/assets/835310bb-cd54-4e1d-86d5-f59ef64d71ba)
+
+Move to the right (using 'c' to select the camera, using right key to move the camera):
+
+![image](https://github.com/user-attachments/assets/506e7685-9c4e-4f0a-9bdc-35400197ac89)
+
+Rotating the camera to the left on its own position (not necessary to hit 'c' again, once the camera was already selected, using 'q' key to rotate counter clockwork).
+
+![image](https://github.com/user-attachments/assets/dc884e02-27c6-48dd-9719-09988b0d54ce)
+
+Bringing only the yellow sphere to the camera (using 'o' to select the objects (all objects were selected), hitting 'tab' to select only the sphere and '+' to zoom the sphere).
+
+![image](https://github.com/user-attachments/assets/d26e8f88-92aa-48bb-8784-bfc00fe85f33)
+
+Moving the light to the left side (using 'l' to select the light and then left arrow to move it to the left).
+
+![image](https://github.com/user-attachments/assets/600545d5-23f7-4ddb-87c1-9f00677d0485)
+
+### Try it by yourself!
+
+![image](https://github.com/user-attachments/assets/f567a756-da1c-4cb7-b399-d963b8ec70e0)
 
 
 ## Rules
@@ -1717,47 +1747,16 @@ t_color	checker_patt(t_pattern *pattern, t_point *point)
 	return (c);
 }
 ```
-# Event Handling
-## Movements and Rotation
-- As explained on **Matrices Transformations**, every element on the screen has two structures one called **transformation** and another called **inverse** these two matrices has the function to deal with  modifications on how the scene element is displayed on the screen. Every time the program catches a movement or rotation event, it updates these elements to express the behavior desired by the user:
-- Here you can see the possible movements/rotation for each element:
-  
-  ![Untitled(3)](https://github.com/user-attachments/assets/1b0c933a-844b-4fc7-8247-3718f7d99b51)
-  
-- Element type selection:
-  
-  ![image](https://github.com/user-attachments/assets/e1e5813c-ec26-4b62-aaf4-c956c01a7e6d)
 
-  
-- Remember once you hit 'o' all objects were selected, then you can use tab to change between the objects on the screen or click on home to remove the element type selection:
-  
-  ![image](https://github.com/user-attachments/assets/0601d63c-c66e-486d-8726-930873bb3612)
+# Credits
 
-**The effects of modidifications on scene elements are:**
+This project would not be possible without the guidelines of the book:
 
-Center of the image:
+**The Ray Tracer Challenger - by Jamis Buck**
 
-![image](https://github.com/user-attachments/assets/835310bb-cd54-4e1d-86d5-f59ef64d71ba)
-
-Move to the right (using 'c' to select the camera, using right key to move the camera):
-
-![image](https://github.com/user-attachments/assets/506e7685-9c4e-4f0a-9bdc-35400197ac89)
-
-Rotating the camera to the left on its own position (not necessary to hit 'c' again, once the camera was already selected, using 'q' key to rotate counter clockwork).
-
-![image](https://github.com/user-attachments/assets/dc884e02-27c6-48dd-9719-09988b0d54ce)
-
-Bringing only the yellow sphere to the camera (using 'o' to select the objects (all objects were selected), hitting 'tab' to select only the sphere and '+' to zoom the sphere).
-
-![image](https://github.com/user-attachments/assets/d26e8f88-92aa-48bb-8784-bfc00fe85f33)
-
-Moving the light to the left side (using 'l' to select the light and then left arrow to move it to the left).
-
-![image](https://github.com/user-attachments/assets/600545d5-23f7-4ddb-87c1-9f00677d0485)
-
-### Try it by yourself!
-
-![image](https://github.com/user-attachments/assets/f567a756-da1c-4cb7-b399-d963b8ec70e0)
+ [Jamis Buck - The Ray Tracer Challenge](https://github.com/user-attachments/files/16740679/Jamis.Buck.-.The.Ray.Tracer.Challenge-Pragmatic.Bookshelf.2019.pdf) | `PDF`
+ 
+ We strongly recommend to anyone who wants to build this project from scratch, that deep dive on the reading of this book to understand the concepts, there is a lot of valuable information there.
 
 ## Contributing
 
