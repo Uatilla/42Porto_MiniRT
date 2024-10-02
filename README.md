@@ -4,7 +4,8 @@ Jhonas Leal - https://github.com/Jburlama
 
 Uatilla  Almeida - https://github.com/Uatilla
 
-![screencast-from-2024-10-02-13-16-07_90Iue5NE-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/d84d7367-6b0e-4a2c-8fff-64f0001f78af)
+![screencast-from-10-02-2024-075450-pm-qmgathoj_bob4h5d7-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/b106da57-a23c-400b-924d-7da3dbd8bf8c)
+
 
 
 
