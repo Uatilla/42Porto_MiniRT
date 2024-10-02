@@ -4,6 +4,9 @@ Jhonas Leal - https://github.com/Jburlama
 
 Uatilla  Almeida - https://github.com/Uatilla
 
+
+
+
 # miniRT
 **My first RayTracer with miniLibX** the last C project from 42 Common Core Program. The main goal of this project is about implementing a [**raytracing algorithm**](https://en.wikipedia.org/wiki/Ray_tracing_(graphics)). We must implement scene aspects as ambient lightining, camera, light, and objects (sphere, plane, cylinder, and cone (bonus only)).
 Besides these elements, we must apply moviments and rotations into the each element of the scene.
@@ -33,6 +36,7 @@ If you want to run the project yourself:
  
 	- Run ./minirt <scene>.rt
 
+![Screencastfrom2024-10-0213-06-34-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/de0515b2-773e-4dc4-b93e-9673e2670730)
 ## Movements and Rotation
 - As will be explained on **Matrices Transformations**, every element on the screen has two structures one called **transformation** and another called **inverse** these two matrices has the function to deal with  modifications on how the scene element is displayed on the screen. Every time the program catches a movement or rotation event, it updates these elements to express the behavior desired by the user:
 - Here you can see the possible movements/rotation for each element:
