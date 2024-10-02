@@ -81,7 +81,7 @@ Moving the light to the left side (using 'l' to select the light and then left a
 
 The Norminette is a tool provided by 42 Network to check whether the source code complies with the school's norm. The rules include the prohibition of ‘for’ loops, a limit of 25 lines, and no more than 4 parameters in each function, among other specifications.
 
-Here is a [link](https://42.nauman.cc/2023/06/01/getting-started-norminette/) to more details about what is evaluated by the Norminette tool.
+Here is a [link](https://github.com/gdamion/Norminette/blob/master/norme.en.pdf) to more details about what is evaluated by the Norminette tool.
 
 
 **MiniLibX:**
