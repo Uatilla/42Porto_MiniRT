@@ -1791,11 +1791,10 @@ SMALL ICONS
 
 - 👋 I'm `Uatilla Viana Almeida`.
 - 🌱 I'm currently studying Common Core at [**42 Porto**](https://www.42porto.com) after successfully completing the Piscine.
-- 👀 I'm interested in `Bitcoin`, `Games` and `Sports` of all kinds.
-- 🚀 Additionally, I have an interest in `AI`, `Python`, `Data Analysis` and `Project Management`.
+- 👀 I'm interested in `Bitcoin`, `Macroeconomy`, `Adventure` and `Sports` of all kinds.
+- 🚀 Additionally, I have an interest in `Blockchain`, `Python`, `Data Analysis` and `Machine Learning`.
 - 📫 You can reach me on [**LinkedIn**](https://www.linkedin.com/in/uatilla/).
-- 🤔 Feeling amazing about how AI can help our society.
-
+- 🤔 Feeling amazing about how the blockchain technology will change our lives.
 <div align="center">
 
 ## Skills
